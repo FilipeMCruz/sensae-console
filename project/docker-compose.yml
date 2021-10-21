@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  message-broker:
+    image: rabbitmq:management
+    container_name: message-broker
+    networks:
+      - sharespot-network
+    ports:
+      - 5672:5672
+      - 15672:15672
+  sharespot-location-tracking-backend:
+    restart: on-failure
+    build: backend-services/locatoin-tracking-backend
+    image: sharespot-location-tracking-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/location-tracking-backend.env
+    ports:
+      - "8080"
+    networks:
+      - sharespot-network
+  # sharespot-gateway:
+  #   build: frontend
+  #   image: sharespot-gateway
+  #   container_name: sharespot-gateway
+  #   networks:
+  #     - sharespot-network
+  #   volumes:
+  #     - ./gateway/nginx.conf.ctmpl:/etc/consul-templates/nginx.conf.ctmpl
+  #   environment:
+  #     CONSUL: sharespot-consul:8500
+  #     SERVICE: sharespot-consul-8500
+  #   ports:
+  #     - "80:80"
+networks:
+  sharespot-network:

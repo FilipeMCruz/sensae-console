@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  message-broker-dev:
+    image: rabbitmq:management
+    container_name: message-broker-dev
+    networks:
+      - sharespot-network-dev
+    ports:
+      - 5672:5672
+      - 15672:15672
+networks:
+  sharespot-network-dev:

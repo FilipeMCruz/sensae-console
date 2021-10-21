@@ -1,0 +1,34 @@
+@startuml logical-view-level3-location-tracking-backend
+
+skinparam Monochrome true
+
+component "Location Tracking Backend" {
+    component "Domain" as D
+    component "Application" as As
+    component "Infrastructure" as IF {
+        component "Boot" as Bt
+        component "Endpoint" as EP {
+            component "GraphQL" as RWS
+            component "AMQP" as EL
+        }
+        () "Boot API" as BtAPI
+        () "GraphQL API" as RWSAPI
+        () "AMQP API" as ELAPI
+    }
+
+    () "Domain API" as DAPI
+    () "Application API" as AsAPI
+
+    DAPI -- D
+    AsAPI -- As
+    BtAPI -- Bt
+    ELAPI -- EL
+    RWSAPI -- RWS
+
+    As --( DAPI
+    IF --( AsAPI
+    Bt --( RWSAPI
+    Bt --( ELAPI
+}
+
+@enduml

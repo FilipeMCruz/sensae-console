@@ -1,0 +1,27 @@
+@startuml logical-view-level1
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam Shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+
+[System] as S
+[Helium Console] as HC
+
+() "UI" as UI
+() "Ingress Rest API" as IN_ENDPOINT
+note bottom: Console integratoin endpoint
+() "Egress Rest API" as OUT_ENDPOINT
+actor "Admin" as Client
+
+Client --( UI
+
+UI -- S
+IN_ENDPOINT - S
+S - OUT_ENDPOINT
+
+HC -( IN_ENDPOINT
+
+@enduml

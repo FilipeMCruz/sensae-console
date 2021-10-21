@@ -1,0 +1,7 @@
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/exceptions/ExceptionDetail.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/sensor/gps/GPSDataDetails.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/sensor/gps/GPSData.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotValidException.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotFoundException.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotUniqueException.java
+/home/fmcruz/Documents/work/location-tracking-backend/domain/src/main/java/pt/sharespot/services/locationtrackingbackend/domain/exceptions/DomainException.java

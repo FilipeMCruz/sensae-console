@@ -1,0 +1,11 @@
+type GPSSensorData {
+    dataId : String
+    deviceId : String
+    reportedAt : Int
+    data : GPSSensorDetails
+}
+
+type GPSSensorDetails {
+    longitude : Int
+    latitude : Int
+}

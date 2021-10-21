@@ -1,0 +1,7 @@
+pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotValidException.class
+pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotFoundException.class
+pt/sharespot/services/locationtrackingbackend/domain/exceptions/ExceptionDetail.class
+pt/sharespot/services/locationtrackingbackend/domain/exceptions/NotUniqueException.class
+pt/sharespot/services/locationtrackingbackend/domain/exceptions/DomainException.class
+pt/sharespot/services/locationtrackingbackend/domain/sensor/gps/GPSData.class
+pt/sharespot/services/locationtrackingbackend/domain/sensor/gps/GPSDataDetails.class

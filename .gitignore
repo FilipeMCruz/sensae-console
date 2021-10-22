@@ -2,3 +2,4 @@
 project/secrets/*
 project/backend-services/location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties
 project/test-examples
+**/target

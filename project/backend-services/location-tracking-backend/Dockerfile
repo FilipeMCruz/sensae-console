@@ -1,4 +1,4 @@
-FROM maven:3.6.3-openjdk-11 AS build
+FROM maven:3.6.3-openjdk-17 AS build
 WORKDIR /app
 # get all pom.xml to pull only external dependencies
 COPY application/pom.xml application/pom.xml
@@ -15,7 +15,7 @@ RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offli
 COPY . .
 RUN mvn package
 
-FROM openjdk:17-jre-slim
+FROM openjdk:17
 WORKDIR /app
 COPY --from=build /app/infrastructure/boot/target/sharespot-location-tracking-backend.war /app
 CMD ["java", "-jar", "sharespot-location-tracking-backend.war"]

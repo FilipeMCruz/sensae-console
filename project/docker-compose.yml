@@ -10,12 +10,24 @@ services:
       - 15672:15672
   sharespot-location-tracking-backend:
     restart: on-failure
-    build: backend-services/locatoin-tracking-backend
+    build: backend-services/location-tracking-backend
     image: sharespot-location-tracking-backend
     environment:
       spring_profiles_active: prod
     env_file:
       - ./secrets/location-tracking-backend.env
+    ports:
+      - "8080"
+    networks:
+      - sharespot-network
+  sharespot-lgt92-gps-sensor-gateway:
+    restart: on-failure
+    build: backend-services/sharespot-lgt92-gps-sensor-gateway
+    image: sharespot-lgt92-gps-sensor-gateway
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/sharespot-lgt92-gps-sensor-gateway.env
     ports:
       - "8080"
     networks:

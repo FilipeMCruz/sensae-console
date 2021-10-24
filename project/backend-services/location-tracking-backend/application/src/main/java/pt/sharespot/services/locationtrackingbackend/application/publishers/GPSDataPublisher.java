@@ -25,7 +25,7 @@ public class GPSDataPublisher {
 
     public Publisher<GPSData> getSinglePublisher(UUID id) {
         return sink.asFlux()
-                .filter(gpsData -> gpsData.sensorId().equals(id))
+                .filter(gpsData -> gpsData.deviceId().equals(id))
                 .map(gpsData -> {
                     //TODO: logs
                     return gpsData;

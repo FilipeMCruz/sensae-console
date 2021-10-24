@@ -13,7 +13,7 @@ COPY pom.xml pom.xml
 RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=location-tracking-backend,application,domain,domain,infrastructure,endpoint,graphql,boot,amqp
 
 COPY . .
-RUN mvn package
+RUN mvn clean package
 
 FROM openjdk:17
 WORKDIR /app

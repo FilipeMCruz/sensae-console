@@ -12,5 +12,4 @@ public class LGT92GPSSensorGatewayApplication extends SpringBootServletInitializ
     public static void main(String[] args) {
         SpringApplication.run(LGT92GPSSensorGatewayApplication.class, args);
     }
-
 }

@@ -13,7 +13,7 @@ COPY pom.xml pom.xml
 RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=sharespot-lgt92-gps-sensor-gateway,application,model,infrastructure,endpoint,rest,boot,amqp
 
 COPY . .
-RUN mvn package
+RUN mvn clean package
 
 FROM openjdk:17
 WORKDIR /app

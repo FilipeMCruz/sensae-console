@@ -9,3 +9,7 @@ type GPSSensorDetails {
     longitude : Int
     latitude : Int
 }
+
+type Query {
+  dummy: String
+}

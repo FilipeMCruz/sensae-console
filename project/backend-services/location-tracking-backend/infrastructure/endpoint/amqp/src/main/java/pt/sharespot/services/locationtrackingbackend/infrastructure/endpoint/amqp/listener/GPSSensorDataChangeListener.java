@@ -15,7 +15,7 @@ public class GPSSensorDataChangeListener {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = "GPSDataQueue")
+    @RabbitListener(queues = "General GPS Data Queue")
     public void receiveUpdate(String in) {
         try {
             handler.publish(new ObjectMapper().readValue(in, GPSData.class));

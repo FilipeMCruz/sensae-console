@@ -1,7 +1,8 @@
 **/.idea
 project/secrets/*
-project/backend-services/location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties
 project/backend-services/lgt92-gps-sensor-gateway/infrastructure/boot/src/main/resources/application-dev.properties
+project/backend-services/lgt92-gps-sensor-processor/infrastructure/boot/src/main/resources/application-dev.properties
+project/backend-services/location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties
 project/test-examples
 **/target
 **/*.iml

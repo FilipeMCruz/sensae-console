@@ -6,8 +6,32 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 5672:5672
+      - 5672
       - 15672:15672
+  sharespot-lgt92-gps-sensor-gateway:
+    restart: on-failure
+    build: backend-services/lgt92-gps-sensor-gateway
+    image: sharespot-lgt92-gps-sensor-gateway
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/lgt92-gps-sensor-gateway.env
+    ports:
+      - 8080:8080
+    networks:
+      - sharespot-network
+  sharespot-lgt92-gps-sensor-processor:
+    restart: on-failure
+    build: backend-services/lgt92-gps-sensor-processor
+    image: sharespot-lgt92-gps-sensor-processor
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/lgt92-gps-sensor-processor.env
+    ports:
+      - 8080
+    networks:
+      - sharespot-network
   sharespot-location-tracking-backend:
     restart: on-failure
     build: backend-services/location-tracking-backend
@@ -17,19 +41,7 @@ services:
     env_file:
       - ./secrets/location-tracking-backend.env
     ports:
-      - "8080"
-    networks:
-      - sharespot-network
-  sharespot-lgt92-gps-sensor-gateway:
-    restart: on-failure
-    build: backend-services/sharespot-lgt92-gps-sensor-gateway
-    image: sharespot-lgt92-gps-sensor-gateway
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/sharespot-lgt92-gps-sensor-gateway.env
-    ports:
-      - "8080"
+      - 8080
     networks:
       - sharespot-network
   # sharespot-gateway:
@@ -44,6 +56,6 @@ services:
   #     CONSUL: sharespot-consul:8500
   #     SERVICE: sharespot-consul-8500
   #   ports:
-  #     - "80:80"
+  #     - 80:80
 networks:
   sharespot-network:

@@ -10,6 +10,6 @@ public class GPSSensorDataEmitter {
 
     public GPSSensorDataEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, SensorDataHandlerService service) {
         service.getSinglePublisher()
-                .subscribe(outData -> template.convertAndSend("General GPS Data Exchange", outData));
+                .subscribe(outData -> template.convertAndSend("General GPS Data Exchange", "", outData));
     }
 }

@@ -1,4 +1,4 @@
-package pt.sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.config;
+package pt.sharespot.services.locationtrackingbackend.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -37,5 +37,4 @@ public class AMQPQueueConfig {
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
     }
-
 }

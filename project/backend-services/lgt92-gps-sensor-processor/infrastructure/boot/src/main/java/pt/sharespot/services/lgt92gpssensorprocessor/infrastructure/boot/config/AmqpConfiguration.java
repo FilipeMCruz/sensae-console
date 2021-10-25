@@ -1,8 +1,6 @@
-package pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpegress.config;
+package pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.boot.config;
 
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -15,7 +13,17 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queueLGT92() {
-        return new Queue("LGT92 GPS Data Queue", false);
+        return new Queue("LGT92 GPS Data Queue", true);
+    }
+
+    @Bean
+    public FanoutExchange exchangeLGT92() {
+        return new FanoutExchange("LGT92 GPS Data Exchange");
+    }
+
+    @Bean
+    Binding bindingLGT92(Queue queueLGT92, FanoutExchange exchangeLGT92) {
+        return BindingBuilder.bind(queueLGT92).to(exchangeLGT92);
     }
 
     @Bean

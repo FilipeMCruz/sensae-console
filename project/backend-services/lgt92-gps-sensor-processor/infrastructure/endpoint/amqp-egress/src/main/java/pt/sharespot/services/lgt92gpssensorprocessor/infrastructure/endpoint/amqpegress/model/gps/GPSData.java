@@ -4,7 +4,7 @@ import pt.sharespot.services.lgt92gpssensorprocessor.application.OutSensorDataDT
 
 import java.util.UUID;
 
-public record GPSData(UUID dataId, UUID sensorId, Long reportedAt,
+public record GPSData(UUID dataId, UUID deviceId, Long reportedAt,
                       GPSDataDetails data) implements OutSensorDataDTO {
 
 }

@@ -1,6 +1,8 @@
 package pt.sharespot.services.lgt92gpssensorgateway.infrastructure.endpoint.rest.controller;
 
 import io.swagger.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,8 @@ public class LGT92SensorController {
 
     @Value("${sharespot.helium.console.auth}")
     private String secret;
+
+    Logger logger = LoggerFactory.getLogger(LGT92SensorController.class);
 
     private final LGT92SensorDataPublisherService service;
 
@@ -37,6 +41,7 @@ public class LGT92SensorController {
         if (!secret.equalsIgnoreCase(auth))
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
 
+        logger.info("New Data: " + sensorData.uuid);
         service.registerSensorData(sensorData);
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }

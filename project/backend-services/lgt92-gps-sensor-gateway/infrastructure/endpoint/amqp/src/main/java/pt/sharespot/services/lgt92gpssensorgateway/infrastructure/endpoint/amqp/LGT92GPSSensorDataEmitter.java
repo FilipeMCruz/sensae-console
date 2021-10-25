@@ -16,6 +16,6 @@ public class LGT92GPSSensorDataEmitter implements EventPublisher {
 
     @Override
     public void publish(LGT92SensorData eventEmitter) {
-        rabbitTemplate.convertAndSend("LGT92 GPS Data Exchange", eventEmitter);
+        rabbitTemplate.convertAndSend("LGT92 GPS Data Exchange", "", eventEmitter);
     }
 }

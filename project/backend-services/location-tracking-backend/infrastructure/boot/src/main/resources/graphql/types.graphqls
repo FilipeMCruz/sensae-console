@@ -1,13 +1,13 @@
 type GPSSensorData {
     dataId : String
     deviceId : String
-    reportedAt : Int
+    reportedAt : String
     data : GPSSensorDetails
 }
 
 type GPSSensorDetails {
-    longitude : Int
-    latitude : Int
+    longitude : Float
+    latitude : Float
 }
 
 type Query {

@@ -1,13 +1,13 @@
 package pt.sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.subscriptions;
 
-import com.coxautodev.graphql.tools.GraphQLSubscriptionResolver;
 import org.reactivestreams.Publisher;
-import org.springframework.stereotype.Component;
+import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
+import org.springframework.stereotype.Controller;
 import pt.sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
 import pt.sharespot.services.locationtrackingbackend.domain.sensor.gps.GPSData;
 
-@Component
-public class AllGPSSensorsDataChangesSubscription implements GraphQLSubscriptionResolver {
+@Controller
+public class AllGPSSensorsDataChangesSubscription {
 
     private final GPSDataPublisher publisher;
 
@@ -15,6 +15,7 @@ public class AllGPSSensorsDataChangesSubscription implements GraphQLSubscription
         this.publisher = publisher;
     }
 
+    @SubscriptionMapping
     public Publisher<GPSData> locations() {
         return publisher.getGeneralPublisher();
     }

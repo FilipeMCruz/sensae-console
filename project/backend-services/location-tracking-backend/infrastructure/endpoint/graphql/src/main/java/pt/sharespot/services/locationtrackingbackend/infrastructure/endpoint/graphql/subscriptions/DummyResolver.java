@@ -1,11 +1,13 @@
 package pt.sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.subscriptions;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
-public class DummyResolver implements GraphQLQueryResolver {
-    
+@Controller
+public class DummyResolver {
+
+    @QueryMapping
     public String dummy() {
         return "FIX this bug Spring Devs: i always need a Query Resolver, even in a Subscription only Service";
     }

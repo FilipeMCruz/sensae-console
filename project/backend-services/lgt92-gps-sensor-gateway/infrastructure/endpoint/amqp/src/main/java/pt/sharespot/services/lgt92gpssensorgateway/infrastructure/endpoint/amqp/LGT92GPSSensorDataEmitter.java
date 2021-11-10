@@ -3,7 +3,7 @@ package pt.sharespot.services.lgt92gpssensorgateway.infrastructure.endpoint.amqp
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Component;
 import pt.sharespot.services.lgt92gpssensorgateway.application.EventPublisher;
-import pt.sharespot.services.lgt92gpssensorgateway.model.dto.sensor.lgt92sensor.LGT92SensorData;
+import pt.sharespot.services.lgt92gpssensorgateway.model.dto.SensorData;
 
 @Component
 public class LGT92GPSSensorDataEmitter implements EventPublisher {
@@ -15,7 +15,7 @@ public class LGT92GPSSensorDataEmitter implements EventPublisher {
     }
 
     @Override
-    public void publish(LGT92SensorData eventEmitter) {
+    public void publish(SensorData eventEmitter) {
         rabbitTemplate.convertAndSend("LGT92 GPS Data Exchange", "", eventEmitter);
     }
 }

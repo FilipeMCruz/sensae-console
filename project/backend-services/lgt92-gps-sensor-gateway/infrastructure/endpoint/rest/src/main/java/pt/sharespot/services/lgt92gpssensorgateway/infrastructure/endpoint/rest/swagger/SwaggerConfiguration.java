@@ -20,7 +20,7 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("pt.sharespot.services.datamanagementbackend.infrastructure.endpoint"))
+                .apis(RequestHandlerSelectors.basePackage("pt.sharespot.services.lgt92gpssensorgateway.infrastructure.endpoint.rest"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiDetails())
@@ -32,8 +32,8 @@ public class SwaggerConfiguration implements WebMvcConfigurer {
 
     private ApiInfo apiDetails() {
         return new ApiInfo(
-                "Data Management Service",
-                "Backend Microservice responsible for sensor data aggregation",
+                "LGT92 GPS Sensor Gateway",
+                "Backend Microservice responsible for collecting sensor data - Entrypoint for the LGT92 GPS Sensor Data",
                 "0.2",
                 "Terms of service remain undefined",
                 new Contact("sharespot", " https://sharespot.pt/", "geral@sharespot.pt"),

@@ -6,7 +6,7 @@ import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amq
 import java.util.List;
 import java.util.UUID;
 
-public abstract class SensorData {
+public abstract class AbstractSensorData {
 
     @JsonProperty("uuid")
     public UUID uuid;

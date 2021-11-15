@@ -1,23 +1,24 @@
 package pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.mapper;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pt.sharespot.services.lgt92gpssensorprocessor.application.InSensorDataDTO;
 import pt.sharespot.services.lgt92gpssensorprocessor.application.OutSensorDataDTO;
 import pt.sharespot.services.lgt92gpssensorprocessor.application.SensorDataMapper;
-import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpegress.model.gps.GPSData;
-import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpegress.model.gps.GPSDataDetails;
-import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpingress.model.sensor.lgt92sensor.LGT92SensorData;
+import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpegress.model.ProcessedSensorData;
+import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpegress.model.GPSDataDetails;
+import pt.sharespot.services.lgt92gpssensorprocessor.infrastructure.endpoint.amqpingress.model.SensorData;
 
-@Component
+@Service
 public class LGT92GPSSensorDataMapper implements SensorDataMapper {
 
     @Override
     public OutSensorDataDTO inToOut(InSensorDataDTO inDto) {
-        LGT92SensorData in = (LGT92SensorData) inDto;
-        return new GPSData(in.uuid,
-                in.deviceId,
-                in.reportDate,
-                new GPSDataDetails(in.decoded.payload.latitude, in.decoded.payload.longitude)
+        SensorData data = (SensorData) inDto;
+        return new ProcessedSensorData(
+                data.uuid,
+                data.deviceId,
+                data.reportDate,
+                new GPSDataDetails(data.decoded.payload.latitude, data.decoded.payload.longitude)
         );
     }
 }

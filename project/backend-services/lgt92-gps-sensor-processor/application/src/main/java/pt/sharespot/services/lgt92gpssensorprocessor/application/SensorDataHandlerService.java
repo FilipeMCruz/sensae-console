@@ -1,10 +1,10 @@
 package pt.sharespot.services.lgt92gpssensorprocessor.application;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
-@Component
+@Service
 public class SensorDataHandlerService {
 
     private final Sinks.Many<OutSensorDataDTO> sink;
@@ -16,19 +16,12 @@ public class SensorDataHandlerService {
     }
 
     public Flux<OutSensorDataDTO> getSinglePublisher() {
-        return sink.asFlux()
-                .map(gpsData -> {
-                    //TODO: logs
-                    return gpsData;
-                });
+        return sink.asFlux();
     }
 
     public void publish(InSensorDataDTO data) {
-
         var outDTO = mapper.inToOut(data);
-
         var result = sink.tryEmitNext(outDTO);
-
         if (result.isFailure()) {
             //TODO: logs
         }

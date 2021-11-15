@@ -9,9 +9,18 @@ export class GPSPointData {
 
   constructor(value: GPSSensorData) {
     this.value = value;
+    const el = document.createElement('div');
+    el.id = 'marker';
+
+    const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+      value.generatePopupText()
+    );
+
     this.point = new mapboxgl.Marker({
-      draggable: false
+      draggable: false,
+      color: "black",
     }).setLngLat([this.value.coordinates.longitude, this.value.coordinates.latitude])
+      .setPopup(popup)
   }
 
   updateGPSData(data: GPSSensorData): void {

@@ -33,6 +33,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.initializeMap();
     this.subscription = this.locationsEmitter.getData().subscribe(
       next => {
+        console.log(next.data);
         if (next.data !== undefined && next.data !== null)
           this.drawPoint(SensorMapper.dtoToModel(next.data));
       }
@@ -43,11 +44,15 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public subscribeTo(deviceId: string) {
+  subscribeTo(deviceId: string) {
     this.subscription.unsubscribe();
-    this.points.forEach(point => point.point.remove());
+    this.points.forEach(point => {
+      if (deviceId !== point.value.deviceId)
+        point.point.remove()
+    });
     this.subscription = this.locationEmitter.getData(deviceId).subscribe(
       next => {
+        console.log(next.data);
         if (next.data !== undefined && next.data !== null)
           this.drawPoint(SensorMapper.dtoToModel(next.data));
       }
@@ -78,7 +83,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.addControl(new mapboxgl.NavigationControl());
   }
 
-  public drawPoint(sensor: GPSSensorData): void {
+  private drawPoint(sensor: GPSSensorData): void {
     let found = this.points.find(point => point.isSameSensor(sensor));
     if (found === undefined) {
       let newPoint = new GPSPointData(sensor);

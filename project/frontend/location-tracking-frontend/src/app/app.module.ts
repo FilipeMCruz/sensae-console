@@ -9,7 +9,6 @@ import * as mapbox from 'mapbox-gl';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MapPageComponent} from './components/map-page/map-page.component';
 import {APOLLO_OPTIONS} from "apollo-angular";
 import {ApolloClientOptions, InMemoryCache, split} from "@apollo/client/core";
 import {HttpLink} from "apollo-angular/http";
@@ -29,7 +28,6 @@ import {MatButtonModule} from "@angular/material/button";
   declarations: [
     AppComponent,
     MapComponent,
-    MapPageComponent,
     SearchCardComponent
   ],
   imports: [

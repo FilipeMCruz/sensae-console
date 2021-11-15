@@ -5,7 +5,7 @@ export interface SensorDTO {
 export interface SensorDataDTO {
   dataId: string;
   deviceId: string;
-  reportDate: string;
+  reportedAt: string;
   data: SensorDataDetailsDTO;
 }
 

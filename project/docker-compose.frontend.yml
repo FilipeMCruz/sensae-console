@@ -41,16 +41,8 @@ services:
     env_file:
       - ./secrets/location-tracking-backend.env
     ports:
-      - 8080
+      - 8082:8080
     networks:
       - sharespot-network
-  location-tracking-frontend:
-    build: frontend
-    image: location-tracking-frontend
-    container_name: location-tracking-frontend
-    networks:
-      - sharespot-network
-    ports:
-      - 80:80
 networks:
   sharespot-network:

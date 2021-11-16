@@ -8,6 +8,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class SearchCardComponent implements OnInit {
 
   @Output() onDevicePicked = new EventEmitter<string>();
+  @Output() onDeviceClean = new EventEmitter<null>();
 
   value: string = "";
 
@@ -17,11 +18,20 @@ export class SearchCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onClear() {
+    this.value = "";
+    this.cleanDevice();
+  }
+
   onClick() {
     this.pickDevice(this.value);
   }
 
   public pickDevice(id: string): void {
     this.onDevicePicked.emit(id);
+  }
+
+  public cleanDevice(): void {
+    this.onDeviceClean.emit();
   }
 }

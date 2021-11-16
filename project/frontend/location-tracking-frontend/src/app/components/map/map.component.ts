@@ -7,6 +7,7 @@ import {GetNewGPSLocations} from "../../services/GetNewGPSLocations";
 import {SensorMapper} from "../../mappers/SensorMapper";
 import {environment} from "../../../environments/environment";
 import {GetNewGPSLocation} from "../../services/GetNewGPSLocation";
+import {SensorDTO} from "../../dtos/SensorDTO";
 
 @Component({
   selector: 'app-map',
@@ -32,16 +33,25 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeMap();
     this.subscription = this.locationsEmitter.getData().subscribe(
-      next => {
-        console.log(next.data);
-        if (next.data !== undefined && next.data !== null)
-          this.drawPoint(SensorMapper.dtoToModel(next.data));
-      }
+      next => this.verifyAndDraw(next.data)
     );
+    // const a = new GPSSensorData("841e28de-be0f-491e-a175-816613dfabc6",
+    //   `ec53bf69-acbb-4f4a-95e3-5c46d58009c3`,
+    //   new Date(1637068401 * 1000),
+    //   new SensorCoordinates(41.178940, -8.582296))
+    //
+    // this.drawPoint(a);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  cleanSubscriber() {
+    this.subscription.unsubscribe();
+    this.subscription = this.locationsEmitter.getData().subscribe(
+      next => this.verifyAndDraw(next.data)
+    );
   }
 
   subscribeTo(deviceId: string) {
@@ -51,12 +61,13 @@ export class MapComponent implements OnInit, OnDestroy {
         point.point.remove()
     });
     this.subscription = this.locationEmitter.getData(deviceId).subscribe(
-      next => {
-        console.log(next.data);
-        if (next.data !== undefined && next.data !== null)
-          this.drawPoint(SensorMapper.dtoToModel(next.data));
-      }
+      next => this.verifyAndDraw(next.data)
     );
+  }
+
+  private verifyAndDraw(data: SensorDTO | null | undefined) {
+    if (data !== undefined && data !== null)
+      this.drawPoint(SensorMapper.dtoToModel(data));
   }
 
   private initializeMap(): void {

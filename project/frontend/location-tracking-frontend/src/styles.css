@@ -11,3 +11,24 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.marker-stroked {
+  background-image: url("/assets/marker-stroked.svg");
+  width: 41px;
+  height: 41px;
+  cursor: pointer;
+}
+
+.marker-basic {
+  background-image: url("/assets/marker-basic.svg");
+  width: 27px;
+  height: 41px;
+  cursor: pointer;
+}
+
+.mapboxgl-popup {
+  /*  */
+}
+
+.mapboxgl-popup-content {
+  font-family: "Helvetica Neue", sans-serif;
+}

@@ -6,7 +6,7 @@ export class GPSSensorData {
 
   generatePopupText(): string {
     return "<strong>DeviceID:</strong> " + this.deviceId +
-      "<br><strong>Date received at:</strong> " + this.reportedAt.toTimeString().split(' ')[1] +
-      "<br><strong>Time received at:</strong> " + this.reportedAt.toJSON().substring(0,10)
+      "<br><strong>Time received at:</strong> " + this.reportedAt.toTimeString().split(' ')[0] +
+      "<br><strong>Date received at:</strong> " + this.reportedAt.toJSON().substring(0,10)
   }
 }

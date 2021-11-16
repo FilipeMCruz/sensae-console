@@ -4,7 +4,7 @@
     <mat-form-field class="search-bar">
       <mat-label>Device Id</mat-label>
       <input matInput type="text" (keyup.enter)="onClick()" [(ngModel)]="value">
-      <button *ngIf="value" matSuffix mat-icon-button (click)="value=''">
+      <button *ngIf="value" matSuffix mat-icon-button (click)="onClear()">
         <mat-icon>close</mat-icon>
       </button>
       <button matSuffix mat-icon-button  (click)="onClick()">

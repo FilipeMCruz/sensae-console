@@ -56,6 +56,7 @@ import {MatButtonModule} from "@angular/material/button";
         // Create a WebSocket link:
         const ws = new WebSocketLink({
           url: environment.backendURL.websocket,
+          retryAttempts: 6
         });
 
         // using the ability to split links, you can send data to each link

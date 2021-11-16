@@ -13,7 +13,6 @@ import {APOLLO_OPTIONS} from "apollo-angular";
 import {ApolloClientOptions, InMemoryCache, split} from "@apollo/client/core";
 import {HttpLink} from "apollo-angular/http";
 import {getMainDefinition} from "@apollo/client/utilities";
-import {WebSocketLink} from "./core/WebSocketLink";
 import {SearchCardComponent} from './components/search-card/search-card.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -21,6 +20,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+import {WebSocketLink} from "@apollo/client/link/ws";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -55,8 +55,10 @@ import {MatButtonModule} from "@angular/material/button";
 
         // Create a WebSocket link:
         const ws = new WebSocketLink({
-          url: environment.backendURL.websocket,
-          retryAttempts: 6
+          uri: environment.backendURL.websocket,
+          options: {
+            reconnect: true,
+          },
         });
 
         // using the ability to split links, you can send data to each link

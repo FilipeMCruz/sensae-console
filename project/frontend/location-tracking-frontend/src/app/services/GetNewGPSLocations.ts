@@ -15,7 +15,7 @@ export class GetNewGPSLocations {
 
   getData(): Observable<FetchResult<SensorDTO>> {
     this.query = gql`
-      subscription locations {
+      subscription {
         locations {
           dataId
           reportedAt

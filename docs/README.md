@@ -1,27 +1,11 @@
 # Docs
 
-This document aggregates all important info and documentation about location tracking. It's intended mostly for developers.
-
-## Ideas/Future Work
-
-This section lists all feature that could be important for this project and discusses the most important and complex ones.
-
-- New backend service - Places Data Management (name, description, etc.)
-
-## Relevant Documentation
-
-- [AMQP - one message multiple consumers](https://stackoverflow.com/questions/10620976/rabbitmq-amqp-single-queue-multiple-consumers-for-same-message)
-
-## Questions
-
-This section lists all doubts about the current solution and it's ideas.
-
-- Authorization? What about authentication? Use OAuth or rely on a local user registry?
-- Authentication?
+This document aggregates all important info and documentation about location tracking.
+It's intended mostly for developers and stakeholders.
 
 ## Functional Requirements
 
-This section defines the functionalities and operations that the system supports or will support in the future.
+This section defines the functionalities and operations that the system supports.
 
 ### Actors
 
@@ -31,18 +15,16 @@ The system actors are:
 
 ### Use cases
 
-| Use Cases | Description                                                                | Importance | Progress |
-| --------- | -------------------------------------------------------------------------- | ---------- | -------- |
-| **UC01**  | As the data admin I want to see the live information for all device        | High       | Backend  |
-| **UC02**  | As the data admin I want to see the live information for a specific device | Medium     | Backend  |
-| **UC03**  | As the data admin I want to see the past information for all devices       | Low        | None     |
-| **UC04**  | As the data admin I want to see the past information for a specific device | Low        | None     |
+| Use Cases | Description                                                                |
+| --------- | -------------------------------------------------------------------------- |
+| **UC01**  | As the data admin I want to see the live information for all device        |
+| **UC02**  | As the data admin I want to see the live information for a specific device |
 
 ## Architecture
 
-This section represents the MVP solution architecture from different views and levels of abstraction (following the c4 and 4+1 models).
+This section represents the architecture from different views and levels of abstraction (following the c4 and 4+1 models).
 
-### Logical View - Context Level
+### Logical View - System Level
 
 Logical View of the system and it's interactions with external systems and actors.
 
@@ -50,11 +32,17 @@ Logical View of the system and it's interactions with external systems and actor
 
 ### Logical View - Container Level
 
-```TODO```
-
 Logical View of the containers that constitute the system and it's interactions.
 
 ![logical-view-level2](diagrams/logical-view-level2.svg)
+
+The system is composed by the following containers:
+
+- **Location Tracking Frontend**: Frontend that displays live information in a map;
+- **Location Tracking Backend**: Backend that sends live information to the frontend;
+- **Message Broker**: Container responsible for routing messages/events sent by the containers;
+- **LGT 92 GPS Sensor Processor**: Container responsible for transforming the received data (LGT 92 GPS Sensor Data) into something that the system understands (GPS Sensor Data);
+- **LGT 92 GPS Sensor Gateway**: Container responsible for receiving data (LGT 92 GPS Sensor Data) from the outside and propagate it in the system.
 
 ### Process View - Container Level
 
@@ -76,28 +64,43 @@ Information updated from the received event:
 
 The flow is the same as UC01 - [info](#UC01-Process-View---Container-Level)
 
-#### Logical View - Component Level - Tracking Devices Backend
+### Logical View - Component Level
 
-```TODO``` ainda não é bem assim
+Logical View of each container's component and it's interactions with other components.
+
+#### Location Tracking Frontend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
-The following diagram describes it from a logical view. IT also follows [domain driven design](https://www.domainlanguage.com/wp-content/uploads/2016/05/DDD_Reference_2015-03.pdf) concepts.
+The following diagram describes it from a logical view.
+
+![logical-view-level3-location-tracking-frontend](diagrams/logical-view-level3-location-tracking-frontend.svg)
+
+#### Tracking Devices Backend
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
 
 ![logical-view-level3-location-tracking-backend](diagrams/logical-view-level3-location-tracking-backend.svg)
 
-## Domain model
+#### LGT 92 GPS Sensor Processor
 
-This section will present the domain model for each service/backend.
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
 
-### Location Tracking Backend Domain model
+![logical-view-level3-lgt-92-gps-sensor-processor](diagrams/logical-view-level3-lgt-92-gps-sensor-processor.svg)
 
-```TODO```
+#### LGT 92 GPS Sensor Gateway
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-lgt-92-gps-sensor-gateway](diagrams/logical-view-level3-lgt-92-gps-sensor-gateway.svg)
 
 ## API
 
 This section will present the API that each backend service exposes.
 
-### Data Management Backend API ```TODO```
+### LGT 92 GPS Sensor Gateway API
 
 This section will present every endpoint available in this service.
 This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this container must be running in dev mode).
@@ -111,8 +114,7 @@ This is the resource to point to, as an `http integration`, in helium console fo
 ### Location Tracking Backend API
 
 This section will present every endpoint available in this service.
-```TODO``` This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this container must be running in dev mode).
-Since the communication is made using GraphQL the only endpoint is `/graphql`.
+Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.
 
 #### Consult All GPS sensors live Data
 
@@ -161,10 +163,3 @@ subscription {
 ```
 
 This is the resource used to subscribe to changes in the gps location of a specific sensor registered in the network.
-
-### Overview
-
-Backend enpoints can only be access by the api gateway.
-Currently this are the available endpoints:
-
-- _$HOST_/api/sharespot-location-tracking-backend/graphql - [info](#Tracking-Devices-Backend-API)

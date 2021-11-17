@@ -1,0 +1,36 @@
+@startuml logical-view-level2
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam Shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+interface "UI" as UI
+
+interface "Rest API" as IN_ENDPOINT
+
+component "Environment" <<System>> {
+    component "Message Broker" as MB <<Container>>
+    component "Location Tracking Backend" as LTB <<Container>>
+    component "Location Tracking Frontend" as LTF <<Container>>
+    component "LGT 92 GPS Sensor Processor" as LGT92GPSP <<Container>>
+    component "LGT 92 GPS Sensor Gateway" as LGT92GPSG <<Container>>
+
+    interface "Message Broker\nAPI" as MB_API
+    interface "Location Tracking Backend\nAPI" as LTB_API
+
+    MB_API -- MB
+    LTB_API -- LTB
+    UI -- LTF
+
+    LTF --( LTB_API
+
+    LTB --( MB_API
+    LGT92GPSG --( MB_API
+    LGT92GPSP --( MB_API
+
+    LGT92GPSG - IN_ENDPOINT
+}
+
+@enduml

@@ -11,24 +11,24 @@ component "Location Tracking Backend" {
             component "GraphQL" as RWS
             component "AMQP" as EL
         }
-        () "Boot API" as BtAPI
-        () "GraphQL API" as RWSAPI
-        () "AMQP API" as ELAPI
+        () "Boot _API" as Bt_API
+        () "GraphQL _API" as RWS_API
+        () "AMQP _API" as EL_API
     }
 
-    () "Domain API" as DAPI
-    () "Application API" as AsAPI
+    () "Domain _API" as D_API
+    () "Application _API" as As_API
 
-    DAPI -- D
-    AsAPI -- As
-    BtAPI -- Bt
-    ELAPI -- EL
-    RWSAPI -- RWS
+    D_API -- D
+    As_API -- As
+    Bt_API -- Bt
+    EL_API -- EL
+    RWS_API -- RWS
 
-    As --( DAPI
-    IF --( AsAPI
-    Bt --( RWSAPI
-    Bt --( ELAPI
+    As --( D_API
+    IF --( As_API
+    Bt --( RWS_API
+    Bt --( EL_API
 }
 
 @enduml

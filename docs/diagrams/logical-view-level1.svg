@@ -1,15 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="398px" preserveAspectRatio="none" style="width:440px;height:398px;background:#FFFFFF;" version="1.1" viewBox="0 0 440 398" width="440px" zoomAndPan="magnify"><defs/><g><!--MD5=[8ad42e69c823d91e931492f14bc2a1bb]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="398px" preserveAspectRatio="none" style="width:340px;height:398px;background:#FFFFFF;" version="1.1" viewBox="0 0 340 398" width="340px" zoomAndPan="magnify"><defs/><g><!--MD5=[8ad42e69c823d91e931492f14bc2a1bb]
 entity S--><rect fill="#F8F8F8" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="91" x="243.5" y="260.5"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="314.5" y="265.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="312.5" y="267.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="312.5" y="271.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="258.5" y="293.4951">System</text><!--MD5=[fef35d5d86525b69a6366e4548c0ec5e]
 entity HC--><rect fill="#F8F8F8" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="148" x="7" y="260.5"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="135" y="265.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="133" y="267.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="133" y="271.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="22" y="293.4951">Helium Console</text><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
 entity UI--><ellipse cx="289" cy="171.5" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="13" x="282.5" y="201.4951">UI</text><!--MD5=[259fb42cf3d26cb196e8dd6a3316d2da]
-entity IN_ENDPOINT--><ellipse cx="199" cy="283.5" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="112" x="143" y="313.4951">Ingress Rest API</text><path d="M96.5,366.5 L96.5,391.6328 A0,0 0 0 0 96.5,391.6328 L301.5,391.6328 A0,0 0 0 0 301.5,391.6328 L301.5,376.5 L291.5,366.5 L203,366.5 L199,292.8 L195,366.5 L96.5,366.5 A0,0 0 0 0 96.5,366.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><path d="M291.5,366.5 L291.5,376.5 L301.5,376.5 L291.5,366.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="184" x="102.5" y="383.5669">Console integratoin endpoint</text><!--MD5=[4e39252b42436a746f03837e12c70454]
-entity OUT_ENDPOINT--><ellipse cx="379" cy="283.5" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="324.5" y="313.4951">Egress Rest API</text><!--MD5=[0ba5ee7700168656dc1b457c6fe9fdac]
-entity Client--><ellipse cx="289" cy="14" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><path d="M289,22 L289,49 M276,30 L302,30 M289,49 L276,64 M289,49 L302,64 " fill="none" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43" x="267.5" y="79.4951">Admin</text><!--MD5=[ef993e5b14a62993190ab9517a0875ce]
+entity IN_ENDPOINT--><ellipse cx="199" cy="283.5" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="170.5" y="313.4951">Rest API</text><path d="M96.5,366.5 L96.5,391.6328 A0,0 0 0 0 96.5,391.6328 L301.5,391.6328 A0,0 0 0 0 301.5,391.6328 L301.5,376.5 L291.5,366.5 L203,366.5 L199,292.8 L195,366.5 L96.5,366.5 A0,0 0 0 0 96.5,366.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><path d="M291.5,366.5 L291.5,376.5 L301.5,376.5 L291.5,366.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="184" x="102.5" y="383.5669">Console integratoin endpoint</text><!--MD5=[0ba5ee7700168656dc1b457c6fe9fdac]
+entity Client--><ellipse cx="289" cy="14" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><path d="M289,22 L289,49 M276,30 L302,30 M289,49 L276,64 M289,49 L302,64 " fill="none" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="249.5" y="79.4951">Data Admin</text><!--MD5=[ef993e5b14a62993190ab9517a0875ce]
 link Client to UI--><path d="M289,82.65 C289,105.81 289,134.31 289,152.45 " fill="none" id="Client-to-UI" style="stroke:#383838;stroke-width:1.0;"/><path d="M297.4572,159.4018 A9,9 0 0 0 280.5428 159.4018" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3e8ab27e271cab250bab3c48ba85ccff]
 link UI to S--><path d="M289,180.77 C289,197.46 289,235.66 289,260.21 " fill="none" id="UI-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[22f4cc187e84fb2fb1bd4dd9300a3601]
-link IN_ENDPOINT to S--><path d="M208.14,283.5 C219.83,283.5 231.51,283.5 243.2,283.5 " fill="none" id="IN_ENDPOINT-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[ef0dbb45d9911b8f8380ffe776a9d9e5]
-link S to OUT_ENDPOINT--><path d="M334.7,283.5 C346.35,283.5 358.01,283.5 369.66,283.5 " fill="none" id="S-OUT_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[fa8c142ca78a1b3209a65449c7906a9c]
-link HC to IN_ENDPOINT--><path d="M155.21,283.5 C163.31,283.5 171.41,283.5 179.51,283.5 " fill="none" id="HC-to-IN_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><path d="M186.6818,275.0428 A9,9 0 0 0 186.6818 291.9572" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[156f97ddbb1491e867a158d51cdcb5a4]
+link IN_ENDPOINT to S--><path d="M208.14,283.5 C219.83,283.5 231.51,283.5 243.2,283.5 " fill="none" id="IN_ENDPOINT-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[fa8c142ca78a1b3209a65449c7906a9c]
+link HC to IN_ENDPOINT--><path d="M155.21,283.5 C163.31,283.5 171.41,283.5 179.51,283.5 " fill="none" id="HC-to-IN_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><path d="M186.6818,275.0428 A9,9 0 0 0 186.6818 291.9572" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[60bb4c7b48e564e6976401abbf397a38]
 @startuml logical-view-level1
 
 skinparam Monochrome true
@@ -23,16 +21,14 @@ skinparam packageStyle rectangle
 [Helium Console] as HC
 
 () "UI" as UI
-() "Ingress Rest API" as IN_ENDPOINT
+() "Rest API" as IN_ENDPOINT
 note bottom: Console integratoin endpoint
-() "Egress Rest API" as OUT_ENDPOINT
-actor "Admin" as Client
+actor "Data Admin" as Client
 
 Client - -( UI
 
 UI - - S
 IN_ENDPOINT - S
-S - OUT_ENDPOINT
 
 HC -( IN_ENDPOINT
 

@@ -1,0 +1,37 @@
+@startuml logical-view-level3-lgt-92-gps-sensor-gateway
+
+skinparam Monochrome true
+
+component "LGT 92 GPS Sensor Gateway" {
+    component "Application" as APP
+    component "Model" as MOD
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Endpoint" as ENDPOINT {
+            component "REST" as REST
+            component "AMQP" as AMQP
+            interface "REST API" as REST_API
+            interface "AMQP API" as AMQP_API
+        }
+        () "Boot API" as BOOT_API
+    }
+
+    () "Application API" as APP_API
+    () "Model API" as MOD_API
+
+    REST_API -- REST
+    AMQP_API -- AMQP
+
+    APP_API -- APP
+    BOOT_API -- BOOT
+    MOD_API -- MOD
+
+    APP --( MOD_API
+    BOOT --( REST_API
+    BOOT --( AMQP_API
+
+    AMQP --( APP_API
+    REST --( APP_API
+}
+
+@enduml

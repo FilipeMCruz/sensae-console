@@ -11,16 +11,14 @@ skinparam packageStyle rectangle
 [Helium Console] as HC
 
 () "UI" as UI
-() "Ingress Rest API" as IN_ENDPOINT
+() "Rest API" as IN_ENDPOINT
 note bottom: Console integratoin endpoint
-() "Egress Rest API" as OUT_ENDPOINT
-actor "Admin" as Client
+actor "Data Admin" as Client
 
 Client --( UI
 
 UI -- S
 IN_ENDPOINT - S
-S - OUT_ENDPOINT
 
 HC -( IN_ENDPOINT
 

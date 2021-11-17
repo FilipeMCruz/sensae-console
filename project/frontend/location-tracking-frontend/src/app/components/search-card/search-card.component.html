@@ -7,7 +7,7 @@
       <button *ngIf="value" matSuffix mat-icon-button (click)="onClear()">
         <mat-icon>close</mat-icon>
       </button>
-      <button matSuffix mat-icon-button  (click)="onClick()">
+      <button *ngIf="value.trim().length > 0" matSuffix mat-icon-button (click)="onClick()">
         <mat-icon>search</mat-icon>
       </button>
     </mat-form-field>

@@ -19,7 +19,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<GPSData> location(@InputArgument("id") UUID id) {
-        return publisher.getSinglePublisher(id);
+    public Publisher<GPSData> location(@InputArgument("deviceId") String id) {
+        return publisher.getSinglePublisher(UUID.fromString(id));
     }
 }

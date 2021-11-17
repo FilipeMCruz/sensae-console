@@ -17,30 +17,26 @@ public class GPSDataPublisher {
     private final Sinks.Many<GPSData> sink;
 
     public GPSDataPublisher() {
-        this.sink = Sinks.many().multicast().onBackpressureBuffer();
+        this.sink = Sinks
+                .many()
+                .multicast()
+                .onBackpressureBuffer();
     }
 
     public Publisher<GPSData> getGeneralPublisher() {
-        return sink.asFlux().map(gpsData -> {
-            logger.info("new data: " + gpsData.toString());
-            return gpsData;
-        });
+        return sink.asFlux();
     }
 
     public Publisher<GPSData> getSinglePublisher(UUID id) {
         return sink.asFlux()
-                .filter(gpsData -> gpsData.deviceId().equals(id))
-                .map(gpsData -> {
-                    logger.info("new data: " + gpsData.toString());
-                    return gpsData;
-                });
+                .filter(gpsData -> gpsData.deviceId().equals(id));
     }
 
     public void publish(GPSData data) {
         var result = sink.tryEmitNext(data);
 
         if (result.isFailure()) {
-            logger.error("publish GPSData failed");
+            logger.error("publish GPSData failed: " + result.name());
         }
     }
 }

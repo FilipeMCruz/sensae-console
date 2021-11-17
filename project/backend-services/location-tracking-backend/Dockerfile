@@ -1,17 +1,16 @@
 FROM maven:3.6.3-openjdk-17 AS build
 WORKDIR /app
-# due to the graphql-spring-boot-starter artifact being in a separated online repo we can't do this trick to cache the project dependencies
-# # get all pom.xml to pull only external dependencies
-# COPY application/pom.xml application/pom.xml
-# COPY domain/pom.xml domain/pom.xml
-# COPY infrastructure/boot/pom.xml infrastructure/boot/pom.xml
-# COPY infrastructure/endpoint/pom.xml infrastructure/endpoint/pom.xml
-# COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
-# COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
-# COPY infrastructure/pom.xml infrastructure/pom.xml
-# COPY pom.xml pom.xml
-# # build all external dependencies
-# RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=location-tracking-backend,application,domain,domain,infrastructure,endpoint,graphql,boot,amqp
+# get all pom.xml to pull only external dependencies
+COPY application/pom.xml application/pom.xml
+COPY domain/pom.xml domain/pom.xml
+COPY infrastructure/boot/pom.xml infrastructure/boot/pom.xml
+COPY infrastructure/endpoint/pom.xml infrastructure/endpoint/pom.xml
+COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
+COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
+COPY infrastructure/pom.xml infrastructure/pom.xml
+COPY pom.xml pom.xml
+# build all external dependencies
+RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=location-tracking-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp
 
 COPY . .
 RUN mvn clean package

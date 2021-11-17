@@ -56,9 +56,11 @@ export class MapComponent implements OnInit, OnDestroy {
 
   subscribeTo(deviceId: string) {
     this.subscription.unsubscribe();
-    this.points.forEach(point => {
-      if (deviceId !== point.value.deviceId)
-        point.point.remove()
+    this.points.forEach((point, index, array) => {
+      if (deviceId !== point.value.deviceId) {
+        point.point.remove();
+        array.splice(index, 1);
+      }
     });
     this.subscription = this.locationEmitter.getData(deviceId).subscribe(
       next => this.verifyAndDraw(next.data)

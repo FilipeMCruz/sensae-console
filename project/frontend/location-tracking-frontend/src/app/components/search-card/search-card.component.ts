@@ -18,13 +18,14 @@ export class SearchCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onClick() {
+    if (this.value.trim().length > 0)
+      this.pickDevice(this.value);
+  }
+
   onClear() {
     this.value = "";
     this.cleanDevice();
-  }
-
-  onClick() {
-    this.pickDevice(this.value);
   }
 
   public pickDevice(id: string): void {

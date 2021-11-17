@@ -9,7 +9,3 @@ type GPSSensorDetails {
     longitude : Float
     latitude : Float
 }
-
-type Query {
-  dummy: String
-}

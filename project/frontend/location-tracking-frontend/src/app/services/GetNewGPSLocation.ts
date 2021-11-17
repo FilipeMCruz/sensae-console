@@ -13,14 +13,14 @@ export class GetNewGPSLocation {
   constructor(private apollo: Apollo) {
   }
 
-  getData(id: string): Observable<FetchResult<SensorDTO>> {
+  getData(deviceId: string): Observable<FetchResult<SensorDTO>> {
     this.query = gql`
-      subscription location($deviceId: ID!) {
-        location(deviceId: $deviceId) {
+      subscription location($deviceId: String){
+        location(deviceId: $deviceId){
           dataId
-          reportedAt
           deviceId
-          data {
+          reportedAt
+          data{
             longitude
             latitude
           }
@@ -28,6 +28,6 @@ export class GetNewGPSLocation {
       }
     `;
 
-    return this.apollo.subscribe<SensorDTO>({query: this.query, variables: {id}});
+    return this.apollo.subscribe<SensorDTO>({query: this.query, variables: {deviceId}});
   }
 }

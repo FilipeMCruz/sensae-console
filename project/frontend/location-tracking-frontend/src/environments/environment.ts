@@ -1,6 +1,3 @@
-/**
- * List of properties dev environment.
- */
 export const environment = {
   production: false,
   backendURL: {

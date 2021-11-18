@@ -1,0 +1,13 @@
+@startuml data-flow
+
+skinparam Monochrome true
+
+start
+:any data received in\n**Data Gateway**;
+:lgt 92 gps data received in\n**LGT 92 GPS Sensor Gateway**;
+:lgt 92 gps data processed in\n**LGT 92 GPS Sensor Processor**;
+:gps data received in\n**Location Tracking Backend**;
+:gps data received in\n**Location Tracking Frontend**;
+end
+
+@enduml

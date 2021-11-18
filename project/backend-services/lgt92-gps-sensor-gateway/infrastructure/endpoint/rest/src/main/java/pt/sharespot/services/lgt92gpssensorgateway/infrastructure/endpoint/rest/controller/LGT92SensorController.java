@@ -22,7 +22,7 @@ public class LGT92SensorController {
     }
 
     @CrossOrigin
-    @PostMapping("/lgt-92-sensors")
+    @PostMapping("/sensor-data")
     @ApiOperation(value = "Endpoint used to register new data collected by a LGT 92 sensor",
             notes = "This endpoint should be registered in helium console as the integration for LGT 92 sensor")
     @ApiResponses(value = {

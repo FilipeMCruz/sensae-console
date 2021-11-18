@@ -1,0 +1,47 @@
+@startuml process-view-level2-uc01
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Data Gateway" as DG
+participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
+participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
+participant "Message Broker" as MB
+participant "Location Tracking\nBackend" as LTB
+participant "Location Tracking\nFrontend" as LTF
+
+activate MB
+activate LTF
+
+-> DG : new sensor data
+activate DG
+
+DG -> LGT92GPSG : new lgt92\nsensor data
+activate LGT92GPSG
+
+LGT92GPSG -> MB : publish event of new\nlgt92 gps sensor data
+
+DG <-- LGT92GPSG : OK
+deactivate LGT92GPSG
+
+<-- DG : OK
+deactivate DG
+
+MB -> LGT92GPSP : send event of new\nlgt92 sensor data
+activate LGT92GPSP
+
+LGT92GPSP -> MB : publish event of new\ngps sensor data
+deactivate LGT92GPSP
+
+MB -> LTB : send event of new\ngps sensor data
+activate LTB
+
+LTB -> LTF : new gps sensor data
+deactivate LTB
+LTF -> LTF : present new gps\nsensor data
+
+@enduml

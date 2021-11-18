@@ -1,0 +1,45 @@
+@startuml process-view-level2-uc00
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1.1
+
+participant "Data Gateway" as DG
+participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
+participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
+participant "Message Broker" as MB
+participant "Location Tracking\nBackend" as LTB
+participant "Location Tracking\nFrontend" as LTF
+
+activate MB
+activate LTF
+activate LTB
+
+== Initialization ==
+LGT92GPSP -> MB : subscribe to new\nlgt 92 gps sensor data
+LTB -> MB : subscribe to new\ngps sensor data
+
+...
+== UC01 Initialization ==
+autonumber inc A
+LTF <- : user acesses the UI
+LTF -> LTB : subscribe to new\ngps sensor data
+
+...
+== UC02 Initialization ==
+autonumber inc A
+LTF <- : user wants to see\nspecific gps sensor data
+LTF -> LTB : unsubscribe from new\ngps sensor data
+LTF -> LTB : subscribe to specific new\ngps sensor data
+
+...
+== UC01 Initialization ==
+autonumber inc A
+LTF <- : user wants to see\nall gps sensor data
+LTF -> LTB : unsubscribe from specific new\ngps sensor data
+LTF -> LTB : subscribe to new\ngps sensor data
+
+@enduml

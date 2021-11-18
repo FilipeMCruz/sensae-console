@@ -3,32 +3,34 @@
 skinparam Monochrome true
 
 component "Location Tracking Backend" {
-    component "Domain" as D
-    component "Application" as As
-    component "Infrastructure" as IF {
-        component "Boot" as Bt
-        component "Endpoint" as EP {
-            component "GraphQL" as RWS
-            component "AMQP" as EL
+    component "Domain" as DOM
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Endpoint" as ENDPOINT {
+            component "GraphQL" as GRAPH
+            component "AMQP" as AMQP
+            interface "GraphQL API" as GRAPH_API
+            interface "AMQP API" as AMQP_API
         }
-        () "Boot _API" as Bt_API
-        () "GraphQL _API" as RWS_API
-        () "AMQP _API" as EL_API
+        interface "Boot API" as BOOT_API
     }
 
-    () "Domain _API" as D_API
-    () "Application _API" as As_API
+    interface "Domain API" as DOM_API
+    interface "Application API" as APP_API
 
-    D_API -- D
-    As_API -- As
-    Bt_API -- Bt
-    EL_API -- EL
-    RWS_API -- RWS
+    DOM_API -- DOM
+    APP_API -- APP
+    BOOT_API -- BOOT
+    AMQP_API -- AMQP
+    GRAPH_API -- GRAPH
 
-    As --( D_API
-    IF --( As_API
-    Bt --( RWS_API
-    Bt --( EL_API
+    APP --( DOM_API
+    BOOT --( GRAPH_API
+    BOOT --( AMQP_API
+
+    ENDPOINT --( APP_API
+
 }
 
 @enduml

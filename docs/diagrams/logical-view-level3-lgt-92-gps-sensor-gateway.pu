@@ -13,11 +13,11 @@ component "LGT 92 GPS Sensor Gateway" {
             interface "REST API" as REST_API
             interface "AMQP API" as AMQP_API
         }
-        () "Boot API" as BOOT_API
+        interface "Boot API" as BOOT_API
     }
 
-    () "Application API" as APP_API
-    () "Model API" as MOD_API
+    interface "Application API" as APP_API
+    interface "Model API" as MOD_API
 
     REST_API -- REST
     AMQP_API -- AMQP
@@ -30,8 +30,7 @@ component "LGT 92 GPS Sensor Gateway" {
     BOOT --( REST_API
     BOOT --( AMQP_API
 
-    AMQP --( APP_API
-    REST --( APP_API
+    ENDPOINT --( APP_API
 }
 
 @enduml

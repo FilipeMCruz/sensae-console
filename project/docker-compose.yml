@@ -1,5 +1,12 @@
 version: "3.7"
 services:
+  sensor-data-gateway:
+    build: backend-services/sensor-data-gateway
+    image: sensor-data-gateway
+    ports:
+      - 8080:80
+    networks:
+      - sharespot-network
   message-broker:
     image: rabbitmq:management
     container_name: message-broker
@@ -17,7 +24,7 @@ services:
     env_file:
       - ./secrets/lgt92-gps-sensor-gateway.env
     ports:
-      - 8080:8080
+      - 8080
     networks:
       - sharespot-network
   sharespot-lgt92-gps-sensor-processor:

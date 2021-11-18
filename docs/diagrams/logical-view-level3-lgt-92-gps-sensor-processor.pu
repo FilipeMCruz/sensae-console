@@ -13,11 +13,11 @@ component "LGT 92 GPS Sensor Processor" {
             interface "AMQP Egress API" as EGRESS_API
             interface "AMQP Ingress API" as INGRESS_API
         }
-        () "Boot API" as BOOT_API
-        () "Mapper API" as MAP_API
+        interface "Boot API" as BOOT_API
+        interface "Mapper API" as MAP_API
     }
 
-    () "Application API" as APP_API
+    interface "Application API" as APP_API
 
     EGRESS_API -- EGRESS
     INGRESS_API -- INGRESS
@@ -26,15 +26,12 @@ component "LGT 92 GPS Sensor Processor" {
     BOOT_API -- BOOT
     MAP_API -- MAP
 
-    EGRESS --( APP_API
-    INGRESS --( APP_API
+    ENDPOINT --( APP_API
 
     MAP --( EGRESS_API
     MAP --( INGRESS_API
 
     BOOT --( MAP_API
-    BOOT --( INGRESS_API
-    BOOT --( EGRESS_API
 }
 
 @enduml

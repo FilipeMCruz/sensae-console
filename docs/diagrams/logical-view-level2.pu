@@ -16,13 +16,16 @@ component "Environment" <<System>> {
     component "Location Tracking Frontend" as LTF <<Container>>
     component "LGT 92 GPS Sensor Processor" as LGT92GPSP <<Container>>
     component "LGT 92 GPS Sensor Gateway" as LGT92GPSG <<Container>>
+    component "Data Gateway" as DG <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
     interface "Location Tracking Backend\nAPI" as LTB_API
+    interface "LGT 92 GPS Sensor Gateway\nAPI" as LGT92GPSG_API
 
     MB_API -- MB
     LTB_API -- LTB
     UI -- LTF
+    LGT92GPSG - LGT92GPSG_API
 
     LTF --( LTB_API
 
@@ -30,7 +33,8 @@ component "Environment" <<System>> {
     LGT92GPSG --( MB_API
     LGT92GPSP --( MB_API
 
-    LGT92GPSG - IN_ENDPOINT
+    DG - IN_ENDPOINT
+    LGT92GPSG_API )- DG
 }
 
 @enduml

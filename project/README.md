@@ -21,7 +21,7 @@ File: `backend-services/lgt92-gps-sensor-gateway/infrastructure/boot/src/main/re
 ``` conf
 server.port=8080
 
-sharespot.helium.console.auth=<helium defined auth key>
+auth.key=<helium defined auth key>
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -86,8 +86,7 @@ All communications between backend services, databases and message brokers are a
 File: `secrets/lgt92-gps-sensor-gateway.env`
 
 ``` conf
-SHARESPOT_HELIUM_CONSOLE_AUTH=<helium defined auth key>
-
+AUTH_KEY=<helium defined auth key>
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
 ```

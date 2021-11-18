@@ -12,7 +12,7 @@ import pt.sharespot.services.lgt92gpssensorgateway.model.dto.SensorData;
 @Api(description = "Data Gateway - REST Endpoint for LGT 92 Sensors data", tags = {"Sensors"})
 public class LGT92SensorController {
 
-    @Value("${sharespot.helium.console.auth}")
+    @Value("${auth.key}")
     private String secret;
 
     private final LGT92SensorDataPublisherService service;

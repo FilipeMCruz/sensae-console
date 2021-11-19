@@ -1,8 +1,8 @@
 version: "3.7"
 services:
-  sensor-data-gateway:
-    build: backend-services/sensor-data-gateway
-    image: sensor-data-gateway
+  data-relayer:
+    build: backend-services/data-relayer
+    image: data-relayer
     ports:
       - 8080:80
     networks:

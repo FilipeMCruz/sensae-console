@@ -22,16 +22,16 @@ File: `project/frontend/sharespot-location-tracking-frontend/src/environments/en
 export const environment = {
   production: false,
   backendURL: {
-    websocket: "ws://localhost:8082/subscriptions",
-    http: "http://localhost:8082/graphql"
+    websocket: "ws://localhost:8083/subscriptions",
+    http: "http://localhost:8083/graphql"
   },
   mapbox: {
     accessToken: "<private key used to access mapbox api>",
     style: "mapbox://styles/mapbox/light-v10"
   }
 };
-
 ```
+
 File: `project/backend-services/sharespot-lgt92-gps-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
@@ -44,7 +44,7 @@ spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
 ```
-    
+
 File: `project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
@@ -71,8 +71,7 @@ spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
 ```
-  
-      
+
 ## PROD Environment
 
 This environment is used in production and can be started with (after creating the files below):
@@ -83,7 +82,7 @@ docker-compose up -d
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`).
 
-File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.ts`
+File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
 
 ``` ts
 export const environment = {
@@ -98,6 +97,7 @@ export const environment = {
   }
 };
 ```
+
 File: `secrets/sharespot-lgt92-gps-data-gateway.env`
 
 ``` conf
@@ -119,4 +119,3 @@ File: `secrets/sharespot-lgt92-gps-data-processor.env`
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
 ```
-

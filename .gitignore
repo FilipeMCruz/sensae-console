@@ -2,10 +2,5 @@
 **/target
 **/*.iml
 
-project/backend-services/lgt92-gps-sensor-gateway/infrastructure/boot/src/main/resources/application-dev.properties
-project/backend-services/lgt92-gps-sensor-processor/infrastructure/boot/src/main/resources/application-dev.properties
-project/backend-services/location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties
-project/frontend/sharespot-services-app/src/environments/environment.prod.ts
-project/frontend/sharespot-services-app/src/environments/environment.ts
 project/test-examples
 project/secrets/*

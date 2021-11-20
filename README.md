@@ -1,6 +1,8 @@
-# Location Tracking Service
+# Location Tracking
 
-This project is the expected output of a specific application released by the **Silver Engine** platform.
+This document presents all the information needed to install, run and understand what was built by the Platform *IoT Service Builder*.
+
+This configuration was built by Filipe Cruz.
 
 ## Links
 

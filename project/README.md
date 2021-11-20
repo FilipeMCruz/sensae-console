@@ -1,7 +1,7 @@
 # Installation
 
 This project has two environments, `dev` and `prod`.
-Both of this environments need docker to run and docker-compose to orquestraste the containers.
+Both of this environments need docker to run and docker-compose to orchestrate the containers.
 
 ## DEV Environment
 
@@ -16,47 +16,7 @@ This way the backend services can be started by the programmer on debug mode if 
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace any identified tag (`<this is a tag>`).
 
-File: `backend-services/lgt92-gps-sensor-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
-
-``` conf
-server.port=8080
-
-auth.key=<helium defined auth key>
-
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-```
-
-File: `backend-services/lgt92-gps-sensor-processor/infrastructure/boot/src/main/resources/application-dev.properties`
-
-``` conf
-server.port=8081
-
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-```
-
-File: `backend-services/location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
-
-``` conf
-server.port=8082
-
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-
-logging.level.org.springframework.web=DEBUG
-logging.level.com.example=DEBUG
-logging.level.web=DEBUG
-logging.level.com.netflix.graphql.dgs=TRACE
-```
-
-File: `frontend/location-tracking-frontend/src/environments/environment.ts`
+File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.ts`
 
 ```ts
 export const environment = {
@@ -72,7 +32,47 @@ export const environment = {
 };
 
 ```
+File: `project/backend-services/sharespot-lgt92-gps-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
 
+``` conf
+server.port=8080
+
+auth.key=<helium defined auth key>
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+    
+File: `project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8082
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.com.example=DEBUG
+logging.level.web=DEBUG
+logging.level.com.netflix.graphql.dgs=TRACE
+```
+
+File: `project/backend-services/sharespot-lgt92-gps-data-processor/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8081
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+  
+      
 ## PROD Environment
 
 This environment is used in production and can be started with (after creating the files below):
@@ -83,29 +83,7 @@ docker-compose up -d
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`).
 
-File: `secrets/lgt92-gps-sensor-gateway.env`
-
-``` conf
-AUTH_KEY=<helium defined auth key>
-SPRING_RABBITMQ_USERNAME=guest
-SPRING_RABBITMQ_PASSWORD=guest
-```
-
-File: `secrets/lgt92-gps-sensor-processor.env`
-
-``` conf
-SPRING_RABBITMQ_USERNAME=guest
-SPRING_RABBITMQ_PASSWORD=guest
-```
-
-File: `secrets/location-tracking-backend.env`
-
-``` conf
-SPRING_RABBITMQ_USERNAME=guest
-SPRING_RABBITMQ_PASSWORD=guest
-```
-
-File: `frontend/location-tracking-frontend/src/environments/environment.ts`
+File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.ts`
 
 ``` ts
 export const environment = {
@@ -120,3 +98,25 @@ export const environment = {
   }
 };
 ```
+File: `secrets/sharespot-lgt92-gps-data-gateway.env`
+
+``` conf
+AUTH_KEY=<helium defined auth key>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+```
+
+File: `secrets/sharespot-location-tracking-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+```
+
+File: `secrets/sharespot-lgt92-gps-data-processor.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+```
+

@@ -4,5 +4,16 @@ services:
     image: rabbitmq:management
     container_name: message-broker
     ports:
-      - 5672
+      - 5672:5672
       - 15672:15672
+  sharespot-device-records-database:
+    image: postgres:latest
+    env_file:
+      - ./secrets/sharespot-device-records-database.env
+    ports:
+      - 5432:5432
+    volumes:
+      - sharespot-device-records-dev-database:/var/lib/postgresql/data/
+volumes:
+    sharespot-device-records-dev-database:
+        name: sharespot-device-records-dev-database

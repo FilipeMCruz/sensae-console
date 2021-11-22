@@ -1,0 +1,34 @@
+type DeviceRecords {
+    deviceId : String
+    entries : [RecordEntry]
+}
+
+type RecordEntry {
+    label: String
+    content : String
+    type: RecordType
+}
+
+type Device {
+    deviceId: String
+}
+
+enum RecordType {
+    BASIC
+    SENSOR_DATA
+}
+
+input DeviceInput {
+    deviceId: String
+}
+
+input DeviceRecordsInput {
+    deviceId : String
+    entries : [RecordEntryInput]
+}
+
+input RecordEntryInput {
+    label: String
+    content : String
+    type: RecordType
+}

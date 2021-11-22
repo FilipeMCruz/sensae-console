@@ -1,0 +1,65 @@
+package sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.mapper;
+
+import org.springframework.stereotype.Service;
+import sharespot.services.devicerecordsbackend.application.DeviceDTO;
+import sharespot.services.devicerecordsbackend.application.DeviceRecordDTO;
+import sharespot.services.devicerecordsbackend.application.RecordMapper;
+import sharespot.services.devicerecordsbackend.domain.model.records.*;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceRecordDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordEntryDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordTypeDTOImpl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class RecordMapperImpl implements RecordMapper {
+
+    @Override
+    public DeviceRecords dtoToDomain(DeviceRecordDTO dto) {
+        var deviceDTO = (DeviceRecordDTOImpl) dto;
+
+        List<RecordEntry> records = deviceDTO.entries.stream().map(e -> {
+            if (RecordTypeDTOImpl.BASIC.equals(e.type)) {
+                return new BasicRecordEntry(e.label, e.content);
+            } else {
+                var label = SensorDataRecordLabel.give(e.label);
+                return new SensorDataRecordEntry(label, e.content);
+            }
+        }).collect(Collectors.toList());
+
+        return new DeviceRecords(new DeviceId(deviceDTO.deviceId), new Records(records));
+    }
+
+    @Override
+    public DeviceRecordDTO domainToDto(DeviceRecords domain) {
+        var dto = new DeviceRecordDTOImpl();
+        dto.deviceId = domain.getDeviceId().value();
+        dto.entries = domain.getRecords().entries().stream().map(e -> {
+            var entry = new RecordEntryDTOImpl();
+            if (e instanceof BasicRecordEntry) {
+                entry.type = RecordTypeDTOImpl.BASIC;
+            } else {
+                entry.type = RecordTypeDTOImpl.SENSOR_DATA;
+            }
+            entry.content = e.getContent();
+            entry.label = e.getLabel();
+            return entry;
+        }).collect(Collectors.toSet());
+        return dto;
+    }
+
+    @Override
+    public DeviceId dtoToDomain(DeviceDTO dto) {
+        var deviceDTO = (DeviceDTOImpl) dto;
+        return new DeviceId(deviceDTO.deviceId);
+    }
+
+    @Override
+    public DeviceDTO domainToDto(DeviceId domain) {
+        var deviceDTO = new DeviceDTOImpl();
+        deviceDTO.deviceId = domain.value();
+        return deviceDTO;
+    }
+}

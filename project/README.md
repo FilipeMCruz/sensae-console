@@ -56,7 +56,6 @@ spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
 
 logging.level.org.springframework.web=DEBUG
-logging.level.com.example=DEBUG
 logging.level.web=DEBUG
 logging.level.com.netflix.graphql.dgs=TRACE
 ```

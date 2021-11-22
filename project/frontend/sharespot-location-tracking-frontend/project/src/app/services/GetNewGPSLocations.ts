@@ -16,13 +16,19 @@ export class GetNewGPSLocations {
   getData(): Observable<FetchResult<SensorDTO>> {
     this.query = gql`
       subscription locations{
-        locations {
+        locations{
           dataId
-          reportedAt
           deviceId
-          data {
-            longitude
-            latitude
+          reportedAt
+          data{
+            gps{
+              longitude
+              latitude
+            }
+          }
+          record{
+            label
+            content
           }
         }
       }

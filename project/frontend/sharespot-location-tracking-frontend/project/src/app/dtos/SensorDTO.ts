@@ -10,10 +10,20 @@ export interface SensorDataDTO {
   dataId: string;
   deviceId: string;
   reportedAt: string;
-  data: SensorDataDetailsDTO;
+  data: GPSDataDetailsDTO;
+  record: Array<RecordEntryDTO>;
 }
 
 export interface SensorDataDetailsDTO {
   latitude: number;
   longitude: number;
+}
+
+export interface GPSDataDetailsDTO {
+  gps: SensorDataDetailsDTO
+}
+
+export interface RecordEntryDTO {
+  label: string;
+  content: string;
 }

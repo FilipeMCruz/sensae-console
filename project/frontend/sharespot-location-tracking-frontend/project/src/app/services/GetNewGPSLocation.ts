@@ -21,8 +21,14 @@ export class GetNewGPSLocation {
           deviceId
           reportedAt
           data{
-            longitude
-            latitude
+            gps{
+              longitude
+              latitude
+            }
+          }
+          record{
+            label
+            content
           }
         }
       }

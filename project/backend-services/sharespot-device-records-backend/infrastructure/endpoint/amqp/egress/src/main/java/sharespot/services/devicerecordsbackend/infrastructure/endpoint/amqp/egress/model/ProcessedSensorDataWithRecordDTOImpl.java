@@ -1,12 +1,14 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model;
+package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model;
 
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWithRecordDTO;
 
+import java.util.UUID;
+
 public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSensorDataWithRecordDTO {
 
-    public String dataId;
+    public UUID dataId;
 
-    public String deviceId;
+    public UUID deviceId;
 
     public Long reportedAt;
 
@@ -14,8 +16,8 @@ public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSens
 
     public DeviceRecordDTOImpl records;
 
-    public ProcessedSensorDataWithRecordDTOImpl(String dataId,
-                                                String deviceId,
+    public ProcessedSensorDataWithRecordDTOImpl(UUID dataId,
+                                                UUID deviceId,
                                                 Long reportedAt,
                                                 SensorDataDetailsDTOImpl data,
                                                 DeviceRecordDTOImpl records) {

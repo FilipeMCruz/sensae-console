@@ -1,15 +1,17 @@
 package sharespot.services.devicerecordsbackend.domain.model.sensors;
 
+import java.util.UUID;
+
 public class ProcessedSensorData {
 
-    private final String dataId;
-    private final String deviceId;
+    private final UUID dataId;
+    private final UUID deviceId;
     private final Long reportedAt;
     private final SensorDataDetails data;
 
     public ProcessedSensorData(
-            String dataId,
-            String deviceId,
+            UUID dataId,
+            UUID deviceId,
             Long reportedAt,
             SensorDataDetails data
     ) {
@@ -19,11 +21,11 @@ public class ProcessedSensorData {
         this.data = data;
     }
 
-    public String getDataId() {
+    public UUID getDataId() {
         return dataId;
     }
 
-    public String getDeviceId() {
+    public UUID getDeviceId() {
         return deviceId;
     }
 

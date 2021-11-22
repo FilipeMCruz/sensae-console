@@ -1,12 +1,14 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model;
+package sharespot.services.lgt92gpsdataprocessor.infrastructure.endpoint.amqpegress.model;
 
-import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataDTO;
+import sharespot.services.lgt92gpsdataprocessor.application.OutSensorDataDTO;
 
-public final class ProcessedSensorDataDTOImpl implements ProcessedSensorDataDTO {
+import java.util.UUID;
 
-    public String dataId;
+public final class ProcessedSensorDataDTOImpl implements OutSensorDataDTO {
 
-    public String deviceId;
+    public UUID dataId;
+
+    public UUID deviceId;
 
     public Long reportedAt;
 
@@ -16,8 +18,8 @@ public final class ProcessedSensorDataDTOImpl implements ProcessedSensorDataDTO 
                                       String deviceId,
                                       Long reportedAt,
                                       SensorDataDetailsDTOImpl data) {
-        this.dataId = dataId;
-        this.deviceId = deviceId;
+        this.dataId = UUID.fromString(dataId);
+        this.deviceId = UUID.fromString(deviceId);
         this.reportedAt = reportedAt;
         this.data = data;
     }

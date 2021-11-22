@@ -15,7 +15,7 @@ public class RecordAppender {
     }
 
     public ProcessedSensorDataWithRecord appendRecord(ProcessedSensorData data) {
-        var records = cache.seekRecordsFor(new DeviceId(data.getDeviceId()));
+        var records = cache.seekRecordsFor(new DeviceId(data.getDeviceId().toString()));
         return new ProcessedSensorDataWithRecord(data, records);
     }
 }

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.dto.GPSDataDTO;
+import sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.dto.ProcessedSensorDataDTOImpl;
 import sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.mapper.GPSDataMapper;
 
 @Component
@@ -20,7 +20,7 @@ public class GPSSensorDataChangeListener {
     }
 
     @RabbitListener(queues = "GPS Data Queue")
-    public void receiveUpdate(GPSDataDTO in) {
+    public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
         try {
             handler.publish(GPSDataMapper.dtoToDomain(in));
         } catch (Exception exception) {

@@ -1,11 +1,11 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.mapper;
+package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.mapper;
 
 import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataDTO;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataMapper;
 import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensorData;
 import sharespot.services.devicerecordsbackend.domain.model.sensors.SensorDataDetails;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model.ProcessedSensorDataDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model.ProcessedSensorDataDTOImpl;
 
 @Service
 public class ProcessedSensorDataMapperImpl implements ProcessedSensorDataMapper {

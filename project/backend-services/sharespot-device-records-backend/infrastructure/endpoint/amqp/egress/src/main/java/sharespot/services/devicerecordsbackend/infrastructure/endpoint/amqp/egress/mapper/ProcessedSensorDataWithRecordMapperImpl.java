@@ -1,4 +1,4 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.mapper;
+package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.mapper;
 
 import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWithRecordDTO;
@@ -7,7 +7,7 @@ import sharespot.services.devicerecordsbackend.domain.model.records.BasicRecordE
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordLabel;
 import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensorDataWithRecord;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model.*;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model.*;
 
 import java.util.stream.Collectors;
 

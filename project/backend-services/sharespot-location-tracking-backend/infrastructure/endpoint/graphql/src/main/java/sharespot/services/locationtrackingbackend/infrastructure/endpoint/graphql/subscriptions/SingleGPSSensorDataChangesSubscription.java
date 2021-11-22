@@ -5,7 +5,7 @@ import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
 import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.domain.sensor.gps.GPSData;
+import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
 
 import java.util.UUID;
 
@@ -19,7 +19,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<GPSData> location(@InputArgument("deviceId") String id) {
+    public Publisher<SensorData> location(@InputArgument("deviceId") String id) {
         return publisher.getSinglePublisher(UUID.fromString(id));
     }
 }

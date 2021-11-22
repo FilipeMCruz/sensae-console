@@ -1,4 +1,4 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model;
+package sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.dto;
 
 import java.util.Set;
 

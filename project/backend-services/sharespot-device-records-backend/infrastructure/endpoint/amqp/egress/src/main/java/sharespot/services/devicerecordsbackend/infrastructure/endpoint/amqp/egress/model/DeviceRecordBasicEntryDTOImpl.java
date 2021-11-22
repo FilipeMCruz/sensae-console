@@ -1,4 +1,4 @@
-package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model;
+package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model;
 
 public class DeviceRecordBasicEntryDTOImpl {
     public String label;

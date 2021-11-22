@@ -1,1 +1,1 @@
-./infrastructure/boot/src/main/resources/application-dev.properties
+/infrastructure/boot/src/main/resources/application-dev.properties

@@ -19,7 +19,7 @@ public class GPSSensorDataChangeListener {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = "GPS Data Queue")
+    @RabbitListener(queues = "GPS Data With Records Queue")
     public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
         try {
             handler.publish(GPSDataMapper.dtoToDomain(in));

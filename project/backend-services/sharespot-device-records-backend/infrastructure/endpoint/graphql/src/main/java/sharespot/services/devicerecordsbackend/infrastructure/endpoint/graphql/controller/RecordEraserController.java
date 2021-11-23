@@ -5,6 +5,7 @@ import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 import sharespot.services.devicerecordsbackend.application.RecordEraserService;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
 
 @DgsComponent
 public class RecordEraserController {
@@ -16,7 +17,7 @@ public class RecordEraserController {
     }
 
     @DgsMutation(field = "delete")
-    public DeviceDTO delete(@InputArgument(value = "device") DeviceDTO dto) {
+    public DeviceDTO delete(@InputArgument(value = "device") DeviceDTOImpl dto) {
         return service.erase(dto);
     }
 

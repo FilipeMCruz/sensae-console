@@ -4,6 +4,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataDTO;
 import sharespot.services.devicerecordsbackend.application.SensorDataHandlerService;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model.ProcessedSensorDataDTOImpl;
 
 @Service
 public class SensorDataListener {
@@ -15,7 +16,7 @@ public class SensorDataListener {
     }
 
     @RabbitListener(queues = "GPS Data Queue")
-    public void receiveUpdate(ProcessedSensorDataDTO in) {
+    public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
         handler.publish(in);
     }
 }

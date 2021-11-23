@@ -9,7 +9,7 @@ services:
   sharespot-device-records-database:
     image: postgres:latest
     env_file:
-      - ./secrets/sharespot-device-records-database.env
+      - ./secrets/dev/sharespot-device-records-database.env
     ports:
       - 5432:5432
     volumes:

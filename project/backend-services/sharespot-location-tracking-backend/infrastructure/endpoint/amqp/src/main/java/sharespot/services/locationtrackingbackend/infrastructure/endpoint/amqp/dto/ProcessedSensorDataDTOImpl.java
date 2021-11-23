@@ -12,7 +12,7 @@ public final class ProcessedSensorDataDTOImpl {
 
     public SensorDataDetailsDTOImpl data;
 
-    public DeviceRecordDTOImpl record;
+    public DeviceRecordDTOImpl records;
 
     public ProcessedSensorDataDTOImpl(UUID dataId,
                                       UUID deviceId,

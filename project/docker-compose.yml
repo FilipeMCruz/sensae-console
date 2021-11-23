@@ -55,5 +55,31 @@ services:
         - sharespot-network
     ports:
         -  8080
+  sharespot-device-records-database:
+    build: databases/sharespot-device-records-database
+    image: sharespot-device-records-database
+    container_name: sharespot-device-records-database
+    env_file:
+      - ./secrets/sharespot-device-records-database.env
+    networks:
+        - sharespot-network
+    ports:
+      - 5432
+    volumes:
+      - sharespot-device-records-database:/var/lib/postgresql/data/
+  sharespot-device-records-backend:
+    build: backend-services/sharespot-device-records-backend
+    image: sharespot-device-records-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/sharespot-device-records-backend.env
+    networks:
+        - sharespot-network
+    ports:
+        - 8080
 networks:
   sharespot-network:
+volumes:
+    sharespot-device-records-database:
+        name: sharespot-device-records-database

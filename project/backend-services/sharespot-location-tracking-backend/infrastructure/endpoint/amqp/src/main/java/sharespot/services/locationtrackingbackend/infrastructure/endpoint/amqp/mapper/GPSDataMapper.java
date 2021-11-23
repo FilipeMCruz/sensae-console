@@ -12,7 +12,7 @@ public class GPSDataMapper {
 
     public static SensorData dtoToDomain(ProcessedSensorDataDTOImpl dto) {
         var details = new GPSDataDetails(dto.data.gps.latitude, dto.data.gps.longitude);
-        var entries = dto.record.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
+        var entries = dto.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
         return new SensorData(dto.dataId, dto.deviceId, dto.reportedAt, new SensorDataDetails(details), entries);
     }
 }

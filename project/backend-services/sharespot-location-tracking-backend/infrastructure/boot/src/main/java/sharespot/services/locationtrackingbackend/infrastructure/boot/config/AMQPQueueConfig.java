@@ -13,12 +13,12 @@ public class AMQPQueueConfig {
 
     @Bean
     public Queue queueGPS() {
-        return new Queue("GPS Data Queue", false);
+        return new Queue("GPS Data With Records Queue", false);
     }
 
     @Bean
     public FanoutExchange exchangeGPS() {
-        return new FanoutExchange("GPS Data Exchange");
+        return new FanoutExchange("GPS Data With Records Exchange");
     }
 
     @Bean

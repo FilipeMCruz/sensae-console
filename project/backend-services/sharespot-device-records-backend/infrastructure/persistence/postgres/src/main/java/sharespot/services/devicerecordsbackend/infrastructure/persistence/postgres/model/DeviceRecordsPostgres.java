@@ -13,6 +13,6 @@ public class DeviceRecordsPostgres {
     @Column(unique = true)
     public String deviceId;
 
-    @OneToMany(mappedBy = "records", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<DeviceRecordEntryPostgres> entries;
 }

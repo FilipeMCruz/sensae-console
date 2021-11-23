@@ -21,7 +21,7 @@ services:
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-lgt92-gps-data-gateway.env
+      - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
     networks:
         - sharespot-network
     ports:
@@ -39,7 +39,7 @@ services:
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-location-tracking-backend.env
+      - ./secrets/prod/sharespot-location-tracking-backend.env
     networks:
         - sharespot-network
     ports:
@@ -50,7 +50,7 @@ services:
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-lgt92-gps-data-processor.env
+      - ./secrets/prod/sharespot-lgt92-gps-data-processor.env
     networks:
         - sharespot-network
     ports:
@@ -60,7 +60,7 @@ services:
     image: sharespot-device-records-database
     container_name: sharespot-device-records-database
     env_file:
-      - ./secrets/sharespot-device-records-database.env
+      - ./secrets/prod/sharespot-device-records-database.env
     networks:
         - sharespot-network
     ports:
@@ -73,7 +73,7 @@ services:
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-device-records-backend.env
+      - ./secrets/prod/sharespot-device-records-backend.env
     networks:
         - sharespot-network
     ports:

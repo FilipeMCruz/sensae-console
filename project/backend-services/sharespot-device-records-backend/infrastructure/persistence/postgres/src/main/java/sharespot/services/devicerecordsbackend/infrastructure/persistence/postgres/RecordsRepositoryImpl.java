@@ -23,8 +23,14 @@ public class RecordsRepositoryImpl implements RecordsRepository {
 
     @Override
     public DeviceRecords save(DeviceRecords records) {
+        var byDeviceId = repositoryPostgres.findByDeviceId(records.getDeviceId().value());
         var deviceRecordsPostgres = RecordMapper.domainToPostgres(records);
-        repositoryPostgres.save(deviceRecordsPostgres);
+        if (byDeviceId.isEmpty()) {
+            repositoryPostgres.save(deviceRecordsPostgres);
+        } else {
+            var deviceRecords = byDeviceId.get();
+            deviceRecords.entries = deviceRecordsPostgres.entries;
+        }
         return records;
     }
 

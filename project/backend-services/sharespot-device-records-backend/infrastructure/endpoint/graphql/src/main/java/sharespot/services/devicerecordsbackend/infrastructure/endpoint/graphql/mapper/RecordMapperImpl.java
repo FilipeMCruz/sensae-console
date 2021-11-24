@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 import sharespot.services.devicerecordsbackend.application.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.RecordMapper;
+import sharespot.services.devicerecordsbackend.domain.model.exceptions.NotValidException;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceRecordDTOImpl;
@@ -11,6 +12,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.m
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordTypeDTOImpl;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +30,29 @@ public class RecordMapperImpl implements RecordMapper {
                 return new SensorDataRecordEntry(label, e.content);
             }
         }).collect(Collectors.toList());
+
+        var hasSensorLabelDuplicates = records.stream()
+                .filter(e -> e instanceof SensorDataRecordEntry)
+                .map(e -> ((SensorDataRecordEntry) e).label())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .anyMatch(occurrences -> occurrences != 1);
+
+        var hasDuplicates = records.stream()
+                .filter(e -> e instanceof BasicRecordEntry)
+                .map(e -> ((BasicRecordEntry) e).label())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .anyMatch(occurrences -> occurrences != 1);
+
+        if (hasSensorLabelDuplicates) {
+            throw new NotValidException("A record can't have two equal Sensor Data Labels");
+        }
+        if (hasDuplicates) {
+            throw new NotValidException("A record can't have two equal Basic Labels");
+        }
 
         return new DeviceRecords(new DeviceId(deviceDTO.deviceId), new Records(records));
     }

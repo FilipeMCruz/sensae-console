@@ -1,3 +1,7 @@
+export interface FilteredByContentSensorDTO {
+  locationByContent : SensorDataDTO
+}
+
 export interface SensorDTO {
   locations: SensorDataDTO
 }

@@ -4,4 +4,10 @@
   <app-search-card (onDevicePicked)="subscribeTo($event)"
                    (onDeviceClean)="cleanSubscriber()">
   </app-search-card>
+  <div class="follow-button">
+    <button mat-fab [color]="(follow) ? 'warn' : 'primary'" aria-label="Follow new sensor data"
+            (click)="this.changeFollow()">
+      <mat-icon>follow_the_signs</mat-icon>
+    </button>
+  </div>
 </div>

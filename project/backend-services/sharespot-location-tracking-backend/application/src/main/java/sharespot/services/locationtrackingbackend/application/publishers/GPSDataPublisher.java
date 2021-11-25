@@ -2,9 +2,10 @@ package sharespot.services.locationtrackingbackend.application.publishers;
 
 import org.reactivestreams.Publisher;
 import org.springframework.stereotype.Component;
-import sharespot.services.locationtrackingbackend.application.exceptions.PublishErrorException;
-import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
 import reactor.core.publisher.Sinks;
+import sharespot.services.locationtrackingbackend.application.exceptions.PublishErrorException;
+import sharespot.services.locationtrackingbackend.domain.sensor.gps.RecordEntry;
+import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
 
 import java.util.UUID;
 
@@ -22,6 +23,14 @@ public class GPSDataPublisher {
 
     public Publisher<SensorData> getGeneralPublisher() {
         return sink.asFlux();
+    }
+
+    public Publisher<SensorData> getContentFilteredPublisher(String content) {
+        return sink.asFlux()
+                .filter(gpsData -> gpsData.record()
+                        .stream()
+                        .map(RecordEntry::content)
+                        .anyMatch(e -> e.contains(content)));
     }
 
     public Publisher<SensorData> getSinglePublisher(UUID id) {

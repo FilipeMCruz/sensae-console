@@ -14,39 +14,65 @@ services:
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-lgt92-gps-data-gateway.env
+      - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8081:8080
+      - 8081:8080
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8080:80
+      - 8080:80
   sharespot-location-tracking-backend:
     build: backend-services/sharespot-location-tracking-backend
     image: sharespot-location-tracking-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-location-tracking-backend.env
+      - ./secrets/prod/sharespot-location-tracking-backend.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8083:8080
+      - 8084:8080
   sharespot-lgt92-gps-data-processor:
     build: backend-services/sharespot-lgt92-gps-data-processor
     image: sharespot-lgt92-gps-data-processor
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/sharespot-lgt92-gps-data-processor.env
+      - ./secrets/prod/sharespot-lgt92-gps-data-processor.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8082:8080
+      - 8082:8080
+  sharespot-device-records-backend:
+    build: backend-services/sharespot-device-records-backend
+    image: sharespot-device-records-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-device-records-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8083:8080
+  sharespot-device-records-database:
+    build: databases/sharespot-device-records-database
+    image: sharespot-device-records-database
+    container_name: sharespot-device-records-database
+    env_file:
+      - ./secrets/prod/sharespot-device-records-database.env
+    networks:
+      - sharespot-network
+    ports:
+      - 5432:5432
+    volumes:
+      - sharespot-device-records-database:/var/lib/postgresql/data/
 networks:
-  sharespot-network:
+  sharespot-network: null
+volumes:
+  sharespot-device-records-database:
+    name: sharespot-device-records-dev-database

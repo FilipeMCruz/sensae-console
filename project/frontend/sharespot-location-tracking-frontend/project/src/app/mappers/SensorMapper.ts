@@ -1,14 +1,16 @@
-import {FilteredSensorDTO, SensorDTO} from '../dtos/SensorDTO';
+import {FilteredByContentSensorDTO, FilteredSensorDTO, SensorDTO} from '../dtos/SensorDTO';
 import {SensorCoordinates} from '../model/SensorCoordinates';
 import {GPSSensorData} from "../model/GPSSensorData";
 import {RecordEntry} from "../model/RecordEntry";
 
 export class SensorMapper {
 
-  static dtoToModel(dto: SensorDTO | FilteredSensorDTO): GPSSensorData {
+  static dtoToModel(dto: SensorDTO | FilteredSensorDTO | FilteredByContentSensorDTO): GPSSensorData {
     let value;
     if ("locations" in dto) {
       value = dto.locations;
+    } else if ("locationByContent" in dto) {
+      value = dto.locationByContent;
     } else {
       value = dto.location;
     }

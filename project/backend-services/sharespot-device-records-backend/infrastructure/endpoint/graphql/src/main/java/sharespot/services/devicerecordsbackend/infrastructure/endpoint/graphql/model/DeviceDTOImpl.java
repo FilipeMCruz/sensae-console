@@ -3,5 +3,6 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.
 import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 
 public class DeviceDTOImpl implements DeviceDTO {
-    public String deviceId;
+    public String id;
+    public String name;
 }

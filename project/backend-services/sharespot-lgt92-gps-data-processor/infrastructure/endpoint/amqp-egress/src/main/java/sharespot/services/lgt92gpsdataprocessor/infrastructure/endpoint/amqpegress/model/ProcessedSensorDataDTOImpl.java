@@ -8,18 +8,18 @@ public final class ProcessedSensorDataDTOImpl implements OutSensorDataDTO {
 
     public UUID dataId;
 
-    public UUID deviceId;
+    public ProcessedSensorDTOImpl device;
 
     public Long reportedAt;
 
     public SensorDataDetailsDTOImpl data;
 
     public ProcessedSensorDataDTOImpl(String dataId,
-                                      String deviceId,
+                                      ProcessedSensorDTOImpl device,
                                       Long reportedAt,
                                       SensorDataDetailsDTOImpl data) {
         this.dataId = UUID.fromString(dataId);
-        this.deviceId = UUID.fromString(deviceId);
+        this.device = device;
         this.reportedAt = reportedAt;
         this.data = data;
     }

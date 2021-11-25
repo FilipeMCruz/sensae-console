@@ -23,7 +23,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
 
     @Override
     public DeviceRecords save(DeviceRecords records) {
-        var byDeviceId = repositoryPostgres.findByDeviceId(records.getDeviceId().value());
+        var byDeviceId = repositoryPostgres.findByDeviceId(records.device().id().value().toString());
         var deviceRecordsPostgres = RecordMapper.domainToPostgres(records);
         if (byDeviceId.isEmpty()) {
             repositoryPostgres.save(deviceRecordsPostgres);
@@ -36,7 +36,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
 
     @Override
     public Optional<DeviceRecords> findByDeviceId(DeviceId id) {
-        return repositoryPostgres.findByDeviceId(id.value())
+        return repositoryPostgres.findByDeviceId(id.value().toString())
                 .map(RecordMapper::postgresToDomain);
     }
 
@@ -49,7 +49,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
 
     @Override
     public DeviceId delete(DeviceId id) {
-        repositoryPostgres.deleteByDeviceId(id.value());
+        repositoryPostgres.deleteByDeviceId(id.value().toString());
         return id;
     }
 }

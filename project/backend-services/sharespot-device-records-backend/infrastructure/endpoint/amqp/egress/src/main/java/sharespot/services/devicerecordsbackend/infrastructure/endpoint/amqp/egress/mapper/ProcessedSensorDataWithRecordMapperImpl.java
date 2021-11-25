@@ -6,6 +6,7 @@ import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWi
 import sharespot.services.devicerecordsbackend.domain.model.records.BasicRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordLabel;
+import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensor;
 import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensorDataWithRecord;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model.*;
 
@@ -17,7 +18,7 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
     @Override
     public ProcessedSensorDataWithRecordDTO domainToDto(ProcessedSensorDataWithRecord domain) {
         var dataId = domain.getDataId();
-        var deviceId = domain.getDeviceId();
+        var device = domain.getDevice();
         var reportedAt = domain.getReportedAt();
 
         var sensorDataToUpdate = domain.getRecords()
@@ -55,6 +56,10 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .map(e -> new DeviceRecordBasicEntryDTOImpl(e.label(), e.content()))
                 .collect(Collectors.toSet()));
 
-        return new ProcessedSensorDataWithRecordDTOImpl(dataId, deviceId, reportedAt, sensorData, deviceRecordDTO);
+        return new ProcessedSensorDataWithRecordDTOImpl(dataId, domainToDto(device), reportedAt, sensorData, deviceRecordDTO);
+    }
+
+    private ProcessedSensorDTOWithRecordsImpl domainToDto(ProcessedSensor device) {
+        return new ProcessedSensorDTOWithRecordsImpl(device.getName(), device.getId());
     }
 }

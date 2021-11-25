@@ -1,7 +1,6 @@
 package sharespot.services.lgt92gpsdatagateway.application;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.lgt92gpsdatagateway.model.SensorData;
 
 @Service
 public class SensorDataPublisherService {
@@ -12,7 +11,7 @@ public class SensorDataPublisherService {
         this.sensorDataPublisher = sensorDataPublisher;
     }
 
-    public void registerSensorData(SensorData sensorDataDTO) {
+    public void registerSensorData(Object sensorDataDTO) {
         this.sensorDataPublisher.publish(sensorDataDTO);
     }
 }

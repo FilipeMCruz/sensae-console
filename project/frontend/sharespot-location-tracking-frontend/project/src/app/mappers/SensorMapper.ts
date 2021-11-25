@@ -2,6 +2,7 @@ import {FilteredByContentSensorDTO, FilteredSensorDTO, SensorDTO} from '../dtos/
 import {SensorCoordinates} from '../model/SensorCoordinates';
 import {GPSSensorData} from "../model/GPSSensorData";
 import {RecordEntry} from "../model/RecordEntry";
+import {Sensor} from "../model/Sensor";
 
 export class SensorMapper {
 
@@ -16,6 +17,7 @@ export class SensorMapper {
     }
     let coordinates = new SensorCoordinates(value.data.gps.latitude, value.data.gps.longitude);
     let entries = value.record.map(e => new RecordEntry(e.label, e.content));
-    return new GPSSensorData(value.dataId, value.deviceId, new Date(Number(value.reportedAt)), coordinates, entries);
+    let sensor = new Sensor(value.device.id, value.device.name);
+    return new GPSSensorData(value.dataId, sensor, new Date(Number(value.reportedAt)), coordinates, entries);
   }
 }

@@ -7,8 +7,6 @@ import org.reactivestreams.Publisher;
 import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
 import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
 
-import java.util.UUID;
-
 @DgsComponent
 public class SingleGPSSensorDataChangesSubscription {
 
@@ -20,6 +18,6 @@ public class SingleGPSSensorDataChangesSubscription {
 
     @DgsSubscription
     public Publisher<SensorData> location(@InputArgument("deviceId") String id) {
-        return publisher.getSinglePublisher(UUID.fromString(id));
+        return publisher.getSinglePublisher(id);
     }
 }

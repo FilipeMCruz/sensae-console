@@ -1,20 +1,10 @@
 package sharespot.services.devicerecordsbackend.domain.model.records;
 
-public class DeviceRecords {
-
-    private final DeviceId deviceId;
-    private final Records records;
-
-    public DeviceRecords(DeviceId deviceId, Records records) {
-        this.deviceId = deviceId;
-        this.records = records;
-    }
-
-    public DeviceId getDeviceId() {
-        return deviceId;
-    }
-
-    public Records getRecords() {
-        return records;
+public record DeviceRecords(Device device,
+                            Records records) {
+    public static DeviceRecords empty(DeviceId id) {
+        var records = Records.empty();
+        var name = DeviceName.empty();
+        return new DeviceRecords(new Device(id,name), records);
     }
 }

@@ -2,7 +2,10 @@ package sharespot.services.devicerecordsbackend.domainservices;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import sharespot.services.devicerecordsbackend.domain.model.records.*;
+import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
+import sharespot.services.devicerecordsbackend.domain.model.records.LastTimeQueried;
+import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
 
 import java.util.AbstractMap;
 import java.util.HashMap;
@@ -12,7 +15,7 @@ import java.util.TreeMap;
 @Service
 public class RecordsCache {
 
-    private final Map<DeviceId, Map.Entry<Records, LastTimeQueried>> cache;
+    private final Map<DeviceId, Map.Entry<DeviceRecords, LastTimeQueried>> cache;
     private final TreeMap<LastTimeQueried, DeviceId> reverseCache;
     private final RecordsRepository repository;
     @Value("${cache.maxSize}")
@@ -31,11 +34,11 @@ public class RecordsCache {
     }
 
     public void indexRecord(DeviceRecords records) {
-        toCache(records.getDeviceId(), updateRecordTime(records.getRecords()));
+        toCache(records.device().id(), updateRecordTime(records));
         repository.save(records);
     }
 
-    public Records seekRecordsFor(DeviceId id) {
+    public DeviceRecords seekRecordsFor(DeviceId id) {
         var records = cache.get(id);
         if (records == null) {
             return seekInRepo(id);
@@ -45,19 +48,19 @@ public class RecordsCache {
         }
     }
 
-    private Records seekInRepo(DeviceId id) {
+    private DeviceRecords seekInRepo(DeviceId id) {
         var record = repository.findByDeviceId(id);
         if (record.isPresent()) {
-            toCache(record.get().getDeviceId(), updateRecordTime(record.get().getRecords()));
-            return record.get().getRecords();
+            toCache(record.get().device().id(), updateRecordTime(record.get()));
+            return record.get();
         } else {
-            var empty = Records.empty();
+            var empty = DeviceRecords.empty(id);
             toCache(id, updateRecordTime(empty));
             return empty;
         }
     }
 
-    private void toCache(DeviceId id, Map.Entry<Records, LastTimeQueried> record) {
+    private void toCache(DeviceId id, Map.Entry<DeviceRecords, LastTimeQueried> record) {
         if (cache.size() >= cacheMaxSize) {
             removeEntry();
         }
@@ -70,7 +73,7 @@ public class RecordsCache {
         cache.remove(lastEntry.getValue());
     }
 
-    private Map.Entry<Records, LastTimeQueried> updateRecordTime(Records records) {
+    private Map.Entry<DeviceRecords, LastTimeQueried> updateRecordTime(DeviceRecords records) {
         return new AbstractMap.SimpleEntry<>(records, LastTimeQueried.now());
     }
 }

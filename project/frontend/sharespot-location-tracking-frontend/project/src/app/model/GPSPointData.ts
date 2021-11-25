@@ -27,6 +27,6 @@ export class GPSPointData {
   }
 
   isSameSensor(data: GPSSensorData): boolean {
-    return this.value.deviceId == data.deviceId;
+    return this.value.device.id == data.device.id;
   }
 }

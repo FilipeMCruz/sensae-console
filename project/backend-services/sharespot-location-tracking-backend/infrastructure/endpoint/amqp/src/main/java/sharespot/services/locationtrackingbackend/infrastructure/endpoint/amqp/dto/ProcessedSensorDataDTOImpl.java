@@ -6,7 +6,7 @@ public final class ProcessedSensorDataDTOImpl {
 
     public UUID dataId;
 
-    public UUID deviceId;
+    public ProcessedSensorDTOImpl device;
 
     public Long reportedAt;
 
@@ -15,11 +15,11 @@ public final class ProcessedSensorDataDTOImpl {
     public DeviceRecordDTOImpl records;
 
     public ProcessedSensorDataDTOImpl(UUID dataId,
-                                      UUID deviceId,
+                                      ProcessedSensorDTOImpl device,
                                       Long reportedAt,
                                       SensorDataDetailsDTOImpl data) {
         this.dataId = dataId;
-        this.deviceId = deviceId;
+        this.device = device;
         this.reportedAt = reportedAt;
         this.data = data;
     }

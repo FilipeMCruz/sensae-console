@@ -10,14 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>application</artifactId>
-    <dependencies>
-        <dependency>
-            <groupId>sharespot.services</groupId>
-            <artifactId>model</artifactId>
-            <version>0.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

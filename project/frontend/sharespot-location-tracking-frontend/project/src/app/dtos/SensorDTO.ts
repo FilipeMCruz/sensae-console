@@ -1,5 +1,5 @@
 export interface FilteredByContentSensorDTO {
-  locationByContent : SensorDataDTO
+  locationByContent: SensorDataDTO
 }
 
 export interface SensorDTO {
@@ -12,10 +12,15 @@ export interface FilteredSensorDTO {
 
 export interface SensorDataDTO {
   dataId: string;
-  deviceId: string;
+  device: SensorDTO;
   reportedAt: string;
   data: GPSDataDetailsDTO;
   record: Array<RecordEntryDTO>;
+}
+
+export interface SensorDTO {
+  id: string;
+  name: string;
 }
 
 export interface SensorDataDetailsDTO {

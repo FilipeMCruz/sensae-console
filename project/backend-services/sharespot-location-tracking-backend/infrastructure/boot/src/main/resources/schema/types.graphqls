@@ -1,9 +1,14 @@
 type GPSSensorData {
     dataId : String
-    deviceId : String
+    device : Sensor
     reportedAt : String
     data : SensorDataDetails
     record : [RecordEntry]
+}
+
+type Sensor {
+    id: String
+    name: String
 }
 
 type RecordEntry {

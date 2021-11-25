@@ -5,18 +5,18 @@ import java.util.UUID;
 public class ProcessedSensorData {
 
     private final UUID dataId;
-    private final UUID deviceId;
+    private final ProcessedSensor device;
     private final Long reportedAt;
     private final SensorDataDetails data;
 
     public ProcessedSensorData(
             UUID dataId,
-            UUID deviceId,
+            ProcessedSensor device,
             Long reportedAt,
             SensorDataDetails data
     ) {
         this.dataId = dataId;
-        this.deviceId = deviceId;
+        this.device = device;
         this.reportedAt = reportedAt;
         this.data = data;
     }
@@ -25,8 +25,8 @@ public class ProcessedSensorData {
         return dataId;
     }
 
-    public UUID getDeviceId() {
-        return deviceId;
+    public ProcessedSensor getDevice() {
+        return device;
     }
 
     public Long getReportedAt() {

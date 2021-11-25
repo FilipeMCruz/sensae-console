@@ -4,5 +4,5 @@ type Query {
 
 type Mutation {
     index(records : DeviceRecordsInput): DeviceRecords
-    delete(device: DeviceInput): Device
+    delete(device: DeviceIdInput): DeviceId
 }

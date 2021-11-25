@@ -18,7 +18,10 @@ export class GetNewGPSLocations {
       subscription locations{
         locations{
           dataId
-          deviceId
+          device{
+            id
+            name
+          }
           reportedAt
           data{
             gps{

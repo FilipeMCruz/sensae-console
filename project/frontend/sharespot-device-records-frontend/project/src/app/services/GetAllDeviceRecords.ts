@@ -16,7 +16,10 @@ export class GetAllDeviceRecords {
     let query = gql`
       query deviceRecords{
         deviceRecords{
-          deviceId
+          device{
+            id
+            name
+          }
           entries{
             label
             content

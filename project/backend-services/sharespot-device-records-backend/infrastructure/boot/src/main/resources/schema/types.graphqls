@@ -1,5 +1,5 @@
 type DeviceRecords {
-    deviceId : String
+    device : Device
     entries : [RecordEntry]
 }
 
@@ -10,7 +10,12 @@ type RecordEntry {
 }
 
 type Device {
-    deviceId: String
+    id: String
+    name: String
+}
+
+type DeviceId {
+    id: String
 }
 
 enum RecordType {
@@ -18,7 +23,7 @@ enum RecordType {
     SENSOR_DATA
 }
 
-input DeviceInput {
+input DeviceIdInput {
     deviceId: String
 }
 

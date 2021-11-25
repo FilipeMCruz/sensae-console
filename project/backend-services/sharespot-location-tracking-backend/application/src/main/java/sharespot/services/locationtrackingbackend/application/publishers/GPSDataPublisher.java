@@ -7,8 +7,6 @@ import sharespot.services.locationtrackingbackend.application.exceptions.Publish
 import sharespot.services.locationtrackingbackend.domain.sensor.gps.RecordEntry;
 import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
 
-import java.util.UUID;
-
 @Component
 public class GPSDataPublisher {
 
@@ -33,9 +31,9 @@ public class GPSDataPublisher {
                         .anyMatch(e -> e.contains(content)));
     }
 
-    public Publisher<SensorData> getSinglePublisher(UUID id) {
+    public Publisher<SensorData> getSinglePublisher(String id) {
         return sink.asFlux()
-                .filter(gpsData -> gpsData.deviceId().equals(id));
+                .filter(gpsData -> gpsData.device().has(id));
     }
 
     public void publish(SensorData data) {

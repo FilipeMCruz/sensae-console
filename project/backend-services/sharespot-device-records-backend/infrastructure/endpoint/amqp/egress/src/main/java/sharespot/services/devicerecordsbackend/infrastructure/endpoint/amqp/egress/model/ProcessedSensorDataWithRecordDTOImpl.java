@@ -8,7 +8,7 @@ public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSens
 
     public UUID dataId;
 
-    public UUID deviceId;
+    public ProcessedSensorDTOWithRecordsImpl device;
 
     public Long reportedAt;
 
@@ -17,12 +17,12 @@ public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSens
     public DeviceRecordDTOImpl records;
 
     public ProcessedSensorDataWithRecordDTOImpl(UUID dataId,
-                                                UUID deviceId,
+                                                ProcessedSensorDTOWithRecordsImpl device,
                                                 Long reportedAt,
                                                 SensorDataDetailsDTOImpl data,
                                                 DeviceRecordDTOImpl records) {
         this.dataId = dataId;
-        this.deviceId = deviceId;
+        this.device = device;
         this.reportedAt = reportedAt;
         this.data = data;
         this.records = records;

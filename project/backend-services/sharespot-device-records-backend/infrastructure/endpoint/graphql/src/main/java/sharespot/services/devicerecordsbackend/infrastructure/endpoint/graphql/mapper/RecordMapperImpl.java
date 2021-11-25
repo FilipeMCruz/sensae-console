@@ -12,6 +12,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.m
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordTypeDTOImpl;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -54,14 +55,20 @@ public class RecordMapperImpl implements RecordMapper {
             throw new NotValidException("A record can't have two equal Basic Labels");
         }
 
-        return new DeviceRecords(new DeviceId(deviceDTO.deviceId), new Records(records));
+        var id = new DeviceId(UUID.fromString(deviceDTO.device.id));
+        var name = new DeviceName(deviceDTO.device.id);
+
+        return new DeviceRecords(new Device(id, name), new Records(records));
     }
 
     @Override
     public DeviceRecordDTO domainToDto(DeviceRecords domain) {
         var dto = new DeviceRecordDTOImpl();
-        dto.deviceId = domain.getDeviceId().value();
-        dto.entries = domain.getRecords().entries().stream().map(e -> {
+        var deviceDTO = new DeviceDTOImpl();
+        deviceDTO.id = domain.device().id().value().toString();
+        deviceDTO.name = domain.device().name().value();
+        dto.device = deviceDTO;
+        dto.entries = domain.records().entries().stream().map(e -> {
             var entry = new RecordEntryDTOImpl();
             if (e instanceof BasicRecordEntry) {
                 entry.type = RecordTypeDTOImpl.BASIC;
@@ -78,13 +85,13 @@ public class RecordMapperImpl implements RecordMapper {
     @Override
     public DeviceId dtoToDomain(DeviceDTO dto) {
         var deviceDTO = (DeviceDTOImpl) dto;
-        return new DeviceId(deviceDTO.deviceId);
+        return new DeviceId(UUID.fromString(deviceDTO.id));
     }
 
     @Override
     public DeviceDTO domainToDto(DeviceId domain) {
         var deviceDTO = new DeviceDTOImpl();
-        deviceDTO.deviceId = domain.value();
+        deviceDTO.id = domain.value().toString();
         return deviceDTO;
     }
 }

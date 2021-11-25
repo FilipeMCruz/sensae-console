@@ -1,5 +1,6 @@
 package sharespot.services.lgt92gpsdataprocessor.application;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -19,12 +20,13 @@ public class SensorDataHandlerService {
         return sink.asFlux();
     }
 
-    public void publish(InSensorDataDTO data) {
+    public void publish(JsonNode data) {
         var outDTO = mapper.inToOut(data);
-        var result = sink.tryEmitNext(outDTO);
-        if (result.isFailure()) {
-            //TODO: logs
+        if (outDTO.isPresent()) {
+            var result = sink.tryEmitNext(outDTO.get());
+            if (result.isFailure()) {
+                //TODO: logs
+            }
         }
     }
-
 }

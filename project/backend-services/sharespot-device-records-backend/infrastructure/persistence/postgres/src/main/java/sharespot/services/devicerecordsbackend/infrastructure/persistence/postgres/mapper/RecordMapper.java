@@ -6,14 +6,16 @@ import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgr
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class RecordMapper {
 
     public static DeviceRecordsPostgres domainToPostgres(DeviceRecords records) {
         var postgres = new DeviceRecordsPostgres();
-        postgres.deviceId = records.getDeviceId().value();
-        postgres.entries = records.getRecords().entries().stream().map(e -> {
+        postgres.deviceId = records.device().id().value().toString();
+        postgres.name = records.device().name().value();
+        postgres.entries = records.records().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryPostgres();
             if (e instanceof BasicRecordEntry) {
                 entry.type = DeviceRecordEntryTypePostgres.basic();
@@ -37,6 +39,9 @@ public class RecordMapper {
             }
         }).collect(Collectors.toList());
 
-        return new DeviceRecords(new DeviceId(records.deviceId), new Records(collect));
+        var deviceId = new DeviceId(UUID.fromString(records.deviceId));
+        var deviceName = new DeviceName(records.name);
+
+        return new DeviceRecords(new Device(deviceId, deviceName), new Records(collect));
     }
 }

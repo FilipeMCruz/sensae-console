@@ -7,16 +7,21 @@ export interface DeviceRecordRegister {
 }
 
 export interface DeviceRecordDelete {
-  delete: DeviceDTO
+  delete: DeviceIdDTO
 }
 
-export interface DeviceDTO {
+export interface DeviceIdDTO {
   deviceId: string
 }
 
 export interface DeviceRecordDTO {
-  deviceId: string;
+  device: DeviceDTO;
   entries: Array<RecordEntryDTO>
+}
+
+export interface DeviceDTO {
+  id: string;
+  name: string;
 }
 
 export interface RecordEntryDTO {
@@ -26,7 +31,7 @@ export interface RecordEntryDTO {
 }
 
 export enum RecordTypeDTO {
-  BASIC= "BASIC",
+  BASIC = "BASIC",
   SENSOR_DATA = "SENSOR_DATA"
 }
 

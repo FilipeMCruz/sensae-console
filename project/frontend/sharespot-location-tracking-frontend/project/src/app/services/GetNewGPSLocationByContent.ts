@@ -18,7 +18,10 @@ export class GetNewGPSLocation {
       subscription locationByContent($deviceId: String){
         locationByContent(deviceId: $deviceId){
           dataId
-          deviceId
+          device{
+            id
+            name
+          }
           reportedAt
           data{
             gps{

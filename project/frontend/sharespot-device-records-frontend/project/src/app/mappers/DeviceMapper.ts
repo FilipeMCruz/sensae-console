@@ -1,13 +1,13 @@
 import {Device} from "../model/Device";
-import {DeviceDTO} from "../dtos/RecordsDTO";
+import {DeviceIdDTO} from "../dtos/RecordsDTO";
 
 export class DeviceMapper {
 
-  static dtoToModel(dto: DeviceDTO): Device {
+  static dtoToModel(dto: DeviceIdDTO): Device {
     return new Device(dto.deviceId);
   }
 
-  static modelToDto(model: Device): DeviceDTO {
+  static modelToDto(model: Device): DeviceIdDTO {
     return {deviceId: model.deviceId}
   }
 }

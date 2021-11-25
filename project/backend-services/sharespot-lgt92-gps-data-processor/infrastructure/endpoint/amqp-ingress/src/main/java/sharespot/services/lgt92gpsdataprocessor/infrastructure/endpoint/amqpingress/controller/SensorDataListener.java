@@ -8,13 +8,15 @@ import sharespot.services.lgt92gpsdataprocessor.application.SensorDataHandlerSer
 @Service
 public class SensorDataListener {
 
+    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Gateway Exchange -> Sharespot LGT92 GPS Data Processor Queue";
+
     private final SensorDataHandlerService handler;
 
     public SensorDataListener(SensorDataHandlerService handler) {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = "LGT92 GPS Data Queue")
+    @RabbitListener(queues = INGRESS_QUEUE)
     public void receiveUpdate(ObjectNode in) {
         handler.publish(in);
     }

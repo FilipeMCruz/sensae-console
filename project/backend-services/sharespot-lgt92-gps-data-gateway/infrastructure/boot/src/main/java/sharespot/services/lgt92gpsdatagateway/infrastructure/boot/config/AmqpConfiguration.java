@@ -12,9 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmqpConfiguration {
 
+    public static final String EGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Gateway Exchange";
+
     @Bean
     public FanoutExchange exchange() {
-        return new FanoutExchange("LGT92 GPS Data Exchange");
+        return new FanoutExchange(EGRESS_EXCHANGE);
     }
 
     @Bean

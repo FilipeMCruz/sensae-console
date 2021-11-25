@@ -7,6 +7,8 @@ import sharespot.services.lgt92gpsdatagateway.application.EventPublisher;
 @Controller
 public class SensorDataEmitter implements EventPublisher {
 
+    public static final String EGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Gateway Exchange";
+    
     private final AmqpTemplate rabbitTemplate;
 
     public SensorDataEmitter(AmqpTemplate rabbitTemplate) {
@@ -15,6 +17,6 @@ public class SensorDataEmitter implements EventPublisher {
 
     @Override
     public void publish(Object eventEmitter) {
-        rabbitTemplate.convertAndSend("LGT92 GPS Data Exchange", "", eventEmitter);
+        rabbitTemplate.convertAndSend(EGRESS_EXCHANGE, "", eventEmitter);
     }
 }

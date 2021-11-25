@@ -9,28 +9,32 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AMQPQueueConfig {
+public class AmqpConfiguration {
+
+    public static final String INGRESS_EXCHANGE = "Sharespot Device Records Exchange";
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Exchange -> Sharespot Location Tracking Queue";
 
     @Bean
-    public Queue queueGPS() {
-        return new Queue("GPS Data With Records Queue", false);
+    public Queue queue() {
+        return new Queue(INGRESS_QUEUE, true);
     }
 
     @Bean
-    public FanoutExchange exchangeGPS() {
-        return new FanoutExchange("GPS Data With Records Exchange");
+    public FanoutExchange exchange() {
+        return new FanoutExchange(INGRESS_EXCHANGE);
     }
 
     @Bean
-    Binding binding(Queue queueGPS, FanoutExchange exchangeGPS) {
-        return BindingBuilder.bind(queueGPS).to(exchangeGPS);
+    Binding binding(Queue queue, FanoutExchange exchange) {
+        return BindingBuilder.bind(queue).to(exchange);
     }
+
 
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-    
+
     @Bean
     public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

@@ -11,14 +11,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmqpConfiguration {
 
+    public static final String INGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Processor Exchange";
+    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Processor Exchange -> Sharespot Device Records Queue";
+    public static final String EGRESS_EXCHANGE = "Sharespot Device Records Exchange";
+
     @Bean
     public Queue queue() {
-        return new Queue("GPS Data Queue", true);
+        return new Queue(INGRESS_QUEUE, true);
     }
 
     @Bean
     public FanoutExchange exchange() {
-        return new FanoutExchange("GPS Data Exchange");
+        return new FanoutExchange(INGRESS_EXCHANGE);
     }
 
     @Bean
@@ -28,7 +32,7 @@ public class AmqpConfiguration {
 
     @Bean
     public FanoutExchange exchangeType() {
-        return new FanoutExchange("GPS Data With Records Exchange");
+        return new FanoutExchange(EGRESS_EXCHANGE);
     }
 
     @Bean

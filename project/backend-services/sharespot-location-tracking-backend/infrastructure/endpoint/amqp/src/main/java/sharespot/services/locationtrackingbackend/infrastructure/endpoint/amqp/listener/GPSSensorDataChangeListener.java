@@ -13,13 +13,15 @@ public class GPSSensorDataChangeListener {
 
     Logger logger = LoggerFactory.getLogger(GPSSensorDataChangeListener.class);
 
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Exchange -> Sharespot Location Tracking Queue";
+
     private final GPSDataPublisher handler;
 
     public GPSSensorDataChangeListener(GPSDataPublisher handler) {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = "GPS Data With Records Queue")
+    @RabbitListener(queues = INGRESS_QUEUE)
     public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
         try {
             handler.publish(GPSDataMapper.dtoToDomain(in));

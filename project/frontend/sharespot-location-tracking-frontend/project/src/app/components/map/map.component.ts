@@ -63,7 +63,7 @@ export class MapComponent implements OnInit, OnDestroy {
   subscribeTo(deviceId: string) {
     this.subscription.unsubscribe();
     this.points.forEach((sensor, index, array) => {
-      if (sensor.value.device.is(deviceId)) {
+      if (sensor.value.device.has(deviceId)) {
         sensor.point.remove();
         array.splice(index, 1);
       }

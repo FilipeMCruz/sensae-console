@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SensorDataRecordLabel} from "../../model/SensorDataRecordLabel";
 import {RecordType} from "../../model/RecordType";
-import {FormControl} from "@angular/forms";
+import {RecordEntry} from "../../model/RecordEntry";
 
 @Component({
   selector: 'app-new-record-entry',
@@ -11,7 +11,10 @@ import {FormControl} from "@angular/forms";
 export class NewRecordEntryComponent implements OnInit {
 
   type: string = "Basic";
-  control = new FormControl();
+
+  basicLabel!: string;
+  sensorDataLabel!: string;
+  content!: string;
 
   sensorDataType: Array<string> = Object.values(SensorDataRecordLabel);
   recordType: Array<string> = Object.values(RecordType);
@@ -29,7 +32,12 @@ export class NewRecordEntryComponent implements OnInit {
   }
 
   addEntry() {
-    console.log(this.type, this.control, )
+    let entry;
+    if (this.isTypeBasic()) {
+      entry = new RecordEntry(this.basicLabel, this.content, RecordType.BASIC)
+    } else {
+      entry = new RecordEntry(this.sensorDataLabel as SensorDataRecordLabel, this.content, RecordType.SENSOR_DATA)
+    }
+    console.log(entry);
   }
-
 }

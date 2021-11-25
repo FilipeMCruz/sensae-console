@@ -3,6 +3,7 @@ import {DeviceRecord} from "../model/DeviceRecord";
 import {RecordEntry} from "../model/RecordEntry";
 import {RecordType} from "../model/RecordType";
 import {SensorDataRecordLabel} from "../model/SensorDataRecordLabel";
+import {Device} from "../model/Device";
 
 export class RecordMapper {
 
@@ -17,8 +18,9 @@ export class RecordMapper {
           return new RecordEntry(SensorDataRecordLabel.GPS_LATITUDE, e.content, RecordType.SENSOR_DATA)
         }
       }
-    })
-    return new DeviceRecord(dto.deviceId, entries);
+    });
+    let device = new Device(dto.device.id, dto.device.name);
+    return new DeviceRecord(device, entries);
   }
 
   static modelToDto(model: DeviceRecord): DeviceRecordDTO {
@@ -33,6 +35,6 @@ export class RecordMapper {
         }
       }
     })
-    return {deviceId: model.deviceId, entries: entries}
+    return {device: {id: model.device.id, name: model.device.name}, entries: entries}
   }
 }

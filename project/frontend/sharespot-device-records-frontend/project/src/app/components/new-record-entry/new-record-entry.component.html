@@ -12,7 +12,7 @@
     <div>
       <mat-form-field appearance="outline">
         <mat-label>Label</mat-label>
-        <input matInput type="text" [formControl]="control" placeholder="Placeholder">
+        <input matInput type="text" [(ngModel)]="basicLabel" placeholder="Placeholder">
         <mat-icon matSuffix>label</mat-icon>
         <mat-hint>e.g. license plate</mat-hint>
       </mat-form-field>
@@ -20,7 +20,7 @@
     <div>
       <mat-form-field appearance="outline">
         <mat-label>Content</mat-label>
-        <input matInput type="text" [formControl]="control" placeholder="Placeholder">
+        <input matInput type="text" [(ngModel)]="content" placeholder="Placeholder">
         <mat-icon matSuffix>info</mat-icon>
         <mat-hint>e.g. 00-AA-00</mat-hint>
       </mat-form-field>
@@ -34,7 +34,7 @@
         <input type="text"
                placeholder="Pick one"
                matInput
-               [formControl]="control"
+               [(ngModel)]="sensorDataLabel"
                [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
           <mat-option *ngFor="let option of sensorDataType" [value]="option">
@@ -46,7 +46,7 @@
     <div>
       <mat-form-field appearance="outline">
         <mat-label>Content</mat-label>
-        <input matInput placeholder="Placeholder">
+        <input matInput [(ngModel)]="content" placeholder="Placeholder">
         <mat-icon matSuffix>info</mat-icon>
         <mat-hint>e.g. 00-AA-00</mat-hint>
       </mat-form-field>

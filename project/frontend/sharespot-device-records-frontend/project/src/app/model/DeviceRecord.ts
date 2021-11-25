@@ -1,8 +1,9 @@
 import {RecordEntry} from "./RecordEntry";
 import {RecordType} from "./RecordType";
+import {Device} from "./Device";
 
 export class DeviceRecord {
-  constructor(public deviceId: string, public entries: Array<RecordEntry>) {
+  constructor(public device: Device, public entries: Array<RecordEntry>) {
   }
 
   public getNumberOfBasicEntries(): number {

@@ -1,4 +1,4 @@
 export class Device {
-  constructor(public deviceId: string) {
+  constructor(public id: string, public name: string) {
   }
 }

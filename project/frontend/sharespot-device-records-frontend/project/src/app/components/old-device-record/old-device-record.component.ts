@@ -9,7 +9,7 @@ import {DeviceRecord} from "../../model/DeviceRecord";
 export class OldDeviceRecordComponent implements OnInit {
 
   @Input()
-  device: DeviceRecord | undefined;
+  sensor: DeviceRecord | undefined;
 
   constructor() {
   }

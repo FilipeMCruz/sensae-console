@@ -10,6 +10,7 @@ autonumber 1
 participant "Data Gateway" as DG
 participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
 participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
+participant "Device Records\nBackend" as DRB
 participant "Message Broker" as MB
 participant "Location Tracking\nBackend" as LTB
 participant "Location Tracking\nFrontend" as LTF
@@ -37,7 +38,13 @@ activate LGT92GPSP
 LGT92GPSP -> MB : publish event of new\ngps sensor data
 deactivate LGT92GPSP
 
-MB -> LTB : send event of new\ngps sensor data
+MB -> DRB : send event of new\ngps sensor data
+activate DRB
+
+DRB -> MB : new gps sensor data\nwith device records
+deactivate DRB
+
+MB -> LTB : send event of new gps\nsensor data with records
 activate LTB
 
 LTB -> LTB : verify if new gps sensor\ndata matches the filter 

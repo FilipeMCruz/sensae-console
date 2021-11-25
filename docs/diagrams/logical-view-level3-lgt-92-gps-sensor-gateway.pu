@@ -4,7 +4,6 @@ skinparam Monochrome true
 
 component "LGT 92 GPS Sensor Gateway" {
     component "Application" as APP
-    component "Model" as MOD
     component "Infrastructure" as INFRA {
         component "Boot" as BOOT
         component "Endpoint" as ENDPOINT {
@@ -17,16 +16,13 @@ component "LGT 92 GPS Sensor Gateway" {
     }
 
     interface "Application API" as APP_API
-    interface "Model API" as MOD_API
 
     REST_API -- REST
     AMQP_API -- AMQP
 
     APP_API -- APP
     BOOT_API -- BOOT
-    MOD_API -- MOD
 
-    APP --( MOD_API
     BOOT --( REST_API
     BOOT --( AMQP_API
 

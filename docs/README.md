@@ -40,11 +40,13 @@ The system is composed by the following containers:
 
 - **Location Tracking Frontend**: Frontend that displays live information in a map;
 - **Location Tracking Backend**: Backend that sends live information to the frontend;
+- **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
+- **Device Records Backend**: Backend that changes the data that goes trough him by adding specific device information;
+- **Device Records Database**: Database that records information about each device;
 - **Message Broker**: Container responsible for routing messages/events sent by the containers;
 - **LGT 92 GPS Sensor Processor**: Container responsible for transforming the received data (LGT 92 GPS Sensor Data) into something that the system understands (GPS Sensor Data);
 - **LGT 92 GPS Sensor Gateway**: Container responsible for receiving data (LGT 92 GPS Sensor Data) from the outside and propagate it in the system;
-- **Data Gateway**: Container responsible for proxying sensor data requests to the assigned Sensor Gateway.
-
+- **Data Relayer**: Container responsible for proxying sensor data requests to the assigned Sensor Gateway.
 ### Process View - Container Level
 
 Process view of several UCs to display the system flow.
@@ -90,6 +92,20 @@ Currently the adopted architecture has, as reference architecture, the [Onion Ar
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-location-tracking-backend](diagrams/logical-view-level3-location-tracking-backend.svg)
+
+#### Device Records Frontend
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-records-frontend](diagrams/logical-view-level3-device-records-frontend.svg)
+
+#### Device Records Backend
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-records-backend](diagrams/logical-view-level3-device-records-backend.svg)
 
 #### LGT 92 GPS Sensor Processor
 
@@ -216,15 +232,23 @@ Since the communication is made using GraphQL the only two endpoints are `/graph
 subscription {
   locations() {
     dataId
-    deviceId
+    device{
+      id
+      name
+    }
     reportedAt
-    data {
-        longitude
-        latitude
+    data{
+      gps{
+       longitude
+       latitude
+      }
+    }
+    record{
+      label
+      content
     }
   }
 }
-
 ```
 
 This is the resource used to subscribe to changes in the gps location of all sensors registered in the network.
@@ -240,11 +264,20 @@ This is the resource used to subscribe to changes in the gps location of all sen
 subscription {
   location(deviceId: "XXX") {
     dataId
-    deviceId
+    device{
+      id
+      name
+    }
     reportedAt
-    data {
-        longitude
-        latitude
+    data{
+      gps{
+       longitude
+       latitude
+      }
+    }
+    record{
+      label
+      content
     }
   }
 }
@@ -252,6 +285,34 @@ subscription {
 ```
 
 This is the resource used to subscribe to changes in the gps location of a specific sensor registered in the network.
+
+#### Consult GPS Sensors that match the content sent
+
+``` graphql
+
+subscription {
+  locationByContent(content: "XXX") {
+    dataId
+    device{
+      id
+      name
+    }
+    reportedAt
+    data{
+      gps{
+       longitude
+       latitude
+      }
+    }
+    record{
+      label
+      content
+    }
+  }
+}
+```
+
+This is the resource used to subscribe to changes in the gps location of any sensor that has content matching the "content" sent.
 
 ## Data Flow Diagram
 

@@ -1,0 +1,9 @@
+<mat-toolbar>
+  <a mat-button class="link" routerLink="/">
+    <mat-icon aria-label="home">home</mat-icon>
+  </a>
+  <div class="container" *ngFor="let mfe of microfrontends">
+    <span class="spacer"></span>
+    <span class="link" mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</span>
+  </div>
+</mat-toolbar>

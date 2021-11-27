@@ -1,9 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {DeviceRecordPageComponent} from "./components/device-record-page/device-record-page.component";
 
 const routes: Routes = [
-  {path: '', component: DeviceRecordPageComponent}
+  {
+    path: '',
+    redirectTo: 'records',
+    pathMatch: 'full'
+  },
+  {
+    path: 'records',
+    loadChildren: () => import('./modules/records/records.module')
+      .then(m => m.RecordsModule)
+  }
 ];
 
 @NgModule({

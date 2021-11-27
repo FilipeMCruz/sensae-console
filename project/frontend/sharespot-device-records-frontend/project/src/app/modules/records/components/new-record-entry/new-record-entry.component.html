@@ -1,0 +1,58 @@
+<div>
+  <label>Entry Type:</label>
+  <div>
+    <mat-radio-group class="radio-button" [(ngModel)]="type">
+      <mat-radio-button class="radio-button" *ngFor="let currentType of recordType" [value]="currentType">
+        {{currentType}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div *ngIf="this.isTypeBasic()">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Label</mat-label>
+        <input matInput type="text" [(ngModel)]="basicLabel" placeholder="Placeholder">
+        <mat-icon matSuffix>label</mat-icon>
+        <mat-hint>e.g. license plate</mat-hint>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Content</mat-label>
+        <input matInput type="text" [(ngModel)]="content" placeholder="Placeholder">
+        <mat-icon matSuffix>info</mat-icon>
+        <mat-hint>e.g. 00-AA-00</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngIf="!this.isTypeBasic()">
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Sensor Data</mat-label>
+        <mat-icon matSuffix>label</mat-icon>
+        <input type="text"
+               placeholder="Pick one"
+               matInput
+               [(ngModel)]="sensorDataLabel"
+               [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let option of sensorDataType" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="outline">
+        <mat-label>Content</mat-label>
+        <input matInput [(ngModel)]="content" placeholder="Placeholder">
+        <mat-icon matSuffix>info</mat-icon>
+        <mat-hint>e.g. 00-AA-00</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <div>
+    <button mat-stroked-button color="primary" (click)="this.addEntry()">Add Record Entry</button>
+  </div>
+</div>

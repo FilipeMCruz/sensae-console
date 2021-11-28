@@ -1,0 +1,292 @@
+{
+  "version": 2,
+  "projects": {
+    "sharespot-device-records-frontend": {
+      "projectType": "application",
+      "root": "apps/sharespot-device-records-frontend",
+      "sourceRoot": "apps/sharespot-device-records-frontend/src",
+      "prefix": "frontend-services",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/angular:webpack-browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/sharespot-device-records-frontend",
+            "index": "apps/sharespot-device-records-frontend/src/index.html",
+            "main": "apps/sharespot-device-records-frontend/src/main.ts",
+            "polyfills": "apps/sharespot-device-records-frontend/src/polyfills.ts",
+            "tsConfig": "apps/sharespot-device-records-frontend/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/sharespot-device-records-frontend/src/favicon.ico",
+              "apps/sharespot-device-records-frontend/src/assets"
+            ],
+            "styles": [
+              "apps/sharespot-device-records-frontend/src/styles.scss"
+            ],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "apps/sharespot-device-records-frontend/webpack.config.js"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/sharespot-device-records-frontend/src/environments/environment.ts",
+                  "with": "apps/sharespot-device-records-frontend/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "customWebpackConfig": {
+                "path": "apps/sharespot-device-records-frontend/webpack.prod.config.js"
+              }
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "executor": "@nrwl/angular:webpack-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "sharespot-device-records-frontend:build:production"
+            },
+            "development": {
+              "browserTarget": "sharespot-device-records-frontend:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4284
+          }
+        },
+        "extract-i18n": {
+          "executor": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "sharespot-device-records-frontend:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/sharespot-device-records-frontend/src/**/*.ts",
+              "apps/sharespot-device-records-frontend/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/sharespot-device-records-frontend"],
+          "options": {
+            "jestConfig": "apps/sharespot-device-records-frontend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "sharespot-device-records-frontend-e2e": {
+      "root": "apps/sharespot-device-records-frontend-e2e",
+      "sourceRoot": "apps/sharespot-device-records-frontend-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/sharespot-device-records-frontend-e2e/cypress.json",
+            "devServerTarget": "sharespot-device-records-frontend:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "sharespot-device-records-frontend:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "apps/sharespot-device-records-frontend-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    },
+    "ui-aggregator": {
+      "projectType": "application",
+      "root": "apps/ui-aggregator",
+      "sourceRoot": "apps/ui-aggregator/src",
+      "prefix": "frontend-services",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/angular:webpack-browser",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/ui-aggregator",
+            "index": "apps/ui-aggregator/src/index.html",
+            "main": "apps/ui-aggregator/src/main.ts",
+            "polyfills": "apps/ui-aggregator/src/polyfills.ts",
+            "tsConfig": "apps/ui-aggregator/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "apps/ui-aggregator/src/favicon.ico",
+              "apps/ui-aggregator/src/assets"
+            ],
+            "styles": ["apps/ui-aggregator/src/styles.scss"],
+            "scripts": [],
+            "customWebpackConfig": {
+              "path": "apps/ui-aggregator/webpack.config.js"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "apps/ui-aggregator/src/environments/environment.ts",
+                  "with": "apps/ui-aggregator/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all",
+              "customWebpackConfig": {
+                "path": "apps/ui-aggregator/webpack.prod.config.js"
+              }
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "executor": "@nrwl/angular:webpack-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ui-aggregator:build:production"
+            },
+            "development": {
+              "browserTarget": "ui-aggregator:build:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {}
+        },
+        "extract-i18n": {
+          "executor": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ui-aggregator:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "apps/ui-aggregator/src/**/*.ts",
+              "apps/ui-aggregator/src/**/*.html"
+            ]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/ui-aggregator"],
+          "options": {
+            "jestConfig": "apps/ui-aggregator/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "serve-mfe": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "nx serve sharespot-device-records-frontend",
+              "nx serve ui-aggregator"
+            ]
+          }
+        }
+      }
+    },
+    "ui-aggregator-e2e": {
+      "root": "apps/ui-aggregator-e2e",
+      "sourceRoot": "apps/ui-aggregator-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ui-aggregator-e2e/cypress.json",
+            "devServerTarget": "ui-aggregator:serve:development"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "ui-aggregator:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ui-aggregator-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular"
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "defaultProject": "ui-aggregator"
+}

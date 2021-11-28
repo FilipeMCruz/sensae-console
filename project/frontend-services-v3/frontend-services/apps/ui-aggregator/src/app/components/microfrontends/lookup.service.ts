@@ -19,17 +19,17 @@ export class LookupService {
       //   routePath: 'location-tracking',
       //   ngModuleName: 'LocationTrackingModule'
       // },
-      // {
-      //   // For Loading
-      //   remoteEntry: SHARESPOT_DEVICE_RECORDS_FRONTEND_URL,
-      //   remoteName: 'sharespotDeviceRecordsFrontend',
-      //   exposedModule: './Module',
-      //
-      //   // For Routing
-      //   displayName: 'Device Records',
-      //   routePath: 'records',
-      //   ngModuleName: 'DeviceRecordsModule'
-      // }
+      {
+        // For Loading
+        remoteEntry: SHARESPOT_DEVICE_RECORDS_FRONTEND_URL,
+        remoteName: 'sharespotDeviceRecordsFrontend',
+        exposedModule: './Module',
+
+        // For Routing
+        displayName: 'Device Records',
+        routePath: 'records',
+        ngModuleName: 'DeviceRecordsModule'
+      }
     ] as Microfrontend[]);
   }
 }

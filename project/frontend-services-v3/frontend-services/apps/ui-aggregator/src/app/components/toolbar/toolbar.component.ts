@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Microfrontend} from "../microfrontends/microfrontend";
-import {Router} from "@angular/router";
-import {LookupService} from "../microfrontends/lookup.service";
-import {buildRoutes} from "../microfrontends/buildRoutes.service";
+import { Component, OnInit } from '@angular/core';
+import { Microfrontend } from '../microfrontends/microfrontend';
+import { Router } from '@angular/router';
+import { LookupService } from '../microfrontends/lookup.service';
+import { buildRoutes } from '../microfrontends/buildRoutes.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -10,6 +10,7 @@ import {buildRoutes} from "../microfrontends/buildRoutes.service";
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
+
   microfrontends: Microfrontend[] = [];
 
   constructor(
@@ -19,8 +20,9 @@ export class ToolbarComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.microfrontends = await this.lookupService.lookup();
+    console.log('MicroFrontends:', this.microfrontends);
     const routes = buildRoutes(this.microfrontends);
     this.router.resetConfig(routes);
-    console.log(this.router.config)
+    console.log("Config", this.router.config);
   }
 }

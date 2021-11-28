@@ -1,6 +1,6 @@
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const mf = require("@angular-architects/module-federation/webpack");
-const path = require("path");
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const mf = require('@angular-architects/module-federation/webpack');
+const path = require('path');
 const share = mf.share;
 
 const sharedMappings = new mf.SharedMappings();
@@ -10,44 +10,45 @@ sharedMappings.register(
 
 module.exports = {
   output: {
-    uniqueName: "sharespotDeviceRecordsFrontend",
-    publicPath: "auto"
+    uniqueName: 'sharespotDeviceRecordsFrontend',
+    publicPath: 'auto'
   },
   optimization: {
     runtimeChunk: false
-  },   
+  },
   resolve: {
     alias: {
-      ...sharedMappings.getAliases(),
+      ...sharedMappings.getAliases()
     }
   },
   plugins: [
     new ModuleFederationPlugin({
-      
-        // For remotes (please adjust)
-        // name: "sharespotDeviceRecordsFrontend",
-        // filename: "remoteEntry.js",
-        // exposes: {
-        //     './Component': './apps/sharespot-device-records-frontend/src/app/app.component.ts',
-        // },        
-        
-        // For hosts (please adjust)
-        // remotes: {
-        //     "sharespotLocationTrackingFrontend": "sharespotLocationTrackingFrontend@http://localhost:4200/remoteEntry.js",
-        //     "uiAggregator": "uiAggregator@http://localhost:4200/remoteEntry.js",
 
-        // },
+      name: 'sharespotDeviceRecordsFrontend',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Module': './apps/sharespot-device-records-frontend/src/app/modules/records/records.module.ts'
+      },
 
-        shared: share({
-          "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' }, 
-          "@angular/common": { singleton: true, strictVersion: true, requiredVersion: 'auto' }, 
-          "@angular/common/http": { singleton: true, strictVersion: true, requiredVersion: 'auto' }, 
-          "@angular/router": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+      shared: share({
+        '@angular/animations': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/cdk': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/common': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/compiler': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/core': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/forms': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/material': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/platform-browser': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/platform-browser-dynamic': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/router': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@apollo/client': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@nrwl/angular': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'apollo-angular': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
 
-          ...sharedMappings.getDescriptors()
-        })
-        
+        ...sharedMappings.getDescriptors()
+      })
+
     }),
     sharedMappings.getPlugin()
-  ],
+  ]
 };

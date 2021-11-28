@@ -24,7 +24,10 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
 
-      remotes: {},
+      remotes: {
+        // 'sharespotDeviceRecordsFrontend': "sharespotDeviceRecordsFrontend@http://localhost:7084/remoteEntry.js",
+        // 'sharespotLocationTrackingFrontend': "sharespotLocationTrackingFrontend@http://localhost:7085/remoteEntry.js",
+      },
       shared: share({
         "@angular/animations": {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         "@angular/cdk": {singleton: true, strictVersion: true, requiredVersion: 'auto'},

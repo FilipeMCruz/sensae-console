@@ -3,11 +3,7 @@ import {DeviceRecordPageComponent} from "./components/device-record-page/device-
 
 export const RECORDS_ROUTES: Routes = [
   {
-    path: '',
-    redirectTo: 'device-search'
-  },
-  {
-    path: 'device-search',
+    path: 'device-records',
     component: DeviceRecordPageComponent
   }
 ];

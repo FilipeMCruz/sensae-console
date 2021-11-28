@@ -4,6 +4,8 @@ import {DeviceRecordPageComponent} from "./components/device-record-page/device-
 import {NewDeviceRecordComponent} from "./components/new-device-record/new-device-record.component";
 import {OldDeviceRecordComponent} from "./components/old-device-record/old-device-record.component";
 import {NewRecordEntryComponent} from "./components/new-record-entry/new-record-entry.component";
+import {RouterModule} from "@angular/router";
+import {RECORDS_ROUTES} from './records.routes';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -17,8 +19,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatOptionModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
-import {RouterModule} from "@angular/router";
-import {RECORDS_ROUTES} from './records.routes';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,6 @@ import {RECORDS_ROUTES} from './records.routes';
     NewRecordEntryComponent
   ],
   imports: [
-    RouterModule.forChild(RECORDS_ROUTES),
     MatSidenavModule,
     MatCardModule,
     MatFormFieldModule,
@@ -43,7 +42,8 @@ import {RECORDS_ROUTES} from './records.routes';
     MatOptionModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule.forChild(RECORDS_ROUTES),
   ]
 })
 export class RecordsModule {

@@ -1,0 +1,12 @@
+.map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.follow-button {
+  bottom: 5%;
+  left: 2%;
+  position: absolute;
+}

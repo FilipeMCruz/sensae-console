@@ -1,0 +1,52 @@
+{
+  "npmScope": "frontend-services",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "targetDependencies": {
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "projects": {
+    "sharespot-device-records-frontend": {
+      "tags": []
+    },
+    "sharespot-device-records-frontend-e2e": {
+      "tags": [],
+      "implicitDependencies": ["sharespot-device-records-frontend"]
+    },
+    "sharespot-location-tracking-frontend": {
+      "tags": []
+    },
+    "sharespot-location-tracking-frontend-e2e": {
+      "tags": [],
+      "implicitDependencies": ["sharespot-location-tracking-frontend"]
+    },
+    "ui-aggregator": {
+      "tags": []
+    },
+    "ui-aggregator-e2e": {
+      "tags": [],
+      "implicitDependencies": ["ui-aggregator"]
+    }
+  }
+}

@@ -12,9 +12,9 @@ services:
     build: frontend/sharespot-location-tracking-frontend
     image: sharespot-location-tracking-frontend
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  80:80
+      - 80:80
   sharespot-lgt92-gps-data-gateway:
     build: backend-services/sharespot-lgt92-gps-data-gateway
     image: sharespot-lgt92-gps-data-gateway
@@ -23,16 +23,16 @@ services:
     env_file:
       - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8080
+      - 8080
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8080:80
+      - 8080:80
   sharespot-location-tracking-backend:
     build: backend-services/sharespot-location-tracking-backend
     image: sharespot-location-tracking-backend
@@ -41,9 +41,9 @@ services:
     env_file:
       - ./secrets/prod/sharespot-location-tracking-backend.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8080
+      - 8080
   sharespot-lgt92-gps-data-processor:
     build: backend-services/sharespot-lgt92-gps-data-processor
     image: sharespot-lgt92-gps-data-processor
@@ -52,9 +52,9 @@ services:
     env_file:
       - ./secrets/prod/sharespot-lgt92-gps-data-processor.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        -  8080
+      - 8080
   sharespot-device-records-database:
     build: databases/sharespot-device-records-database
     image: sharespot-device-records-database
@@ -62,7 +62,7 @@ services:
     env_file:
       - ./secrets/prod/sharespot-device-records-database.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
       - 5432
     volumes:
@@ -75,11 +75,11 @@ services:
     env_file:
       - ./secrets/prod/sharespot-device-records-backend.env
     networks:
-        - sharespot-network
+      - sharespot-network
     ports:
-        - 8080
+      - 8080
 networks:
-  sharespot-network:
+  sharespot-network: {}
 volumes:
-    sharespot-device-records-database:
-        name: sharespot-device-records-database
+  sharespot-device-records-database:
+    name: sharespot-device-records-database

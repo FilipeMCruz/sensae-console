@@ -72,7 +72,7 @@ services:
     volumes:
       - sharespot-device-records-database:/var/lib/postgresql/data/
 networks:
-  sharespot-network: null
+  sharespot-network: {}
 volumes:
   sharespot-device-records-database:
     name: sharespot-device-records-dev-database

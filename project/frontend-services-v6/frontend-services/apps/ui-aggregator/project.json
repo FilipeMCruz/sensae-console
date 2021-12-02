@@ -1,0 +1,111 @@
+{
+  "projectType": "application",
+  "root": "apps/ui-aggregator",
+  "sourceRoot": "apps/ui-aggregator/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/ui-aggregator",
+        "index": "apps/ui-aggregator/src/index.html",
+        "main": "apps/ui-aggregator/src/main.ts",
+        "polyfills": "apps/ui-aggregator/src/polyfills.ts",
+        "tsConfig": "apps/ui-aggregator/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/ui-aggregator/src/favicon.ico",
+          "apps/ui-aggregator/src/assets"
+        ],
+        "styles": ["apps/ui-aggregator/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/ui-aggregator/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/ui-aggregator/src/environments/environment.ts",
+              "with": "apps/ui-aggregator/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/ui-aggregator/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "ui-aggregator:build:production"
+        },
+        "development": {
+          "browserTarget": "ui-aggregator:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {}
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "ui-aggregator:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/ui-aggregator/src/**/*.ts",
+          "apps/ui-aggregator/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/ui-aggregator"],
+      "options": {
+        "jestConfig": "apps/ui-aggregator/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "serve-mfe": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve sharespot-location-tracking-frontend",
+          "nx serve sharespot-device-records-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

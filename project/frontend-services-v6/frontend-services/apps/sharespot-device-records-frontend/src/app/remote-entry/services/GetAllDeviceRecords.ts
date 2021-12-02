@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
-import { DeviceRecordQuery } from '../dtos/RecordsDTO';
-import { ApolloQueryResult } from '@apollo/client/core';
+import {Injectable} from '@angular/core';
+import {Apollo, gql} from 'apollo-angular';
+import {Observable} from 'rxjs';
+import {DeviceRecordQuery} from '../dtos/RecordsDTO';
+import {ApolloQueryResult} from '@apollo/client/core';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class GetAllDeviceRecords {
         }
       }
     `;
-    return this.apollo
-      .query<DeviceRecordQuery>({ query: query });
+    return this.apollo.use("deviceRecords")
+      .query<DeviceRecordQuery>({query});
   }
 }

@@ -26,20 +26,5 @@
       }
     ]
   },
-  "projects": {
-    "sharespot-device-records-frontend": {
-      "tags": []
-    },
-    "sharespot-device-records-frontend-e2e": {
-      "tags": [],
-      "implicitDependencies": ["sharespot-device-records-frontend"]
-    },
-    "ui-aggregator": {
-      "tags": []
-    },
-    "ui-aggregator-e2e": {
-      "tags": [],
-      "implicitDependencies": ["ui-aggregator"]
-    }
-  }
+  "projects": {}
 }

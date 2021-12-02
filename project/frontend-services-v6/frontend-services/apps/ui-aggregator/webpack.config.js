@@ -29,40 +29,103 @@ sharedMappings.register(
 module.exports = {
   output: {
     uniqueName: 'ui-aggregator',
-    publicPath: 'auto'
+    publicPath: 'auto',
   },
   optimization: {
     runtimeChunk: false,
-    minimize: false
+    minimize: false,
   },
   resolve: {
     alias: {
-      ...sharedMappings.getAliases()
-    }
+      ...sharedMappings.getAliases(),
+    },
   },
   plugins: [
     new ModuleFederationPlugin({
-      remotes: {},
+      remotes: {
+        'sharespot-location-tracking-frontend':
+          'sharespot-location-tracking-frontend@http://localhost:4284/remoteEntry.js',
+      },
       shared: share({
-        '@angular/animations': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/cdk': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/common': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/compiler': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/core': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/forms': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/material': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/platform-browser': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/platform-browser-dynamic': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/router': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        'rxjs': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        'rxjs/operators': {singleton: true, strictVersion: true, requiredVersion: '~6.6.0'},
-        '@apollo/client': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        'apollo-angular': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        'graphql': {singleton: true, strictVersion: true, requiredVersion: 'auto'},
-        '@angular/common/http': {singleton: true, strictVersion: true, requiredVersion: '12.2.13'},
-        ...sharedMappings.getDescriptors()
-      })
+        '@angular/animations': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/cdk': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/common': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/compiler': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/core': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/forms': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/material': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/platform-browser': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/platform-browser-dynamic': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/router': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'rxjs/operators': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: '~6.6.0',
+        },
+        '@apollo/client': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        'apollo-angular': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        graphql: {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@angular/common/http': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: '12.2.13',
+        },
+        ...sharedMappings.getDescriptors(),
+      }),
     }),
-    sharedMappings.getPlugin()
-  ]
+    sharedMappings.getPlugin(),
+  ],
 };

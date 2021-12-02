@@ -13,11 +13,57 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
 import {ROUTES} from './app.routes';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {APOLLO_OPTIONS} from "apollo-angular";
+import {APOLLO_NAMED_OPTIONS} from "apollo-angular";
 import {HttpLink} from "apollo-angular/http";
-import {InMemoryCache} from "@apollo/client/core";
+import {ApolloClientOptions, InMemoryCache, split} from "@apollo/client/core";
 import {environment} from "../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
+import {WebSocketLink} from "@apollo/client/link/ws";
+import {getMainDefinition} from "@apollo/client/utilities";
+
+export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
+  const http = httpLink.create({
+    uri: httpUrl,
+  });
+
+  // Create a WebSocket link:
+  const ws = new WebSocketLink({
+    uri: wsUrl,
+    options: {
+      reconnect: true,
+    },
+  });
+
+  // using the ability to split links, you can send data to each link
+  // depending on what kind of operation is being sent
+  return split(
+    // split based on operation type
+    ({query}) => {
+      // @ts-ignore
+      const {kind, operation} = getMainDefinition(query);
+      return (kind === 'OperationDefinition' && operation === 'subscription');
+    },
+    ws,
+    http,
+  );
+}
+
+export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
+  return {
+    deviceRecords: {
+      name: 'deviceRecords',
+      link: httpLink.create({
+        uri: environment.endpoints.deviceRecords.backendURL.http
+      }),
+      cache: new InMemoryCache()
+    },
+    locationTracking: {
+      name: 'locationTracking',
+      link: createLinkWithWebsocket(httpLink, environment.endpoints.locationTracking.backendURL.websocket, environment.endpoints.locationTracking.backendURL.http),
+      cache: new InMemoryCache(),
+    }
+  };
+}
 
 @NgModule({
   declarations: [
@@ -40,16 +86,9 @@ import {HttpClientModule} from "@angular/common/http";
   ],
   providers: [
     {
-      provide: APOLLO_OPTIONS,
-      useFactory: (httpLink: HttpLink) => {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: environment.endpoints.deviceRecords.backendURL.http
-          })
-        };
-      },
-      deps: [HttpLink]
+      provide: APOLLO_NAMED_OPTIONS,
+      useFactory: createNamedApollo,
+      deps: [HttpLink],
     }
   ],
   bootstrap: [AppComponent]

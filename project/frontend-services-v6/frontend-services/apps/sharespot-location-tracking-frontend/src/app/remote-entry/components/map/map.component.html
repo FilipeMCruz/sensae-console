@@ -1,0 +1,12 @@
+<div class="map-container">
+  <div id="map" class="map"></div>
+  <frontend-services-search-card (devicePicked)="subscribeTo($event)"
+                                 (deviceCleaned)="cleanSubscriber()">
+  </frontend-services-search-card>
+  <div class="follow-button">
+    <button mat-fab [color]="(follow) ? 'warn' : 'primary'" aria-label="Follow new sensor data"
+            (click)="this.changeFollow()">
+      <mat-icon>follow_the_signs</mat-icon>
+    </button>
+  </div>
+</div>

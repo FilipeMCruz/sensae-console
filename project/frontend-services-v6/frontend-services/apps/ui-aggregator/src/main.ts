@@ -1,12 +1,13 @@
-import { loadRemoteEntry } from '@angular-architects/module-federation';
-
-const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = 'http://localhost:4285/remoteEntry.js';
-const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = 'http://localhost:4284/remoteEntry.js';
+import {loadRemoteEntry} from '@angular-architects/module-federation';
 
 const remotes = [
   {
-    'remoteEntry': 'http://localhost:4284/remoteEntry.js',
+    'remoteEntry': 'http://localhost:4283/remoteEntry.js',
     'remoteName': 'sharespotdevicerecordsfrontend'
+  },
+  {
+    'remoteEntry': 'http://localhost:4284/remoteEntry.js',
+    'remoteName': 'sharespotlocationtrackingfrontend'
   }
 ];
 

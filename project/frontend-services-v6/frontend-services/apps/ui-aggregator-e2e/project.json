@@ -1,0 +1,28 @@
+{
+  "root": "apps/ui-aggregator-e2e",
+  "sourceRoot": "apps/ui-aggregator-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/ui-aggregator-e2e/cypress.json",
+        "devServerTarget": "ui-aggregator:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "ui-aggregator:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ui-aggregator-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["ui-aggregator"]
+}

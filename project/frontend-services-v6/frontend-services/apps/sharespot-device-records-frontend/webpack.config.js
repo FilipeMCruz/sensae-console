@@ -59,6 +59,12 @@ module.exports = {
         '@angular/platform-browser': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         '@angular/platform-browser-dynamic': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         '@angular/router': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'rxjs': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'rxjs/operators': { singleton: true, strictVersion: true, requiredVersion: '~6.6.0' },
+        '@apollo/client': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'apollo-angular': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        'graphql': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/common/http': { singleton: true, strictVersion: true, requiredVersion: '12.2.13' },
         ...sharedMappings.getDescriptors()
       })
     }),

@@ -8,13 +8,33 @@ services:
     ports:
       - 5672
       - 15672:15672
-  sharespot-location-tracking-frontend:
-    build: frontend/sharespot-location-tracking-frontend
-    image: sharespot-location-tracking-frontend
+  ui-aggregator:
+    build:
+      dockerfile: docker/ui-aggregator/Dockerfile
+      context: frontend-services
+    image: ui-aggregator
     networks:
       - sharespot-network
     ports:
       - 80:80
+  sharespot-device-records-frontend:
+    build:
+      dockerfile: docker/sharespot-device-records-frontend/Dockerfile
+      context: frontend-services
+    image: sharespot-device-records-frontend
+    networks:
+      - sharespot-network
+    ports:
+      - 80
+  sharespot-location-tracking-frontend:
+    build:
+      dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile
+      context: frontend-services
+    image: sharespot-location-tracking-frontend
+    networks:
+      - sharespot-network
+    ports:
+      - 80
   sharespot-lgt92-gps-data-gateway:
     build: backend-services/sharespot-lgt92-gps-data-gateway
     image: sharespot-lgt92-gps-data-gateway
@@ -35,6 +55,7 @@ services:
       - 8080:80
   sharespot-location-tracking-backend:
     build: backend-services/sharespot-location-tracking-backend
+    container_name: sharespot-location-tracking-backend
     image: sharespot-location-tracking-backend
     environment:
       spring_profiles_active: prod
@@ -69,6 +90,7 @@ services:
       - sharespot-device-records-database:/var/lib/postgresql/data/
   sharespot-device-records-backend:
     build: backend-services/sharespot-device-records-backend
+    container_name: sharespot-device-records-backend
     image: sharespot-device-records-backend
     environment:
       spring_profiles_active: prod

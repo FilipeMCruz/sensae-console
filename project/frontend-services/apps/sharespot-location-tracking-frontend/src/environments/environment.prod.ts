@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   backendURL: {
-    websocket: "ws://localhost/locations-tracking/subscriptions",
+    websocket: "ws://localhost/location-tracking/subscriptions",
     http: "http://localhost/location-tracking/graphql"
   },
   mapbox: {

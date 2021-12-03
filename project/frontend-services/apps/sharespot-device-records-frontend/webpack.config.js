@@ -29,7 +29,8 @@ sharedMappings.register(
 module.exports = {
   output: {
     uniqueName: 'sharespotdevicerecordsfrontend',
-    publicPath: 'auto'
+    publicPath: 'auto',
+    clean: true
   },
   optimization: {
     runtimeChunk: false,
@@ -64,7 +65,7 @@ module.exports = {
         '@apollo/client': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         'apollo-angular': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         'graphql': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        '@angular/common/http': { singleton: true, strictVersion: true, requiredVersion: '12.2.13' },
+        '@angular/common/http': { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         ...sharedMappings.getDescriptors()
       })
     }),

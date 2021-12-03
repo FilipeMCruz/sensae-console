@@ -30,6 +30,7 @@ module.exports = {
   output: {
     uniqueName: 'sharespotlocationtrackingfrontend',
     publicPath: 'auto',
+    clean: true
   },
   optimization: {
     runtimeChunk: false,
@@ -123,7 +124,7 @@ module.exports = {
         '@angular/common/http': {
           singleton: true,
           strictVersion: true,
-          requiredVersion: '12.2.13',
+          requiredVersion: 'auto',
         },
         ...sharedMappings.getDescriptors(),
       }),

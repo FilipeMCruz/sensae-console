@@ -55,6 +55,7 @@ services:
       - 8080:80
   sharespot-location-tracking-backend:
     build: backend-services/sharespot-location-tracking-backend
+    container_name: sharespot-location-tracking-backend
     image: sharespot-location-tracking-backend
     environment:
       spring_profiles_active: prod
@@ -89,6 +90,7 @@ services:
       - sharespot-device-records-database:/var/lib/postgresql/data/
   sharespot-device-records-backend:
     build: backend-services/sharespot-device-records-backend
+    container_name: sharespot-device-records-backend
     image: sharespot-device-records-backend
     environment:
       spring_profiles_active: prod

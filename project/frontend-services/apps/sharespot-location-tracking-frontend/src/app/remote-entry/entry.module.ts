@@ -13,6 +13,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MapComponent} from "./components/map/map.component";
 import {SearchCardComponent} from "./components/search-card/search-card.component";
 import {environment} from "../../environments/environment";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -22,6 +23,7 @@ import {environment} from "../../environments/environment";
     SearchCardComponent
   ],
   imports: [
+    MatTooltipModule,
     MatSidenavModule,
     MatCardModule,
     MatFormFieldModule,

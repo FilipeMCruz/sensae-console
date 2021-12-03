@@ -6,3 +6,7 @@
   font-size: 15px;
   cursor: pointer;
 }
+
+:host {
+  min-height: 64px;
+}

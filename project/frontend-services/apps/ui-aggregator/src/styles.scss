@@ -13,3 +13,43 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.map {
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  width: 100%;
+}
+
+.mapboxgl-popup-content {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.follow-button {
+  position: absolute;
+  bottom: 5%;
+  left: 2%;
+  z-index: 9999;
+}
+
+//https://coolors.co/000000-0c1821-1b2a41-324a5f-ccc9dc
+.follow-button > .mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: #324a5f;
+}
+
+.search-card {
+  position: absolute;
+  width: 15%;
+  min-width: 250px;
+  min-height: 60%;
+  left: 2%;
+  top: 10%;
+  border-radius: 10px;
+  background-color: #ccc9dc;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  z-index: 2;
+}
+
+.search-bar {
+  width: 100%;
+}

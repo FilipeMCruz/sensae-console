@@ -4,9 +4,10 @@
                                  (deviceCleaned)="cleanSubscriber()">
   </frontend-services-search-card>
   <div class="follow-button">
-    <button mat-fab [color]="(follow) ? 'warn' : 'primary'" aria-label="Follow new sensor data"
+    <button [matTooltip]="this.buttonInfo()" mat-fab aria-label="Follow new sensor data"
             (click)="this.changeFollow()">
-      <mat-icon>follow_the_signs</mat-icon>
+      <mat-icon *ngIf="follow">visibility</mat-icon>
+      <mat-icon *ngIf="!follow">visibility_off</mat-icon>
     </button>
   </div>
 </div>

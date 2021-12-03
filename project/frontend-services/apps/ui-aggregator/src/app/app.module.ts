@@ -20,6 +20,7 @@ import {environment} from "../environments/environment";
 import {HttpClientModule} from "@angular/common/http";
 import {WebSocketLink} from "@apollo/client/link/ws";
 import {getMainDefinition} from "@apollo/client/utilities";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
   const http = httpLink.create({
@@ -75,6 +76,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatTooltipModule,
     MatToolbarModule,
     LayoutModule,
     MatButtonModule,

@@ -8,8 +8,6 @@ import {SensorMapper} from "../../mappers/SensorMapper";
 import {GetNewGPSLocation} from "../../services/GetNewGPSLocation";
 import {SensorDTO} from "../../dtos/SensorDTO";
 import {environment} from "../../../../environments/environment";
-import {SensorCoordinates} from "../../model/SensorCoordinates";
-import {Sensor} from "../../model/Sensor";
 
 @Component({
   selector: 'frontend-services-map',
@@ -28,6 +26,8 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
+  private followContent = "";
+
   private subscription!: Subscription;
 
   constructor(private locationsEmitter: GetNewGPSLocations,
@@ -39,16 +39,22 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription = this.locationsEmitter.getData().subscribe(
       next => this.verifyAndDraw(next.data)
     );
-    const a = new GPSSensorData("841e28de-be0f-491e-a175-816613dfabc6",
-      new Sensor(`ec53bf69-acbb-4f4a-95e3-5c46d58009c3`, "Oi"),
-      new Date(1637068401 * 1000),
-      new SensorCoordinates(41.178940, -8.582296), [])
-
-    this.drawPoint(a);
+    // const a = new GPSSensorData("841e28de-be0f-491e-a175-816613dfabc6",
+    //   new Sensor(`ec53bf69-acbb-4f4a-95e3-5c46d58009c3`, "Oi"),
+    //   new Date(1637068401 * 1000),
+    //   new SensorCoordinates(41.178940, -8.582296), [])
+    // this.drawPoint(a);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  buttonInfo(): string {
+    if (this.follow) {
+      return "Press to stop following " + this.followContent;
+    }
+    return "Press to follow " + this.followContent;
   }
 
   changeFollow() {
@@ -64,12 +70,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
   subscribeTo(deviceId: string) {
     this.subscription.unsubscribe();
+    this.followContent = deviceId;
     this.points.forEach((sensor, index, array) => {
       if (sensor.value.device.has(deviceId)) {
         sensor.point.remove();
         array.splice(index, 1);
       }
     });
+
     this.subscription = this.locationEmitter.getData(deviceId).subscribe(
       next => {
         this.verifyAndDraw(next.data)

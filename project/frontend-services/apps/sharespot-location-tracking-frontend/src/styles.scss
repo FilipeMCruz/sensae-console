@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import '~mapbox-gl/dist/mapbox-gl.css';
 
 html, body {
   height: 100%;
@@ -29,10 +28,6 @@ body {
   cursor: pointer;
 }
 
-.mapboxgl-popup {
-  /*  */
-}
-
 .mapboxgl-popup-content {
   font-family: "Helvetica Neue", sans-serif;
 }
@@ -44,13 +39,14 @@ body {
   z-index: 9999;
 }
 
+//https://coolors.co/000000-0c1821-1b2a41-324a5f-ccc9dc
+.follow-button > .mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: #324a5f;
+}
+
 .map {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
-}
-
-.map-container {
-  height: 100%;
 }

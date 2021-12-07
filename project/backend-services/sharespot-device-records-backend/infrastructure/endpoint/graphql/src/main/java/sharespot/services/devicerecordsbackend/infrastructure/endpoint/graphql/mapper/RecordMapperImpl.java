@@ -56,7 +56,7 @@ public class RecordMapperImpl implements RecordMapper {
         }
 
         var id = new DeviceId(UUID.fromString(deviceDTO.device.id));
-        var name = new DeviceName(deviceDTO.device.id);
+        var name = new DeviceName(deviceDTO.device.name);
 
         return new DeviceRecords(new Device(id, name), new Records(records));
     }

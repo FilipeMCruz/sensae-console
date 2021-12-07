@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Replace with New Record?</h1>
+<div class="list" mat-dialog-content>
+  <mat-card class="item">
+    <mat-card-title>Old Device Record</mat-card-title>
+    <mat-card-content>
+      <frontend-services-device-record
+        [record]="data.old"
+        [type]="deviceViewType.Compare">
+      </frontend-services-device-record>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="item">
+    <mat-card-title>New Device Record</mat-card-title>
+    <mat-card-content>
+      <frontend-services-device-record
+        [record]="data.fresh"
+        [type]="deviceViewType.Compare">
+      </frontend-services-device-record>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>No Thanks</button>
+  <button mat-button [mat-dialog-close]="true">Ok</button>
+</div>

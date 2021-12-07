@@ -1,9 +1,13 @@
-import {DeviceRecordRegister} from "../dtos/RecordsDTO";
-import {RecordMapper} from "./RecordMapper";
+import {DeviceRecordsInput} from "../dtos/RecordsDTO";
 import {DeviceRecord} from "../model/DeviceRecord";
+import {RecordMapper} from "./RecordMapper";
 
 export class DeviceRecordRegisterMapper {
-  static dtoToModel(dto: DeviceRecordRegister): DeviceRecord {
-    return RecordMapper.dtoToModel(dto.index)
+  static modelToDto(model: DeviceRecord): DeviceRecordsInput {
+    return {index: RecordMapper.modelToDto(model)};
+  }
+
+  static dtoToModel(dto: DeviceRecordsInput): DeviceRecord {
+    return RecordMapper.dtoToModel(dto.index);
   }
 }

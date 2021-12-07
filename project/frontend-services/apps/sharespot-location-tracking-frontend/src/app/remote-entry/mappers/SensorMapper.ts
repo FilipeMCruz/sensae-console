@@ -15,9 +15,9 @@ export class SensorMapper {
     } else {
       value = dto.location;
     }
-    let coordinates = new SensorCoordinates(value.data.gps.latitude, value.data.gps.longitude);
-    let entries = value.record.map(e => new RecordEntry(e.label, e.content));
-    let sensor = new Sensor(value.device.id, value.device.name);
+    const coordinates = new SensorCoordinates(value.data.gps.latitude, value.data.gps.longitude);
+    const entries = value.record.map(e => new RecordEntry(e.label, e.content));
+    const sensor = new Sensor(value.device.id, value.device.name);
     return new GPSSensorData(value.dataId, sensor, new Date(Number(value.reportedAt)), coordinates, entries);
   }
 }

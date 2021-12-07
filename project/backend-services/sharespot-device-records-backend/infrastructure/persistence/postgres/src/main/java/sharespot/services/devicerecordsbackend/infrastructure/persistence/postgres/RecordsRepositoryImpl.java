@@ -1,6 +1,7 @@
 package sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
@@ -48,6 +49,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     }
 
     @Override
+    @Transactional
     public DeviceId delete(DeviceId id) {
         repositoryPostgres.deleteByDeviceId(id.value().toString());
         return id;

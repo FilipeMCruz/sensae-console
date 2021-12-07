@@ -1,7 +1,7 @@
 import {DeviceRecordDTO, RecordTypeDTO, SensorDataRecordLabelDTO} from "../dtos/RecordsDTO";
 import {DeviceRecord} from "../model/DeviceRecord";
 import {RecordEntry} from "../model/RecordEntry";
-import {RecordType} from "../model/RecordType";
+import {RecordEntryType} from "../model/RecordEntryType";
 import {SensorDataRecordLabel} from "../model/SensorDataRecordLabel";
 import {Device} from "../model/Device";
 
@@ -10,12 +10,12 @@ export class RecordMapper {
   static dtoToModel(dto: DeviceRecordDTO): DeviceRecord {
     let entries = dto.entries.map(e => {
       if (e.type == RecordTypeDTO.BASIC) {
-        return new RecordEntry(e.label, e.content, RecordType.BASIC)
+        return new RecordEntry(e.label, e.content, RecordEntryType.BASIC)
       } else {
         if ((e.label as SensorDataRecordLabelDTO) === SensorDataRecordLabelDTO.GPS_LONGITUDE) {
-          return new RecordEntry(SensorDataRecordLabel.GPS_LONGITUDE, e.content, RecordType.SENSOR_DATA)
+          return new RecordEntry(SensorDataRecordLabel.GPS_LONGITUDE, e.content, RecordEntryType.SENSOR_DATA)
         } else {
-          return new RecordEntry(SensorDataRecordLabel.GPS_LATITUDE, e.content, RecordType.SENSOR_DATA)
+          return new RecordEntry(SensorDataRecordLabel.GPS_LATITUDE, e.content, RecordEntryType.SENSOR_DATA)
         }
       }
     });
@@ -25,7 +25,7 @@ export class RecordMapper {
 
   static modelToDto(model: DeviceRecord): DeviceRecordDTO {
     let entries = model.entries.map(e => {
-      if (e.type == RecordType.BASIC) {
+      if (e.type == RecordEntryType.BASIC) {
         return {label: e.label, content: e.content, type: RecordTypeDTO.BASIC}
       } else {
         if ((e.label as SensorDataRecordLabel) === SensorDataRecordLabel.GPS_LONGITUDE) {

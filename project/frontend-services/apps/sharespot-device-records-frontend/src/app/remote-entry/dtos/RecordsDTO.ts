@@ -2,16 +2,16 @@ export interface DeviceRecordQuery {
   deviceRecords: Array<DeviceRecordDTO>
 }
 
-export interface DeviceRecordRegister {
+export interface DeviceRecordIndex {
+  index: Array<DeviceRecordDTO>
+}
+
+export interface DeviceRecordsInput {
   index: DeviceRecordDTO
 }
 
 export interface DeviceRecordDelete {
-  delete: DeviceIdDTO
-}
-
-export interface DeviceIdDTO {
-  deviceId: string
+  delete: DeviceDTO
 }
 
 export interface DeviceRecordDTO {

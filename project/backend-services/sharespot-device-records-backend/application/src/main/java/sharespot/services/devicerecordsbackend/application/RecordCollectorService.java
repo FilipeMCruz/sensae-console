@@ -19,6 +19,9 @@ public class RecordCollectorService {
     }
 
     public Set<DeviceRecordDTO> records() {
-        return collector.collect().stream().map(mapper::domainToDto).collect(Collectors.toSet());
+        return collector.collect()
+                .stream()
+                .map(mapper::domainToDto)
+                .collect(Collectors.toSet());
     }
 }

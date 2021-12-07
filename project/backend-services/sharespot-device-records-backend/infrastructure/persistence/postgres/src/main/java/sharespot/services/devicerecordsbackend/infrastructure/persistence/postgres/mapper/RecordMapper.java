@@ -31,7 +31,7 @@ public class RecordMapper {
 
     public static DeviceRecords postgresToDomain(DeviceRecordsPostgres records) {
         List<RecordEntry> collect = records.entries.stream().map(e -> {
-            if (e.type.equals(DeviceRecordEntryTypePostgres.basic())) {
+            if (e.type.equals(DeviceRecordEntryTypePostgres.sensorData())) {
                 var label = SensorDataRecordLabel.give(e.label);
                 return new SensorDataRecordEntry(label, e.content);
             } else {

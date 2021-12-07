@@ -14,12 +14,13 @@ public enum SensorDataRecordLabel {
         }
     };
 
-    public static SensorDataRecordLabel give(String value) {
-        try {
-            return SensorDataRecordLabel.valueOf(value);
-        } catch (IllegalArgumentException ex) {
-            return null;
+    public static SensorDataRecordLabel give(String s) {
+        if (GPS_LATITUDE.value().equals(s)) {
+            return GPS_LATITUDE;
+        } else if (GPS_LONGITUDE.value().equals(s)) {
+            return GPS_LONGITUDE;
         }
+        throw new IllegalArgumentException("No Enum specified for this string");
     }
 
     public abstract String value();

@@ -1,0 +1,88 @@
+<p>
+  <mat-form-field class="medium-input">
+    <mat-label>Device Name</mat-label>
+    <input [disabled]="deviceView == deviceViewType.Compare" [(ngModel)]="record.device.name" matInput>
+    <mat-hint>e.g. GPS Sensor A1</mat-hint>
+  </mat-form-field>
+  <ng-container *ngIf="deviceView == deviceViewType.Edit">
+    <button class="to-right" mat-stroked-button (click)="deleteDevice()">Delete</button>
+  </ng-container>
+  <br>
+  <mat-form-field class="big-input">
+    <mat-label>Device Id</mat-label>
+    <input [disabled]="deviceView != deviceViewType.New" [(ngModel)]="record.device.id" matInput>
+    <mat-hint>e.g. 8af821e5-3e0b-4469-88b0-fd07bee3b09d</mat-hint>
+  </mat-form-field>
+  <ng-container *ngIf="deviceView == deviceViewType.New">
+    <button [disabled]="!record.isValid()" class="to-right" mat-stroked-button (click)="saveDevice()">Save</button>
+  </ng-container>
+  <ng-container *ngIf="deviceView == deviceViewType.Edit">
+    <button [disabled]="!record.isValid()" class="to-right" mat-stroked-button
+            (click)="saveDevice()">Update
+    </button>
+  </ng-container>
+</p>
+<div>
+  Record Entries:
+  <div *ngIf="entryView == entryViewType.List">
+    <mat-list>
+      <mat-list-item class="item-list" *ngFor="let entry of record.entries; let i = index;">
+        <mat-icon (click)="editEntry(i)" mat-list-icon>{{getEntryType(entry)}}</mat-icon>
+        <div mat-line>{{entry.label}}</div>
+        <div mat-line>{{entry.content}}</div>
+        <button *ngIf="deviceView != deviceViewType.Compare" mat-icon-button (click)="removeEntry($event, i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+    <br>
+    <button *ngIf="deviceView != deviceViewType.Compare" mat-stroked-button (click)="entryView = entryViewType.New">New
+      Entry
+    </button>
+  </div>
+  <div *ngIf="entryView != entryViewType.List">
+    <br>
+    Entry Type:
+    <mat-radio-group class="radio-button" [(ngModel)]="currentEntry.type">
+      <mat-radio-button class="radio-button" *ngFor="let currentType of recordType" [value]="currentType">
+        {{currentType}}
+      </mat-radio-button>
+    </mat-radio-group>
+    <div *ngIf="currentEntry.type == typeType.BASIC">
+      <mat-form-field class="medium-input">
+        <mat-label>Label</mat-label>
+        <input matInput type="text" [(ngModel)]="currentEntry.label">
+        <mat-icon matSuffix>label</mat-icon>
+        <mat-hint>e.g. license plate</mat-hint>
+      </mat-form-field>
+    </div>
+    <div *ngIf="currentEntry.type == typeType.SENSOR_DATA">
+      <mat-form-field class="medium-input">
+        <mat-label>Sensor Data</mat-label>
+        <mat-icon matSuffix>label</mat-icon>
+        <mat-select [(ngModel)]="currentEntry.label">
+          <mat-option *ngFor="let option of sensorDataType" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Pick One</mat-hint>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="big-input">
+      <mat-label>Content</mat-label>
+      <input matInput [(ngModel)]="currentEntry.content">
+      <mat-icon matSuffix>info</mat-icon>
+      <mat-hint>e.g. 00-AA-00</mat-hint>
+    </mat-form-field>
+    <br>
+    <br>
+    <button *ngIf="entryView == entryViewType.New" mat-stroked-button color="primary" (click)="addEntry()">Add
+      Record
+      Entry
+    </button>
+    <button *ngIf="entryView == entryViewType.Edit" mat-stroked-button color="primary" (click)="saveEntryEdit()">
+      Save Changes
+    </button>
+    <button class="to-right" mat-stroked-button (click)="entryView = entryViewType.List">Back</button>
+  </div>
+</div>

@@ -23,12 +23,13 @@ enum RecordType {
     SENSOR_DATA
 }
 
-input DeviceIdInput {
-    deviceId: String
+input DeviceInput {
+    id: String
+    name: String
 }
 
 input DeviceRecordsInput {
-    deviceId : String
+    device : DeviceInput
     entries : [RecordEntryInput]
 }
 

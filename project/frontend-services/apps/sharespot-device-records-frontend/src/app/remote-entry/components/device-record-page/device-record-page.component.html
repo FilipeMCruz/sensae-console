@@ -1,7 +1,22 @@
-<div>
-  <h1>Sensors:</h1>
-  <div class="list">
-    <frontend-services-old-device-record *ngFor="let sensor of this.records" [sensor]=sensor class="item"></frontend-services-old-device-record>
-    <frontend-services-new-device-record class="item"></frontend-services-new-device-record>
-  </div>
+<div class="list">
+  <mat-card *ngFor="let record of this.records" class="item">
+    <mat-card-title>Device Record</mat-card-title>
+    <mat-card-content>
+      <frontend-services-device-record
+        [record]=record
+        [type]="deviceViewType.Edit"
+        (newDeviceEvent)="addItem($event)"
+        (deleteDeviceEvent)="deleteItem($event)"
+      ></frontend-services-device-record>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="item">
+    <mat-card-title>New Device Record</mat-card-title>
+    <mat-card-content>
+      <frontend-services-device-record
+        (newDeviceEvent)="addItem($event)"
+        [type]="deviceViewType.New"
+      ></frontend-services-device-record>
+    </mat-card-content>
+  </mat-card>
 </div>

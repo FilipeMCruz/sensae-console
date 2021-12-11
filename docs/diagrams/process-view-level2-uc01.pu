@@ -10,7 +10,7 @@ autonumber 1
 participant "Data Gateway" as DG
 participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
 participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
-participant "Device Records\nBackend" as DRB
+participant "Device Records Slave\nBackend" as DRB
 participant "Message Broker" as MB
 participant "Location Tracking\nBackend" as LTB
 participant "Location Tracking\nFrontend" as LTF

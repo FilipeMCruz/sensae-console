@@ -1,0 +1,40 @@
+@startuml process-view-level2-uc03
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Device Records\nFrontend" as DRF
+participant "Device Records Master\nBackend" as DRMB
+participant "Device Records\nDatabase" as DRDB
+participant "Message Broker" as MB
+participant "Device Records Slave\nBackend" as DRSB
+
+activate MB
+activate DRF
+
+-> DRF: new/edited device record
+
+DRF -> DRMB: new/edited device record
+activate DRMB
+
+DRMB -> DRDB: new/edited device record
+activate DRDB
+
+DRDB --> DRMB: sucess
+deactivate DRDB
+
+DRMB -> MB: new/edited device record
+
+MB -> DRSB: new/edited device record
+
+DRMB --> DRF: sucess
+
+deactivate DRMB
+
+<-- DRF: sucess
+
+@enduml

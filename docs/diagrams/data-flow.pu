@@ -6,7 +6,7 @@ start
 :any data received in\n**Data Relayer**;
 :lgt 92 gps data received in\n**LGT 92 GPS Sensor Gateway**;
 :lgt 92 gps data processed in\n**LGT 92 GPS Sensor Processor**;
-:device records added to gps data in\n**Device Records**;
+:device records added to gps data in\n**Device Records Slave Backend**;
 :gps data with records received in\n**Location Tracking Backend**;
 :gps data with records received in\n**Location Tracking Frontend**;
 end

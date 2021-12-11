@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="254px" preserveAspectRatio="none" style="width:532px;height:254px;background:#FFFFFF;" version="1.1" viewBox="0 0 532 254" width="532px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="175.7969" style="stroke:#383838;stroke-width:1.0;" width="10" x="143" y="62.5938"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#383838;stroke-width:1.0;" width="10" x="301.5" y="112.8594"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="460" y="141.9922"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="147.5" x2="147.5" y1="52.5938" y2="247.3906"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="306.5" x2="306.5" y1="52.5938" y2="247.3906"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="464.5" x2="464.5" y1="52.5938" y2="247.3906"/><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="123" x="86.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="93.5" y="24.9951">Device Records</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="116.5" y="41.292">Frontend</text><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="174" x="219.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="160" x="226.5" y="24.9951">Device Records Master</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="276" y="41.292">Backend</text><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="123" x="403.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="410.5" y="24.9951">Device Records</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66" x="432" y="41.292">Database</text><rect fill="#FFFFFF" height="175.7969" style="stroke:#383838;stroke-width:1.0;" width="10" x="143" y="62.5938"/><rect fill="#FFFFFF" height="87.3984" style="stroke:#383838;stroke-width:1.0;" width="10" x="301.5" y="112.8594"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="460" y="141.9922"/><polygon fill="#383838" points="131,79.7266,141,83.7266,131,87.7266" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="0" x2="137" y1="83.7266" y2="83.7266"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="9.5" y="78.6606">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="22.5" y="78.6606">all device records</text><polygon fill="#383838" points="289.5,108.8594,299.5,112.8594,289.5,116.8594" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="153" x2="295.5" y1="112.8594" y2="112.8594"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="165.25" y="107.7935">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="178.25" y="107.7935">all device records</text><polygon fill="#383838" points="448,137.9922,458,141.9922,448,145.9922" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="311.5" x2="454" y1="141.9922" y2="141.9922"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="323.75" y="136.9263">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="336.75" y="136.9263">all device records</text><polygon fill="#383838" points="322.5,167.125,312.5,171.125,322.5,175.125" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="316.5" x2="464" y1="171.125" y2="171.125"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="326.25" y="166.0591">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="339.25" y="166.0591">all device records</text><polygon fill="#383838" points="164,196.2578,154,200.2578,164,204.2578" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="158" x2="305.5" y1="200.2578" y2="200.2578"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="167.75" y="195.1919">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="180.75" y="195.1919">all device records</text><polygon fill="#383838" points="11,225.3906,1,229.3906,11,233.3906" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="5" x2="142" y1="229.3906" y2="229.3906"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="9.5" y="224.3247">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="111" x="22.5" y="224.3247">all device records</text><!--MD5=[00f2d6366c1d674afc1f4227ef0f77cc]
+@startuml process-view-level2-uc04
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Device Records\nFrontend" as DRF
+participant "Device Records Master\nBackend" as DRMB
+participant "Device Records\nDatabase" as DRDB
+
+activate DRF
+
+-> DRF: all device records
+
+DRF -> DRMB: all device records
+activate DRMB
+
+DRMB -> DRDB: all device records
+activate DRDB
+
+DRDB - -> DRMB: all device records
+deactivate DRDB
+
+DRMB - -> DRF: all device records
+deactivate DRMB
+
+<- - DRF : all device records
+
+@enduml
+
+PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

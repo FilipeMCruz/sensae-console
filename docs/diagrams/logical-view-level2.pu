@@ -12,45 +12,49 @@ interface "Rest API" as IN_ENDPOINT
 
 component "Environment" <<System>> {
     component "Message Broker" as MB <<Container>>
+    component "Device Records Master Backend" as DRB <<Container>>
+    component "Device Records Slave Backend" as DRSB <<Container>>
     component "Location Tracking Backend" as LTB <<Container>>
-    component "Device Records Backend" as DRB <<Container>>
-    component "LGT 92 GPS Sensor Processor" as LGT92GPSP <<Container>>
     component "LGT 92 GPS Sensor Gateway" as LGT92GPSG <<Container>>
     component "Data Relayer" as DR <<Container>>
     component "UI Aggregator" as UIAG <<Container>> {
         component "Device Records Frontend" as DRF <<Container>>
         component "Location Tracking Frontend" as LTF <<Container>>
     }
+    component "LGT 92 GPS Sensor Processor" as LGT92GPSP <<Container>>
     component "Device Records Database" as DRDB <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
     interface "Location Tracking Backend\nAPI" as LTB_API
-    interface "Device Records Backend\nAPI" as DRB_API
+    interface "Device Records Master Backend\nAPI" as DRB_API
     interface "Device Records Database\nAPI" as DRDB_API
     interface "LGT 92 GPS Sensor Gateway\nAPI" as LGT92GPSG_API
+
+
+    DRB -[hidden] DRSB
+    DRSB -[hidden] LTB
+    LTB -[hidden] LGT92GPSP
+    LGT92GPSP -[hidden] LGT92GPSG
 
     DRB_API-- DRB
     MB_API -- MB
     DRDB_API -- DRDB
     LTB_API -- LTB
     UI -- UIAG
-    LGT92GPSG - LGT92GPSG_API
+    LGT92GPSG -- LGT92GPSG_API
     DRB --( DRDB_API
+    DRSB --( DRDB_API
     LTF --( LTB_API
     DRF --( DRB_API
 
     LTB --( MB_API
     DRB --( MB_API
+    DRSB --( MB_API
     LGT92GPSG --( MB_API
     LGT92GPSP --( MB_API
 
-
     DR - IN_ENDPOINT
     LGT92GPSG_API )- DR
-
-    LGT92GPSP -[hidden] LGT92GPSG
-    DRB -[hidden] LGT92GPSP
-    DRB -[hidden] LTB
 }
 
 @enduml

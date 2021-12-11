@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="1149px" preserveAspectRatio="none" style="width:861px;height:1149px;background:#FFFFFF;" version="1.1" viewBox="0 0 861 1149" width="861px" zoomAndPan="magnify"><defs><filter height="300%" id="fyhi5poh8ytoq" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[d4961d9e47a81e717ad3826528a16673]
+cluster Device Records Slave Backend--><rect fill="#FFFFFF" filter="url(#fyhi5poh8ytoq)" height="1128" style="stroke:#000000;stroke-width:1.5;" width="840" x="7" y="7"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="827" y="12"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="825" y="14"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="825" y="18"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="242" x="306" y="32.9951">Device Records Slave Backend</text><!--MD5=[70becb833e031d8ab2b25bb6fd041c2b]
+cluster INFRA--><rect fill="#FFFFFF" filter="url(#fyhi5poh8ytoq)" height="559" style="stroke:#000000;stroke-width:1.5;" width="668" x="31" y="50"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="679" y="55"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="677" y="57"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="677" y="61"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="110" x="310" y="75.9951">Infrastructure</text><!--MD5=[7a83628ac60894de8f7ccce91cd32b26]
+cluster PERSIST--><rect fill="#FFFFFF" filter="url(#fyhi5poh8ytoq)" height="221" style="stroke:#000000;stroke-width:1.5;" width="134" x="55" y="324"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="169" y="329"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="167" y="331"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="167" y="335"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="94" x="75" y="349.9951">Presistence</text><!--MD5=[e827ccb1cbd1809ec2e49ef4b2081f6a]
+cluster ENDPOINT--><rect fill="#FFFFFF" filter="url(#fyhi5poh8ytoq)" height="304" style="stroke:#000000;stroke-width:1.5;" width="446" x="221" y="273"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="647" y="278"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="645" y="280"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="645" y="284"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="69" x="409.5" y="298.9951">Endpoint</text><!--MD5=[a834a399ba2c7dfb9bb0bc2b6d57edb3]
+cluster AMQP--><rect fill="#FFFFFF" filter="url(#fyhi5poh8ytoq)" height="221" style="stroke:#000000;stroke-width:1.5;" width="374" x="253" y="324"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="607" y="329"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="605" y="331"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="605" y="335"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="46" x="417" y="349.9951">AMQP</text><!--MD5=[cd187d11655e4367e900de538d2f1d0c]
+entity APP--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="115" x="705.5" y="625"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="800.5" y="630"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="798.5" y="632"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="798.5" y="636"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75" x="720.5" y="657.9951">Application</text><!--MD5=[711fc6413308d66a33499ee50e557b5d]
+entity DOM--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="93" x="706.5" y="1073"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="779.5" y="1078"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="777.5" y="1080"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="777.5" y="1084"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53" x="721.5" y="1105.9951">Domain</text><!--MD5=[3dfc3527455eb72a4133679687dbe239]
+entity DOM_SERV--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="155" x="675.5" y="849"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="810.5" y="854"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="808.5" y="856"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="808.5" y="860"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="690.5" y="881.9951">Domain Services</text><!--MD5=[30d85f3125b7a53865e5f4719123efb6]
+entity APP_API--><ellipse cx="773" cy="506" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="100" x="723" y="535.9951">Application API</text><!--MD5=[0aefd3324de3ab8c3fd9c9ea0f687424]
+entity DOM_API--><ellipse cx="753" cy="984" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="78" x="714" y="1013.9951">Domain API</text><!--MD5=[44ea187545a283c559b3bae2fb79223f]
+entity DOM_SERV_API--><ellipse cx="753" cy="760" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="140" x="683" y="789.9951">Domain Services API</text><!--MD5=[50c35d0a5350f8e8f48a6d3669f54f50]
+entity BOOT--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="73" x="341.5" y="203"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="394.5" y="208"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="392.5" y="210"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="392.5" y="214"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="356.5" y="235.9951">Boot</text><!--MD5=[44f07762fab2e804df8e0636e93cffbe]
+entity BOOT_API--><ellipse cx="378" cy="114" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="349" y="143.9951">Boot API</text><!--MD5=[e8f61fc9e6949b2891b48f1d9fff5dab]
+entity POSTG--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="102" x="71" y="483"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="153" y="488"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="151" y="490"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="151" y="494"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="86" y="515.9951">Postgres</text><!--MD5=[70e882393759605d085bbd393502e685]
+entity POSTG_API--><ellipse cx="122" cy="388" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87" x="78.5" y="417.9951">Postgres API</text><!--MD5=[c01cbe8a412be218debd57fa8df8abed]
+entity EGRESS--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="88" x="523" y="483"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="591" y="488"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="589" y="490"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="589" y="494"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="538" y="515.9951">Egress</text><!--MD5=[97c2cc28f62fbe16a090dcbe5e30d27b]
+entity INGRESS--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="91" x="396.5" y="483"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="467.5" y="488"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="465.5" y="490"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="465.5" y="494"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="411.5" y="515.9951">Ingress</text><!--MD5=[c9412b933c0b6dd0cce7b51723fdba10]
+entity INTERNAL--><rect fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="91" x="269.5" y="483"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="340.5" y="488"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="338.5" y="490"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="338.5" y="494"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="284.5" y="515.9951">Internal</text><!--MD5=[72db9eea1d2bf2ff908159e31b503589]
+entity EGRESS_API--><ellipse cx="567" cy="388" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73" x="530.5" y="417.9951">Egress API</text><!--MD5=[7c09cc5e2fc5888767c10a541b3b1d17]
+entity INGRESS_API--><ellipse cx="442" cy="388" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76" x="404" y="417.9951">Ingress API</text><!--MD5=[bea4d6aa064203998fd86e6c52b3e03d]
+entity INTERNAL_API--><ellipse cx="315" cy="388" fill="#F8F8F8" filter="url(#fyhi5poh8ytoq)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="76" x="277" y="417.9951">Internal API</text><!--MD5=[14cf9b7186fc426919be12717f53f1a1]
+link DOM_API to DOM--><path d="M753,993.27 C753,1009.96 753,1048.16 753,1072.71 " fill="none" id="DOM_API-DOM" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[b929a7d98f1772b10f9ae2757a6ed60f]
+link DOM_SERV_API to DOM_SERV--><path d="M753,769.27 C753,785.96 753,824.16 753,848.71 " fill="none" id="DOM_SERV_API-DOM_SERV" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[b4a61ba3a97355d6345cdf1acd7a7817]
+link EGRESS_API to EGRESS--><path d="M567,397.34 C567,415.01 567,456.68 567,482.69 " fill="none" id="EGRESS_API-EGRESS" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[530304c66b8acc68ed58d4341088d695]
+link INGRESS_API to INGRESS--><path d="M442,397.34 C442,415.01 442,456.68 442,482.69 " fill="none" id="INGRESS_API-INGRESS" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[a67076f93ca893e87ec52ccf0fa37c5d]
+link INTERNAL_API to INTERNAL--><path d="M315,397.34 C315,415.01 315,456.68 315,482.69 " fill="none" id="INTERNAL_API-INTERNAL" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[6c47b63cf1ccf71776fb2fb1146b89bd]
+link POSTG_API to POSTG--><path d="M122,397.34 C122,415.01 122,456.68 122,482.69 " fill="none" id="POSTG_API-POSTG" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[9bc3545913d2ece8bc1c8e2c39a9583d]
+link APP_API to APP--><path d="M772.4,515.34 C770.89,536.59 766.83,593.33 764.58,624.94 " fill="none" id="APP_API-APP" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[960e631b20e6d0a5a1769365a28f267a]
+link BOOT_API to BOOT--><path d="M378,123.27 C378,139.96 378,178.16 378,202.71 " fill="none" id="BOOT_API-BOOT" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[4650e1908a5caa745e5a54df07a9a97d]
+link ENDPOINT to APP_API--><path d="M667.1125,397.2549 C667.2962,397.4419 667.4826,397.6316 667.6717,397.824 C668.0497,398.2087 668.4383,398.6041 668.837,399.0098 C669.6345,399.8213 670.4724,400.6741 671.348,401.565 C678.3522,408.6925 687.7594,418.265 698.0338,428.72 C718.5825,449.63 742.6,474.07 757.8,489.54 " fill="none" id="ENDPOINT-to-APP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M768.9258,488.7821 A9,9 0 0 0 756.8452 500.621" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[845c2c4eee2fae498ac38234a5aedbc1]
+link APP to DOM_SERV_API--><path d="M760.98,671.26 C759.11,691.74 756.39,721.73 754.65,740.81 " fill="none" id="APP-to-DOM_SERV_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M762.44,748.5556 A9,9 0 0 0 745.5942 747.033" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4c0b42fcf9c300baa81263005d99b18a]
+link DOM_SERV to DOM_API--><path d="M753,895.26 C753,915.74 753,945.73 753,964.81 " fill="none" id="DOM_SERV-to-DOM_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M761.4572,971.7818 A9,9 0 0 0 744.5428 971.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[9483b5d18d033ae23162ccaaac381777]
+link BOOT to INTERNAL_API--><path d="M369.24,249.25 C356.59,281.37 333.47,340.08 321.94,369.39 " fill="none" id="BOOT-to-INTERNAL_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M327.2467,378.9923 A9,9 0 0 0 311.5139 372.7814" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4379324cd2c7c1b2cbe82266d6d3e2c8]
+link BOOT to POSTG_API--><path d="M341.35,230.49 C315.37,234.19 280.39,241.73 253,257 C200.45,286.3 154.51,342.56 133.76,370.46 " fill="none" id="BOOT-to-POSTG_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M136.3591,381.2485 A9,9 0 0 0 122.684 371.2941" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[03a3a3da64142f805947a80cad3d7aa7]
+link BOOT to EGRESS_API--><path d="M414.54,227.25 C442.38,229.26 480.2,236.09 506,257 C541.58,285.84 557.5,340.22 563.66,368.65 " fill="none" id="BOOT-to-EGRESS_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M573.3706,374.1052 A9,9 0 0 0 556.7837 377.4177" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[5aaa978c22e8e54db4cd3befe40cb162]
+link BOOT to INGRESS_API--><path d="M386.9,249.25 C399.75,281.37 423.23,340.08 434.95,369.39 " fill="none" id="BOOT-to-INGRESS_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M445.4091,372.751 A9,9 0 0 0 429.7044 379.0329" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[633e69d0fcde4f93cc6b3224685eabf1]
+@startuml logical-view-level3-device-records-slave-backend
+
+skinparam Monochrome true
+
+component "Device Records Slave Backend" {
+    component "Application" as APP
+    component "Domain" as DOM
+    component "Domain Services" as DOM_SERV
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Presistence" as PERSIST {
+            component "Postgres" as POSTG
+            interface "Postgres API" as POSTG_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "AMQP" as AMQP {
+                component "Egress" as EGRESS
+                component "Ingress" as INGRESS
+                component "Internal" as INTERNAL
+                interface "Egress API" as EGRESS_API
+                interface "Ingress API" as INGRESS_API
+                interface "Internal API" as INTERNAL_API
+            }
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+    interface "Domain API" as DOM_API
+    interface "Domain Services API" as DOM_SERV_API
+
+    DOM_API - - DOM
+    DOM_SERV_API - - DOM_SERV
+
+    EGRESS_API - - EGRESS
+    INGRESS_API - - INGRESS
+    INTERNAL_API - - INTERNAL
+
+    POSTG_API - - POSTG
+
+    APP_API - - APP
+    BOOT_API - - BOOT
+
+    ENDPOINT - -( APP_API
+    APP - -( DOM_SERV_API
+    DOM_SERV - -( DOM_API
+    BOOT - -( INTERNAL_API
+    BOOT - -( POSTG_API
+    BOOT - -( EGRESS_API
+    BOOT - -( INGRESS_API
+}
+
+@enduml
+
+PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

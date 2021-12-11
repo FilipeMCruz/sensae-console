@@ -11,14 +11,17 @@ This section defines the functionalities and operations that the system supports
 
 The system actors are:
 
-- **Data Admin**: The Data Admin functions are analyzing the gathered information as he wishes;
+- **Data Admin**: The Data Admin functions are analyzing and mutating the gathered information as he wishes;
 
 ### Use cases
 
-| Use Cases | Description                                                                |
-| --------- | -------------------------------------------------------------------------- |
-| **UC01**  | As the data admin I want to see the live information for all device        |
-| **UC02**  | As the data admin I want to see the live information for a specific device |
+| Use Cases | Description                                                                       |
+| --------- | --------------------------------------------------------------------------------- |
+| **UC01**  | As the data admin I want to see the live information for all devices              |
+| **UC02**  | As the data admin I want to see the live information for a specific device        |
+| **UC03**  | As the data admin I want to enhance the information provided by a device          |
+| **UC04**  | As the data admin I want to see the information i've added to each device         |
+| **UC04**  | As the data admin I want to delete information i've added about a specific device |
 
 ## Architecture
 
@@ -41,12 +44,14 @@ The system is composed by the following containers:
 - **Location Tracking Frontend**: Frontend that displays live information in a map;
 - **Location Tracking Backend**: Backend that sends live information to the frontend;
 - **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
-- **Device Records Backend**: Backend that changes the data that goes trough him by adding specific device information;
+- **Device Records Master Backend**: Backend that stores device data (records) and notifies slaves about changes to this data;
+- **Device Records Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
 - **Device Records Database**: Database that records information about each device;
 - **Message Broker**: Container responsible for routing messages/events sent by the containers;
 - **LGT 92 GPS Sensor Processor**: Container responsible for transforming the received data (LGT 92 GPS Sensor Data) into something that the system understands (GPS Sensor Data);
 - **LGT 92 GPS Sensor Gateway**: Container responsible for receiving data (LGT 92 GPS Sensor Data) from the outside and propagate it in the system;
 - **Data Relayer**: Container responsible for proxying sensor data requests to the assigned Sensor Gateway.
+
 ### Process View - Container Level
 
 Process view of several UCs to display the system flow.
@@ -75,6 +80,24 @@ Information updated from the received event:
 
 This flow is almost the same as the UC01, the only difference is that in this one a filter is applied to send only the requested data.
 
+#### UC03 Process View - Container Level
+
+**Description**: As the data admin I want to enhance the information provided by a device.
+
+![process-view-level2-uc03](diagrams/process-view-level2-uc03.svg)
+
+#### UC04 Process View - Container Level
+
+**Description**: As the data admin I want to see the information i've added to each device.
+
+![process-view-level2-uc04](diagrams/process-view-level2-uc04.svg)
+
+#### UC05 Process View - Container Level
+
+**Description**: As the data admin I want to delete information i've added about a specific device.
+
+![process-view-level2-uc05](diagrams/process-view-level2-uc05.svg)
+
 ### Logical View - Component Level
 
 Logical View of each container's component and it's interactions with other components.
@@ -100,12 +123,19 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-device-records-frontend](diagrams/logical-view-level3-device-records-frontend.svg)
 
-#### Device Records Backend
+#### Device Records Master Backend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-backend](diagrams/logical-view-level3-device-records-backend.svg)
+![logical-view-level3-device-records-master-backend](diagrams/logical-view-level3-device-records-master-backend.svg)
+
+#### Device Records Slave Backend
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-records-slave-backend](diagrams/logical-view-level3-device-records-slave-backend.svg)
 
 #### LGT 92 GPS Sensor Processor
 
@@ -314,8 +344,69 @@ subscription {
 
 This is the resource used to subscribe to changes in the gps location of any sensor that has content matching the "content" sent.
 
+### Device Records Master Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
+
+#### Index a Device Record (new or updated record)
+
+``` graphql
+
+mutation index($records: DeviceRecordsInput){
+  index(records: $records){
+    device{
+      id
+      name
+    }
+    entries{
+      label
+      content
+      type
+    }
+  }
+}
+```
+
+This is the resource used to index a new or edited device record to the database and cache.
+
+#### Consult all Device Records
+
+``` graphql
+
+query deviceRecords{
+  deviceRecords{
+    device{
+      id
+      name
+    }
+    entries{
+      label
+      content
+      type
+    }
+  }
+}
+```
+
+This is the resource used to query all device records in the database.
+
+#### Erase a Device Record
+
+``` graphql
+
+mutation delete($device: DeviceInput){
+  delete(device: $device){
+    id
+    name
+  }
+}
+```
+
+This is the resource used to remove a device record from the cache and database.
+
 ## Data Flow Diagram
 
-On a Higher level data flows in the system as represented in here:
+On a Higher level sensor data flows in the system as represented in here:
 
 ![data-flow](diagrams/data-flow.svg)

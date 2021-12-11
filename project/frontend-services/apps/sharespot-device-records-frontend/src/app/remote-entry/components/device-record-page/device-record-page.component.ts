@@ -50,7 +50,7 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   addItem(event: DeviceRecord) {
-    let deviceRecords = this.records.filter(r => r.device.id == event.device.id);
+    const deviceRecords = this.records.filter(r => r.device.id == event.device.id);
     if (deviceRecords.length != 0) {
       this.openDialog(new DeviceRecordPair(event, deviceRecords[0]));
     } else {
@@ -61,7 +61,7 @@ export class DeviceRecordPageComponent implements OnInit {
   private saveItem(event: DeviceRecord) {
     this.indexer.index(DeviceRecordRegisterMapper.modelToDto(event)).subscribe(({data}) => {
       if (data != null) {
-        let deviceRecord = DeviceRecordRegisterMapper.dtoToModel(data);
+        const deviceRecord = DeviceRecordRegisterMapper.dtoToModel(data);
         this.records = this.records.filter(r => r.device.id != deviceRecord.device.id);
         this.records.push(deviceRecord);
       }
@@ -71,7 +71,7 @@ export class DeviceRecordPageComponent implements OnInit {
   deleteItem(event: DeviceRecord) {
     this.eraser.delete(DeviceMapper.modelToDto(event.device)).subscribe(({data}) => {
       if (data != null) {
-        let device = DeviceMapper.dtoToModel(data.delete);
+        const device = DeviceMapper.dtoToModel(data.delete);
         this.records = this.records.filter(r => r.device.id != device.id);
       }
     });

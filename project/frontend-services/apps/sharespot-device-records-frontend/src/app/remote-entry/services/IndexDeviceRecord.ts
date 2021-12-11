@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {FetchResult} from '@apollo/client/core';
 import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
-import {DeviceRecordIndex, DeviceRecordsInput} from '../dtos/RecordsDTO';
+import {DeviceRecordsInput} from '../dtos/RecordsDTO';
 
 @Injectable({
   providedIn: 'root'

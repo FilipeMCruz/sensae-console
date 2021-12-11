@@ -28,7 +28,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 4284:80
+      - 80
   sharespot-location-tracking-frontend:
     build:
       dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile

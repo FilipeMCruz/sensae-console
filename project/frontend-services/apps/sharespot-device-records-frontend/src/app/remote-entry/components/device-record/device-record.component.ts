@@ -13,19 +13,8 @@ import {DeviceViewType} from "../../model/DeviceViewType";
 })
 export class DeviceRecordComponent implements OnChanges {
 
-  ngOnChanges(): void {
-    if (this.entry) {
-      this.deviceView = DeviceViewType.Edit;
-      this.record = this.entry;
-      this.resetOptions();
-    }
-    if (this.deviceViewEntry) {
-      this.deviceView = this.deviceViewEntry;
-    }
-  }
-
-  @Input('record') entry!: DeviceRecord;
-  @Input('type') deviceViewEntry!: DeviceViewType;
+  @Input() entry!: DeviceRecord;
+  @Input() deviceViewEntry!: DeviceViewType;
 
   @Output() newDeviceEvent = new EventEmitter<DeviceRecord>();
   @Output() deleteDeviceEvent = new EventEmitter<DeviceRecord>();
@@ -45,6 +34,17 @@ export class DeviceRecordComponent implements OnChanges {
   recordType: Array<string> = Object.values(RecordEntryType);
 
   currentIndex = -1;
+
+  ngOnChanges(): void {
+    if (this.entry) {
+      this.deviceView = DeviceViewType.Edit;
+      this.record = this.entry;
+      this.resetOptions();
+    }
+    if (this.deviceViewEntry) {
+      this.deviceView = this.deviceViewEntry;
+    }
+  }
 
   saveDevice() {
     this.newDeviceEvent.emit(this.record);

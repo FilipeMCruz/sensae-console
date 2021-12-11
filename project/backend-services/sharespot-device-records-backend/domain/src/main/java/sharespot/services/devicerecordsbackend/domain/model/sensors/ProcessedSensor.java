@@ -24,7 +24,7 @@ public class ProcessedSensor {
     }
 
     public ProcessedSensor withDevice(Device device) {
-        if (device.name().toString().isBlank()) {
+        if (device.name().value().isBlank()) {
             return this;
         } else {
             return new ProcessedSensor(device.name().value(), this.id);

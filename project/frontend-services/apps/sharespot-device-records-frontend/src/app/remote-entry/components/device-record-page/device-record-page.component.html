@@ -3,8 +3,8 @@
     <mat-card-title>Device Record</mat-card-title>
     <mat-card-content>
       <frontend-services-device-record
-        [record]=record
-        [type]="deviceViewType.Edit"
+        [entry]=record
+        [deviceViewEntry]="deviceViewType.Edit"
         (newDeviceEvent)="addItem($event)"
         (deleteDeviceEvent)="deleteItem($event)"
       ></frontend-services-device-record>
@@ -15,7 +15,7 @@
     <mat-card-content>
       <frontend-services-device-record
         (newDeviceEvent)="addItem($event)"
-        [type]="deviceViewType.New"
+        [deviceViewEntry]="deviceViewType.New"
       ></frontend-services-device-record>
     </mat-card-content>
   </mat-card>

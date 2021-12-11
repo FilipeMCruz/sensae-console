@@ -8,7 +8,7 @@ import {Device} from "../model/Device";
 export class RecordMapper {
 
   static dtoToModel(dto: DeviceRecordDTO): DeviceRecord {
-    let entries = dto.entries.map(e => {
+    const entries = dto.entries.map(e => {
       if (e.type == RecordTypeDTO.BASIC) {
         return new RecordEntry(e.label, e.content, RecordEntryType.BASIC)
       } else {
@@ -19,12 +19,12 @@ export class RecordMapper {
         }
       }
     });
-    let device = new Device(dto.device.id, dto.device.name);
+    const device = new Device(dto.device.id, dto.device.name);
     return new DeviceRecord(device, entries);
   }
 
   static modelToDto(model: DeviceRecord): DeviceRecordDTO {
-    let entries = model.entries.map(e => {
+    const entries = model.entries.map(e => {
       if (e.type == RecordEntryType.BASIC) {
         return {label: e.label, content: e.content, type: RecordTypeDTO.BASIC}
       } else {

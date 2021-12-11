@@ -4,8 +4,8 @@
     <mat-card-title>Old Device Record</mat-card-title>
     <mat-card-content>
       <frontend-services-device-record
-        [record]="data.old"
-        [type]="deviceViewType.Compare">
+        [entry]="data.old"
+        [deviceViewEntry]="deviceViewType.Compare">
       </frontend-services-device-record>
     </mat-card-content>
   </mat-card>
@@ -13,8 +13,8 @@
     <mat-card-title>New Device Record</mat-card-title>
     <mat-card-content>
       <frontend-services-device-record
-        [record]="data.fresh"
-        [type]="deviceViewType.Compare">
+        [entry]="data.fresh"
+        [deviceViewEntry]="deviceViewType.Compare">
       </frontend-services-device-record>
     </mat-card-content>
   </mat-card>

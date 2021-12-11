@@ -22,6 +22,7 @@ export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpU
     uri: wsUrl,
     options: {
       reconnect: true,
+      timeout: 30000,
     },
   });
 

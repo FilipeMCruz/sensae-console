@@ -1,4 +1,4 @@
-import {DeviceRecordDTO, DeviceRecordQuery} from "../dtos/RecordsDTO";
+import {DeviceRecordQuery} from "../dtos/RecordsDTO";
 import {DeviceRecord} from "../model/DeviceRecord";
 import {RecordMapper} from "./RecordMapper";
 

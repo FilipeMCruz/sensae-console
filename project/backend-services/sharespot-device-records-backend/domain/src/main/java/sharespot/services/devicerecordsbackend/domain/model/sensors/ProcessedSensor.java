@@ -1,5 +1,7 @@
 package sharespot.services.devicerecordsbackend.domain.model.sensors;
 
+import sharespot.services.devicerecordsbackend.domain.model.records.Device;
+
 import java.util.UUID;
 
 public class ProcessedSensor {
@@ -19,5 +21,13 @@ public class ProcessedSensor {
 
     public UUID getId() {
         return id;
+    }
+
+    public ProcessedSensor withDevice(Device device) {
+        if (device.name().toString().isBlank()) {
+            return this;
+        } else {
+            return new ProcessedSensor(device.name().value(), this.id);
+        }
     }
 }

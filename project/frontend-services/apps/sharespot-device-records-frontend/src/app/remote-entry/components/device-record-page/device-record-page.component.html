@@ -1,22 +1,27 @@
-<div class="list">
-  <mat-card *ngFor="let record of this.records" class="item">
-    <mat-card-title>Device Record</mat-card-title>
-    <mat-card-content>
-      <frontend-services-device-record
-        [entry]=record
-        [deviceViewEntry]="deviceViewType.Edit"
-        (newDeviceEvent)="addItem($event)"
-        (deleteDeviceEvent)="deleteItem($event)"
-      ></frontend-services-device-record>
-    </mat-card-content>
-  </mat-card>
-  <mat-card class="item">
-    <mat-card-title>New Device Record</mat-card-title>
-    <mat-card-content>
-      <frontend-services-device-record
-        (newDeviceEvent)="addItem($event)"
-        [deviceViewEntry]="deviceViewType.New"
-      ></frontend-services-device-record>
-    </mat-card-content>
-  </mat-card>
+<div class="container">
+  <button class="bottom" mat-stroked-button color="primary" (click)="fetchAllDevices()">
+    Reload Devices
+  </button>
+  <div class="list">
+    <mat-card *ngFor="let record of this.records" class="item">
+      <mat-card-title>Device Record</mat-card-title>
+      <mat-card-content>
+        <frontend-services-device-record
+          [entry]=record
+          [deviceViewEntry]="deviceViewType.Edit"
+          (newDeviceEvent)="updateItem($event)"
+          (deleteDeviceEvent)="deleteItem($event)"
+        ></frontend-services-device-record>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="item">
+      <mat-card-title>New Device Record</mat-card-title>
+      <mat-card-content>
+        <frontend-services-device-record
+          (newDeviceEvent)="addItem($event)"
+          [deviceViewEntry]="deviceViewType.New"
+        ></frontend-services-device-record>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

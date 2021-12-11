@@ -43,10 +43,18 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchAllDevices();
+  }
+
+  fetchAllDevices() {
     this.recordsCollector.getData().subscribe(({data}) => {
       if (data != null)
         this.records = DeviceRecordsQueryMapper.dtoToModel(data);
     });
+  }
+
+  updateItem(event: DeviceRecord) {
+    this.saveItem(event);
   }
 
   addItem(event: DeviceRecord) {

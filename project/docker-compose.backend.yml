@@ -48,13 +48,22 @@ services:
       - sharespot-network
     ports:
       - 8082:8080
-  sharespot-device-records-backend:
-    build: backend-services/sharespot-device-records-backend
-    image: sharespot-device-records-backend
+  sharespot-device-records-slave-backend:
+    build: backend-services/sharespot-device-records-slave-backend
+    image: sharespot-device-records-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-backend.env
+      - ./secrets/prod/sharespot-device-records-slave-backend.env
+    networks:
+      - sharespot-network
+  sharespot-device-records-master-backend:
+    build: backend-services/sharespot-device-records-master-backend
+    image: sharespot-device-records-master-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-device-records-master-backend.env
     networks:
       - sharespot-network
     ports:

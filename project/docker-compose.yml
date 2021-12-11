@@ -17,6 +17,9 @@ services:
       - sharespot-network
     ports:
       - 80:80
+    depends_on:
+      - sharespot-device-records-frontend
+      - sharespot-location-tracking-frontend
   sharespot-device-records-frontend:
     build:
       dockerfile: docker/sharespot-device-records-frontend/Dockerfile
@@ -25,7 +28,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 80
+      - 4284:80
   sharespot-location-tracking-frontend:
     build:
       dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile
@@ -101,7 +104,7 @@ services:
     ports:
       - 8080
 networks:
-  sharespot-network: {}
+  sharespot-network:
 volumes:
   sharespot-device-records-database:
     name: sharespot-device-records-database

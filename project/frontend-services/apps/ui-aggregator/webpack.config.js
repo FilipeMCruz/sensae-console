@@ -43,10 +43,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      remotes: {
-        'sharespot-location-tracking-frontend':
-          'sharespot-location-tracking-frontend@http://localhost:4284/remoteEntry.js',
-      },
+      remotes: {},
       shared: share({
         '@angular/animations': {
           singleton: true,
@@ -98,7 +95,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,

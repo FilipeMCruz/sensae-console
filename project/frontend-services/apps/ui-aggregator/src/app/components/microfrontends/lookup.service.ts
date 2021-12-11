@@ -5,9 +5,6 @@ import {environment} from "../../../environments/environment";
 const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = environment.production ? 'http://localhost/micro-frontends/sharespot-location-tracking-frontend/remoteEntry.js' : 'http://localhost:4284/remoteEntry.js';
 const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = environment.production ? 'http://localhost/micro-frontends/sharespot-device-records-frontend/remoteEntry.js' : 'http://localhost:4283/remoteEntry.js';
 
-// const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = 'http://localhost:4284/remoteEntry.js';
-// const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = 'http://localhost:4283/remoteEntry.js';
-
 @Injectable({providedIn: 'root'})
 export class LookupService {
   lookup(): Promise<Microfrontend[]> {

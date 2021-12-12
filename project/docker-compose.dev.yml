@@ -13,7 +13,12 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - sharespot-device-records-dev-database:/var/lib/postgresql/data/
-volumes:
-    sharespot-device-records-dev-database:
-        name: sharespot-device-records-dev-database
+      - ./databases-data/sharespot-device-records-database:/var/lib/postgresql/data/
+  questdb:
+    image: questdb/questdb
+    ports:
+      - 8812:8812
+      - 9000:9000
+      - 9003:9003
+    volumes:
+      - ./databases-data/questdb:/root/.questdb/

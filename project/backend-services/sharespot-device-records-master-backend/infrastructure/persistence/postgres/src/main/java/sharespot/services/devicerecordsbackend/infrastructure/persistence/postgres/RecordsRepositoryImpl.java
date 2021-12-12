@@ -8,7 +8,6 @@ import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepos
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper.RecordMapper;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

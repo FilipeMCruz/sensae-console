@@ -14,8 +14,8 @@ public class AmqpConfiguration {
     public static final String MASTER_EXCHANGE = "Sharespot Device Records Master Exchange";
     public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
 
-    public static final String INGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Processor Exchange";
-    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Processor Exchange -> Sharespot Device Records Queue";
+    public static final String INGRESS_EXCHANGE = "Sharespot GPS Data Processor Exchange";
+    public static final String INGRESS_QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Device Records Queue";
     public static final String EGRESS_EXCHANGE = "Sharespot Device Records Exchange";
 
     @Bean

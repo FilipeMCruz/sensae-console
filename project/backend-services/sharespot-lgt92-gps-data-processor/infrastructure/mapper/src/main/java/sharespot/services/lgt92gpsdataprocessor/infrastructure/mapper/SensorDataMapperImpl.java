@@ -36,7 +36,7 @@ public class SensorDataMapperImpl implements SensorDataMapper {
             var outSensor = new ProcessedSensorDataDTOImpl(
                     inDto.path("uuid").asText(),
                     sensor,
-                    inDto.path("reportedAt").asLong(),
+                    inDto.path("reported_at").asLong(),
                     dataDTO
             );
 

@@ -13,7 +13,7 @@ public class AmqpConfiguration {
 
     public static final String INGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Gateway Exchange";
     public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Gateway Exchange -> Sharespot LGT92 GPS Data Processor Queue";
-    public static final String EGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Processor Exchange";
+    public static final String EGRESS_EXCHANGE = "Sharespot GPS Data Processor Exchange";
 
     @Bean
     public Queue queue() {

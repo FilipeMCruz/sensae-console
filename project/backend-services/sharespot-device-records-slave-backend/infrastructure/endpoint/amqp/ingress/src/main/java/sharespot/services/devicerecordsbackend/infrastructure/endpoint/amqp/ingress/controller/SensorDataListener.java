@@ -8,7 +8,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingr
 @Service
 public class SensorDataListener {
 
-    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Processor Exchange -> Sharespot Device Records Queue";
+    public static final String INGRESS_QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Device Records Queue";
 
     private final SensorDataHandlerService handler;
 

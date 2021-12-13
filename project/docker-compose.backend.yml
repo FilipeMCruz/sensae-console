@@ -57,6 +57,8 @@ services:
       - ./secrets/prod/sharespot-device-records-slave-backend.env
     networks:
       - sharespot-network
+    ports:
+      - 8085:8080
   sharespot-device-records-master-backend:
     build: backend-services/sharespot-device-records-master-backend
     image: sharespot-device-records-master-backend
@@ -79,9 +81,25 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - sharespot-device-records-database:/var/lib/postgresql/data/
+      - ./databases-data/dev/sharespot-device-records-database:/var/lib/postgresql/data/
+  sharespot-fast-data-store:
+    build: backend-services/sharespot-fast-data-store
+    image: sharespot-fast-data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-device-records-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8086:8080
+  questdb:
+    image: questdb/questdb
+    ports:
+      - 8812:8812
+      - 9000:9000
+      - 9003:9003
+    volumes:
+      - ./databases-data/dev/questdb:/root/.questdb/
 networks:
   sharespot-network: {}
-volumes:
-  sharespot-device-records-database:
-    name: sharespot-device-records-dev-database

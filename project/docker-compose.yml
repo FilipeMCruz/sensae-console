@@ -115,5 +115,24 @@ services:
       - sharespot-network
     ports:
       - 8080
+  sharespot-fast-data-store:
+    build: backend-services/sharespot-fast-data-store
+    image: sharespot-fast-data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-device-records-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  questdb:
+    image: questdb/questdb
+    ports:
+      - 8812
+      - 9000
+      - 9003
+    volumes:
+      - ./databases-data/prod/questdb:/root/.questdb/
 networks:
   sharespot-network:

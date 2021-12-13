@@ -20,7 +20,7 @@ public class AmqpConfiguration {
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
-    public static final String INGRESS_QUEUE = "Sharespot Device Records Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
 
     @Bean
     public Queue slaveQueue() {

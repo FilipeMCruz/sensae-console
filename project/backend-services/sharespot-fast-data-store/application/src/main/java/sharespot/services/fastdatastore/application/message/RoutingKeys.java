@@ -3,9 +3,14 @@ package sharespot.services.fastdatastore.application.message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.util.Optional;
 
 public class RoutingKeys {
+
+    public String containerType;
+
+    public String containerName;
 
     public String infoType;
 
@@ -19,7 +24,9 @@ public class RoutingKeys {
 
     public String tempC;
 
-    public RoutingKeys(String infoType, String sensorTypeId, String channel, String records, String gps, String tempC) {
+    public RoutingKeys(String containerType, String containerName, String infoType, String sensorTypeId, String channel, String records, String gps, String tempC) {
+        this.containerType = containerType;
+        this.containerName = containerName;
         this.infoType = infoType;
         this.sensorTypeId = sensorTypeId;
         this.channel = channel;
@@ -33,11 +40,19 @@ public class RoutingKeys {
 
     @Override
     public String toString() {
-        return "data." + infoType + "." + sensorTypeId + "." + channel + "." + records + "." + gps + "." + tempC;
+        return MessageFormat.format("{0}.{1}.data.{2}.{3}.{4}.{5}.{6}.{7}",
+                containerType,
+                containerName,
+                infoType,
+                sensorTypeId,
+                channel,
+                records,
+                gps,
+                tempC);
     }
 
     public static RoutingKeysBuilder builder() {
-        return new RoutingKeysBuilder(RoutingKeysBuilderOptions.CONSUMER);
+        return new RoutingKeysBuilder(RoutingKeysBuilderOptions.SUPPLIER);
     }
 
     public static RoutingKeysBuilder builder(RoutingKeysBuilderOptions options) {
@@ -50,6 +65,14 @@ public class RoutingKeys {
 
         public static final String KEEP = "<keep>";
         public static final String ANY = "*";
+
+        public static final String CONTAINER_TYPE = "fastdatastore";
+
+        public static final String CONTAINER_NAME = "sharespotfastdatastore";
+
+        private String containerType;
+
+        private String containerName;
 
         private String infoType;
 
@@ -67,6 +90,26 @@ public class RoutingKeys {
 
         private RoutingKeysBuilder(RoutingKeysBuilderOptions options) {
             this.options = options;
+        }
+
+        public RoutingKeysBuilder withContainerType(String containerType) {
+            this.containerType = containerType;
+            return this;
+        }
+
+        public RoutingKeysBuilder withAnyContainerType() {
+            this.containerType = ANY;
+            return this;
+        }
+
+        public RoutingKeysBuilder withContainerName(String containerName) {
+            this.containerName = containerName;
+            return this;
+        }
+
+        public RoutingKeysBuilder withAnyContainerName() {
+            this.containerName = ANY;
+            return this;
         }
 
         public RoutingKeysBuilder withInfoType(InfoTypeOptions infoType) {
@@ -164,6 +207,8 @@ public class RoutingKeys {
         }
 
         public Optional<RoutingKeys> missingAsAny() {
+            this.containerType = (this.containerType == null || this.containerType.isBlank()) ? ANY : this.containerType;
+            this.containerName = (this.containerName == null || this.containerName.isBlank()) ? ANY : this.containerName;
             this.infoType = (this.infoType == null || this.infoType.isBlank()) ? ANY : this.infoType;
             this.sensorTypeId = (this.sensorTypeId == null || this.sensorTypeId.isBlank()) ? ANY : this.sensorTypeId;
             this.channel = (this.channel == null || this.channel.isBlank()) ? ANY : this.channel;
@@ -185,21 +230,33 @@ public class RoutingKeys {
 
         public Optional<RoutingKeys> from(String routingKeys) {
             var splinted = routingKeys.split("\\.");
-            this.infoType = splinted[1];
-            this.sensorTypeId = splinted[2];
-            this.channel = splinted[3];
-            this.records = splinted[4];
-            this.gps = splinted[5];
-            this.tempC = splinted[6];
+            this.infoType = splinted[3];
+            this.sensorTypeId = splinted[4];
+            this.channel = splinted[5];
+            this.records = splinted[6];
+            this.gps = splinted[7];
+            this.tempC = splinted[8];
             return build();
         }
 
         public Optional<RoutingKeys> build() {
-            var routingKeys = new RoutingKeys(infoType, sensorTypeId, channel, records, gps, tempC);
+            if (RoutingKeysBuilderOptions.SUPPLIER.equals(options)) {
+                this.containerName = CONTAINER_NAME;
+                this.containerType = CONTAINER_TYPE;
+            }
+            var routingKeys = new RoutingKeys(containerType, containerName, infoType, sensorTypeId, channel, records, gps, tempC);
             return toOptional(routingKeys);
         }
 
         private Optional<RoutingKeys> toOptional(RoutingKeys routingKeys) {
+            if (routingKeys.containerName == null || routingKeys.containerName.isBlank()) {
+                logger.warn("Container Name Routing Key is Missing");
+                return Optional.empty();
+            }
+            if (routingKeys.containerType == null || routingKeys.containerType.isBlank()) {
+                logger.warn("Container Type Routing Key is Missing");
+                return Optional.empty();
+            }
             if (routingKeys.infoType == null || routingKeys.infoType.isBlank()) {
                 logger.warn("Info Type Routing Key is Missing");
                 return Optional.empty();

@@ -10,7 +10,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingr
 @Service
 public class SensorDataListener {
 
-    public static final String INGRESS_QUEUE = "Sharespot Device Records Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
 
     private final SensorDataHandlerService handler;
 

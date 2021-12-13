@@ -2,13 +2,15 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ing
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataDTO;
 import sharespot.services.devicerecordsbackend.application.SensorDataHandlerService;
+import sharespot.services.devicerecordsbackend.domain.model.message.MessageConsumed;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.model.ProcessedSensorDataDTOImpl;
 
 @Service
 public class SensorDataListener {
 
-    public static final String INGRESS_QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Device Records Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Queue";
 
     private final SensorDataHandlerService handler;
 
@@ -17,7 +19,7 @@ public class SensorDataListener {
     }
 
     @RabbitListener(queues = INGRESS_QUEUE)
-    public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
+    public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTOImpl> in) {
         handler.publish(in);
     }
 }

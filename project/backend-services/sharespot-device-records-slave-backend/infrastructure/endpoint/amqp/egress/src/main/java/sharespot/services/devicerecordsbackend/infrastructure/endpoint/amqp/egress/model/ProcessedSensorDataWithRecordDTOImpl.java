@@ -30,4 +30,14 @@ public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSens
 
     public ProcessedSensorDataWithRecordDTOImpl() {
     }
+
+    @Override
+    public boolean hasGpsData() {
+        return this.data.gps.exists();
+    }
+
+    @Override
+    public boolean hasTempCData() {
+        return false;
+    }
 }

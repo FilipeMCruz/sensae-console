@@ -18,9 +18,7 @@ public class GPSDataPublisher {
 
     @PostConstruct
     public void init() {
-        Flux<SensorData> publisher = Flux.create(emitter -> {
-            dataStream = emitter;
-        });
+        Flux<SensorData> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();

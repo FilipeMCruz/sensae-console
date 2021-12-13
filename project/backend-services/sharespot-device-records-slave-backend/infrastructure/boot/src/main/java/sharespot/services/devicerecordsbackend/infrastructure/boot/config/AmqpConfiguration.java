@@ -7,6 +7,10 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sharespot.services.devicerecordsbackend.domain.model.message.InfoTypeOptions;
+import sharespot.services.devicerecordsbackend.domain.model.message.RecordsOptions;
+import sharespot.services.devicerecordsbackend.domain.model.message.RoutingKeys;
+import sharespot.services.devicerecordsbackend.domain.model.message.RoutingKeysBuilderOptions;
 
 @Configuration
 public class AmqpConfiguration {
@@ -14,9 +18,9 @@ public class AmqpConfiguration {
     public static final String MASTER_EXCHANGE = "Sharespot Device Records Master Exchange";
     public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
 
-    public static final String INGRESS_EXCHANGE = "Sharespot GPS Data Processor Exchange";
-    public static final String INGRESS_QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Device Records Queue";
-    public static final String EGRESS_EXCHANGE = "Sharespot Device Records Exchange";
+    public static final String TOPIC_EXCHANGE = "sensor.topic";
+
+    public static final String INGRESS_QUEUE = "Sharespot Device Records Queue";
 
     @Bean
     public Queue slaveQueue() {
@@ -32,25 +36,28 @@ public class AmqpConfiguration {
     Binding bindingMaster(Queue slaveQueue, FanoutExchange masterExchange) {
         return BindingBuilder.bind(slaveQueue).to(masterExchange);
     }
-    
+
+    @Bean
+    public TopicExchange topic() {
+        return new TopicExchange(TOPIC_EXCHANGE);
+    }
+
     @Bean
     public Queue queue() {
         return new Queue(INGRESS_QUEUE, true);
     }
 
     @Bean
-    public FanoutExchange exchange() {
-        return new FanoutExchange(INGRESS_EXCHANGE);
-    }
-
-    @Bean
-    Binding binding(Queue queue, FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
-    }
-
-    @Bean
-    public FanoutExchange exchangeType() {
-        return new FanoutExchange(EGRESS_EXCHANGE);
+    Binding binding(Queue queue, TopicExchange topic) {
+        var lgt92 = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.PROCESSED)
+                .withSensorTypeId("lgt92")
+                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .missingAsAny();
+        if (lgt92.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(lgt92.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean

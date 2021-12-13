@@ -8,10 +8,10 @@ import sharespot.services.devicerecordsbackend.application.SensorDataHandlerServ
 @Component
 public class SensorDataEmitter {
 
-    public static final String EGRESS_EXCHANGE = "Sharespot Device Records Exchange";
+    public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     public SensorDataEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, SensorDataHandlerService service) {
         service.getSinglePublisher()
-                .subscribe(outData -> template.convertAndSend(EGRESS_EXCHANGE, "", outData));
+                .subscribe(outData -> template.convertAndSend(TOPIC_EXCHANGE, outData.routingKeys.toString(), outData));
     }
 }

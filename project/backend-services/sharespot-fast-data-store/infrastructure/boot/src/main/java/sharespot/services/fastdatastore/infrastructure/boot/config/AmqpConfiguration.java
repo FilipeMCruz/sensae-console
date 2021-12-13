@@ -7,13 +7,20 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sharespot.services.fastdatastore.application.message.*;
 
 
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String EXCHANGE = "Sharespot GPS Data Processor Exchange";
-    public static final String QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Fast Data Store Queue";
+    public static final String TOPIC_EXCHANGE = "sensor.topic";
+
+    public static final String QUEUE = "Sharespot Fast Data Store Queue";
+
+    @Bean
+    public TopicExchange topic() {
+        return new TopicExchange(TOPIC_EXCHANGE);
+    }
 
     @Bean
     public Queue queue() {
@@ -21,13 +28,16 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public FanoutExchange exchange() {
-        return new FanoutExchange(EXCHANGE);
-    }
-
-    @Bean
-    Binding binding(Queue queue, FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    Binding binding(Queue queue, TopicExchange topic) {
+        var keys = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.PROCESSED)
+                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .withGps(GPSDataOptions.WITH_GPS_DATA)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean

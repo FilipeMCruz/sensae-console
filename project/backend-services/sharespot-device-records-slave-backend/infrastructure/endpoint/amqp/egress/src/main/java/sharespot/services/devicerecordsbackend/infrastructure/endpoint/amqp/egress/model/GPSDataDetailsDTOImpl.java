@@ -3,4 +3,8 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egr
 public class GPSDataDetailsDTOImpl {
     public Double latitude;
     public Double longitude;
+
+    public boolean exists() {
+        return latitude != null && longitude != null;
+    }
 }

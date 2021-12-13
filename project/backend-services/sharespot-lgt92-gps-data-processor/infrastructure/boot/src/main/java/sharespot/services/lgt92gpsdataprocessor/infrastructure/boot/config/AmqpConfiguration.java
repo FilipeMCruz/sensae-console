@@ -7,13 +7,22 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sharespot.services.lgt92gpsdataprocessor.application.model.InfoTypeOptions;
+import sharespot.services.lgt92gpsdataprocessor.application.model.RoutingKeys;
+import sharespot.services.lgt92gpsdataprocessor.application.model.RoutingKeysBuilderOptions;
 
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String INGRESS_EXCHANGE = "Sharespot LGT92 GPS Data Gateway Exchange";
-    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Gateway Exchange -> Sharespot LGT92 GPS Data Processor Queue";
+    public static final String TOPIC_EXCHANGE = "sensor.topic";
+
+    public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Processor Queue";
     public static final String EGRESS_EXCHANGE = "Sharespot GPS Data Processor Exchange";
+
+    @Bean
+    public TopicExchange topic() {
+        return new TopicExchange(TOPIC_EXCHANGE);
+    }
 
     @Bean
     public Queue queue() {
@@ -21,13 +30,15 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public FanoutExchange exchange() {
-        return new FanoutExchange(INGRESS_EXCHANGE);
-    }
-
-    @Bean
-    Binding binding(Queue queue, FanoutExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange);
+    Binding binding(Queue queue, TopicExchange topic) {
+        var lgt92 = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.DECODED)
+                .withSensorTypeId("lgt92")
+                .missingAsAny();
+        if (lgt92.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(lgt92.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean

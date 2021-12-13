@@ -1,5 +1,6 @@
 package sharespot.services.lgt92gpsdatagateway.infrastructure.endpoint.rest.controller;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class SensorController {
             @ApiResponse(code = 400, message = "When the request has incorrect headers or body")})
     public ResponseEntity<?> postSensorData(
             @ApiParam(value = "DTO with lgt92 gps payload", required = true)
-            @RequestBody Object sensorData) {
+            @RequestBody ObjectNode sensorData) {
         service.registerSensorData(sensorData);
         return ResponseEntity.status(HttpStatus.CREATED).body("");
     }

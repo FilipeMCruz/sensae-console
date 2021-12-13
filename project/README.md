@@ -12,9 +12,23 @@ docker-compose -f docker-compose.dev.yml up -d
 ```
 
 This command will only start the databases, message brokers and load balancers (if existing).
-This way the backend services can be started by the programmer on debug mode if and when needed.
+This way the frontend and backend services can be started by the programmer on debug mode if and when needed.
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace any identified tag (`<this is a tag>`).
+
+To run every frontend service run:
+
+``` sh
+cd project/frontend-services
+nx serve-mfe
+```
+
+To run a single frontend service run:
+
+``` sh
+cd project/frontend-services
+nx serve <frontend-name>
+```
 
 File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.ts`
 

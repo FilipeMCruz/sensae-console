@@ -26,4 +26,19 @@ public final class ProcessedSensorDataDTOImpl implements OutSensorDataDTO {
 
     public ProcessedSensorDataDTOImpl() {
     }
+
+    @Override
+    public UUID dataId() {
+        return dataId;
+    }
+
+    @Override
+    public boolean hasGpsData() {
+        return this.data.gps.exists();
+    }
+
+    @Override
+    public boolean hasTempCData() {
+        return false;
+    }
 }

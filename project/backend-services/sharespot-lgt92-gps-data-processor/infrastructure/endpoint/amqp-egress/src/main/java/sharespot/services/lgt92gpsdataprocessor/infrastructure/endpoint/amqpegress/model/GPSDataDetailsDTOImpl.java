@@ -9,4 +9,8 @@ public class GPSDataDetailsDTOImpl {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public boolean exists() {
+        return latitude != null && longitude != null;
+    }
 }

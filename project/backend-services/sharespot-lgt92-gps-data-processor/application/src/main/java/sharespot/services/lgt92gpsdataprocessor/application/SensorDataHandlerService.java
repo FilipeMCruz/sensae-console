@@ -35,16 +35,15 @@ public class SensorDataHandlerService {
     }
 
     public void publish(MessageConsumed<ObjectNode> message) {
-        var routingKeys = RoutingKeys.builder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withInfoType(InfoTypeOptions.PROCESSED)
-                .keepSensorTypeId()
-                .keepChannel()
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
-                .withGps(GPSDataOptions.WITHOUT_GPS_DATA)
-                .withTempC(TempCDataOptions.WITHOUT_TEMPC_DATA)
-                .from(message.routingKeys);
-        
-        routingKeys.ifPresent(keys -> mapper.inToOut(message.data)
-                .ifPresent(outSensorDataDTO -> dataStream.next(new MessageSupplied<>(keys, outSensorDataDTO))));
+        mapper.inToOut(message.data).ifPresent(dto ->
+                RoutingKeys.builder(RoutingKeysBuilderOptions.SUPPLIER)
+                        .withInfoType(InfoTypeOptions.PROCESSED)
+                        .keepSensorTypeId()
+                        .keepChannel()
+                        .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                        .withGps(dto.hasGpsData() ? GPSDataOptions.WITH_GPS_DATA : GPSDataOptions.WITHOUT_GPS_DATA)
+                        .withTempC(dto.hasTempCData() ? TempCDataOptions.WITH_TEMPC_DATA : TempCDataOptions.WITHOUT_TEMPC_DATA)
+                        .from(message.routingKeys)
+                        .ifPresent(keys -> dataStream.next(new MessageSupplied<>(keys, dto))));
     }
 }

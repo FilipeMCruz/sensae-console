@@ -23,12 +23,22 @@ public class SensorDataListener {
 
     @RabbitListener(queues = QUEUE)
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTOImpl> in) {
+        logConsumedMessage(in);
         try {
             handler.publish(in.data);
         } catch (Exception exception) {
-            logger.warn("Data dropped: {}", in.data.dataId);
-            logger.warn("RoutingKeys: {}", in.routingKeys.toString());
-            logger.warn(exception.getMessage());
+            logDroppedMessage(in, exception);
         }
+    }
+
+    private void logDroppedMessage(MessageConsumed<ProcessedSensorDataDTOImpl> in, Exception exception) {
+        logger.warn("Data dropped: {}", in.data.dataId);
+        logger.warn("RoutingKeys: {}", in.routingKeys.toString());
+        logger.warn(exception.getMessage());
+    }
+
+    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTOImpl> in) {
+        logger.info("Data Id Consumed: {}", in.data.dataId);
+        logger.info("RoutingKeys: {}", in.routingKeys.toString());
     }
 }

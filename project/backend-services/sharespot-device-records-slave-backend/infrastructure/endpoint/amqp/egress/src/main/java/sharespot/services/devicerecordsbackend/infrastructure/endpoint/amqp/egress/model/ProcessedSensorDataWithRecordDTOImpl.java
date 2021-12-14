@@ -32,6 +32,11 @@ public final class ProcessedSensorDataWithRecordDTOImpl implements ProcessedSens
     }
 
     @Override
+    public UUID dataId() {
+        return dataId;
+    }
+
+    @Override
     public boolean hasGpsData() {
         return this.data.gps.exists();
     }

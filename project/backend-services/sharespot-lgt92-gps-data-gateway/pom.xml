@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>sharespot.services</groupId>
-    <artifactId>lgt92gpsdatagateway</artifactId>
+    <artifactId>sharespot-lgt92-gps-data-gateway</artifactId>
     <version>0.2.0</version>
     <packaging>pom</packaging>
     <modules>

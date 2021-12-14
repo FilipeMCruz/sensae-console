@@ -168,12 +168,68 @@ logging.level.web=DEBUG
 logging.level.com.netflix.graphql.dgs=TRACE
 ```
 
+File: `project/backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8087
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+
+spring.data.mongodb.database=data
+spring.data.mongodb.port=27017
+spring.data.mongodb.host=localhost
+spring.data.mongodb.username=user
+spring.data.mongodb.password=<key to exchange with data-store database>
+```
+
 File: `project/secrets/dev/sharespot-device-records-database.env`
 
 ``` conf
 POSTGRES_USER=user
 POSTGRES_PASSWORD=<key to exchange with device-records backend>
 POSTGRES_DB=records
+```
+
+File: `project/secrets/dev/sharespot-data-store-database.env`
+
+``` conf
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=<root database password>
+MONGO_INITDB_DATABASE=data
+```
+
+File: `project/secrets/dev/init-sharespot-data-store-database.env`
+
+``` js
+db.createUser({
+  user: "user",
+  pwd: "<key to exchange with data-store>",
+  roles: [{ role: "readWrite", db: "data" }],
+});
+```
+
+File: `project/backend-services/sharespot-fast-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8086
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+
+spring.datasource.url=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
+spring.datasource.username=admin
+spring.datasource.password=quest
 ```
 
 ## PROD Environment
@@ -277,4 +333,40 @@ File: `project/secrets/prod/sharespot-device-records-slave-backend.env`
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-device-records-database:5432/records
 SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with device-records backend>
+```
+
+File: `project/secrets/prod/init-sharespot-fast-data-store-backend.env`
+
+``` conf
+SPRING_DATASOURCE_URL=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
+SPRING_DATASOURCE_USERNAME=admin
+SPRING_DATASOURCE_PASSWORD=quest
+```
+
+File: `project/secrets/prod/sharespot-data-store-database.env`
+
+``` conf
+MONGO_INITDB_ROOT_USERNAME=root
+MONGO_INITDB_ROOT_PASSWORD=<root database password>
+MONGO_INITDB_DATABASE=data
+```
+
+File: `project/secrets/prod/init-sharespot-data-store-database.env`
+
+``` js
+db.createUser({
+  user: "user",
+  pwd: "<key to exchange with data-store>",
+  roles: [{ role: "readWrite", db: "data" }],
+});
+```
+
+File: `project/secrets/prod/init-sharespot-data-store-backend.env`
+
+``` conf
+SPRING_DATA_MONGODB_DATABASE=data
+SPRING_DATA_MONGODB_PORT=27017
+SPRING_DATA_MONGODB_HOST=sharespot-data-store-database
+SPRING_DATA_MONGODB_USERNAME=user
+SPRING_DATA_MONGODB_PASSWORD=699b0802-b324-42b9-b783-f28413beb12d
 ```

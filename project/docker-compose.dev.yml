@@ -22,3 +22,13 @@ services:
       - 9003:9003
     volumes:
       - ./databases-data/dev/questdb:/root/.questdb/
+  sharespot-data-store-database:
+    image: mongo:latest
+    container_name: sharespot-data-store-database
+    ports:
+      - 27017:27017
+    volumes:
+      - ./databases-data/dev/sharespot-data-store-database:/data/db
+      - ./secrets/dev/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    env_file:
+      - ./secrets/dev/sharespot-data-store-database.env

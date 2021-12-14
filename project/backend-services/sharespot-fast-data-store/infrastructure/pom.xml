@@ -15,6 +15,7 @@
         <module>boot</module>
         <module>endpoint</module>
         <module>mapper</module>
+        <module>persistence</module>
     </modules>
 
     <properties>

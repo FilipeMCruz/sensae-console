@@ -3,12 +3,13 @@ package sharespot.services.fastdatastore.infrastructure.endpoint.amqp.controller
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import sharespot.services.fastdatastore.application.SensorDataHandlerService;
+import sharespot.services.fastdatastore.application.message.MessageConsumed;
 import sharespot.services.fastdatastore.infrastructure.endpoint.amqp.model.ProcessedSensorDataDTOImpl;
 
 @Service
 public class SensorDataListener {
 
-    public static final String QUEUE = "Sharespot GPS Data Processor Exchange -> Sharespot Fast Data Store Queue";
+    public static final String QUEUE = "Sharespot Fast Data Store Queue";
 
     private final SensorDataHandlerService handler;
 
@@ -17,9 +18,9 @@ public class SensorDataListener {
     }
 
     @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(ProcessedSensorDataDTOImpl in) {
+    public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTOImpl> in) {
         try {
-            handler.publish(in);
+            handler.publish(in.data);
         } catch (Exception ignore) {
         }
     }

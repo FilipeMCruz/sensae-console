@@ -82,13 +82,13 @@ services:
       - 5432:5432
     volumes:
       - ./databases-data/dev/sharespot-device-records-database:/var/lib/postgresql/data/
-  sharespot-fast-data-store:
-    build: backend-services/sharespot-fast-data-store
-    image: sharespot-fast-data-store
+  sharespot-chrono-data-store:
+    build: backend-services/sharespot-chrono-data-store
+    image: sharespot-chrono-data-store
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-fast-data-store-backend.env
+      - ./secrets/prod/sharespot-chrono-data-store-backend.env
     networks:
       - sharespot-network
     ports:

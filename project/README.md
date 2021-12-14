@@ -214,7 +214,7 @@ db.createUser({
 });
 ```
 
-File: `project/backend-services/sharespot-fast-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-chrono-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8086
@@ -227,7 +227,7 @@ spring.rabbitmq.password=guest
 logging.level.org.springframework.web=DEBUG
 logging.level.web=DEBUG
 
-spring.datasource.url=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
+spring.datasource.url=jdbc:postgresql://localhost:8812/qdb?sslmode=disable
 spring.datasource.username=admin
 spring.datasource.password=quest
 ```
@@ -335,7 +335,7 @@ SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with device-records backend>
 ```
 
-File: `project/secrets/prod/init-sharespot-fast-data-store-backend.env`
+File: `project/secrets/prod/init-sharespot-chrono-data-store-backend.env`
 
 ``` conf
 SPRING_DATASOURCE_URL=jdbc:postgresql://questdb:8812/qdb?sslmode=disable

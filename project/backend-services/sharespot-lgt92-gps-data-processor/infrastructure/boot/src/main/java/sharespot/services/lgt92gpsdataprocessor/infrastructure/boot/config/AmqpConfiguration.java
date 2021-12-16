@@ -7,9 +7,9 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sharespot.services.lgt92gpsdataprocessor.application.model.InfoTypeOptions;
-import sharespot.services.lgt92gpsdataprocessor.application.model.RoutingKeys;
-import sharespot.services.lgt92gpsdataprocessor.application.model.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeys;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 
 @Configuration
 public class AmqpConfiguration {
@@ -30,7 +30,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = RoutingKeys.builder("lgt92gpsdataprocessor", "dataprocessor", RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.DECODED)
                 .withSensorTypeId("lgt92")
                 .missingAsAny();

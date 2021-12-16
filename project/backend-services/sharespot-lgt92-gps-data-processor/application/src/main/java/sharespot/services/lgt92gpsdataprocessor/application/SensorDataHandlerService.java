@@ -2,10 +2,13 @@ package sharespot.services.lgt92gpsdataprocessor.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.routing.MessageConsumed;
+import pt.sharespot.iot.core.routing.MessageSupplied;
+import pt.sharespot.iot.core.routing.keys.*;
+import pt.sharespot.iot.core.sensor.SensorData;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import sharespot.services.lgt92gpsdataprocessor.application.model.*;
 
 import javax.annotation.PostConstruct;
 
@@ -14,9 +17,9 @@ public class SensorDataHandlerService {
 
     private final SensorDataMapper mapper;
 
-    private FluxSink<MessageSupplied<OutSensorDataDTO>> dataStream;
+    private FluxSink<MessageSupplied<SensorData>> dataStream;
 
-    private ConnectableFlux<MessageSupplied<OutSensorDataDTO>> dataPublisher;
+    private ConnectableFlux<MessageSupplied<SensorData>> dataPublisher;
 
     public SensorDataHandlerService(SensorDataMapper mapper) {
         this.mapper = mapper;
@@ -24,19 +27,19 @@ public class SensorDataHandlerService {
 
     @PostConstruct
     public void init() {
-        Flux<MessageSupplied<OutSensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<MessageSupplied<SensorData>> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<MessageSupplied<OutSensorDataDTO>> getSinglePublisher() {
+    public Flux<MessageSupplied<SensorData>> getSinglePublisher() {
         return dataPublisher;
     }
 
     public void publish(MessageConsumed<ObjectNode> message) {
         mapper.inToOut(message.data).ifPresent(dto ->
-                RoutingKeys.builder(RoutingKeysBuilderOptions.SUPPLIER)
+                RoutingKeys.builder("lgt92gpsdataprocessor", "dataprocessor")
                         .withInfoType(InfoTypeOptions.PROCESSED)
                         .keepSensorTypeId()
                         .keepChannel()

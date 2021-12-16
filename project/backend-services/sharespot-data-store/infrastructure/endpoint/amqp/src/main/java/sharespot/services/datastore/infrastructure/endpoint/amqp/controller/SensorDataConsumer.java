@@ -5,19 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.routing.MessageConsumed;
 import sharespot.services.datastore.application.SensorDataHandlerService;
-import sharespot.services.datastore.application.model.MessageConsumed;
 
 @Service
-public class SensorDataListener {
+public class SensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataListener.class);
+    Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
     public static final String QUEUE = "Sharespot Data Store Queue";
 
     private final SensorDataHandlerService handler;
 
-    public SensorDataListener(SensorDataHandlerService handler) {
+    public SensorDataConsumer(SensorDataHandlerService handler) {
         this.handler = handler;
     }
 

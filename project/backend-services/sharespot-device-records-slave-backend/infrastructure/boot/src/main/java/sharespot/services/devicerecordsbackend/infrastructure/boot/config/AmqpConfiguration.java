@@ -7,10 +7,10 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sharespot.services.devicerecordsbackend.domain.model.message.InfoTypeOptions;
-import sharespot.services.devicerecordsbackend.domain.model.message.RecordsOptions;
-import sharespot.services.devicerecordsbackend.domain.model.message.RoutingKeys;
-import sharespot.services.devicerecordsbackend.domain.model.message.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeys;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 
 @Configuration
 public class AmqpConfiguration {
@@ -49,7 +49,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = RoutingKeys.builder("devicerecordsslave", "devicerecordsslave", RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withSensorTypeId("lgt92")
                 .withRecords(RecordsOptions.WITHOUT_RECORDS)

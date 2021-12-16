@@ -1,7 +1,7 @@
 package sharespot.services.lgt92gpsdatagateway.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import sharespot.services.lgt92gpsdatagateway.application.model.MessageSupplied;
+import pt.sharespot.iot.core.routing.MessageSupplied;
 
 public interface EventPublisher {
 

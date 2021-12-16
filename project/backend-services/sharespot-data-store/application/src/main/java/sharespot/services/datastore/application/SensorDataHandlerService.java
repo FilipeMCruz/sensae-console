@@ -2,7 +2,7 @@ package sharespot.services.datastore.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import sharespot.services.datastore.application.model.MessageConsumed;
+import pt.sharespot.iot.core.routing.MessageConsumed;
 
 @Service
 public class SensorDataHandlerService {

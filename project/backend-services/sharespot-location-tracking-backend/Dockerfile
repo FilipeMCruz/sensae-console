@@ -1,4 +1,4 @@
-FROM maven:3.6.3-openjdk-17 AS build
+FROM filipecruz/sharespot-core:0.1.0 AS build
 WORKDIR /app
 # get all pom.xml to pull only external dependencies
 COPY application/pom.xml application/pom.xml

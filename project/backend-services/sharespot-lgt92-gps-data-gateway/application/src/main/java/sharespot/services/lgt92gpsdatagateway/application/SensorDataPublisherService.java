@@ -2,7 +2,8 @@ package sharespot.services.lgt92gpsdatagateway.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import sharespot.services.lgt92gpsdatagateway.application.model.*;
+import pt.sharespot.iot.core.routing.MessageSupplied;
+import pt.sharespot.iot.core.routing.keys.*;
 
 @Service
 public class SensorDataPublisherService {
@@ -14,7 +15,7 @@ public class SensorDataPublisherService {
     }
 
     public void registerSensorData(ObjectNode sensorDataDTO) {
-        RoutingKeys.builder()
+        RoutingKeys.supplierBuilder("lgt92gpsdatagateway", "datagateway")
                 .withInfoType(InfoTypeOptions.DECODED)
                 .withSensorTypeId("lgt92")
                 .withDefaultChannel()

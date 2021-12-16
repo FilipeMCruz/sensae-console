@@ -5,19 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Controller;
+import pt.sharespot.iot.core.routing.MessageSupplied;
 import sharespot.services.lgt92gpsdatagateway.application.EventPublisher;
-import sharespot.services.lgt92gpsdatagateway.application.model.MessageSupplied;
 
 @Controller
-public class SensorDataEmitter implements EventPublisher {
+public class SensorDataSupplier implements EventPublisher {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataEmitter.class);
+    Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     private final AmqpTemplate rabbitTemplate;
 
-    public SensorDataEmitter(AmqpTemplate rabbitTemplate) {
+    public SensorDataSupplier(AmqpTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 

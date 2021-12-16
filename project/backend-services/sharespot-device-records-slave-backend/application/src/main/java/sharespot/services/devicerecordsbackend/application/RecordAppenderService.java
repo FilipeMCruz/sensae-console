@@ -1,6 +1,8 @@
 package sharespot.services.devicerecordsbackend.application;
 
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import sharespot.services.devicerecordsbackend.domainservices.RecordAppender;
 
 @Service
@@ -18,7 +20,7 @@ public class RecordAppenderService {
         this.dataMapper = dataMapper;
     }
 
-    public ProcessedSensorDataWithRecordDTO tryToAppend(ProcessedSensorDataDTO dto) {
+    public ProcessedSensorDataWithRecordsDTO tryToAppend(ProcessedSensorDataDTO dto) {
         var processedSensorData = dataMapper.dtoToDomain(dto);
         var processedSensorDataWithRecord = appender.appendRecord(processedSensorData);
         return dataWithRecordMapper.domainToDto(processedSensorDataWithRecord);

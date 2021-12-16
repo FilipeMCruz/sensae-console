@@ -7,7 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sharespot.services.locationtrackingbackend.domain.message.*;
+import pt.sharespot.iot.core.routing.keys.*;
 
 @Configuration
 public class AmqpConfiguration {
@@ -28,7 +28,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = RoutingKeys.builder("locationtracking", "locationtracking",RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)

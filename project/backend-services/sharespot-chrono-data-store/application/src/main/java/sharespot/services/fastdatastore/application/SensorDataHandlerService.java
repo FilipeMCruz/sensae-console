@@ -1,6 +1,7 @@
 package sharespot.services.fastdatastore.application;
 
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
 @Service
 public class SensorDataHandlerService {

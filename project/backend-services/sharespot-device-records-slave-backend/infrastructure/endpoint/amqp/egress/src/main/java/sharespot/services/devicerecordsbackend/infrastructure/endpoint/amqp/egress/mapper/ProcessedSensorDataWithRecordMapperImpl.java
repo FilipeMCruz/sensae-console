@@ -1,14 +1,17 @@
 package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.mapper;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWithRecordDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWithRecordMapper;
 import sharespot.services.devicerecordsbackend.domain.model.records.BasicRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordLabel;
-import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensor;
 import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensorDataWithRecord;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.model.*;
 
 import java.util.stream.Collectors;
 
@@ -16,7 +19,7 @@ import java.util.stream.Collectors;
 public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorDataWithRecordMapper {
 
     @Override
-    public ProcessedSensorDataWithRecordDTO domainToDto(ProcessedSensorDataWithRecord domain) {
+    public ProcessedSensorDataWithRecordsDTO domainToDto(ProcessedSensorDataWithRecord domain) {
         var dataId = domain.getDataId();
         var device = domain.getDevice();
         var reportedAt = domain.getReportedAt();
@@ -28,8 +31,8 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .map(e -> (SensorDataRecordEntry) e)
                 .collect(Collectors.toSet());
 
-        var sensorData = new SensorDataDetailsDTOImpl();
-        var gpsData = new GPSDataDetailsDTOImpl();
+        var sensorData = new SensorDataDetailsDTO();
+        var gpsData = new GPSDataDTO();
 
         sensorDataToUpdate.stream()
                 .filter(e -> e.has(SensorDataRecordLabel.GPS_LATITUDE))
@@ -48,18 +51,16 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 );
         sensorData.gps = gpsData;
 
-        var deviceRecordDTO = new DeviceRecordDTOImpl(domain.getRecords()
+        var deviceRecordDTO = new DeviceRecordDTO(domain.getRecords()
                 .entries()
                 .stream()
                 .filter(e -> e instanceof BasicRecordEntry)
                 .map(e -> (BasicRecordEntry) e)
-                .map(e -> new DeviceRecordBasicEntryDTOImpl(e.label(), e.content()))
+                .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
                 .collect(Collectors.toSet()));
 
-        return new ProcessedSensorDataWithRecordDTOImpl(dataId, domainToDto(device), reportedAt, sensorData, deviceRecordDTO);
-    }
+        var deviceInfo = new DeviceInformationWithRecordsDTO(device.getId(), device.getName(), deviceRecordDTO);
 
-    private ProcessedSensorDTOWithRecordsImpl domainToDto(ProcessedSensor device) {
-        return new ProcessedSensorDTOWithRecordsImpl(device.getName(), device.getId());
+        return new ProcessedSensorDataWithRecordsDTO(dataId, deviceInfo, reportedAt, sensorData);
     }
 }

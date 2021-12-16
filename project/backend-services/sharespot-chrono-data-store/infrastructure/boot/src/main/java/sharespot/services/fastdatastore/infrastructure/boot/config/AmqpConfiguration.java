@@ -7,8 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sharespot.services.fastdatastore.application.message.*;
-
+import pt.sharespot.iot.core.routing.keys.*;
 
 @Configuration
 public class AmqpConfiguration {
@@ -29,7 +28,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var keys = RoutingKeys.builder(RoutingKeysBuilderOptions.CONSUMER)
+        var keys = RoutingKeys.builder("gpschronodatastore","chronodatastore",RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITHOUT_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)

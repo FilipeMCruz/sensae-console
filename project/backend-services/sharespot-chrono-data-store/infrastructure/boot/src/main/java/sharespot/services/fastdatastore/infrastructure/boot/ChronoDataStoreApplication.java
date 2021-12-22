@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "sharespot.services")
+@ComponentScan(basePackages = {"sharespot.services", "pt.sharespot"})
 @EnableJdbcRepositories(basePackages = "sharespot.services")
 public class ChronoDataStoreApplication extends SpringBootServletInitializer {
 

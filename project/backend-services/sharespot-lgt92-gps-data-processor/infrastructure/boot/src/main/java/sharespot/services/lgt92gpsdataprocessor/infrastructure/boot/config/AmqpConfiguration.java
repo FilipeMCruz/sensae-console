@@ -8,8 +8,8 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
 
 @Configuration
 public class AmqpConfiguration {
@@ -17,6 +17,12 @@ public class AmqpConfiguration {
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     public static final String INGRESS_QUEUE = "Sharespot LGT92 GPS Data Processor Queue";
+
+    private final RoutingKeysFactory factory;
+
+    public AmqpConfiguration(RoutingKeysFactory factory) {
+        this.factory = factory;
+    }
 
     @Bean
     public TopicExchange topic() {
@@ -30,7 +36,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder("lgt92gpsdataprocessor", "dataprocessor", RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.DECODED)
                 .withSensorTypeId("lgt92")
                 .missingAsAny();

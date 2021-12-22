@@ -16,6 +16,12 @@ public class AmqpConfiguration {
 
     public static final String QUEUE = "Sharespot Chrono Data Store Queue";
 
+    private final RoutingKeysFactory factory;
+
+    public AmqpConfiguration(RoutingKeysFactory factory) {
+        this.factory = factory;
+    }
+
     @Bean
     public TopicExchange topic() {
         return new TopicExchange(TOPIC_EXCHANGE);
@@ -28,7 +34,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var keys = RoutingKeys.builder("gpschronodatastore","chronodatastore",RoutingKeysBuilderOptions.CONSUMER)
+        var keys = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITHOUT_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)

@@ -24,8 +24,11 @@ public class SensorDataConsumer {
 
     @RabbitListener(queues = INGRESS_QUEUE)
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
-        logConsumedMessage(in);
-        handler.publish(GPSDataMapper.dtoToDomain(in.data));
+        try {
+            logConsumedMessage(in);
+            handler.publish(GPSDataMapper.dtoToDomain(in.data));
+        } catch (Exception ignore) {
+        }
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {

@@ -26,9 +26,9 @@
             <version>2.6.0</version>
         </dependency>
         <dependency>
-            <groupId>pt.sharespot.iot</groupId>
-            <artifactId>core</artifactId>
-            <version>0.1.0</version>
+            <groupId>pt.sharespot</groupId>
+            <artifactId>iot-core</artifactId>
+            <version>0.1.4</version>
         </dependency>
     </dependencies>
 </project>

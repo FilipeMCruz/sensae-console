@@ -8,14 +8,14 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.inte
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.internal.model.DeviceRecordsIndexEventDTOImpl;
 
 @Service
-public class DeviceRecordListener {
+public class DeviceRecordConsumer {
 
     public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
 
     private final RecordEraserService eraser;
     private final RecordRegisterService register;
 
-    public DeviceRecordListener(RecordEraserService eraser, RecordRegisterService register) {
+    public DeviceRecordConsumer(RecordEraserService eraser, RecordRegisterService register) {
         this.eraser = eraser;
         this.register = register;
     }

@@ -10,12 +10,15 @@ public class SensorDataPublisherService {
 
     private final EventPublisher sensorDataPublisher;
 
-    public SensorDataPublisherService(EventPublisher sensorDataPublisher) {
+    private final RoutingKeysFactory factory;
+
+    public SensorDataPublisherService(EventPublisher sensorDataPublisher, RoutingKeysFactory factory) {
         this.sensorDataPublisher = sensorDataPublisher;
+        this.factory = factory;
     }
 
     public void registerSensorData(ObjectNode sensorDataDTO) {
-        RoutingKeys.supplierBuilder("lgt92gpsdatagateway", "datagateway")
+        factory.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withInfoType(InfoTypeOptions.DECODED)
                 .withSensorTypeId("lgt92")
                 .withDefaultChannel()

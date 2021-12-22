@@ -7,10 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.*;
 
 @Configuration
 public class AmqpConfiguration {
@@ -22,6 +19,12 @@ public class AmqpConfiguration {
 
     public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
 
+    private final RoutingKeysFactory factory;
+
+    public AmqpConfiguration(RoutingKeysFactory factory) {
+        this.factory = factory;
+    }
+    
     @Bean
     public Queue slaveQueue() {
         return new Queue(MASTER_QUEUE, true);
@@ -49,7 +52,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder("devicerecordsslave", "devicerecordsslave", RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withSensorTypeId("lgt92")
                 .withRecords(RecordsOptions.WITHOUT_RECORDS)

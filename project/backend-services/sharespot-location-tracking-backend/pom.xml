@@ -42,9 +42,9 @@
             <version>4.9.7</version>
         </dependency>
         <dependency>
-            <groupId>pt.sharespot.iot</groupId>
-            <artifactId>core</artifactId>
-            <version>0.1.0</version>
+            <groupId>pt.sharespot</groupId>
+            <artifactId>iot-core</artifactId>
+            <version>0.1.4</version>
         </dependency>
 
         <!--         this dependencies are here just to prevent transitive dependencies to be used so that JAVA 17 can be used-->

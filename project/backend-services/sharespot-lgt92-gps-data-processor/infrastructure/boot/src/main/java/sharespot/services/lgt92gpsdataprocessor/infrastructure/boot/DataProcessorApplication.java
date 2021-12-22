@@ -6,11 +6,11 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "sharespot.services")
-public class SensorProcessorApplication extends SpringBootServletInitializer {
+@ComponentScan(basePackages = {"sharespot.services", "pt.sharespot"})
+public class DataProcessorApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(SensorProcessorApplication.class, args);
+        SpringApplication.run(DataProcessorApplication.class, args);
     }
 
 }

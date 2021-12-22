@@ -16,6 +16,12 @@ public class AmqpConfiguration {
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
+    private final RoutingKeysFactory factory;
+
+    public AmqpConfiguration(RoutingKeysFactory factory) {
+        this.factory = factory;
+    }
+
     @Bean
     public Queue queue() {
         return new Queue(INGRESS_QUEUE, true);
@@ -28,7 +34,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = RoutingKeys.builder("locationtracking", "locationtracking",RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)

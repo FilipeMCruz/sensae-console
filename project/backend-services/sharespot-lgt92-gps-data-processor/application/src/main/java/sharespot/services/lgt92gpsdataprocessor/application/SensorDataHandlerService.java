@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.*;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
 import pt.sharespot.iot.core.sensor.SensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -21,8 +22,11 @@ public class SensorDataHandlerService {
 
     private ConnectableFlux<MessageSupplied<SensorDataDTO>> dataPublisher;
 
-    public SensorDataHandlerService(SensorDataMapper mapper) {
+    private final RoutingKeysFactory factory;
+
+    public SensorDataHandlerService(SensorDataMapper mapper, RoutingKeysFactory factory) {
         this.mapper = mapper;
+        this.factory = factory;
     }
 
     @PostConstruct
@@ -38,14 +42,11 @@ public class SensorDataHandlerService {
     }
 
     public void publish(MessageConsumed<ObjectNode> message) {
-        mapper.inToOut(message.data).ifPresent(dto ->
-                RoutingKeys.supplierBuilder("lgt92gpsdataprocessor", "dataprocessor")
-                        .withInfoType(InfoTypeOptions.PROCESSED)
+        mapper.inToOut(message.data, SensorTypeId.of(message.routingKeys.sensorTypeId)).ifPresent(dto ->
+                factory.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                         .keepSensorTypeId()
                         .keepChannel()
-                        .withRecords(RecordsOptions.WITHOUT_RECORDS)
-                        .withGps(dto.hasGpsData() ? GPSDataOptions.WITH_GPS_DATA : GPSDataOptions.WITHOUT_GPS_DATA)
-                        .withTempC(dto.hasTempCData() ? TempCDataOptions.WITH_TEMPC_DATA : TempCDataOptions.WITHOUT_TEMPC_DATA)
+                        .withUpdated(dto)
                         .from(message.routingKeys)
                         .ifPresent(keys -> dataStream.next(new MessageSupplied<>(keys, dto))));
     }

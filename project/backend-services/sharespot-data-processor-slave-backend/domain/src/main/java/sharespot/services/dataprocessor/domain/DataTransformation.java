@@ -13,14 +13,6 @@ public class DataTransformation {
         this.transform = transform;
     }
 
-    public SensorTypeId getId() {
-        return id;
-    }
-
-    public boolean is(SensorTypeId other) {
-        return other.same(id);
-    }
-
     public PropertyTransformations getTransform() {
         return transform;
     }

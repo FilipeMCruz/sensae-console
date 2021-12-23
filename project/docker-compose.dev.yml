@@ -13,14 +13,6 @@ services:
       - 5432:5432
     volumes:
       - ./databases-data/dev/sharespot-common-database:/var/lib/postgresql/data/
-  questdb:
-    image: questdb/questdb
-    ports:
-      - 8812:8812
-      - 9000:9000
-      - 9003:9003
-    volumes:
-      - ./databases-data/dev/questdb:/root/.questdb/
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database
@@ -31,3 +23,11 @@ services:
       - ./secrets/dev/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     env_file:
       - ./secrets/dev/sharespot-data-store-database.env
+  questdb:
+    image: questdb/questdb
+    ports:
+      - 8812:8812
+      - 9000:9000
+      - 9003:9003
+    volumes:
+      - ./databases-data/dev/questdb:/root/.questdb/

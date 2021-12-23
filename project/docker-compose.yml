@@ -41,17 +41,6 @@ services:
       - 80
     depends_on:
       - sharespot-location-tracking-backend
-  sharespot-lgt92-gps-data-gateway:
-    build: backend-services/sharespot-lgt92-gps-data-gateway
-    image: sharespot-lgt92-gps-data-gateway
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8080
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
@@ -59,14 +48,13 @@ services:
       - sharespot-network
     ports:
       - 8080:80
-  sharespot-location-tracking-backend:
-    build: backend-services/sharespot-location-tracking-backend
-    container_name: sharespot-location-tracking-backend
-    image: sharespot-location-tracking-backend
+  sharespot-lgt92-gps-data-gateway:
+    build: backend-services/sharespot-lgt92-gps-data-gateway
+    image: sharespot-lgt92-gps-data-gateway
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-location-tracking-backend.env
+      - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
     networks:
       - sharespot-network
     ports:
@@ -82,18 +70,17 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-common-database:
-    build: databases/sharespot-common-database
-    image: sharespot-common-database
-    container_name: sharespot-common-database
+  sharespot-data-processor-master-backend:
+    build: backend-services/sharespot-data-processor-master-backend
+    image: sharespot-data-processor-master-backend
+    environment:
+      spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-common-database.env
+      - ./secrets/prod/sharespot-data-processor-master-backend.env
     networks:
       - sharespot-network
     ports:
-      - 5432
-    volumes:
-      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
+      - 8080
   sharespot-device-records-slave-backend:
     build: backend-services/sharespot-device-records-slave-backend
     image: sharespot-device-records-slave-backend
@@ -114,6 +101,18 @@ services:
       - sharespot-network
     ports:
       - 8080
+  sharespot-location-tracking-backend:
+    build: backend-services/sharespot-location-tracking-backend
+    container_name: sharespot-location-tracking-backend
+    image: sharespot-location-tracking-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-location-tracking-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
   sharespot-chrono-data-store:
     build: backend-services/sharespot-chrono-data-store
     image: sharespot-chrono-data-store
@@ -125,6 +124,29 @@ services:
       - sharespot-network
     ports:
       - 8080
+  sharespot-data-store:
+    build: backend-services/sharespot-data-store
+    image: sharespot-data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-store-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  sharespot-common-database:
+    build: databases/sharespot-common-database
+    image: sharespot-common-database
+    container_name: sharespot-common-database
+    env_file:
+      - ./secrets/prod/sharespot-common-database.env
+    networks:
+      - sharespot-network
+    ports:
+      - 5432
+    volumes:
+      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:
     image: questdb/questdb
     container_name: questdb
@@ -136,17 +158,6 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
-  sharespot-data-store:
-    build: backend-services/sharespot-data-store
-    image: sharespot-data-store
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-data-store-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8087:8080
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database

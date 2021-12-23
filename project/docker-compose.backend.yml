@@ -7,6 +7,13 @@ services:
     ports:
       - 5672
       - 15672:15672
+  sharespot-data-relayer:
+    build: backend-services/sharespot-data-relayer
+    image: sharespot-data-relayer
+    networks:
+      - sharespot-network
+    ports:
+      - 8080:80
   sharespot-lgt92-gps-data-gateway:
     build: backend-services/sharespot-lgt92-gps-data-gateway
     image: sharespot-lgt92-gps-data-gateway
@@ -18,24 +25,6 @@ services:
       - sharespot-network
     ports:
       - 8081:8080
-  sharespot-data-relayer:
-    build: backend-services/sharespot-data-relayer
-    image: sharespot-data-relayer
-    networks:
-      - sharespot-network
-    ports:
-      - 8080:80
-  sharespot-location-tracking-backend:
-    build: backend-services/sharespot-location-tracking-backend
-    image: sharespot-location-tracking-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-location-tracking-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8084:8080
   sharespot-data-processor-slave-backend:
     build: backend-services/sharespot-data-processor-slave-backend
     image: sharespot-data-processor-slave-backend
@@ -47,6 +36,17 @@ services:
       - sharespot-network
     ports:
       - 8082:8080
+  sharespot-data-processor-master-backend:
+    build: backend-services/sharespot-data-processor-master-backend
+    image: sharespot-data-processor-master-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-processor-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8083:8080
   sharespot-device-records-slave-backend:
     build: backend-services/sharespot-device-records-slave-backend
     image: sharespot-device-records-slave-backend
@@ -57,7 +57,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8085:8080
+      - 8084:8080
   sharespot-device-records-master-backend:
     build: backend-services/sharespot-device-records-master-backend
     image: sharespot-device-records-master-backend
@@ -68,7 +68,40 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8083:8080
+      - 8085:8080
+  sharespot-location-tracking-backend:
+    build: backend-services/sharespot-location-tracking-backend
+    image: sharespot-location-tracking-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-location-tracking-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8086:8080
+  sharespot-data-store:
+    build: backend-services/sharespot-data-store
+    image: sharespot-data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-store-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8087:8080
+  sharespot-chrono-data-store:
+    build: backend-services/sharespot-chrono-data-store
+    image: sharespot-chrono-data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-chrono-data-store-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8088:8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -81,17 +114,6 @@ services:
       - 5432:5432
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
-  sharespot-chrono-data-store:
-    build: backend-services/sharespot-chrono-data-store
-    image: sharespot-chrono-data-store
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-chrono-data-store-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8086:8080
   questdb:
     image: questdb/questdb
     container_name: questdb
@@ -103,17 +125,6 @@ services:
       - 9003:9003
     volumes:
       - ./databases-data/dev/questdb:/root/.questdb/
-  sharespot-data-store:
-    build: backend-services/sharespot-data-store
-    image: sharespot-data-store
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-data-store-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8087:8080
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database

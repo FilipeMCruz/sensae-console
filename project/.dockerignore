@@ -1,0 +1,6 @@
+**/.idea
+**/target
+**/*.iml
+
+test-examples
+databases-data

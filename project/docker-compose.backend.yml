@@ -36,13 +36,13 @@ services:
       - sharespot-network
     ports:
       - 8084:8080
-  sharespot-lgt92-gps-data-processor:
-    build: backend-services/sharespot-lgt92-gps-data-processor
-    image: sharespot-lgt92-gps-data-processor
+  sharespot-data-processor-slave-backend:
+    build: backend-services/sharespot-data-processor-slave-backend
+    image: sharespot-data-processor-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-lgt92-gps-data-processor.env
+      - ./secrets/prod/sharespot-data-processor-slave-backend.env
     networks:
       - sharespot-network
     ports:
@@ -69,18 +69,18 @@ services:
       - sharespot-network
     ports:
       - 8083:8080
-  sharespot-device-records-database:
-    build: databases/sharespot-device-records-database
-    image: sharespot-device-records-database
-    container_name: sharespot-device-records-database
+  sharespot-common-database:
+    build: databases/sharespot-common-database
+    image: sharespot-common-database
+    container_name: sharespot-common-database
     env_file:
-      - ./secrets/prod/sharespot-device-records-database.env
+      - ./secrets/prod/sharespot-common-database.env
     networks:
       - sharespot-network
     ports:
       - 5432:5432
     volumes:
-      - ./databases-data/dev/sharespot-device-records-database:/var/lib/postgresql/data/
+      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   sharespot-chrono-data-store:
     build: backend-services/sharespot-chrono-data-store
     image: sharespot-chrono-data-store

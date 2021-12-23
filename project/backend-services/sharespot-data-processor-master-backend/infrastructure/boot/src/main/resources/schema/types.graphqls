@@ -1,0 +1,38 @@
+type DataTransformation {
+    data : DataType
+    entries : [PropertyTransformation]
+}
+
+type PropertyTransformation {
+    oldPath: String
+    newPath: PropertyName
+}
+
+type DataType {
+    type: String
+}
+
+input DataTransformationInput {
+    data : DataTypeInput
+    entries : [PropertyTransformationInput]
+}
+
+input PropertyTransformationInput {
+    oldPath: String
+    newPath: PropertyName
+}
+
+input DataTypeInput {
+    type: String
+}
+
+enum PropertyName {
+    DATA_ID,
+    DEVICE_ID,
+    DEVICE_NAME,
+    DEVICE_RECORDS,
+    REPORTED_AT,
+    LATITUDE,
+    LONGITUDE,
+    TEMPERATURE
+}

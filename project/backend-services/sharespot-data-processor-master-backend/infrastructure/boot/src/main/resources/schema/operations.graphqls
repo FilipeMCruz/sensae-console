@@ -1,0 +1,8 @@
+type Query {
+    transformation: [DataTransformation]
+}
+
+type Mutation {
+    index(transformation : DataTransformationInput): DataTransformation
+    delete(type: DataTypeInput): DataType
+}

@@ -1,4 +1,4 @@
-package sharespot.services.dataprocessor.infrastructure.persistence.postgres.model;
+package sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.model;
 
 import javax.persistence.Embeddable;
 

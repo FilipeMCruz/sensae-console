@@ -43,7 +43,6 @@ export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpU
 export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
   return {
     locationTracking: {
-      name: 'locationTracking',
       link: createLinkWithWebsocket(httpLink, environment.backendURL.websocket, environment.backendURL.http),
       cache: new InMemoryCache(),
     }

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
+import {DataTransformationQuery} from '../dtos/DataTransformationDTO';
 import {FetchResult} from '@apollo/client/core';
-import {DataTransformationQuery} from "../dtos/DataTransformationDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,6 @@ export class GetAllDataTransformations {
       }
     `;
     return this.apollo.use("dataProcessor")
-      .query<DataTransformationQuery>({query});
+      .query<DataTransformationQuery>({query, fetchPolicy: "no-cache"});
   }
 }

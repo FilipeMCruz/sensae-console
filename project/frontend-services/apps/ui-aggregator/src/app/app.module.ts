@@ -53,21 +53,18 @@ export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpU
 export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
   return {
     deviceRecords: {
-      name: 'deviceRecords',
       link: httpLink.create({
         uri: environment.endpoints.deviceRecords.backendURL.http
       }),
       cache: new InMemoryCache()
     },
     dataProcessor: {
-      name: 'dataProcessor',
       link: httpLink.create({
         uri: environment.endpoints.dataProcessor.backendURL.http
       }),
       cache: new InMemoryCache(),
     },
     locationTracking: {
-      name: 'locationTracking',
       link: createLinkWithWebsocket(httpLink, environment.endpoints.locationTracking.backendURL.websocket, environment.endpoints.locationTracking.backendURL.http),
       cache: new InMemoryCache(),
     }

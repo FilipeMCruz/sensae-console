@@ -48,15 +48,15 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             throw new RuntimeException("A data transformation can't have two equal identifiers");
         }
 
-        return new DataTransformation(dtoToDomain(dataTransformationDTO.type), PropertyTransformations.of(properties));
+        return new DataTransformation(dtoToDomain(dataTransformationDTO.data), PropertyTransformations.of(properties));
     }
 
     @Override
     public DataTransformationDTO domainToDto(DataTransformation domain) {
         var dto = new DataTransformationDTOImpl();
         var typeDto = new SensorTypeIdDTOImpl();
-        typeDto.value = domain.getId().getValue();
-        dto.type = typeDto;
+        typeDto.type = domain.getId().getValue();
+        dto.data = typeDto;
         dto.entries = domain.getTransform().getTransform().stream().map(e -> {
             if (e instanceof KnownPropertyTransformation kt) {
                 return domainToDto(kt);
@@ -86,13 +86,13 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
     @Override
     public SensorTypeId dtoToDomain(SensorTypeIdDTO dto) {
         var typeDto = (SensorTypeIdDTOImpl) dto;
-        return SensorTypeId.of(typeDto.value);
+        return SensorTypeId.of(typeDto.type);
     }
 
     @Override
     public SensorTypeIdDTO domainToDto(SensorTypeId domain) {
         var typeDto = new SensorTypeIdDTOImpl();
-        typeDto.value = domain.getValue();
+        typeDto.type = domain.getValue();
         return typeDto;
     }
 }

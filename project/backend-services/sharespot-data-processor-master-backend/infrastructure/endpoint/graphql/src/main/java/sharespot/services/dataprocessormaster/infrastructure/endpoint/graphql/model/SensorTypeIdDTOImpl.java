@@ -3,5 +3,5 @@ package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.m
 import sharespot.services.dataprocessormaster.application.SensorTypeIdDTO;
 
 public class SensorTypeIdDTOImpl implements SensorTypeIdDTO {
-    public String value;
+    public String type;
 }

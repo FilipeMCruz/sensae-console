@@ -29,6 +29,6 @@ export class GetAllDeviceRecords {
       }
     `;
     return this.apollo.use("deviceRecords")
-      .query<DeviceRecordQuery>({query});
+      .query<DeviceRecordQuery>({query, fetchPolicy: "no-cache"});
   }
 }

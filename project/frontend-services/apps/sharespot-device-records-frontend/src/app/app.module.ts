@@ -13,7 +13,6 @@ import {HttpLink} from 'apollo-angular/http';
 export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
   return {
     deviceRecords: {
-      name: 'deviceRecords',
       link: httpLink.create({
         uri: environment.backendURL.http
       }),

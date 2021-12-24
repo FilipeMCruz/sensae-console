@@ -5,6 +5,6 @@ import sharespot.services.dataprocessormaster.application.DataTransformationDTO;
 import java.util.Set;
 
 public class DataTransformationDTOImpl implements DataTransformationDTO {
-    public SensorTypeIdDTOImpl type;
+    public SensorTypeIdDTOImpl data;
     public Set<PropertyTransformationDTOImpl> entries;
 }

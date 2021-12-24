@@ -1,0 +1,27 @@
+<div class="container">
+  <button class="bottom" mat-stroked-button color="primary" (click)="fetchAllDataTransformations()">
+    Reload Data Transformations
+  </button>
+  <div class="list">
+    <mat-card *ngFor="let transformation of this.dataTransformations" class="item">
+      <mat-card-title>Data Transformation</mat-card-title>
+      <mat-card-content>
+        <frontend-services-data-transformation
+          [entry]=transformation
+          [dataTransformationViewEntry]="dataTransformationViewType.Edit"
+          (newDataTransformationEvent)="updateItem($event)"
+          (deleteDataTransformationEvent)="deleteItem($event)"
+        ></frontend-services-data-transformation>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="item">
+      <mat-card-title>New Data Transformation</mat-card-title>
+      <mat-card-content>
+        <frontend-services-data-transformation
+          (newDataTransformationEvent)="addItem($event)"
+          [dataTransformationViewEntry]="dataTransformationViewType.New"
+        ></frontend-services-data-transformation>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

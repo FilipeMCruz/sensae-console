@@ -1,0 +1,30 @@
+{
+  "root": "apps/sharespot-data-processor-frontend-e2e",
+  "sourceRoot": "apps/sharespot-data-processor-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/sharespot-data-processor-frontend-e2e/cypress.json",
+        "devServerTarget": "sharespot-data-processor-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "sharespot-data-processor-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/sharespot-data-processor-frontend-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["sharespot-data-processor-frontend"]
+}

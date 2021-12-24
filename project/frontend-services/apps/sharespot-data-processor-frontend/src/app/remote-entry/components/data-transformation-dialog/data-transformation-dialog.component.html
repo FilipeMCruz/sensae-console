@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Replace with New Data Transformation?</h1>
+<div class="list" mat-dialog-content>
+  <mat-card class="item">
+    <mat-card-title>Old Data Transformation</mat-card-title>
+    <mat-card-content>
+      <frontend-services-data-transformation
+        [entry]="data.old"
+        [dataTransformationViewEntry]="dataTransformationViewType.Compare">
+      </frontend-services-data-transformation>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="item">
+    <mat-card-title>New Data Transformation</mat-card-title>
+    <mat-card-content>
+      <frontend-services-data-transformation
+        [entry]="data.fresh"
+        [dataTransformationViewEntry]="dataTransformationViewType.Compare">
+      </frontend-services-data-transformation>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false" cdkFocusInitial>No Thanks</button>
+  <button mat-button [mat-dialog-close]="true">Ok</button>
+</div>

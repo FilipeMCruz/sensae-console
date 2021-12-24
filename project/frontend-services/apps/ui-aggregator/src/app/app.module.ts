@@ -59,6 +59,13 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       }),
       cache: new InMemoryCache()
     },
+    dataProcessor: {
+      name: 'dataProcessor',
+      link: httpLink.create({
+        uri: environment.endpoints.dataProcessor.backendURL.http
+      }),
+      cache: new InMemoryCache(),
+    },
     locationTracking: {
       name: 'locationTracking',
       link: createLinkWithWebsocket(httpLink, environment.endpoints.locationTracking.backendURL.websocket, environment.endpoints.locationTracking.backendURL.http),

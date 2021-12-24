@@ -18,6 +18,7 @@ services:
       - 80:80
     depends_on:
       - sharespot-device-records-frontend
+      - sharespot-data-processor-frontend
       - sharespot-location-tracking-frontend
   sharespot-device-records-frontend:
     build:
@@ -30,6 +31,17 @@ services:
       - 80
     depends_on:
       - sharespot-device-records-master-backend
+  sharespot-data-processor-frontend:
+    build:
+      dockerfile: docker/sharespot-data-processor-frontend/Dockerfile
+      context: frontend-services
+    image: sharespot-data-processor-frontend
+    networks:
+      - sharespot-network
+    ports:
+      - 80
+    depends_on:
+      - sharespot-data-processor-master-backend
   sharespot-location-tracking-frontend:
     build:
       dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile

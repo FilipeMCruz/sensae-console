@@ -100,6 +100,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
+          "nx serve sharespot-data-processor-frontend",
           "nx serve sharespot-location-tracking-frontend",
           "nx serve sharespot-device-records-frontend",
           "nx serve ui-aggregator"

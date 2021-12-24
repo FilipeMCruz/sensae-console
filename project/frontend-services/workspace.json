@@ -1,6 +1,8 @@
 {
   "version": 2,
   "projects": {
+    "sharespot-data-processor-frontend": "apps/sharespot-data-processor-frontend",
+    "sharespot-data-processor-frontend-e2e": "apps/sharespot-data-processor-frontend-e2e",
     "sharespot-device-records-frontend": "apps/sharespot-device-records-frontend",
     "sharespot-device-records-frontend-e2e": "apps/sharespot-device-records-frontend-e2e",
     "sharespot-location-tracking-frontend": "apps/sharespot-location-tracking-frontend",

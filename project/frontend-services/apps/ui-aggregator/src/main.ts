@@ -3,6 +3,10 @@ import {environment} from "./environments/environment";
 
 const remotes = [
   {
+    'remoteEntry': environment.production ? 'http://localhost/micro-frontends/sharespot-data-processor-frontend/remoteEntry.js' : 'http://localhost:4282/remoteEntry.js',
+    'remoteName': 'sharespotdataprocessorfrontend'
+  },
+  {
     'remoteEntry': environment.production ? 'http://localhost/micro-frontends/sharespot-device-records-frontend/remoteEntry.js' : 'http://localhost:4283/remoteEntry.js',
     'remoteName': 'sharespotdevicerecordsfrontend'
   },

@@ -13,7 +13,6 @@ export class DeleteDeviceRecord {
   }
 
   delete(data: DeviceDTO): Observable<FetchResult<DeviceRecordDelete>> {
-    console.log(data)
     const mutation = gql`
       mutation delete($device: DeviceInput){
         delete(device: $device){

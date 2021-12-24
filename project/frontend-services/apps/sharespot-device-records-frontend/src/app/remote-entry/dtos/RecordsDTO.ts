@@ -2,10 +2,6 @@ export interface DeviceRecordQuery {
   deviceRecords: Array<DeviceRecordDTO>
 }
 
-export interface DeviceRecordIndex {
-  index: Array<DeviceRecordDTO>
-}
-
 export interface DeviceRecordsInput {
   index: DeviceRecordDTO
 }

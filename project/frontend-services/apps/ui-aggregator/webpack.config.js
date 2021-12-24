@@ -95,7 +95,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
+        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,

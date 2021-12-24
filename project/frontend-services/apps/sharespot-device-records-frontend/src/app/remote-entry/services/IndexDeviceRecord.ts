@@ -13,7 +13,6 @@ export class IndexDeviceRecord {
   }
 
   index(records: DeviceRecordsInput): Observable<FetchResult<DeviceRecordsInput>> {
-    console.log(records)
     const mutation = gql`
       mutation index($records: DeviceRecordsInput){
         index(records: $records){

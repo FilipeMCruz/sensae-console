@@ -8,6 +8,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.*;
+import sharespot.services.locationtrackingbackend.application.RoutingKeysProvider;
 
 @Configuration
 public class AmqpConfiguration {
@@ -16,10 +17,10 @@ public class AmqpConfiguration {
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
-    private final RoutingKeysFactory factory;
+    private final RoutingKeysProvider provider;
 
-    public AmqpConfiguration(RoutingKeysFactory factory) {
-        this.factory = factory;
+    public AmqpConfiguration(RoutingKeysProvider provider) {
+        this.provider = provider;
     }
 
     @Bean
@@ -34,7 +35,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+        var lgt92 = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)

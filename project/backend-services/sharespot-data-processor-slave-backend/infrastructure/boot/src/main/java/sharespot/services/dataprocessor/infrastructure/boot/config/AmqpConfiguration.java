@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
+import sharespot.services.dataprocessor.application.RoutingKeysProvider;
 
 @Configuration
 public class AmqpConfiguration {
@@ -22,10 +22,10 @@ public class AmqpConfiguration {
 
     public static final String MASTER_QUEUE = "Sharespot Data Processor Master Exchange -> Sharespot Data Processor Slave Queue";
 
-    private final RoutingKeysFactory factory;
+    private final RoutingKeysProvider provider;
 
-    public AmqpConfiguration(RoutingKeysFactory factory) {
-        this.factory = factory;
+    public AmqpConfiguration(RoutingKeysProvider provider) {
+        this.provider = provider;
     }
 
     @Bean
@@ -55,7 +55,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var decoded = factory.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+        var decoded = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.DECODED)
                 .missingAsAny();
         if (decoded.isPresent()) {

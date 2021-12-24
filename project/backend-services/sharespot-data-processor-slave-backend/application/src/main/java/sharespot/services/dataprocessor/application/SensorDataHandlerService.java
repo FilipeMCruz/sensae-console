@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
 import pt.sharespot.iot.core.sensor.SensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -23,11 +22,11 @@ public class SensorDataHandlerService {
 
     private ConnectableFlux<MessageSupplied<SensorDataDTO>> dataPublisher;
 
-    private final RoutingKeysFactory factory;
+    private final RoutingKeysProvider provider;
 
-    public SensorDataHandlerService(SensorDataMapper mapper, RoutingKeysFactory factory) {
+    public SensorDataHandlerService(SensorDataMapper mapper, RoutingKeysProvider provider) {
         this.mapper = mapper;
-        this.factory = factory;
+        this.provider = provider;
     }
 
     @PostConstruct
@@ -44,7 +43,7 @@ public class SensorDataHandlerService {
 
     public void publish(MessageConsumed<ObjectNode> message) {
         mapper.inToOut(message.data, SensorTypeId.of(message.routingKeys.sensorTypeId))
-                .ifPresent(dto -> factory.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+                .ifPresent(dto -> provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                         .keepSensorTypeId()
                         .keepChannel()
                         .withUpdated(dto)

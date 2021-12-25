@@ -5,19 +5,19 @@
     <parent>
         <artifactId>infrastructure</artifactId>
         <groupId>sharespot.services</groupId>
-        <version>0.3.0</version>
+        <version>0.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>endpoint</artifactId>
+    <artifactId>persistence</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>graphql</module>
-        <module>amqp</module>
+        <module>postgres</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
 </project>

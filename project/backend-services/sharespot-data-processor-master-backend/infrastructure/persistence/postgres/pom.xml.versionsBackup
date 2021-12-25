@@ -3,25 +3,31 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>sharespot-data-processor-master-backend</artifactId>
+        <artifactId>persistence</artifactId>
         <groupId>sharespot.services</groupId>
-        <version>0.3.0</version>
+        <version>0.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>application</artifactId>
+    <artifactId>postgres</artifactId>
     <dependencies>
         <dependency>
             <groupId>sharespot.services</groupId>
-            <artifactId>domain-services</artifactId>
-            <version>0.3.0</version>
+            <artifactId>domain</artifactId>
+            <version>0.2.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-core</artifactId>
-            <version>3.4.13</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.1</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

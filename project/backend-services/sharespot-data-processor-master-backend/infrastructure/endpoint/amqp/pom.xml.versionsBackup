@@ -3,21 +3,29 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>infrastructure</artifactId>
+        <artifactId>endpoint</artifactId>
         <groupId>sharespot.services</groupId>
-        <version>0.3.0</version>
+        <version>0.2.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>endpoint</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>graphql</module>
-        <module>amqp</module>
-    </modules>
+    <artifactId>amqp</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>sharespot.services</groupId>
+            <artifactId>application</artifactId>
+            <version>0.2.0</version>
+        </dependency>
+    </dependencies>
 </project>

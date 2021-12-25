@@ -10,10 +10,10 @@ import sharespot.services.lgt92gpsdatagateway.application.RoutingKeysProvider;
 @Configuration
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
-    @Value("sharespot.container.name")
+    @Value("${sharespot.container.name}")
     public String containerName;
 
-    @Value("sharespot.container.type")
+    @Value("${sharespot.container.type}")
     public String containerType;
 
     @Override

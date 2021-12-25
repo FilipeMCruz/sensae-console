@@ -2,31 +2,22 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.int
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import sharespot.services.devicerecordsbackend.application.RecordEraserService;
 import sharespot.services.devicerecordsbackend.application.RecordRegisterService;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.internal.model.DeviceRecordsDeleteEventDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.internal.model.DeviceRecordsIndexEventDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.internal.model.DeviceIdDTOImpl;
 
 @Service
 public class DeviceRecordConsumer {
 
     public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
 
-    private final RecordEraserService eraser;
-    private final RecordRegisterService register;
+    private final RecordRegisterService updater;
 
-    public DeviceRecordConsumer(RecordEraserService eraser, RecordRegisterService register) {
-        this.eraser = eraser;
-        this.register = register;
+    public DeviceRecordConsumer(RecordRegisterService updater) {
+        this.updater = updater;
     }
-
+    
     @RabbitListener(queues = MASTER_QUEUE)
-    public void receiveEraseEvent(DeviceRecordsDeleteEventDTOImpl in) {
-        eraser.erase(in);
-    }
-
-    @RabbitListener(queues = MASTER_QUEUE)
-    public void receiveIndexEvent(DeviceRecordsIndexEventDTOImpl in) {
-        register.register(in);
+    public void receiveIndexEvent(DeviceIdDTOImpl in) {
+        updater.update(in);
     }
 }

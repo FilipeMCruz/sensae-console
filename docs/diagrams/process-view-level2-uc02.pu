@@ -7,11 +7,11 @@ hide unlinked
 
 autonumber 1
 
-participant "Data Gateway" as DG
-participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
-participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
-participant "Device Records Slave\nBackend" as DRB
-participant "Message Broker" as MB
+participant "Data\nRealyer" as DG
+participant "Static\Dynamic\nData Gateway" as SDDG
+participant "Data Processor Slave\nBackend" as DPSB
+participant "Device Records Slave\nBackend" as DRSB
+participant "Message\nBroker" as MB
 participant "Location Tracking\nBackend" as LTB
 participant "Location Tracking\nFrontend" as LTF
 
@@ -21,28 +21,28 @@ activate LTF
 -> DG : new sensor data
 activate DG
 
-DG -> LGT92GPSG : new lgt92\nsensor data
-activate LGT92GPSG
+DG -> SDDG : new X type\nsensor data
+activate SDDG
 
-LGT92GPSG -> MB : publish event of new\nlgt92 gps sensor data
+SDDG -> MB : publish event of new\nX type sensor data
 
-DG <-- LGT92GPSG : OK
-deactivate LGT92GPSG
+DG <-- SDDG : OK
+deactivate SDDG
 
 <-- DG : OK
 deactivate DG
 
-MB -> LGT92GPSP : send event of new\nlgt92 sensor data
-activate LGT92GPSP
+MB -> DPSB : send event of new\nX sensor data
+activate DPSB
 
-LGT92GPSP -> MB : publish event of new\ngps sensor data
-deactivate LGT92GPSP
+DPSB -> MB : publish event of new\nprocessed sensor data
+deactivate DPSB
 
-MB -> DRB : send event of new\ngps sensor data
-activate DRB
+MB -> DRSB : send event of new\nprocessed sensor data
+activate DRSB
 
-DRB -> MB : new gps sensor data\nwith device records
-deactivate DRB
+DRSB -> MB : new gps sensor data\nwith device records
+deactivate DRSB
 
 MB -> LTB : send event of new gps\nsensor data with records
 activate LTB

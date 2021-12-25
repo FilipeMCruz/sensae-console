@@ -1,0 +1,32 @@
+@startuml logical-view-level3-dynamic-data-gateway
+
+skinparam Monochrome true
+
+component "Dynamic Data Gateway" {
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Endpoint" as ENDPOINT {
+            component "REST" as REST
+            component "AMQP" as AMQP
+            interface "REST API" as REST_API
+            interface "AMQP API" as AMQP_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+
+    REST_API -- REST
+    AMQP_API -- AMQP
+
+    APP_API -- APP
+    BOOT_API -- BOOT
+
+    BOOT --( REST_API
+    BOOT --( AMQP_API
+
+    ENDPOINT --( APP_API
+}
+
+@enduml

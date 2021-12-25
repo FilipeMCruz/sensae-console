@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="684px" preserveAspectRatio="none" style="width:403px;height:684px;background:#FFFFFF;" version="1.1" viewBox="0 0 403 684" width="403px" zoomAndPan="magnify"><defs><filter height="300%" id="f1s0nvsdn7qld" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[ff8c8003ac7407fdf996edc1fc868daa]
+cluster Data Processor Frontend--><rect fill="#FFFFFF" filter="url(#f1s0nvsdn7qld)" height="663" style="stroke:#000000;stroke-width:1.5;" width="382" x="7" y="7"/><rect fill="#FFFFFF" height="10" style="stroke:#000000;stroke-width:1.5;" width="15" x="369" y="12"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="367" y="14"/><rect fill="#FFFFFF" height="2" style="stroke:#000000;stroke-width:1.5;" width="4" x="367" y="18"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="198" x="99" y="32.9951">Data Processor Frontend</text><!--MD5=[b728f5a8a4e5df9f34c01e5b4763eade]
+entity COMP--><rect fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="130" x="134" y="160"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="244" y="165"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="242" y="167"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="242" y="171"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90" x="149" y="192.9951">Components</text><!--MD5=[97de1061a0ab8445a0a4bfc3e13b8318]
+entity DTO--><rect fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="80" x="284" y="608"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="344" y="613"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="342" y="615"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="342" y="619"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="40" x="299" y="640.9951">DTOS</text><!--MD5=[becb97998b7b4af08e2de339e4eb8c19]
+entity MAP--><rect fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="100" x="23" y="384"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="103" y="389"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="101" y="391"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="101" y="395"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="38" y="416.9951">Mappers</text><!--MD5=[b643aff2f6de854ee098fa19746d9d7e]
+entity MOD--><rect fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="82" x="158" y="384"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="220" y="389"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="218" y="391"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="218" y="395"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="42" x="173" y="416.9951">Model</text><!--MD5=[34e8fa806e7835ee7b6461df5000ecf5]
+entity SERV--><rect fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" height="46.2969" style="stroke:#383838;stroke-width:1.5;" width="98" x="275" y="384"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="353" y="389"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="351" y="391"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="351" y="395"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="58" x="290" y="416.9951">Services</text><!--MD5=[26c2ca52e6659ff74bf8b31ef51febf1]
+entity COMP_API--><ellipse cx="199" cy="71" fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="13" x="192.5" y="100.9951">UI</text><!--MD5=[03daee95c47d28e2008f8fcdb06be569]
+entity DTO_API--><ellipse cx="324" cy="519" fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="64" x="292" y="548.9951">DTOs API</text><!--MD5=[38a9b1639d19c51278eb97e5a118e1f1]
+entity MAP_API--><ellipse cx="73" cy="295" fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="30.5" y="324.9951">Mappers API</text><!--MD5=[fb73fbd093c911a4b8bb52161712f200]
+entity MOD_API--><ellipse cx="199" cy="295" fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67" x="165.5" y="324.9951">Model API</text><!--MD5=[5d8f268093428ba7660bd523078b774e]
+entity SERV_API--><ellipse cx="324" cy="295" fill="#F8F8F8" filter="url(#f1s0nvsdn7qld)" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="83" x="282.5" y="324.9951">Services API</text><!--MD5=[665323d6b752a8751c259c9b81860fbd]
+link COMP_API to COMP--><path d="M199,80.27 C199,96.96 199,135.16 199,159.71 " fill="none" id="COMP_API-COMP" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[978c0e1c0a7459d8a1dc4d7de3a4d93f]
+link DTO_API to DTO--><path d="M324,528.27 C324,544.96 324,583.16 324,607.71 " fill="none" id="DTO_API-DTO" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[f9ccec574c9d7d912a785d7186889d54]
+link MAP_API to MAP--><path d="M73,304.27 C73,320.96 73,359.16 73,383.71 " fill="none" id="MAP_API-MAP" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[d02a4d981f32128341fbbf8f8a45165b]
+link MOD_API to MOD--><path d="M199,304.27 C199,320.96 199,359.16 199,383.71 " fill="none" id="MOD_API-MOD" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[e8266c76ed2ad6b443ae2655b4bcbc35]
+link SERV_API to SERV--><path d="M324,304.27 C324,320.96 324,359.16 324,383.71 " fill="none" id="SERV_API-SERV" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[10d4f52130aa1a624c894b7b96680471]
+link SERV to DTO_API--><path d="M324,430.26 C324,450.74 324,480.73 324,499.81 " fill="none" id="SERV-to-DTO_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M332.4572,506.7818 A9,9 0 0 0 315.5428 506.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[7fd19f5cade1c886f17d36ca75ddd44a]
+link COMP to MOD_API--><path d="M199,206.26 C199,226.74 199,256.73 199,275.81 " fill="none" id="COMP-to-MOD_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M207.4572,282.7818 A9,9 0 0 0 190.5428 282.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[c4d141063505c69177e8c2d9dc6285b9]
+link COMP to MAP_API--><path d="M173.5,206.26 C148.49,228.1 111.08,260.76 89.66,279.46 " fill="none" id="COMP-to-MAP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M89.9204,290.4573 A9,9 0 0 0 78.7976 277.7144" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[16db6b5a63a1cfbf8d300951e8f69dbe]
+link COMP to SERV_API--><path d="M224.3,206.26 C248.98,227.99 285.85,260.43 307.15,279.17 " fill="none" id="COMP-to-SERV_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M318.0083,277.4744 A9,9 0 0 0 306.8462 290.1829" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[2cdf09f1745b1543237b70725de9e9be]
+@startuml logical-view-level3-data-processor-frontend
+
+skinparam Monochrome true
+
+component "Data Processor Frontend" {
+    component "Components" as COMP
+    component "DTOS" as DTO
+    component "Mappers" as MAP
+    component "Model" as MOD
+    component "Services" as SERV
+
+    interface "UI" as COMP_API
+    interface "DTOs API" as DTO_API
+    interface "Mappers API" as MAP_API
+    interface "Model API" as MOD_API
+    interface "Services API" as SERV_API
+
+    COMP_API - - COMP
+    DTO_API - - DTO
+    MAP_API - - MAP
+    MOD_API - - MOD
+    SERV_API - - SERV
+
+    SERV - -( DTO_API
+
+    COMP - -( MOD_API
+    COMP - -( MAP_API
+    COMP - -( SERV_API
+}
+
+@enduml
+
+PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

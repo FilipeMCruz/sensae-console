@@ -8,8 +8,9 @@ hide unlinked
 autonumber 1.1
 
 participant "Data Gateway" as DG
-participant "LGT 92 GPS\nSensor Gateway" as LGT92GPSG
-participant "LGT 92 GPS\nSensor Processor" as LGT92GPSP
+participant "Data Store" as DS
+participant "Chrono Data Store" as CDS
+participant "Data Processor Slave\nBackend" as SDP
 participant "Message Broker" as MB
 participant "Location Tracking\nBackend" as LTB
 participant "Device Records Slave\nBackend" as DRSB
@@ -20,7 +21,10 @@ activate LTF
 activate LTB
 
 == Initialization ==
-LGT92GPSP -> MB : subscribe to new\nlgt 92 gps sensor data
+DS -> MB : subscribe to X data
+CDS -> MB : subscribe to new\ngps sensor data with records
+SDP -> MB : subscribe to new\nX sensor data
+SDP -> MB : subscribe to changes\n in transformations
 LTB -> MB : subscribe to new\ngps sensor data with records
 DRSB -> MB : subscribe to new\ngps sensor data
 DRSB -> MB : subscribe to changes\n in device records

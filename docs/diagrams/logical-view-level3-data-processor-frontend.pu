@@ -1,0 +1,31 @@
+@startuml logical-view-level3-data-processor-frontend
+
+skinparam Monochrome true
+
+component "Data Processor Frontend" {
+    component "Components" as COMP
+    component "DTOS" as DTO
+    component "Mappers" as MAP
+    component "Model" as MOD
+    component "Services" as SERV
+
+    interface "UI" as COMP_API
+    interface "DTOs API" as DTO_API
+    interface "Mappers API" as MAP_API
+    interface "Model API" as MOD_API
+    interface "Services API" as SERV_API
+
+    COMP_API -- COMP
+    DTO_API -- DTO
+    MAP_API -- MAP
+    MOD_API -- MOD
+    SERV_API -- SERV
+
+    SERV --( DTO_API
+
+    COMP --( MOD_API
+    COMP --( MAP_API
+    COMP --( SERV_API
+}
+
+@enduml

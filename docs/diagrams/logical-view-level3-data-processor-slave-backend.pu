@@ -1,0 +1,53 @@
+@startuml logical-view-level3-data-processor-slave-backend
+
+skinparam Monochrome true
+
+component "Data Processor Slave Backend" {
+    component "Application" as APP
+    component "Domain" as DOM
+    component "Domain Services" as DOM_SERV
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Presistence" as PERSIST {
+            component "Postgres" as POSTG
+            interface "Postgres API" as POSTG_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "AMQP" as AMQP {
+                component "Egress" as EGRESS
+                component "Ingress" as INGRESS
+                component "Internal" as INTERNAL
+                interface "Egress API" as EGRESS_API
+                interface "Ingress API" as INGRESS_API
+                interface "Internal API" as INTERNAL_API
+            }
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+    interface "Domain API" as DOM_API
+    interface "Domain Services API" as DOM_SERV_API
+
+    DOM_API -- DOM
+    DOM_SERV_API -- DOM_SERV
+
+    EGRESS_API -- EGRESS
+    INGRESS_API -- INGRESS
+    INTERNAL_API -- INTERNAL
+
+    POSTG_API -- POSTG
+
+    APP_API -- APP
+    BOOT_API -- BOOT
+
+    ENDPOINT --( APP_API
+    APP --( DOM_SERV_API
+    DOM_SERV --( DOM_API
+    BOOT --( INTERNAL_API
+    BOOT --( POSTG_API
+    BOOT --( EGRESS_API
+    BOOT --( INGRESS_API
+}
+
+@enduml

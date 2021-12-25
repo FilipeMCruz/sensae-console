@@ -1,8 +1,8 @@
-@startuml logical-view-level3-lgt-92-gps-sensor-gateway
+@startuml logical-view-level3-static-data-gateway
 
 skinparam Monochrome true
 
-component "LGT 92 GPS Sensor Gateway" {
+component "Static Data Gateway" {
     component "Application" as APP
     component "Infrastructure" as INFRA {
         component "Boot" as BOOT

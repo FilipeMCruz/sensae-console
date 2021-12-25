@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="370px" preserveAspectRatio="none" style="width:861px;height:370px;background:#FFFFFF;" version="1.1" viewBox="0 0 861 370" width="861px" zoomAndPan="magnify"><defs/><g><rect fill="#FFFFFF" height="292.3281" style="stroke:#383838;stroke-width:1.0;" width="10" x="158" y="62.5938"/><rect fill="#FFFFFF" height="203.9297" style="stroke:#383838;stroke-width:1.0;" width="10" x="326" y="112.8594"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="494" y="141.9922"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="494" y="258.5234"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#383838;stroke-width:1.0;" width="10" x="625.5" y="229.3906"/><rect fill="#FFFFFF" height="292.3281" style="stroke:#383838;stroke-width:1.0;" width="10" x="786.5" y="62.5938"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="162.5" x2="162.5" y1="52.5938" y2="363.9219"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="331" x2="331" y1="52.5938" y2="363.9219"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="499" x2="499" y1="52.5938" y2="363.9219"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="630" x2="630" y1="52.5938" y2="363.9219"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:5.0,5.0;" x1="791" x2="791" y1="52.5938" y2="363.9219"/><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="123" x="101.5" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109" x="108.5" y="24.9951">Device Records</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="131.5" y="41.292">Frontend</text><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="174" x="244" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="160" x="251" y="24.9951">Device Records Master</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="300.5" y="41.292">Backend</text><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="80" x="459" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="63" x="467.5" y="24.9951">Common</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66" x="466" y="41.292">Database</text><rect fill="#F8F8F8" height="46.5938" style="stroke:#383838;stroke-width:1.5;" width="163" x="549" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="149" x="556" y="24.9951">Device Records Slave</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="600" y="41.292">Backend</text><rect fill="#F8F8F8" height="30.2969" style="stroke:#383838;stroke-width:1.5;" width="127" x="728" y="21.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="735" y="41.292">Message Broker</text><rect fill="#FFFFFF" height="292.3281" style="stroke:#383838;stroke-width:1.0;" width="10" x="158" y="62.5938"/><rect fill="#FFFFFF" height="203.9297" style="stroke:#383838;stroke-width:1.0;" width="10" x="326" y="112.8594"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="494" y="141.9922"/><rect fill="#FFFFFF" height="29.1328" style="stroke:#383838;stroke-width:1.0;" width="10" x="494" y="258.5234"/><rect fill="#FFFFFF" height="58.2656" style="stroke:#383838;stroke-width:1.0;" width="10" x="625.5" y="229.3906"/><rect fill="#FFFFFF" height="292.3281" style="stroke:#383838;stroke-width:1.0;" width="10" x="786.5" y="62.5938"/><polygon fill="#383838" points="146,79.7266,156,83.7266,146,87.7266" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="0" x2="152" y1="83.7266" y2="83.7266"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="9.5" y="78.6606">1</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="22.5" y="78.6606">erase device record</text><polygon fill="#383838" points="314,108.8594,324,112.8594,314,116.8594" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="168" x2="320" y1="112.8594" y2="112.8594"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="177.5" y="107.7935">2</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="190.5" y="107.7935">erase device record</text><polygon fill="#383838" points="482,137.9922,492,141.9922,482,145.9922" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="336" x2="488" y1="141.9922" y2="141.9922"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="345.5" y="136.9263">3</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="358.5" y="136.9263">erase device record</text><polygon fill="#383838" points="347,167.125,337,171.125,347,175.125" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="341" x2="498" y1="171.125" y2="171.125"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="389" y="166.0591">4</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="44" x="402" y="166.0591">sucess</text><polygon fill="#383838" points="774.5,196.2578,784.5,200.2578,774.5,204.2578" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="336" x2="780.5" y1="200.2578" y2="200.2578"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="495.25" y="195.1919">5</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="119" x="508.25" y="195.1919">update to X device</text><polygon fill="#383838" points="646.5,225.3906,636.5,229.3906,646.5,233.3906" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="640.5" x2="785.5" y1="229.3906" y2="229.3906"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="645" y="224.3247">6</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="119" x="658" y="224.3247">update to X device</text><polygon fill="#383838" points="515,254.5234,505,258.5234,515,262.5234" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="509" x2="624.5" y1="258.5234" y2="258.5234"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="513.75" y="253.4575">7</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="89" x="526.75" y="253.4575">fetch X device</text><polygon fill="#383838" points="618.5,283.6563,628.5,287.6563,618.5,291.6563" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;" x1="499" x2="624.5" y1="287.6563" y2="287.6563"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="531.75" y="282.5903">8</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="53" x="544.75" y="282.5903">X device</text><polygon fill="#383838" points="179,312.7891,169,316.7891,179,320.7891" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="173" x2="330" y1="316.7891" y2="316.7891"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="9" x="221" y="311.7231">9</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="44" x="234" y="311.7231">sucess</text><polygon fill="#383838" points="11,341.9219,1,345.9219,11,349.9219" style="stroke:#383838;stroke-width:1.0;"/><line style="stroke:#383838;stroke-width:1.0;stroke-dasharray:2.0,2.0;" x1="5" x2="157" y1="345.9219" y2="345.9219"/><text fill="#000000" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="18" x="46" y="340.856">10</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="44" x="68" y="340.856">sucess</text><!--MD5=[032220d370e0e05a4476d04249237f2b]
+@startuml process-view-level2-uc08
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Device Records\nFrontend" as DRF
+participant "Device Records Master\nBackend" as DRMB
+participant "Common\nDatabase" as DRDB
+participant "Device Records Slave\nBackend" as DRSB
+participant "Message Broker" as MB
+
+activate MB
+activate DRF
+
+-> DRF: erase device record
+
+DRF -> DRMB: erase device record
+activate DRMB
+
+DRMB -> DRDB: erase device record
+activate DRDB
+
+DRDB - -> DRMB: sucess
+deactivate DRDB
+
+DRMB -> MB: update to X device
+
+MB -> DRSB: update to X device
+activate DRSB
+
+DRSB -> DRDB: fetch X device
+activate DRDB
+
+DRDB -> DRSB: X device
+deactivate DRDB
+
+deactivate DRSB
+DRMB - -> DRF: sucess
+
+deactivate DRMB
+
+<- - DRF: sucess
+
+@enduml
+
+PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

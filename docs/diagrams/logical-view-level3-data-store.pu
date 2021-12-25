@@ -1,0 +1,33 @@
+@startuml logical-view-level3-data-store
+
+skinparam Monochrome true
+
+component "Data Store" {
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Presistence" as PERSIST {
+            component "Postgres" as POSTG
+            interface "Postgres API" as POSTG_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "AMQP" as AMQP
+            interface "AMQP API" as AMQP_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+
+    POSTG_API -- POSTG
+    AMQP_API -- AMQP
+    APP_API -- APP
+    BOOT_API -- BOOT
+
+    AMQP --( APP_API
+    POSTG --( APP_API
+    BOOT --( POSTG_API
+    BOOT --( AMQP_API
+}
+
+@enduml

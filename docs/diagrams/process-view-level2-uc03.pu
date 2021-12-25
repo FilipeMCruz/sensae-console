@@ -7,29 +7,38 @@ hide unlinked
 
 autonumber 1
 
-participant "Device Records\nFrontend" as DRF
-participant "Device Records Master\nBackend" as DRMB
-participant "Device Records\nDatabase" as DRDB
+participant "Data Processor\nFrontend" as DRF
+participant "Data Processor Master\nBackend" as DRMB
+participant "Common\nDatabase" as DRDB
+participant "Data Processor Slave\nBackend" as DRSB
 participant "Message Broker" as MB
-participant "Device Records Slave\nBackend" as DRSB
 
 activate MB
 activate DRF
 
--> DRF: new/edited device record
+-> DRF: new/edited data\ntransformation
 
-DRF -> DRMB: new/edited device record
+DRF -> DRMB: new/edited data\ntransformation
 activate DRMB
 
-DRMB -> DRDB: new/edited device record
+DRMB -> DRDB: new/edited data\ntransformation
 activate DRDB
 
 DRDB --> DRMB: sucess
 deactivate DRDB
 
-DRMB -> MB: new/edited device record
+DRMB -> MB: update to X data\ntype transformation
 
-MB -> DRSB: new/edited device record
+MB -> DRSB: update to X data\ntype transformation
+activate DRSB
+
+DRSB -> DRDB: fetch X data\ntype transformation
+activate DRDB
+
+DRDB -> DRSB: X data type\ntransformation
+deactivate DRDB
+
+deactivate DRSB
 
 DRMB --> DRF: sucess
 

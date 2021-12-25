@@ -15,46 +15,65 @@ component "Environment" <<System>> {
     component "Device Records Master Backend" as DRB <<Container>>
     component "Device Records Slave Backend" as DRSB <<Container>>
     component "Location Tracking Backend" as LTB <<Container>>
-    component "LGT 92 GPS Sensor Gateway" as LGT92GPSG <<Container>>
+    component "Static Data Gateway" as SDG <<Container>>
+    component "Dynamic Data Gateway" as DDG <<Container>>
     component "Data Relayer" as DR <<Container>>
     component "UI Aggregator" as UIAG <<Container>> {
         component "Device Records Frontend" as DRF <<Container>>
+        component "Data Processor Frontend" as DPF <<Container>>
         component "Location Tracking Frontend" as LTF <<Container>>
     }
-    component "LGT 92 GPS Sensor Processor" as LGT92GPSP <<Container>>
-    component "Device Records Database" as DRDB <<Container>>
+    component "Data Processor Slave Backend" as DPSB <<Container>>
+    component "Data Processor Master Backend" as DPMB <<Container>>
+    component "Common Database" as DRDB <<Container>>
+    component "Chrono Data Store" as CDS <<Container>>
+    component "Data Store" as DS <<Container>>
+    component "QuestDB" as QUESTDB <<Container>>
+    component "MongoDB" as MONGODB <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
     interface "Location Tracking Backend\nAPI" as LTB_API
     interface "Device Records Master Backend\nAPI" as DRB_API
-    interface "Device Records Database\nAPI" as DRDB_API
-    interface "LGT 92 GPS Sensor Gateway\nAPI" as LGT92GPSG_API
+    interface "Data Processor Master Backend\nAPI" as DPMB_API
+    interface "Common Database\nAPI" as DRDB_API
+    interface "QuestDB\nAPI" as QUESTDB_API
+    interface "MongoDB\nAPI" as MONGODB_API
+    interface "Static Data Gateway\nAPI" as SDG_API
+    interface "Dynamic Data Gateway\nAPI" as DDG_API
 
-
-    DRB -[hidden] DRSB
-    DRSB -[hidden] LTB
-    LTB -[hidden] LGT92GPSP
-    LGT92GPSP -[hidden] LGT92GPSG
-
-    DRB_API-- DRB
+    CDS --( QUESTDB_API
+    DS --( MONGODB_API
+    DDG -- DDG_API
+    DPMB_API -- DPMB
+    DRB_API -- DRB
     MB_API -- MB
     DRDB_API -- DRDB
     LTB_API -- LTB
     UI -- UIAG
-    LGT92GPSG -- LGT92GPSG_API
+    SDG -- SDG_API
+    MONGODB_API -- MONGODB
+    QUESTDB_API -- QUESTDB
     DRB --( DRDB_API
     DRSB --( DRDB_API
+    DPMB --( DRDB_API
+    DPSB --( DRDB_API
     LTF --( LTB_API
+    DPF --( DPMB_API
     DRF --( DRB_API
 
+    CDS --( MB_API
+    DS --( MB_API
     LTB --( MB_API
     DRB --( MB_API
+    DPMB --( MB_API
     DRSB --( MB_API
-    LGT92GPSG --( MB_API
-    LGT92GPSP --( MB_API
+    SDG --( MB_API
+    DPSB --( MB_API
+    DDG --( MB_API
 
-    DR - IN_ENDPOINT
-    LGT92GPSG_API )- DR
+    DR -- IN_ENDPOINT
+    SDG_API )-- DR
+    DDG_API )-- DR
 }
 
 @enduml

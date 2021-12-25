@@ -19,7 +19,7 @@ public class SensorDataTransformationsRepositoryImpl implements SensorDataTransf
     }
 
     @Override
-    public Optional<DataTransformation> findByDeviceId(SensorTypeId id) {
+    public Optional<DataTransformation> findByDeviceType(SensorTypeId id) {
         return repository.findByDeviceType(id.getValue())
                 .map(DataTransformationMapper::postgresToDomain);
     }

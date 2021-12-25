@@ -1,9 +1,14 @@
-<mat-toolbar>
-  <a mat-button class="link" routerLink="/">
+<mat-toolbar class="toolbar">
+  <a mat-button routerLink="/">
     <mat-icon aria-label="home">home</mat-icon>
   </a>
-  <div *ngFor="let mfe of microfrontends">
+  <div *ngFor="let mfe of microfrontendServices">
     <span class="spacer"></span>
-    <span class="link" mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</span>
+    <button mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
   </div>
+  <button class="menu" mat-button [matMenuTriggerFor]="menu">Tools</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngFor="let mfe of microfrontendTools"
+            [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
+  </mat-menu>
 </mat-toolbar>

@@ -30,6 +30,8 @@ public class DataTransformationCache {
     }
 
     public Optional<DataTransformation> update(SensorTypeId id) {
-        return Objects.requireNonNullElseGet(cache.get(id, k -> repository.findByDeviceId(id)), Optional::empty);
+        var deviceType = repository.findByDeviceType(id);
+        cache.put(id, deviceType);
+        return deviceType;
     }
 }

@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Microfrontend } from '../microfrontends/microfrontend';
-import { Router } from '@angular/router';
-import { LookupService } from '../microfrontends/lookup.service';
-import { buildRoutes } from '../microfrontends/buildRoutes.service';
+import {Component, OnInit} from '@angular/core';
+import {Microfrontend, MicrofrontendType} from '../microfrontends/microfrontend';
+import {Router} from '@angular/router';
+import {LookupService} from '../microfrontends/lookup.service';
+import {buildRoutes} from '../microfrontends/buildRoutes.service';
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -11,7 +11,8 @@ import { buildRoutes } from '../microfrontends/buildRoutes.service';
 })
 export class ToolbarComponent implements OnInit {
 
-  microfrontends: Microfrontend[] = [];
+  microfrontendServices: Microfrontend[] = [];
+  microfrontendTools: Microfrontend[] = [];
 
   constructor(
     private router: Router,
@@ -19,10 +20,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.microfrontends = await this.lookupService.lookup();
-    console.log('MicroFrontends:', this.microfrontends);
-    const routes = buildRoutes(this.microfrontends);
+    const microfrontends = await this.lookupService.lookup();
+    const routes = buildRoutes(microfrontends);
     this.router.resetConfig(routes);
-    console.log("Config", this.router.config);
+    this.microfrontendServices = microfrontends.filter(m => m.details.type === MicrofrontendType.SERVICE);
+    this.microfrontendTools = microfrontends.filter(m => m.details.type === MicrofrontendType.TOOL);
   }
 }

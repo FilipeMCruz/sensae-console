@@ -2,11 +2,14 @@
   margin-left: 10px;
 }
 
-.link {
-  font-size: 15px;
-  cursor: pointer;
-}
-
 :host {
   min-height: 64px;
+}
+
+.menu {
+  margin-left: auto;
+}
+
+.toolbar {
+  display: flex;
 }

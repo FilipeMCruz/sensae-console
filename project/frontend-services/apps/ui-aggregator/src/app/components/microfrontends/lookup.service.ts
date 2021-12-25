@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Microfrontend} from './microfrontend';
+import {Microfrontend, MicrofrontendType} from './microfrontend';
 import {environment} from "../../../environments/environment";
 
 const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = environment.production ? 'http://localhost/micro-frontends/sharespot-location-tracking-frontend/remoteEntry.js' : 'http://localhost:4284/remoteEntry.js';
@@ -19,7 +19,10 @@ export class LookupService {
         // For Routing
         displayName: 'Location Tracking',
         routePath: 'location-tracking',
-        ngModuleName: 'RemoteEntryModule'
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.SERVICE
+        }
       },
       {
         // For Loading
@@ -30,7 +33,10 @@ export class LookupService {
         // For Routing
         displayName: 'Device Records',
         routePath: 'records',
-        ngModuleName: 'RemoteEntryModule'
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.TOOL
+        }
       },
       {
         // For Loading
@@ -41,7 +47,10 @@ export class LookupService {
         // For Routing
         displayName: 'Data Processor',
         routePath: 'transformations',
-        ngModuleName: 'RemoteEntryModule'
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.TOOL
+        }
       }
     ] as Microfrontend[]);
   }

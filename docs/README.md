@@ -15,13 +15,16 @@ The system actors are:
 
 ### Use cases
 
-| Use Cases | Description                                                                       |
-| --------- | --------------------------------------------------------------------------------- |
-| **UC01**  | As the data admin I want to see the live information for all devices              |
-| **UC02**  | As the data admin I want to see the live information for a specific device        |
-| **UC03**  | As the data admin I want to enhance the information provided by a device          |
-| **UC04**  | As the data admin I want to see the information i've added to each device         |
-| **UC04**  | As the data admin I want to delete information i've added about a specific device |
+| Use Cases | Description                                                                               |
+| --------- | ----------------------------------------------------------------------------------------- |
+| **UC01**  | As the data admin I want to see the live information for all devices                      |
+| **UC02**  | As the data admin I want to see the live information for a specific device                |
+| **UC03**  | As the data admin I want to define how to process data of a certain device type           |
+| **UC04**  | As the data admin I want to see the transformations registered for all device types       |
+| **UC05**  | As the data admin I want to delete a transformation i've added for a specific device type |
+| **UC06**  | As the data admin I want to enhance the information provided by a device                  |
+| **UC07**  | As the data admin I want to see the information i've added to each device                 |
+| **UC08**  | As the data admin I want to delete information i've added about a specific device         |
 
 ## Architecture
 
@@ -82,21 +85,39 @@ This flow is almost the same as the UC01, the only difference is that in this on
 
 #### UC03 Process View - Container Level
 
-**Description**: As the data admin I want to enhance the information provided by a device.
+**Description**: As the data admin I want to define how to process data of a certain device type.
 
 ![process-view-level2-uc03](diagrams/process-view-level2-uc03.svg)
 
 #### UC04 Process View - Container Level
 
-**Description**: As the data admin I want to see the information i've added to each device.
+**Description**: As the data admin I want to see the transformations registered for all device types.
 
 ![process-view-level2-uc04](diagrams/process-view-level2-uc04.svg)
 
 #### UC05 Process View - Container Level
 
-**Description**: As the data admin I want to delete information i've added about a specific device.
+**Description**: As the data admin I want to delete a transformation i've added for a specific device type.
 
 ![process-view-level2-uc05](diagrams/process-view-level2-uc05.svg)
+
+#### UC06 Process View - Container Level
+
+**Description**: As the data admin I want to enhance the information provided by a device.
+
+![process-view-level2-uc06](diagrams/process-view-level2-uc06.svg)
+
+#### UC07 Process View - Container Level
+
+**Description**: As the data admin I want to see the information i've added to each device.
+
+![process-view-level2-uc07](diagrams/process-view-level2-uc07.svg)
+
+#### UC08 Process View - Container Level
+
+**Description**: As the data admin I want to delete information i've added about a specific device.
+
+![process-view-level2-uc08](diagrams/process-view-level2-uc08.svg)
 
 ### Logical View - Component Level
 
@@ -137,34 +158,69 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-device-records-slave-backend](diagrams/logical-view-level3-device-records-slave-backend.svg)
 
-#### LGT 92 GPS Sensor Processor
+#### Data Processor Slave Backend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-lgt-92-gps-sensor-processor](diagrams/logical-view-level3-lgt-92-gps-sensor-processor.svg)
+![logical-view-level3-data-processor-slave-backend](diagrams/logical-view-level3-data-processor-slave-backend.svg)
 
-#### LGT 92 GPS Sensor Gateway
+#### Data Processor Master Backend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-lgt-92-gps-sensor-gateway](diagrams/logical-view-level3-lgt-92-gps-sensor-gateway.svg)
+![logical-view-level3-data-processor-master-backend](diagrams/logical-view-level3-data-processor-master-backend.svg)
+
+#### Data Processor Frontend
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-data-processor-frontend](diagrams/logical-view-level3-data-processor-frontend.svg)
+
+#### Static Data Gateway
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-static-data-gateway](diagrams/logical-view-level3-static-data-gateway.svg)
+
+#### Dynamic Data Gateway
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-dynamic-data-gateway](diagrams/logical-view-level3-dynamic-data-gateway.svg)
+
+#### Data Store
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-data-store](diagrams/logical-view-level3-data-store.svg)
+
+#### Chrono Data Store
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-chrono-data-store](diagrams/logical-view-level3-chrono-data-store.svg)
 
 ## API
 
 This section will present the API that each backend service exposes.
 
-### LGT 92 GPS Sensor Gateway API
+### Static/Dynamic Data Gateway API
 
-This section will present every endpoint available in this service.
-This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this container must be running in dev mode).
-The **endpoint** to register new lgt 92 gps sensor data is `/sensor-data`.
-In production this endpoint can't be accessed, instead requests must be made to **Sensor Data Gateway**.
+This section will present every endpoint available in this services.
+This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this containers must be running in dev mode).
+The **endpoint** to register new sensor data is `/sensor-data`.
+In production this endpoints can't be accessed, instead requests must be made to **Data Relayer**.
 
-### Sensor Data Gateway
+### Static/Dynamic Data Gateway
 
-**Endpoint**: POST to `/lgt92-gps-sensor-data`
+**Endpoint**: POST to `/sensor-data`
 
 **Data Example**:
 
@@ -241,10 +297,120 @@ In production this endpoint can't be accessed, instead requests must be made to 
   "reported_at": 1616349557723,
   "uuid": "979abd51-e754-4b02-a405-41e5c41c4b89"
 }
-
 ```
 
-This is the resource to point to, as an `http integration`, in helium console for LGT92 based sensors.
+This is the resource to point to, as an `http integration`, in helium console for sensor data.
+
+### Data Processor Master Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
+
+#### Index a Data Transformation (new or updated transformation)
+
+``` graphql
+mutation index($transformation: DataTransformationInput){
+  index(transformation: $transformation){
+    data{
+      type
+    }
+    entries{
+      oldPath
+      newPath
+    }
+  }
+}
+```
+
+This is the resource used to index a new or edited data transformation to the database and cache.
+
+#### Consult all Data Transformations
+
+``` graphql
+query transformation{
+  transformation{
+    data{
+      type
+    }
+    entries{
+      oldPath
+      newPath
+    }
+  }
+}
+```
+
+This is the resource used to query all data transformations in the database.
+
+#### Erase a Data Transformation
+
+``` graphql
+mutation delete($type: DataTypeInput){
+  delete(type: $type){
+    type
+  }
+}
+```
+
+This is the resource used to remove a data transformation from the cache and database.
+
+### Device Records Master Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
+
+#### Index a Device Record (new or updated record)
+
+``` graphql
+mutation index($records: DeviceRecordsInput){
+  index(records: $records){
+    device{
+      id
+      name
+    }
+    entries{
+      label
+      content
+      type
+    }
+  }
+}
+```
+
+This is the resource used to index a new or edited device record to the database and cache.
+
+#### Consult all Device Records
+
+``` graphql
+query deviceRecords{
+  deviceRecords{
+    device{
+      id
+      name
+    }
+    entries{
+      label
+      content
+      type
+    }
+  }
+}
+```
+
+This is the resource used to query all device records in the database.
+
+#### Erase a Device Record
+
+``` graphql
+mutation delete($device: DeviceInput){
+  delete(device: $device){
+    id
+    name
+  }
+}
+```
+
+This is the resource used to remove a device record from the cache and database.
 
 ### Location Tracking Backend API
 
@@ -258,7 +424,6 @@ Since the communication is made using GraphQL the only two endpoints are `/graph
 **Query**:
 
 ``` graphql
-
 subscription {
   locations() {
     dataId
@@ -290,7 +455,6 @@ This is the resource used to subscribe to changes in the gps location of all sen
 **Query**:
 
 ``` graphql
-
 subscription {
   location(deviceId: "XXX") {
     dataId
@@ -319,7 +483,6 @@ This is the resource used to subscribe to changes in the gps location of a speci
 #### Consult GPS Sensors that match the content sent
 
 ``` graphql
-
 subscription {
   locationByContent(content: "XXX") {
     dataId
@@ -343,67 +506,6 @@ subscription {
 ```
 
 This is the resource used to subscribe to changes in the gps location of any sensor that has content matching the "content" sent.
-
-### Device Records Master Backend API
-
-This section will present every endpoint available in this service.
-Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
-
-#### Index a Device Record (new or updated record)
-
-``` graphql
-
-mutation index($records: DeviceRecordsInput){
-  index(records: $records){
-    device{
-      id
-      name
-    }
-    entries{
-      label
-      content
-      type
-    }
-  }
-}
-```
-
-This is the resource used to index a new or edited device record to the database and cache.
-
-#### Consult all Device Records
-
-``` graphql
-
-query deviceRecords{
-  deviceRecords{
-    device{
-      id
-      name
-    }
-    entries{
-      label
-      content
-      type
-    }
-  }
-}
-```
-
-This is the resource used to query all device records in the database.
-
-#### Erase a Device Record
-
-``` graphql
-
-mutation delete($device: DeviceInput){
-  delete(device: $device){
-    id
-    name
-  }
-}
-```
-
-This is the resource used to remove a device record from the cache and database.
 
 ## Data Flow Diagram
 

@@ -1,40 +1,39 @@
 package sharespot.services.devicerecordsbackend.application;
 
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.FluxSink;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
-import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class RecordEventHandlerService {
 
-    private final Sinks.Many<DeviceRecordEventDTO> sink;
+    private FluxSink<DeviceDTO> dataStream;
+
+    private ConnectableFlux<DeviceDTO> dataPublisher;
     private final RecordEventMapper mapper;
 
     public RecordEventHandlerService(RecordEventMapper mapper) {
         this.mapper = mapper;
-        this.sink = Sinks.many().multicast().onBackpressureBuffer();
     }
 
-    public Flux<DeviceRecordEventDTO> getSinglePublisher() {
-        return sink.asFlux();
+    @PostConstruct
+    public void init() {
+        Flux<DeviceDTO> publisher = Flux.create(emitter -> dataStream = emitter);
+
+        dataPublisher = publisher.publish();
+        dataPublisher.connect();
     }
 
-    public void publishIndex(DeviceRecords data) {
+    public Flux<DeviceDTO> getSinglePublisher() {
+        return dataPublisher;
+    }
+
+    public void publishUpdate(DeviceId data) {
         var outDTO = mapper.domainToDto(data);
-        var result = sink.tryEmitNext(outDTO);
-        if (result.isFailure()) {
-            //TODO: logs
-        }
+        dataStream.next(outDTO);
     }
-
-    public void publishErased(DeviceId data) {
-        var outDTO = mapper.domainToDto(data);
-        var result = sink.tryEmitNext(outDTO);
-        if (result.isFailure()) {
-            //TODO: logs
-        }
-    }
-
 }

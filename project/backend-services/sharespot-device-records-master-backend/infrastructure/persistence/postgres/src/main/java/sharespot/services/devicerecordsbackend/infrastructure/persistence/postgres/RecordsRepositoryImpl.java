@@ -6,8 +6,10 @@ import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper.RecordMapper;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -22,16 +24,22 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     }
 
     @Override
-    public DeviceRecords save(DeviceRecords records) {
-        var byDeviceId = repositoryPostgres.findByDeviceId(records.device().id().value().toString());
-        var deviceRecordsPostgres = RecordMapper.domainToPostgres(records);
-        if (byDeviceId.isEmpty()) {
-            repositoryPostgres.save(deviceRecordsPostgres);
+    @Transactional
+    public DeviceRecords save(DeviceRecords domain) {
+        var id = domain.device().id();
+        var deviceRecordsPostgres = RecordMapper.domainToPostgres(domain);
+
+        var byDeviceId = repositoryPostgres.findByDeviceId(id.value().toString());
+        if(byDeviceId.isPresent()) {
+            var old = byDeviceId.get();
+            old.entries.clear();
+            old.entries.addAll(deviceRecordsPostgres.entries);
+            old.name = deviceRecordsPostgres.name;
+            repositoryPostgres.save(old);
         } else {
-            var deviceRecords = byDeviceId.get();
-            deviceRecords.entries = deviceRecordsPostgres.entries;
+            repositoryPostgres.save(deviceRecordsPostgres);
         }
-        return records;
+        return domain;
     }
 
     @Override

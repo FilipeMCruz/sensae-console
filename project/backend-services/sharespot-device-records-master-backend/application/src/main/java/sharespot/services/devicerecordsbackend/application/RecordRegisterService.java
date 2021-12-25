@@ -21,7 +21,7 @@ public class RecordRegisterService {
     public DeviceRecordDTO register(DeviceRecordDTO dto) {
         var deviceRecords = mapper.dtoToDomain(dto);
         hoarder.hoard(deviceRecords);
-        publisher.publishIndex(deviceRecords);
+        publisher.publishUpdate(deviceRecords.device().id());
         return dto;
     }
 }

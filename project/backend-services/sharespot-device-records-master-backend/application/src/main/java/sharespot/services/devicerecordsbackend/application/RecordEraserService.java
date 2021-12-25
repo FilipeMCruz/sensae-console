@@ -21,7 +21,7 @@ public class RecordEraserService {
     public DeviceDTO erase(DeviceDTO dto) {
         var deviceId = mapper.dtoToDomain(dto);
         var erased = eraser.erase(deviceId);
-        publisher.publishErased(erased);
+        publisher.publishUpdate(erased);
         return mapper.domainToDto(erased);
     }
 }

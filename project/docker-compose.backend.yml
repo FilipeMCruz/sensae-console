@@ -14,13 +14,13 @@ services:
       - sharespot-network
     ports:
       - 8080:80
-  sharespot-lgt92-gps-data-gateway:
-    build: backend-services/sharespot-lgt92-gps-data-gateway
-    image: sharespot-lgt92-gps-data-gateway
+  sharespot-static-data-gateway:
+    build: backend-services/sharespot-static-data-gateway
+    image: sharespot-static-data-gateway
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-lgt92-gps-data-gateway.env
+      - ./secrets/prod/sharespot-static-data-gateway.env
     networks:
       - sharespot-network
     ports:

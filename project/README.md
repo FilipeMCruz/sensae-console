@@ -78,10 +78,10 @@ export const environment = {
 };
 ```
 
-File: `project/backend-services/sharespot-lgt92-gps-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-static-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8080
+server.port=8081
 
 auth.key=<helium defined auth key>
 
@@ -89,12 +89,15 @@ spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
+
+sharespot.sensor.type=<sensor-type>
+sharespot.auth.key=<auth-key>
 ```
 
 File: `project/backend-services/sharespot-lgt92-gps-data-processor/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8081
+server.port=8082
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -290,12 +293,14 @@ export const environment = {
 };
 ```
 
-File: `project/secrets/prod/sharespot-lgt92-gps-data-gateway.env`
+File: `project/secrets/prod/sharespot-static-data-gateway.env`
 
 ``` conf
 AUTH_KEY=<helium defined auth key>
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
+SHARESPOT_SENSOR_TYPE=<sensor-type>
+SHARESPOT_AUTH_KEY=<auth-key>
 ```
 
 File: `project/secrets/prod/sharespot-location-tracking-backend.env`

@@ -1,6 +1,7 @@
 package sharespot.services.dataprocessor.application;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.ProcessedSensorDataMapper;
@@ -16,9 +17,9 @@ public class SensorDataMapper {
 
     private final ProcessedSensorDataMapper mapper;
 
-    public SensorDataMapper(DataTransformationCache cache, ProcessedSensorDataMapper mapper) {
+    public SensorDataMapper(DataTransformationCache cache, ObjectMapper mapper) {
+        this.mapper = new ProcessedSensorDataMapper(mapper);
         this.cache = cache;
-        this.mapper = mapper;
     }
 
     public Optional<SensorDataDTO> inToOut(JsonNode inDto, SensorTypeId typeId) {

@@ -70,6 +70,17 @@ services:
     networks:
       - sharespot-network
     ports:
+      - 8080  
+  sharespot-dynamic-data-gateway:
+    build: backend-services/sharespot-dynamic-data-gateway
+    image: sharespot-dynamic-data-gateway
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-dynamic-data-gateway.env
+    networks:
+      - sharespot-network
+    ports:
       - 8080
   sharespot-data-processor-slave-backend:
     build: backend-services/sharespot-data-processor-slave-backend

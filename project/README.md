@@ -5,7 +5,7 @@ Both of this environments need docker to run and docker-compose to orchestrate t
 
 ## DEV Environment
 
-This environment is manly used by developers and can be started with:
+This environment is manly used by developers running `linux`,`mac` or a `bsd` system (windows is currently not supported) and can be started with:
 
 ``` sh
 docker-compose -f docker-compose.dev.yml up -d
@@ -14,7 +14,17 @@ docker-compose -f docker-compose.dev.yml up -d
 This command will only start the databases, message brokers and load balancers (if existing).
 This way the frontend and backend services can be started by the programmer on debug mode if and when needed.
 
-All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace any identified tag (`<this is a tag>`).
+Every external interaction with the environment is secured with `ssl`. To run the environment locally an `ssl certificate` has to be generated.
+It is advised to use the program `openssl`.
+Run the following commands to create the certificate `crt` and `key`.
+
+``` sh
+openssl req -x509 -out nginx.crt -keyout nginx.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+sudo mv nginx* /etc/nginx/ssl/
+```
 
 To run every frontend service run:
 
@@ -29,6 +39,8 @@ To run a single frontend service run:
 cd project/frontend-services
 nx serve <frontend-name>
 ```
+
+All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace any identified tag (`<this is a tag>`).
 
 File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.ts`
 
@@ -285,6 +297,14 @@ This environment is used in production and can be started with (after creating t
 docker-compose up -d
 ```
 
+Every external interaction with the environment is secured with `ssl`. To run the environment in production an `ssl certificate` has to be generated.
+It is advised to use the program `certbot`.
+Run the following commands to create the certificate `crt` and `key`.
+
+``` sh
+sudo certbot certonly --manual
+```
+
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`).
 
 File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
@@ -309,7 +329,7 @@ File: `project/frontend-services/apps/sharespot-device-records-frontend/src/envi
 export const environment = {
   production: true,
   backendURL: {
-    http: "http://localhost/device-records/graphql"
+    http: "https://localhost/device-records/graphql"
   }
 };
 ```
@@ -320,7 +340,7 @@ File: `project/frontend-services/apps/sharespot-data-processor-frontend/src/envi
 export const environment = {
   production: true,
   backendURL: {
-    http: "http://localhost/data-processor/graphql"
+    http: "https://localhost/data-processor/graphql"
   }
 };
 ```
@@ -333,18 +353,18 @@ export const environment = {
   endpoints: {
     deviceRecords: {
       backendURL: {
-        http: 'http://localhost/device-records/graphql',
+        http: 'https://localhost/device-records/graphql',
       },
     },    
     dataProcessor: {
       backendURL: {
-        http: 'http://localhost/data-processor/graphql',
+        http: 'https://localhost/data-processor/graphql',
       },
     },
     locationTracking: {
       backendURL: {
-        websocket: 'ws://localhost/location-tracking/subscriptions',
-        http: 'http://localhost/location-tracking/graphql',
+        websocket: 'wss://localhost/location-tracking/subscriptions',
+        http: 'https://localhost/location-tracking/graphql',
       },
     },
   },

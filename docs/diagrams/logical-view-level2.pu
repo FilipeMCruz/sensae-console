@@ -15,8 +15,7 @@ component "Environment" <<System>> {
     component "Device Records Master Backend" as DRB <<Container>>
     component "Device Records Slave Backend" as DRSB <<Container>>
     component "Location Tracking Backend" as LTB <<Container>>
-    component "Static Data Gateway" as SDG <<Container>>
-    component "Dynamic Data Gateway" as DDG <<Container>>
+    component "Data Gateway" as DDG <<Container>>
     component "Data Relayer" as DR <<Container>>
     component "UI Aggregator" as UIAG <<Container>> {
         component "Device Records Frontend" as DRF <<Container>>
@@ -25,7 +24,8 @@ component "Environment" <<System>> {
     }
     component "Data Processor Slave Backend" as DPSB <<Container>>
     component "Data Processor Master Backend" as DPMB <<Container>>
-    component "Common Database" as DRDB <<Container>>
+    component "Device Records Database" as DRDB <<Container>>
+    component "Data Processor Database" as DPDB <<Container>>
     component "Chrono Data Store" as CDS <<Container>>
     component "Data Store" as DS <<Container>>
     component "QuestDB" as QUESTDB <<Container>>
@@ -35,11 +35,11 @@ component "Environment" <<System>> {
     interface "Location Tracking Backend\nAPI" as LTB_API
     interface "Device Records Master Backend\nAPI" as DRB_API
     interface "Data Processor Master Backend\nAPI" as DPMB_API
-    interface "Common Database\nAPI" as DRDB_API
+    interface "Device Records Database\nAPI" as DRDB_API
+    interface "Data Processor Database\nAPI" as DPDB_API
     interface "QuestDB\nAPI" as QUESTDB_API
     interface "MongoDB\nAPI" as MONGODB_API
-    interface "Static Data Gateway\nAPI" as SDG_API
-    interface "Dynamic Data Gateway\nAPI" as DDG_API
+    interface "Data Gateway\nAPI" as DDG_API
 
     CDS --( QUESTDB_API
     DS --( MONGODB_API
@@ -48,15 +48,15 @@ component "Environment" <<System>> {
     DRB_API -- DRB
     MB_API -- MB
     DRDB_API -- DRDB
+    DPDB_API -- DPDB
     LTB_API -- LTB
     UI -- UIAG
-    SDG -- SDG_API
     MONGODB_API -- MONGODB
     QUESTDB_API -- QUESTDB
     DRB --( DRDB_API
     DRSB --( DRDB_API
-    DPMB --( DRDB_API
-    DPSB --( DRDB_API
+    DPMB --( DPDB_API
+    DPSB --( DPDB_API
     LTF --( LTB_API
     DPF --( DPMB_API
     DRF --( DRB_API
@@ -67,12 +67,10 @@ component "Environment" <<System>> {
     DRB --( MB_API
     DPMB --( MB_API
     DRSB --( MB_API
-    SDG --( MB_API
     DPSB --( MB_API
     DDG --( MB_API
 
     DR -- IN_ENDPOINT
-    SDG_API )-- DR
     DDG_API )-- DR
 }
 

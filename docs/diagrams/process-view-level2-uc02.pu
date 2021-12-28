@@ -8,7 +8,7 @@ hide unlinked
 autonumber 1
 
 participant "Data\nRealyer" as DG
-participant "Static\Dynamic\nData Gateway" as SDDG
+participant "Data\nGateway" as SDDG
 participant "Data Processor Slave\nBackend" as DPSB
 participant "Device Records Slave\nBackend" as DRSB
 participant "Message\nBroker" as MB

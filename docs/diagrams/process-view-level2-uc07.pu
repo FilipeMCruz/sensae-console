@@ -9,7 +9,7 @@ autonumber 1
 
 participant "Device Records\nFrontend" as DRF
 participant "Device Records Master\nBackend" as DRMB
-participant "Common\nDatabase" as DRDB
+participant "Device Records\nDatabase" as DRDB
 
 activate DRF
 

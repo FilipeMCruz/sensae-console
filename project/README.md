@@ -119,7 +119,7 @@ db.createUser({
 });
 ```
 
-File: `./project/backend-services/sharespot-chrono-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-chrono-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8086
@@ -137,7 +137,7 @@ spring.datasource.username=admin
 spring.datasource.password=quest
 ```
 
-File: `./project/backend-services/sharespot-data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8083
@@ -164,7 +164,7 @@ dgs.graphql.graphiql.enabled=true
 dgs.graphql.graphiql.path=/graphiql
 ```
 
-File: `./project/backend-services/sharespot-data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8081
@@ -183,7 +183,7 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
-File: `./project/backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8087
@@ -203,7 +203,7 @@ spring.data.mongodb.username=user
 spring.data.mongodb.password=<key to exchange with data store database mongodb> 
 ```
 
-File: `./project/backend-services/sharespot-device-records-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-device-records-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8085
@@ -230,7 +230,7 @@ dgs.graphql.graphiql.enabled=true
 dgs.graphql.graphiql.path=/graphiql
 ```
 
-File: `./project/backend-services/sharespot-device-records-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-device-records-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8085
@@ -249,7 +249,7 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
-File: `./project/backend-services/sharespot-dynamic-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8080
@@ -259,11 +259,10 @@ spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
 
-sharespot.sensor.type.path=tag
 sharespot.auth.key=<auth key to authenticate requests>
 ```
 
-File: `./project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8085
@@ -276,20 +275,6 @@ spring.rabbitmq.password=guest
 logging.level.org.springframework.web=DEBUG
 logging.level.web=DEBUG
 logging.level.com.netflix.graphql.dgs=TRACE
-```
-
-File: `./project/backend-services/sharespot-static-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
-
-``` conf
-server.port=8080
-
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-
-sharespot.sensor.type=unknown
-sharespot.auth.key=<auth key to authenticate requests>
 ```
 
 ## PROD Environment
@@ -441,11 +426,10 @@ SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
 ```
 
-File. `project/secrets/prod/sharespot-dynamic-data-gateway.env`
+File. `project/secrets/prod/sharespot-data-gateway.env`
 
 ``` conf
 SHARESPOT_AUTH_KEY=<auth key to authenticate requests>
-SHARESPOT_SENSOR_TYPE_PATH=tag
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
 ```
@@ -455,13 +439,4 @@ File. `project/secrets/prod/sharespot-location-tracking-backend.env`
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest 
-```
-
-File. `project/secrets/prod/sharespot-static-data-gateway.env`
-
-``` conf
-SHARESPOT_AUTH_KEY=<auth key to authenticate requests>
-SHARESPOT_SENSOR_TYPE=lgt92
-SPRING_RABBITMQ_USERNAME=guest
-SPRING_RABBITMQ_PASSWORD=guest
 ```

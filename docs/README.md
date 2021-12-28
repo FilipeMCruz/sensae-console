@@ -211,16 +211,21 @@ The following diagram describes it from a logical view.
 
 This section will present the API that each backend service exposes.
 
-### Static/Dynamic Data Gateway API
+### Data Gateway API
 
-This section will present every endpoint available in this services.
-This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this containers must be running in dev mode).
-The **endpoint** to register new sensor data is `/sensor-data`.
-In production this endpoints can't be accessed, instead requests must be made to **Data Relayer**.
+This section will present every endpoint available in this service.
+This information can be consulted [here](http://localhost:8080/swagger-ui/index.html) (this container must be running in dev mode).
+The **endpoint** to register new sensor data is `/sensor-data/{infoType}/{sensorType}`.
+In production this endpoint can't be accessed, instead requests must be made to **Data Relayer**.
 
-### Static/Dynamic Data Gateway
+### Data Gateway
 
-**Endpoint**: POST to `/sensor-data`
+**Endpoint**: POST to `/sensor-data/{infoType}/{sensorType}`
+
+**Path Variables**:
+
+- **infoType**: `decoded` or `encoded`
+- **sensorType**: any string that represents a sensor type (this will later be correlated with the sensor type configured with the data processor)
 
 **Data Example**:
 

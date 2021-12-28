@@ -25,7 +25,7 @@ public class SensorDataPublisherService {
         } else if(InfoTypeOptions.ENCODED.value().equalsIgnoreCase(infoType)) {
             type = InfoTypeOptions.ENCODED;
         } else {
-            throw new IllegalArgumentException("Info Type must be of value encoded or decoded");
+            throw new NotValidException("Info Type must be of value encoded or decoded");
         }
         
         provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)

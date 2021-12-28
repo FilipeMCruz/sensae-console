@@ -12,10 +12,13 @@ services:
       dockerfile: docker/ui-aggregator/Dockerfile
       context: frontend-services
     image: ui-aggregator
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 80:80
+      - 443:443
     depends_on:
       - sharespot-device-records-frontend
       - sharespot-data-processor-frontend
@@ -25,10 +28,13 @@ services:
       dockerfile: docker/sharespot-device-records-frontend/Dockerfile
       context: frontend-services
     image: sharespot-device-records-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 80
+      - 443
     depends_on:
       - sharespot-device-records-master-backend
   sharespot-data-processor-frontend:
@@ -36,10 +42,13 @@ services:
       dockerfile: docker/sharespot-data-processor-frontend/Dockerfile
       context: frontend-services
     image: sharespot-data-processor-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 80
+      - 443
     depends_on:
       - sharespot-data-processor-master-backend
   sharespot-location-tracking-frontend:
@@ -47,19 +56,25 @@ services:
       dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile
       context: frontend-services
     image: sharespot-location-tracking-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 80
+      - 443
     depends_on:
       - sharespot-location-tracking-backend
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 8080:80
+      - 8080:443
   sharespot-data-gateway:
     build: backend-services/sharespot-data-gateway
     image: sharespot-data-gateway

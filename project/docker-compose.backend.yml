@@ -10,10 +10,13 @@ services:
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sharespot-network
     ports:
-      - 8080:80  
+      - 8080:443
   sharespot-data-gateway:
     build: backend-services/sharespot-data-gateway
     image: sharespot-data-gateway

@@ -323,7 +323,7 @@ sharespot.simple.auth.user.secret=<user password>
 This environment is used in production and can be started with (after creating the files below):
 
 ``` sh
-docker-compose up -d
+./project/scripts/reset-prod.sh
 ```
 
 Every external interaction with the environment is secured with `ssl`. To run the environment in production an `ssl certificate` has to be generated.

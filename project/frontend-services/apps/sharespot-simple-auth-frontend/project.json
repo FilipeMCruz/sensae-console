@@ -1,0 +1,103 @@
+{
+  "projectType": "application",
+  "root": "apps/sharespot-simple-auth-frontend",
+  "sourceRoot": "apps/sharespot-simple-auth-frontend/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/sharespot-simple-auth-frontend",
+        "index": "apps/sharespot-simple-auth-frontend/src/index.html",
+        "main": "apps/sharespot-simple-auth-frontend/src/main.ts",
+        "polyfills": "apps/sharespot-simple-auth-frontend/src/polyfills.ts",
+        "tsConfig": "apps/sharespot-simple-auth-frontend/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/sharespot-simple-auth-frontend/src/favicon.ico",
+          "apps/sharespot-simple-auth-frontend/src/assets"
+        ],
+        "styles": ["apps/sharespot-simple-auth-frontend/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/sharespot-simple-auth-frontend/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/sharespot-simple-auth-frontend/src/environments/environment.ts",
+              "with": "apps/sharespot-simple-auth-frontend/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/sharespot-simple-auth-frontend/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "sharespot-simple-auth-frontend:build:production"
+        },
+        "development": {
+          "browserTarget": "sharespot-simple-auth-frontend:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4290
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "sharespot-simple-auth-frontend:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/sharespot-simple-auth-frontend/src/**/*.ts",
+          "apps/sharespot-simple-auth-frontend/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/sharespot-simple-auth-frontend"],
+      "options": {
+        "jestConfig": "apps/sharespot-simple-auth-frontend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,21 @@
+<div class="container">
+  Authentication
+  <mat-form-field>
+    <mat-label>User Name</mat-label>
+    <input [disabled]=isAuthenticated() [(ngModel)]=userName matInput>
+    <mat-hint>e.g. José</mat-hint>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Password</mat-label>
+    <input [disabled]=isAuthenticated() type="password" [(ngModel)]=secret matInput>
+    <mat-hint>e.g. Pastel de nata</mat-hint>
+  </mat-form-field>
+  <div class="margin">
+    <button *ngIf=isAuthenticated() matSuffix mat-stroked-button (click)=logout()>
+      Logout
+    </button>
+    <button *ngIf=!isAuthenticated() matSuffix mat-stroked-button [disabled]=!hasValidCredentials() (click)=login()>
+      Login
+    </button>
+  </div>
+</div>

@@ -80,6 +80,17 @@ export const environment = {
 };
 ```
 
+File: `project/frontend-services/apps/sharespot-simple-auth-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  backendURL: {
+    http: 'http://localhost:8090/graphql'
+  }
+};
+```
+
 File: `project/frontend-services/apps/ui-aggregator/src/environments/environment.ts`
 
 ```ts
@@ -101,6 +112,11 @@ export const environment = {
         websocket: "ws://localhost:8086/subscriptions",
         http: "http://localhost:8086/graphql"
       },
+    },
+    simpleAuth: {
+      backendURL: {
+        http: 'http://localhost:8090/graphql'
+      }
     }
   }
 };
@@ -289,6 +305,19 @@ logging.level.web=DEBUG
 logging.level.com.netflix.graphql.dgs=TRACE
 ```
 
+File: `project/backend-services/sharespot-simple-auth-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8090
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+logging.level.com.netflix.graphql.dgs=TRACE
+
+sharespot.simple.auth.user.name=<user name>
+sharespot.simple.auth.user.secret=<user password>
+```
+
 ## PROD Environment
 
 This environment is used in production and can be started with (after creating the files below):
@@ -345,6 +374,17 @@ export const environment = {
 };
 ```
 
+File: `project/frontend-services/apps/sharespot-simple-auth-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  backendURL: {
+    http: 'http://localhost:8090/graphql'
+  }
+};
+```
+
 File: `project/frontend-services/apps/ui-aggregator/src/environments/environment.prod.ts`
 
 ```ts
@@ -355,11 +395,11 @@ export const environment = {
       backendURL: {
         http: 'https://localhost/device-records/graphql',
       },
-    },    
+    },
     dataProcessor: {
       backendURL: {
-        http: 'https://localhost/data-processor/graphql',
-      },
+        http: 'https://localhost/data-processor/graphql'
+      }
     },
     locationTracking: {
       backendURL: {
@@ -367,6 +407,11 @@ export const environment = {
         http: 'https://localhost/location-tracking/graphql',
       },
     },
+    simpleAuth: {
+      backendURL: {
+        http: 'https://localhost/simple-auth/graphql'
+      }
+    }
   },
 };
 ```
@@ -459,4 +504,11 @@ File. `project/secrets/prod/sharespot-location-tracking-backend.env`
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest 
+```
+
+File. `project/secrets/prod/sharespot-simple-auth-backend.env`
+
+``` conf
+SHARESPOT_SIMPLE_AUTH_USER_NAME=<user name>
+SHARESPOT_SIMPLE_AUTH_USER_SECRET=<user password>
 ```

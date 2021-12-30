@@ -1,0 +1,8 @@
+input UserCredentials {
+    name : String
+    secret : String
+}
+
+type Outcome {
+    valid: Boolean
+}

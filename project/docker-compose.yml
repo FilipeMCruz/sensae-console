@@ -23,6 +23,21 @@ services:
       - sharespot-device-records-frontend
       - sharespot-data-processor-frontend
       - sharespot-location-tracking-frontend
+      - sharespot-simple-auth-frontend
+  sharespot-simple-auth-frontend:
+    build:
+      dockerfile: docker/sharespot-simple-auth-frontend/Dockerfile
+      context: frontend-services
+    image: sharespot-simple-auth-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sharespot-network
+    ports:
+      - 443
+    depends_on:
+      - sharespot-simple-auth-backend
   sharespot-device-records-frontend:
     build:
       dockerfile: docker/sharespot-device-records-frontend/Dockerfile
@@ -136,6 +151,17 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/sharespot-location-tracking-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  sharespot-simple-auth-backend:
+    build: backend-services/sharespot-simple-auth-backend
+    image: sharespot-simple-auth-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-simple-auth-backend.env
     networks:
       - sharespot-network
     ports:

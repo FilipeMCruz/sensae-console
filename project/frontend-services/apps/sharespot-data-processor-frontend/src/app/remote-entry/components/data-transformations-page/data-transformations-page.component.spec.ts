@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DataTransformationsPageComponent } from './data-transformations-page.component';
 
-describe('DeviceRecordPageComponent', () => {
+describe('SimpleAuthPageComponent', () => {
   let component: DataTransformationsPageComponent;
   let fixture: ComponentFixture<DataTransformationsPageComponent>;
 

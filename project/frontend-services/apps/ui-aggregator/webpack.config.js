@@ -21,7 +21,7 @@ const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
   [
-    /* mapped paths to share */
+    '@frontend-services/simple-auth-lib'
   ],
   workspaceRootPath
 );

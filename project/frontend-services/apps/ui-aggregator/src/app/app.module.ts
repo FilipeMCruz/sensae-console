@@ -22,6 +22,8 @@ import {WebSocketLink} from "@apollo/client/link/ws";
 import {getMainDefinition} from "@apollo/client/utilities";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatMenuModule} from '@angular/material/menu';
+import {AuthGuardService} from './services/AuthGuardService'
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
   const http = httpLink.create({
@@ -68,6 +70,12 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     locationTracking: {
       link: createLinkWithWebsocket(httpLink, environment.endpoints.locationTracking.backendURL.websocket, environment.endpoints.locationTracking.backendURL.http),
       cache: new InMemoryCache(),
+    },
+    simpleAuth: {
+      link: httpLink.create({
+        uri: environment.endpoints.simpleAuth.backendURL.http
+      }),
+      cache: new InMemoryCache()
     }
   };
 }
@@ -98,7 +106,9 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       provide: APOLLO_NAMED_OPTIONS,
       useFactory: createNamedApollo,
       deps: [HttpLink],
-    }
+    },
+    AuthGuardService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

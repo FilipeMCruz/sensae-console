@@ -83,6 +83,17 @@ services:
       - sharespot-network
     ports:
       - 8086:8080
+  sharespot-simple-auth-backend:
+    build: backend-services/sharespot-simple-auth-backend
+    image: sharespot-simple-auth-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-simple-auth-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8090:8080
   sharespot-data-store:
     build: backend-services/sharespot-data-store
     image: sharespot-data-store

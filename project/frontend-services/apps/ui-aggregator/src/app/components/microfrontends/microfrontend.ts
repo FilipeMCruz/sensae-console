@@ -8,7 +8,8 @@ export type Microfrontend = LoadRemoteModuleOptions & {
 };
 
 export type MicrofrontendDetails = {
-  type: MicrofrontendType
+  type: MicrofrontendType,
+  protected: boolean
 }
 
 export enum MicrofrontendType {

@@ -336,7 +336,7 @@ sudo certbot certonly --manual
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`).
 
-File: `project/frontend/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
+File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
 
 ``` ts
 export const environment = {

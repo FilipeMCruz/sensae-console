@@ -11,6 +11,9 @@ import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.dataprocessor.application.RoutingKeysProvider;
 
+import static sharespot.services.dataprocessor.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
+import static sharespot.services.dataprocessor.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
+
 @Configuration
 public class AmqpConfiguration {
 
@@ -30,7 +33,10 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return new Queue(MASTER_QUEUE, true);
+        return QueueBuilder.durable(MASTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
     }
 
     @Bean
@@ -50,7 +56,10 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queue() {
-        return new Queue(INGRESS_QUEUE, true);
+        return QueueBuilder.durable(INGRESS_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
     }
 
     @Bean

@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/simple-auth-lib",
+  "sourceRoot": "libs/simple-auth-lib/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/simple-auth-lib"],
+      "options": {
+        "jestConfig": "libs/simple-auth-lib/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/simple-auth-lib/src/**/*.ts",
+          "libs/simple-auth-lib/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

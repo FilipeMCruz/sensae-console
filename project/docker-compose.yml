@@ -89,7 +89,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8080:443
+      - 8443:443
   sharespot-data-gateway:
     build: backend-services/sharespot-data-gateway
     image: sharespot-data-gateway

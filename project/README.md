@@ -342,8 +342,8 @@ File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/e
 export const environment = {
   production: true,
   backendURL: {
-    websocket: "wss://localhost/subscriptions",
-    http: "https://localhost/graphql"
+    websocket: "wss://localhost/location-tracking/subscriptions",
+    http: "https://localhost/location-tracking/graphql"
   },
   mapbox: {
     accessToken: "<private key used to access mapbox api>",
@@ -374,13 +374,13 @@ export const environment = {
 };
 ```
 
-File: `project/frontend-services/apps/sharespot-simple-auth-frontend/src/environments/environment.ts`
+File: `project/frontend-services/apps/sharespot-simple-auth-frontend/src/environments/environment.prod.ts`
 
 ```ts
 export const environment = {
-  production: false,
+  production: true,
   backendURL: {
-    http: 'http://localhost:8090/graphql'
+    http: "https://localhost/simple-auth/graphql"
   }
 };
 ```

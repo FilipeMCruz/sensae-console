@@ -331,10 +331,13 @@ It is advised to use the program `certbot`.
 Run the following commands to create the certificate `crt` and `key`.
 
 ``` sh
-sudo certbot certonly --manual
+sudo certbot --nginx -d <yourdomain>
+mkdir /etc/nginx/ssl
+ln -s /etc/letsencrypt/live/<yourdomain>/fullchain.pem /etc/nginx/ssl/nginx.crt
+ln -s /etc/letsencrypt/live/<yourdomain>/privkey.pem /etc/nginx/ssl/nginx.key
 ```
 
-All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`).
+All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`). All `environment.prod.ts` need it's associated `environment.ts` config.
 
 File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
 

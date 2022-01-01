@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {Microfrontend, MicrofrontendType} from './microfrontend';
 import {environment} from "../../../environments/environment";
 
-const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = environment.production ? 'https://localhost/micro-frontends/sharespot-location-tracking-frontend/remoteEntry.js' : 'http://localhost:4284/remoteEntry.js';
-const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = environment.production ? 'https://localhost/micro-frontends/sharespot-device-records-frontend/remoteEntry.js' : 'http://localhost:4283/remoteEntry.js';
-const SHARESPOT_DATA_PROCESSOR_FRONTEND_URL = environment.production ? 'https://localhost/micro-frontends/sharespot-data-processor-frontend/remoteEntry.js' : 'http://localhost:4282/remoteEntry.js';
-const SHARESPOT_SIMPLE_AUTH_FRONTEND_URL = environment.production ? 'https://localhost/micro-frontends/sharespot-simple-auth-frontend/remoteEntry.js' : 'http://localhost:4290/remoteEntry.js';
+const SHARESPOT_LOCATION_TRACKING_FRONTEND_URL = environment.production ? 'https://' + environment.domain + '/micro-frontends/sharespot-location-tracking-frontend/remoteEntry.js' : 'http://localhost:4284/remoteEntry.js';
+const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = environment.production ? 'https://' + environment.domain + '/micro-frontends/sharespot-device-records-frontend/remoteEntry.js' : 'http://localhost:4283/remoteEntry.js';
+const SHARESPOT_DATA_PROCESSOR_FRONTEND_URL = environment.production ? 'https://' + environment.domain + '/micro-frontends/sharespot-data-processor-frontend/remoteEntry.js' : 'http://localhost:4282/remoteEntry.js';
+const SHARESPOT_SIMPLE_AUTH_FRONTEND_URL = environment.production ? 'https://' + environment.domain + '/micro-frontends/sharespot-simple-auth-frontend/remoteEntry.js' : 'http://localhost:4290/remoteEntry.js';
 
 @Injectable({providedIn: 'root'})
 export class LookupService {

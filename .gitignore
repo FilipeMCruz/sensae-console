@@ -3,5 +3,8 @@
 **/*.iml
 
 project/test-examples
-project/secrets/*
+project/secrets/prod/*
+!project/secrets/prod/.gitkeep
+project/secrets/dev/*
+!project/secrets/dev/.gitkeep
 project/databases-data

@@ -8,6 +8,7 @@ import {SensorMapper} from "../../mappers/SensorMapper";
 import {GetNewGPSLocation} from "../../services/GetNewGPSLocation";
 import {environment} from "../../../../environments/environment";
 import {SensorDTO} from "../../dtos/SensorDTO";
+import {GetNewGPSLocationByContent} from "../../services/GetNewGPSLocationByContent";
 
 @Component({
   selector: 'frontend-services-map',
@@ -30,13 +31,14 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
 
-  constructor(private locationsEmitter: GetNewGPSLocations,
-              private locationEmitter: GetNewGPSLocation) {
+  constructor(private locationEmitter: GetNewGPSLocations,
+              private locationByDeviceIdEmitter: GetNewGPSLocation,
+              private locationByContentEmitter: GetNewGPSLocationByContent) {
   }
 
   ngOnInit(): void {
     this.initializeMap();
-    this.subscription = this.locationsEmitter.getData().subscribe(
+    this.subscription = this.locationEmitter.getData().subscribe(
       next => this.verifyAndDraw(next.data)
     );
     // const a = new GPSSensorData("841e28de-be0f-491e-a175-816613dfabc6",
@@ -63,28 +65,46 @@ export class MapComponent implements OnInit, OnDestroy {
 
   cleanSubscriber() {
     this.subscription.unsubscribe();
-    this.subscription = this.locationsEmitter.getData().subscribe(
+    this.subscription = this.locationEmitter.getData().subscribe(
       next => this.verifyAndDraw(next.data)
     );
   }
 
-  subscribeTo(deviceId: string) {
+  subscribeToDevice(deviceId: string) {
     this.subscription.unsubscribe();
     this.followContent = deviceId;
     this.points.forEach((sensor, index, array) => {
-      if (sensor.value.device.has(deviceId)) {
+      if (!sensor.value.device.has(deviceId)) {
         sensor.point.remove();
         array.splice(index, 1);
       }
     });
 
-    this.subscription = this.locationEmitter.getData(deviceId).subscribe(
+    this.subscription = this.locationByDeviceIdEmitter.getData(deviceId).subscribe(
       next => {
         this.verifyAndDraw(next.data)
         this.jumpToFirstPoint();
       }
     );
     this.jumpToFirstPoint();
+  }
+
+  subscribeToContent(content: string) {
+    this.subscription.unsubscribe();
+    this.followContent = "";
+    this.follow = false;
+    this.points.forEach((sensor, index, array) => {
+      if (!sensor.value.device.hasContent(content)) {
+        sensor.point.remove();
+        array.splice(index, 1);
+      }
+    });
+
+    this.subscription = this.locationByContentEmitter.getData(content).subscribe(
+      next => {
+        this.verifyAndDraw(next.data)
+      }
+    );
   }
 
   private verifyAndDraw(data: SensorDTO | null | undefined) {

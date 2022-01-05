@@ -7,4 +7,8 @@ export class Device {
   has(deviceId: string) {
     return deviceId.trim() === this.id || deviceId.trim() === this.name;
   }
+
+  hasContent(content: string) {
+    return this.records.some(r => r.content.includes(content))
+  }
 }

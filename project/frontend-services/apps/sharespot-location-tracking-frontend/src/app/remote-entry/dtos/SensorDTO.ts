@@ -12,15 +12,15 @@ export interface FilteredSensorDTO {
 
 export interface SensorDataDTO {
   dataId: string;
-  device: SensorDTO;
+  device: DeviceDTO;
   reportedAt: string;
   data: GPSDataDetailsDTO;
-  record: Array<RecordEntryDTO>;
 }
 
-export interface SensorDTO {
+export interface DeviceDTO {
   id: string;
   name: string;
+  records: Array<RecordEntryDTO>;
 }
 
 export interface SensorDataDetailsDTO {

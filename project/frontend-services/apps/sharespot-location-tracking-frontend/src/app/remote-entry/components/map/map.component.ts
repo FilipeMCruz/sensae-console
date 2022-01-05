@@ -6,8 +6,8 @@ import {Subscription} from "rxjs";
 import {GetNewGPSLocations} from "../../services/GetNewGPSLocations";
 import {SensorMapper} from "../../mappers/SensorMapper";
 import {GetNewGPSLocation} from "../../services/GetNewGPSLocation";
-import {SensorDTO} from "../../dtos/SensorDTO";
 import {environment} from "../../../../environments/environment";
+import {SensorDTO} from "../../dtos/SensorDTO";
 
 @Component({
   selector: 'frontend-services-map',
@@ -89,7 +89,6 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private verifyAndDraw(data: SensorDTO | null | undefined) {
     if (data !== undefined && data !== null) {
-      console.log(data)
       this.drawPoint(SensorMapper.dtoToModel(data));
     }
   }

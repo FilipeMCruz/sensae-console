@@ -6,8 +6,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
-import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.infrastructure.endpoint.amqp.mapper.GPSDataMapper;
+import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
 
 @Component
 public class SensorDataConsumer {
@@ -26,7 +25,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
         try {
             logConsumedMessage(in);
-            handler.publish(GPSDataMapper.dtoToDomain(in.data));
+            handler.publish(in.data);
         } catch (Exception ignore) {
         }
     }

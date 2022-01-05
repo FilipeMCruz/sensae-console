@@ -4,8 +4,8 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
-import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
+import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
+import sharespot.services.locationtrackingbackend.application.OutSensorData;
 
 @DgsComponent
 public class SingleGPSSensorDataChangesSubscription {
@@ -17,7 +17,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> location(@InputArgument("deviceId") String id) {
+    public Publisher<OutSensorData> location(@InputArgument("deviceId") String id) {
         return publisher.getSinglePublisher(id);
     }
 }

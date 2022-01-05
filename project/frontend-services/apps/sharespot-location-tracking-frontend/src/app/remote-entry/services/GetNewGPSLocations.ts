@@ -20,6 +20,10 @@ export class GetNewGPSLocations {
           device{
             id
             name
+            records{
+              label
+              content
+            }
           }
           reportedAt
           data{
@@ -27,10 +31,6 @@ export class GetNewGPSLocations {
               longitude
               latitude
             }
-          }
-          record{
-            label
-            content
           }
         }
       }

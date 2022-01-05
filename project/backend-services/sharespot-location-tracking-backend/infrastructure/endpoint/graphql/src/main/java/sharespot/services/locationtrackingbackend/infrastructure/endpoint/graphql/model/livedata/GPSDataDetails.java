@@ -1,4 +1,4 @@
-package sharespot.services.locationtrackingbackend.domain.sensor.gps;
+package sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.model.livedata;
 
 import sharespot.services.locationtrackingbackend.domain.exceptions.NotValidException;
 
@@ -10,13 +10,5 @@ public record GPSDataDetails(Double latitude, Double longitude) {
 
         if (longitude > 180 || longitude < -180)
             throw new NotValidException("Longitude must have a value between 180 and -180");
-    }
-
-    @Override
-    public String toString() {
-        return "GPSDataDetails{" +
-                "latitude=" + latitude +
-                ", longitude=" + longitude +
-                '}';
     }
 }

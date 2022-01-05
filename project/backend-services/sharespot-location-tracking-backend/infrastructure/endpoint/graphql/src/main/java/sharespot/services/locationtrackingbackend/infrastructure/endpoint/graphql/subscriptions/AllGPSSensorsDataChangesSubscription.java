@@ -3,10 +3,9 @@ package sharespot.services.locationtrackingbackend.infrastructure.endpoint.graph
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import org.reactivestreams.Publisher;
-import sharespot.services.locationtrackingbackend.application.publishers.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.domain.sensor.gps.SensorData;
+import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
+import sharespot.services.locationtrackingbackend.application.OutSensorData;
 
-//TODO: Add model and mapper to this module 
 @DgsComponent
 public class AllGPSSensorsDataChangesSubscription {
 
@@ -17,7 +16,7 @@ public class AllGPSSensorsDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> locations() {
+    public Publisher<OutSensorData> locations() {
         return publisher.getGeneralPublisher();
     }
 }

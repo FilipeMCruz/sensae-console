@@ -3,12 +3,12 @@ type GPSSensorData {
     device : Sensor
     reportedAt : String
     data : SensorDataDetails
-    record : [RecordEntry]
 }
 
 type Sensor {
     id: String
     name: String
+    records : [RecordEntry]
 }
 
 type RecordEntry {

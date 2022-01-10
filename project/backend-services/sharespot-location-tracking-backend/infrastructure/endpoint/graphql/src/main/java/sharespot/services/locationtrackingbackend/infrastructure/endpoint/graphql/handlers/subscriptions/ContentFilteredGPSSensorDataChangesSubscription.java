@@ -1,11 +1,11 @@
-package sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.subscriptions;
+package sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.handlers.subscriptions;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
 import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
-import sharespot.services.locationtrackingbackend.application.OutSensorData;
+import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 
 @DgsComponent
 public class ContentFilteredGPSSensorDataChangesSubscription {
@@ -17,7 +17,7 @@ public class ContentFilteredGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<OutSensorData> locationByContent(@InputArgument("content") String content) {
+    public Publisher<SensorData> locationByContent(@InputArgument("content") String content) {
         return publisher.getContentFilteredPublisher(content);
     }
 }

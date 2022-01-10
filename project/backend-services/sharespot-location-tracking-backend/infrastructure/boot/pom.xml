@@ -26,6 +26,11 @@
             <artifactId>amqp</artifactId>
             <version>0.2.0</version>
         </dependency>
+        <dependency>
+            <groupId>sharespot.services</groupId>
+            <artifactId>questdb</artifactId>
+            <version>0.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

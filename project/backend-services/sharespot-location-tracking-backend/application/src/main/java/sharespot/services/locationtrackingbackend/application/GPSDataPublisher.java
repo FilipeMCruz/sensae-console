@@ -6,6 +6,8 @@ import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import sharespot.services.locationtrackingbackend.domain.ProcessedSensorDataRepository;
+import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 
 import javax.annotation.PostConstruct;
 
@@ -14,10 +16,10 @@ public class GPSDataPublisher {
 
     private FluxSink<ProcessedSensorDataWithRecordsDTO> dataStream;
     private ConnectableFlux<ProcessedSensorDataWithRecordsDTO> dataPublisher;
-    private final SensorDataMapper mapper;
+    private final ProcessedSensorDataRepository repository;
 
-    public GPSDataPublisher(SensorDataMapper mapper) {
-        this.mapper = mapper;
+    public GPSDataPublisher(ProcessedSensorDataRepository repository) {
+        this.repository = repository;
     }
 
     @PostConstruct
@@ -28,27 +30,28 @@ public class GPSDataPublisher {
         dataPublisher.connect();
     }
 
-    public Publisher<OutSensorData> getGeneralPublisher() {
-        return dataPublisher.map(mapper::transform);
+    public Publisher<SensorData> getGeneralPublisher() {
+        return dataPublisher.map(GPSDataMapper::transform);
     }
 
-    public Publisher<OutSensorData> getContentFilteredPublisher(String content) {
+    public Publisher<SensorData> getContentFilteredPublisher(String content) {
         return dataPublisher
                 .filter(gpsData -> gpsData.device.records.entry
                         .stream()
                         .map(e -> e.content)
                         .anyMatch(e -> e.contains(content)))
-                .map(mapper::transform);
+                .map(GPSDataMapper::transform);
     }
 
-    public Publisher<OutSensorData> getSinglePublisher(String id) {
+    public Publisher<SensorData> getSinglePublisher(String id) {
         return dataPublisher
                 .filter(gpsData -> gpsData.device.id.toString().equals(id))
-                .map(mapper::transform);
+                .map(GPSDataMapper::transform);
 
     }
 
     public void publish(ProcessedSensorDataWithRecordsDTO data) {
         dataStream.next(data);
+        repository.insert(data);
     }
 }

@@ -3,3 +3,7 @@ type Subscription {
     location(deviceId: String) : GPSSensorData
     locationByContent(content: String) : GPSSensorData
 }
+
+type Query {
+    history(filters: GPSSensorDataQuery) : GPSSensorDataHistory
+}

@@ -24,3 +24,18 @@ type GPSSensorDetails {
     longitude : Float
     latitude : Float
 }
+
+input GPSSensorDataQuery {
+    deviceId: String
+    deviceName: String
+    startTime : String
+    endTime : String
+}
+
+type GPSSensorDataHistory {
+    deviceId: String
+    deviceName: String
+    startTime : String
+    endTime : String
+    data : [SensorDataDetails]
+}

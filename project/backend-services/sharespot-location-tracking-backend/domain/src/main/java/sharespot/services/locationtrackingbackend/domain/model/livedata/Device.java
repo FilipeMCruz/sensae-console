@@ -1,4 +1,4 @@
-package sharespot.services.locationtrackingbackend.infrastructure.endpoint.graphql.model.livedata;
+package sharespot.services.locationtrackingbackend.domain.model.livedata;
 
 import java.util.Set;
 import java.util.UUID;

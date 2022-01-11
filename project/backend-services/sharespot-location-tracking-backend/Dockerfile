@@ -5,6 +5,8 @@ COPY application/pom.xml application/pom.xml
 COPY domain/pom.xml domain/pom.xml
 COPY infrastructure/boot/pom.xml infrastructure/boot/pom.xml
 COPY infrastructure/endpoint/pom.xml infrastructure/endpoint/pom.xml
+COPY infrastructure/persistence/pom.xml infrastructure/persistence/pom.xml
+COPY infrastructure/persistence/questdb/pom.xml infrastructure/persistence/questdb/pom.xml
 COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
 COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
 COPY infrastructure/pom.xml infrastructure/pom.xml

@@ -23,7 +23,7 @@ public class GPSDataCollector {
     }
 
     private void validate(GPSSensorDataQuery filters) {
-        if (filters.deviceId == null || filters.deviceId.isEmpty() || filters.deviceName == null || filters.deviceName.isEmpty()) {
+        if (filters.device == null || filters.device.isEmpty()) {
             throw new NotValidException("A device id or name must be provided");
         }
         if (filters.startTime == null) {
@@ -33,7 +33,7 @@ public class GPSDataCollector {
             throw new NotValidException("End date must be after the start date");
         }
         if (filters.endTime == null || filters.endTime == 0) {
-            filters.endTime = Instant.now().getEpochSecond();
+            filters.endTime = Instant.now().toEpochMilli() * 100 + 1;
         }
     }
 }

@@ -45,7 +45,7 @@ public class GPSDataPublisher {
 
     public Publisher<SensorData> getSinglePublisher(String id) {
         return dataPublisher
-                .filter(gpsData -> gpsData.device.id.toString().equals(id))
+                .filter(gpsData -> gpsData.device.id.toString().equals(id) || gpsData.device.name.equals(id))
                 .map(GPSDataMapper::transform);
 
     }

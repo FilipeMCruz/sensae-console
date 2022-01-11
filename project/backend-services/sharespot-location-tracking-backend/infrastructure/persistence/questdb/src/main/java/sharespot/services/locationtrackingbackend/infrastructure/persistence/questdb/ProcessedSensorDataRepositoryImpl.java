@@ -28,9 +28,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
     @Override
     public GPSSensorDataHistory queryDevice(GPSSensorDataQuery filters) {
-        var data = filters.deviceId == null ?
-                repository.queryByDeviceName(filters.deviceName, filters.startTime, filters.endTime) :
-                repository.queryByDeviceId(filters.deviceId, filters.startTime, filters.endTime);
+        var data = repository.queryByDevice(filters.device, filters.startTime, filters.endTime);
         return mapper.daoToModel(filters, data);
     }
 }

@@ -1,6 +1,6 @@
 type Subscription {
     locations : GPSSensorData
-    location(deviceId: String) : GPSSensorData
+    location(device: String) : GPSSensorData
     locationByContent(content: String) : GPSSensorData
 }
 

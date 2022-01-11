@@ -31,11 +31,13 @@ public class ProcessedSensorDataMapperImpl {
 
     public GPSSensorDataHistory daoToModel(GPSSensorDataQuery filters, List<ProcessedSensorDataDAOImpl> dto) {
         var history = new GPSSensorDataHistory();
-        history.deviceId = filters.deviceId;
-        history.deviceName = filters.deviceName;
+        history.deviceId = filters.device;
+        history.deviceName = filters.device;
         history.startTime = filters.startTime;
         history.endTime = filters.endTime;
         if (dto.size() != 0) {
+            history.deviceId = dto.get(0).deviceId;
+            history.deviceName = dto.get(0).deviceName;
             history.data = dto.stream().map(data -> {
                 var originatingPoint = GeoHash.fromBinaryString(data.gpsData).getOriginatingPoint();
                 return new GPSDataDetails(originatingPoint.getLatitude(), originatingPoint.getLongitude());

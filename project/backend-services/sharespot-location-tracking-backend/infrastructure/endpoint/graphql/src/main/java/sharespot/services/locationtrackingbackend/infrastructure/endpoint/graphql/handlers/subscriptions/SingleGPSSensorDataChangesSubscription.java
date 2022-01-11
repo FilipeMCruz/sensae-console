@@ -17,7 +17,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> location(@InputArgument("deviceId") String id) {
+    public Publisher<SensorData> location(@InputArgument("device") String id) {
         return publisher.getSinglePublisher(id);
     }
 }

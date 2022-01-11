@@ -187,7 +187,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8080
+      - 8080:8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -197,7 +197,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 5432
+      - 5432:5432
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:
@@ -207,7 +207,7 @@ services:
       - sharespot-network
     ports:
       - 8812
-      - 9000
+      - 9000:9000
       - 9003
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/

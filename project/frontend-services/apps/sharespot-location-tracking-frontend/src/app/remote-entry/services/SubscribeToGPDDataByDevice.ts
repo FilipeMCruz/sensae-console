@@ -7,7 +7,7 @@ import {SensorDTO} from "../dtos/SensorDTO";
 @Injectable({
   providedIn: 'root'
 })
-export class GetNewGPSLocations {
+export class SubscribeToGPDDataByDevice {
 
   constructor(private apollo: Apollo) {
   }

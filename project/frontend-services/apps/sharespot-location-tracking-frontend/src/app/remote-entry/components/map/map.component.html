@@ -1,9 +1,11 @@
 <div class="map-container">
   <div id="map" class="map"></div>
   <frontend-services-search-card (devicePicked)="subscribeToDevice($event)"
-                                 (contentPicked)="subscribeToContent($event)"
                                  (deviceCleaned)="cleanSubscriber()"
-                                 (contentCleaned)="cleanSubscriber()">
+                                 (contentPicked)="subscribeToContent($event)"
+                                 (contentCleaned)="cleanSubscriber()"
+                                 (deviceHistory)="buildHistory($event)"
+                                 (historyCleaned)="cleanHistory()">
   </frontend-services-search-card>
   <div class="follow-button">
     <button [matTooltip]="this.buttonInfo()" mat-fab aria-label="Follow new sensor data"

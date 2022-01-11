@@ -3,12 +3,14 @@ import * as mapboxgl from 'mapbox-gl';
 import {GPSSensorData} from "../../model/GPSSensorData";
 import {GPSPointData} from "../../model/GPSPointData";
 import {Subscription} from "rxjs";
-import {GetNewGPSLocations} from "../../services/GetNewGPSLocations";
+import {SubscribeToGPDDataByDevice} from "../../services/SubscribeToGPDDataByDevice";
 import {SensorMapper} from "../../mappers/SensorMapper";
-import {GetNewGPSLocation} from "../../services/GetNewGPSLocation";
+import {SubscribeToAllGPSData} from "../../services/SubscribeToAllGPSData";
 import {environment} from "../../../../environments/environment";
-import {SensorDTO} from "../../dtos/SensorDTO";
-import {GetNewGPSLocationByContent} from "../../services/GetNewGPSLocationByContent";
+import {GPSSensorDataQuery, SensorDTO} from "../../dtos/SensorDTO";
+import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByContent";
+import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
+import {DeviceHistory} from "../../model/DeviceHistory";
 
 @Component({
   selector: 'frontend-services-map',
@@ -27,13 +29,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
+  private history!: DeviceHistory;
+
   private followContent = "";
 
   private subscription!: Subscription;
 
-  constructor(private locationEmitter: GetNewGPSLocations,
-              private locationByDeviceIdEmitter: GetNewGPSLocation,
-              private locationByContentEmitter: GetNewGPSLocationByContent) {
+  constructor(private locationEmitter: SubscribeToGPDDataByDevice,
+              private locationByDeviceIdEmitter: SubscribeToAllGPSData,
+              private locationByContentEmitter: SubscribeToGPSDataByContent,
+              private historyQuery: QueryGPSDeviceHistory) {
   }
 
   ngOnInit(): void {
@@ -41,11 +46,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription = this.locationEmitter.getData().subscribe(
       next => this.verifyAndDraw(next.data)
     );
-    // const a = new GPSSensorData("841e28de-be0f-491e-a175-816613dfabc6",
-    //   new Sensor(`ec53bf69-acbb-4f4a-95e3-5c46d58009c3`, "Oi"),
-    //   new Date(1637068401 * 1000),
-    //   new SensorCoordinates(41.178940, -8.582296), [])
-    // this.drawPoint(a);
   }
 
   ngOnDestroy() {
@@ -53,10 +53,22 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   buttonInfo(): string {
-    if (this.follow) {
-      return "Press to stop following " + this.followContent;
-    }
-    return "Press to follow " + this.followContent;
+    return (this.follow ? "Press to stop following " : "Press to follow ") + this.followContent;
+  }
+
+  buildHistory(filters: GPSSensorDataQuery) {
+    this.historyQuery.getData(filters).subscribe(
+      next => {
+        if (next.data != undefined) {
+          if (this.history != undefined) {
+            this.map.removeSource('route');
+          }
+          this.history = SensorMapper.dtoToModelHistory(next.data);
+          this.map.addLayer(DeviceHistory.buildLayer('route'));
+          this.map.addSource('route', this.history.asGeoJSON());
+        }
+      }
+    )
   }
 
   changeFollow() {
@@ -105,6 +117,10 @@ export class MapComponent implements OnInit, OnDestroy {
         this.verifyAndDraw(next.data)
       }
     );
+  }
+
+  cleanHistory() {
+    this.map.removeSource('route');
   }
 
   private verifyAndDraw(data: SensorDTO | null | undefined) {

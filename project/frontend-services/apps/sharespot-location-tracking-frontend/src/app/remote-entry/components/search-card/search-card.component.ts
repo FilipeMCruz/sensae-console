@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
+import {GPSSensorDataQuery} from "../../dtos/SensorDTO";
 
 @Component({
   selector: 'frontend-services-search-card',
@@ -11,38 +12,61 @@ export class SearchCardComponent {
   @Output() contentPicked = new EventEmitter<string>();
   @Output() deviceCleaned = new EventEmitter<null>();
   @Output() contentCleaned = new EventEmitter<null>();
+  @Output() deviceHistory = new EventEmitter<GPSSensorDataQuery>();
+  @Output() historyCleaned = new EventEmitter<null>();
 
-  device = "";
-  content = "";
-  current = "None";
-  currentType = "";
+  searchDevice = "";
+  searchContent = "";
+  searchCurrent = "None";
+  searchCurrentType = "";
+
+  historyDevice = "";
+  historyStartDate!: Date;
+  historyEndDate!: Date;
+  historyCurrent = "None";
 
   onContentClick() {
-    if (this.content.trim().length > 0) {
-      this.pickContent(this.content);
-      this.currentType = " Content";
-      this.current = this.content + this.currentType;
+    if (this.searchContent.trim().length > 0) {
+      this.pickContent(this.searchContent);
+      this.searchCurrentType = " Content";
+      this.searchCurrent = this.searchContent + this.searchCurrentType;
     }
   }
 
   onContentClear() {
-    if (this.currentType == " Content") this.current = "None";
-    this.content = "";
+    if (this.searchCurrentType == " Content") this.searchCurrent = "None";
+    this.searchContent = "";
     this.cleanContent();
   }
 
   onDeviceClick() {
-    if (this.device.trim().length > 0) {
-      this.pickDevice(this.device);
-      this.currentType = " Device";
-      this.current = this.device + this.currentType;
+    if (this.searchDevice.trim().length > 0) {
+      this.pickDevice(this.searchDevice);
+      this.searchCurrentType = " Device";
+      this.searchCurrent = this.searchDevice + this.searchCurrentType;
     }
   }
 
   onDeviceClear() {
-    if (this.currentType == " Device") this.current = "None";
-    this.device = "";
+    if (this.searchCurrentType == " Device") this.searchCurrent = "None";
+    this.searchDevice = "";
     this.cleanDevice();
+  }
+
+  onDeviceHistoryClear() {
+    this.historyCurrent = "None";
+    this.historyDevice = "";
+    this.cleanHistory();
+  }
+
+  onHistoryClick() {
+    this.historyCurrent = this.historyDevice + " Device";
+    const query: GPSSensorDataQuery = {
+      device: this.historyDevice,
+      endTime: this.historyEndDate.getTime().toString() + "000001",
+      startTime: this.historyStartDate.getTime().toString() + "000001"
+    }
+    this.pickHistory(query);
   }
 
   public pickContent(id: string): void {
@@ -59,5 +83,19 @@ export class SearchCardComponent {
 
   public cleanDevice(): void {
     this.deviceCleaned.emit();
+  }
+
+  public pickHistory(query: GPSSensorDataQuery): void {
+    this.deviceHistory.emit(query);
+  }
+
+  public cleanHistory(): void {
+    this.historyCleaned.emit();
+  }
+
+  validHistoryQuery() {
+    return this.historyDevice.trim().length !== 0 &&
+      this.historyStartDate != undefined &&
+      (this.historyEndDate == undefined || this.historyEndDate < this.historyStartDate)
   }
 }

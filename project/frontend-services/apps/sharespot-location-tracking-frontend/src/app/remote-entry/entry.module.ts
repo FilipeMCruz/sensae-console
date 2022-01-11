@@ -14,6 +14,8 @@ import {MapComponent} from "./components/map/map.component";
 import {SearchCardComponent} from "./components/search-card/search-card.component";
 import {environment} from "../../environments/environment";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -25,6 +27,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
   imports: [
     MatTooltipModule,
     MatSidenavModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,

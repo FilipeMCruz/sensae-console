@@ -9,21 +9,33 @@ export class GPSPointData {
 
   constructor(value: GPSSensorData) {
     this.value = value;
-    // const el = document.createElement('div');
-    // el.className = "marker-basic"
-    const popup = new mapboxgl.Popup({offset: 25}).setHTML(
-      value.generatePopupText()
-    );
-
     this.point = new mapboxgl.Marker({
       draggable: false,
-    }).setLngLat([this.value.coordinates.longitude, this.value.coordinates.latitude])
-      .setPopup(popup)
+    });
+    this.setPopup().setCoordinates();
   }
 
   updateGPSData(data: GPSSensorData): void {
     this.value = data;
-    this.point.setLngLat([data.coordinates.longitude, data.coordinates.latitude])
+    this.updatePopup().setCoordinates();
+  }
+
+  private setPopup() {
+    const popup = new mapboxgl.Popup({offset: 25, maxWidth: 'none'}).setHTML(
+      this.value.generatePopupText()
+    );
+    this.point.setPopup(popup);
+    return this;
+  }
+
+  private updatePopup() {
+    this.point.getPopup().setHTML(this.value.generatePopupText());
+    return this;
+  }
+
+  private setCoordinates() {
+    this.point.setLngLat([this.value.coordinates.longitude, this.value.coordinates.latitude]);
+    return this;
   }
 
   isSameSensor(data: GPSSensorData): boolean {

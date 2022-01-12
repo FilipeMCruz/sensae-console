@@ -11,6 +11,7 @@ export class GPSPointData {
     this.value = value;
     this.point = new mapboxgl.Marker({
       draggable: false,
+      color: '#012A4A'
     });
     this.setPopup().setCoordinates();
   }

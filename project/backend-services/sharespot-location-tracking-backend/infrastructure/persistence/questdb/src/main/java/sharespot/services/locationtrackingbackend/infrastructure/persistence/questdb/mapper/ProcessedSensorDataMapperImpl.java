@@ -4,13 +4,12 @@ import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import sharespot.services.locationtrackingbackend.domain.model.GPSDataDetails;
+import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataFilter;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataHistory;
-import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataQuery;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,23 +22,22 @@ public class ProcessedSensorDataMapperImpl {
         dao.dataId = in.dataId.toString();
         dao.deviceId = String.valueOf(in.device.id);
         dao.deviceName = String.valueOf(in.device.name);
-        dao.reportedAt = in.reportedAt;
-        dao.ts = Timestamp.from(Instant.now().truncatedTo(ChronoUnit.MICROS));
+        dao.reportedAt = Timestamp.from(Instant.ofEpochSecond(in.reportedAt));
         dao.gpsData = GeoHash.withCharacterPrecision(in.data.gps.latitude, in.data.gps.longitude, 12).toBase32();
         return dao;
     }
 
-    public GPSSensorDataHistory daoToModel(GPSSensorDataQuery filters, List<ProcessedSensorDataDAOImpl> dto) {
+    public GPSSensorDataHistory daoToModel(GPSSensorDataFilter filters, List<ProcessedSensorDataDAOImpl> dto) {
         var history = new GPSSensorDataHistory();
         history.deviceId = filters.device;
         history.deviceName = filters.device;
-        history.startTime = filters.startTime;
-        history.endTime = filters.endTime;
+        history.startTime = filters.startTime.getTime();
+        history.endTime = filters.endTime.getTime();
         if (dto.size() != 0) {
             history.deviceId = dto.get(0).deviceId;
             history.deviceName = dto.get(0).deviceName;
             history.data = dto.stream().map(data -> {
-                var originatingPoint = GeoHash.fromBinaryString(data.gpsData).getOriginatingPoint();
+                var originatingPoint = GeoHash.fromGeohashString(data.gpsData).getOriginatingPoint();
                 return new GPSDataDetails(originatingPoint.getLatitude(), originatingPoint.getLongitude());
             }).collect(Collectors.toList());
         }

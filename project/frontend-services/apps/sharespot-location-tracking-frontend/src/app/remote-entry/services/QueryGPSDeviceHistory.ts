@@ -1,7 +1,7 @@
 import {Apollo, gql} from "apollo-angular";
 import {Observable} from "rxjs";
 import {FetchResult} from "@apollo/client/core";
-import {GPSSensorDataHistory, GPSSensorDataQuery, SensorDTO} from "../dtos/SensorDTO";
+import {GPSSensorDataQuery, HistorySensorDTO} from "../dtos/SensorDTO";
 import {Injectable} from "@angular/core";
 
 @Injectable({
@@ -12,7 +12,7 @@ export class QueryGPSDeviceHistory {
   constructor(private apollo: Apollo) {
   }
 
-  getData(filters: GPSSensorDataQuery): Observable<FetchResult<GPSSensorDataHistory>> {
+  getData(filters: GPSSensorDataQuery): Observable<FetchResult<HistorySensorDTO>> {
     const query = gql`
       query history($filters: GPSSensorDataQuery){
         history(filters: $filters){
@@ -28,6 +28,6 @@ export class QueryGPSDeviceHistory {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<GPSSensorDataHistory>({query, variables: {filters}});
+    return this.apollo.use("locationTracking").subscribe<HistorySensorDTO>({query, variables: {filters}});
   }
 }

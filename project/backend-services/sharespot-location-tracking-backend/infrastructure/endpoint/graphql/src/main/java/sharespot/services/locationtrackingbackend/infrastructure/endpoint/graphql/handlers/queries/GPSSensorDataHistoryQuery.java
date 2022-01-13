@@ -18,7 +18,7 @@ public class GPSSensorDataHistoryQuery {
     }
 
     @DgsQuery
-    public GPSSensorDataHistory history(@InputArgument("filters") GPSSensorDataQuery filters) {
-        return collector.history(filters);
+    public GPSSensorDataHistory history(@InputArgument("filters") GPSSensorDataQuery query) {
+        return collector.history(query.toFilter());
     }
 }

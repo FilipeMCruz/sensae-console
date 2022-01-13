@@ -6,6 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
 
+//TODO anotacoes s�o desnecess�rias, tentar usa-las
 @Table("sensor_gps_data")
 public class ProcessedSensorDataDAOImpl {
 
@@ -20,7 +21,7 @@ public class ProcessedSensorDataDAOImpl {
     public String deviceName;
 
     @Column("reported_at")
-    public Long reportedAt;
+    public Timestamp reportedAt;
 
     @Column("gps_data")
     public String gpsData;

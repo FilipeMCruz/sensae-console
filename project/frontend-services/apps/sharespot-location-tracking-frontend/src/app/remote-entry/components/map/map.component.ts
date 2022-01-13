@@ -61,11 +61,12 @@ export class MapComponent implements OnInit, OnDestroy {
       next => {
         if (next.data != undefined) {
           if (this.history != undefined) {
+            this.map.removeLayer('route');
             this.map.removeSource('route');
           }
           this.history = SensorMapper.dtoToModelHistory(next.data);
-          this.map.addLayer(DeviceHistory.buildLayer('route'));
           this.map.addSource('route', this.history.asGeoJSON());
+          this.map.addLayer(DeviceHistory.buildLayer('route'));
         }
       }
     )

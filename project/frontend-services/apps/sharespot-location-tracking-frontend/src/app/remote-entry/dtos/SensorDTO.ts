@@ -10,6 +10,10 @@ export interface FilteredSensorDTO {
   location: SensorDataDTO;
 }
 
+export interface HistorySensorDTO {
+  history: GPSSensorDataHistory;
+}
+
 export interface SensorDataDTO {
   dataId: string;
   device: DeviceDTO;

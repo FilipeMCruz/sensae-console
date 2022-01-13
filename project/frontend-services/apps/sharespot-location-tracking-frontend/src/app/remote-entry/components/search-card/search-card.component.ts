@@ -63,8 +63,8 @@ export class SearchCardComponent {
     this.historyCurrent = this.historyDevice + " Device";
     const query: GPSSensorDataQuery = {
       device: this.historyDevice,
-      endTime: this.historyEndDate.getTime().toString() + "000001",
-      startTime: this.historyStartDate.getTime().toString() + "000001"
+      endTime: Math.round(this.historyEndDate.getTime() / 1000).toString(),
+      startTime: Math.round(this.historyStartDate.getTime() / 1000).toString()
     }
     this.pickHistory(query);
   }
@@ -95,7 +95,7 @@ export class SearchCardComponent {
 
   validHistoryQuery() {
     return this.historyDevice.trim().length !== 0 &&
-      this.historyStartDate != undefined &&
-      (this.historyEndDate == undefined || this.historyEndDate < this.historyStartDate)
+      (this.historyStartDate == undefined ||
+        (this.historyEndDate != undefined && this.historyEndDate >= this.historyStartDate))
   }
 }

@@ -1,4 +1,4 @@
-import {FilteredByContentSensorDTO, FilteredSensorDTO, GPSSensorDataHistory, SensorDTO} from '../dtos/SensorDTO';
+import {FilteredByContentSensorDTO, FilteredSensorDTO, HistorySensorDTO, SensorDTO} from '../dtos/SensorDTO';
 import {SensorCoordinates} from '../model/SensorCoordinates';
 import {GPSSensorData} from "../model/GPSSensorData";
 import {RecordEntry} from "../model/RecordEntry";
@@ -22,8 +22,8 @@ export class SensorMapper {
     return new GPSSensorData(value.dataId, sensor, new Date(Number(value.reportedAt) * 1000), coordinates);
   }
 
-  static dtoToModelHistory(dto: GPSSensorDataHistory): DeviceHistory {
-    const gpsData = dto.data.map(d => new SensorCoordinates(d.latitude, d.longitude));
-    return new DeviceHistory(dto.deviceName, dto.deviceId, Number(dto.startTime), Number(dto.endTime), gpsData)
+  static dtoToModelHistory(dto: HistorySensorDTO): DeviceHistory {
+    const gpsData = dto.history.data.map(d => new SensorCoordinates(d.latitude, d.longitude));
+    return new DeviceHistory(dto.history.deviceName, dto.history.deviceId, Number(dto.history.startTime), Number(dto.history.endTime), gpsData)
   }
 }

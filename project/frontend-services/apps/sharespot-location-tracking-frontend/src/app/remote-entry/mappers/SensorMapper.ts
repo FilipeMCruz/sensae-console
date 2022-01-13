@@ -19,7 +19,8 @@ export class SensorMapper {
     const coordinates = new SensorCoordinates(value.data.gps.latitude, value.data.gps.longitude);
     const entries = value.device.records.map(e => new RecordEntry(e.label, e.content));
     const sensor = new Device(value.device.id, value.device.name, entries);
-    return new GPSSensorData(value.dataId, sensor, new Date(Number(value.reportedAt) * 1000), coordinates);
+    console.log(value.reportedAt);
+    return new GPSSensorData(value.dataId, sensor, new Date(Number(value.reportedAt)), coordinates);
   }
 
   static dtoToModelHistory(dto: HistorySensorDTO): DeviceHistory {

@@ -10,6 +10,4 @@ fi
 
 cd "$ROOT_DIR"/project || exit
 
-docker compose down
-
-docker compose up -d --build
+docker-compose up -d --build

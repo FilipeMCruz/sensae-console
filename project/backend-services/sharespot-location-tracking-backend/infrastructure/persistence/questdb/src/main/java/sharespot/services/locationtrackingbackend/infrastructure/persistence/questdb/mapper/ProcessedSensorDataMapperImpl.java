@@ -22,7 +22,7 @@ public class ProcessedSensorDataMapperImpl {
         dao.dataId = in.dataId.toString();
         dao.deviceId = String.valueOf(in.device.id);
         dao.deviceName = String.valueOf(in.device.name);
-        dao.reportedAt = Timestamp.from(Instant.ofEpochSecond(in.reportedAt));
+        dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
         dao.gpsData = GeoHash.withCharacterPrecision(in.data.gps.latitude, in.data.gps.longitude, 12).toBase32();
         return dao;
     }

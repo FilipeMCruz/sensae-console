@@ -7,7 +7,7 @@
     <groupId>sharespot.services</groupId>
     <artifactId>sharespot-device-records-master-backend</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <modules>
         <module>infrastructure</module>
         <module>application</module>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.3.14</version>
+            <version>5.3.15</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

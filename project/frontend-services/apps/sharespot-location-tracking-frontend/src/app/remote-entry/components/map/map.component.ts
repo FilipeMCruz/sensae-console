@@ -156,6 +156,11 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   private drawPoint(sensor: GPSSensorData): void {
+    //TODO: remove once we have a way to deal with errors
+    if (!((sensor.coordinates.longitude > 0.5 || sensor.coordinates.longitude < -0.5) && (sensor.coordinates.latitude > 0.5 || sensor.coordinates.latitude < -0.5))) {
+      return;
+    }
+
     const found = this.points.find(point => point.isSameSensor(sensor));
     if (found === undefined) {
       const newPoint = new GPSPointData(sensor);

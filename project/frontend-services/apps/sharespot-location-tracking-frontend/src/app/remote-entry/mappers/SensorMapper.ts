@@ -23,7 +23,13 @@ export class SensorMapper {
   }
 
   static dtoToModelHistory(dto: HistorySensorDTO): DeviceHistory {
-    const gpsData = dto.history.data.map(d => new SensorCoordinates(d.latitude, d.longitude));
+    console.log(dto.history.data);
+    const gpsData = dto.history
+      .data
+      //TODO: remove once we have a way to deal with errors
+      .filter(d => (d.longitude > 0.5 || d.longitude < -0.5) && (d.latitude > 0.5 || d.latitude < -0.5))
+      .map(d => new SensorCoordinates(d.latitude, d.longitude));
+    console.log(gpsData);
     return new DeviceHistory(dto.history.deviceName, dto.history.deviceId, Number(dto.history.startTime), Number(dto.history.endTime), gpsData)
   }
 }

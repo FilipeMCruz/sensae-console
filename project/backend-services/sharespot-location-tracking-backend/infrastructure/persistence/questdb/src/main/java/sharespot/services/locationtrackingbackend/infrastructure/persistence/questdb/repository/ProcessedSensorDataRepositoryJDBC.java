@@ -14,9 +14,9 @@ import java.util.List;
 public interface ProcessedSensorDataRepositoryJDBC extends CrudRepository<ProcessedSensorDataDAOImpl, Long> {
 
     @Modifying
-    @Query(value = "INSERT INTO location_tracking_data VALUES ( :dataId, :deviceName, :deviceId, cast(:gpsData as geohash(12c)), :reportedAt, now());")
+    @Query(value = "INSERT INTO data VALUES ( :dataId, :deviceName, :deviceId, :gpsData, :reportedAt, now());")
     void insert(@Param("dataId") String dataId, @Param("deviceName") String deviceName, @Param("deviceId") String deviceId, @Param("gpsData") String gpsData, @Param("reportedAt") Timestamp reportedAt);
 
-    @Query(value = "SELECT * FROM location_tracking_data WHERE reported_at > :startTime AND reported_at < :endTime AND (device_name = :device OR device_id = :device)")
+    @Query(value = "SELECT * FROM data WHERE reported_at > :startTime AND reported_at < :endTime AND (device_name = :device OR device_id = :device)")
     List<ProcessedSensorDataDAOImpl> queryByDevice(@Param("device") String device, @Param("startTime") String startTime, @Param("endTime") String endTime);
 }

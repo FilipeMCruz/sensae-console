@@ -8,6 +8,9 @@ import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSenso
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Repository
 public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRepository {
 
@@ -30,5 +33,11 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     public GPSSensorDataHistory queryDevice(GPSSensorDataFilter filters) {
         var data = repository.queryByDevice(filters.device, filters.startTime.toString(), filters.endTime.toString());
         return mapper.daoToModel(filters, data);
+    }
+    
+    @Override
+    public List<ProcessedSensorDataWithRecordsDTO> lastDataOfEachDevice() {
+        var data = repository.latestDataOfEachDevice();
+        return data.stream().map(mapper::daoToDto).collect(Collectors.toList());
     }
 }

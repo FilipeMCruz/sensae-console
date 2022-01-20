@@ -30,23 +30,21 @@ public class GPSDataPublisher {
         dataPublisher.connect();
     }
 
-    public Publisher<SensorData> getGeneralPublisher() {
-        return dataPublisher.map(GPSDataMapper::transform);
+    public Flux<ProcessedSensorDataWithRecordsDTO> getGeneralPublisher() {
+        return dataPublisher;
     }
 
-    public Publisher<SensorData> getContentFilteredPublisher(String content) {
+    public Flux<ProcessedSensorDataWithRecordsDTO> getContentFilteredPublisher(String content) {
         return dataPublisher
                 .filter(gpsData -> gpsData.device.records.entry
                         .stream()
                         .map(e -> e.content)
-                        .anyMatch(e -> e.contains(content)))
-                .map(GPSDataMapper::transform);
+                        .anyMatch(e -> e.contains(content)));
     }
 
-    public Publisher<SensorData> getSinglePublisher(String id) {
+    public Flux<ProcessedSensorDataWithRecordsDTO> getSinglePublisher(String id) {
         return dataPublisher
-                .filter(gpsData -> gpsData.device.id.toString().equals(id) || gpsData.device.name.equals(id))
-                .map(GPSDataMapper::transform);
+                .filter(gpsData -> gpsData.device.id.toString().equals(id) || gpsData.device.name.equals(id));
 
     }
 

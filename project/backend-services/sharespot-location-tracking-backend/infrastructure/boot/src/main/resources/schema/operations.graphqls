@@ -6,4 +6,5 @@ type Subscription {
 
 type Query {
     history(filters: GPSSensorDataQuery) : GPSSensorDataHistory
+    latest: [GPSSensorData]
 }

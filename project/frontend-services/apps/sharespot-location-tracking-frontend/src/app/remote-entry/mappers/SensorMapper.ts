@@ -1,4 +1,10 @@
-import {FilteredByContentSensorDTO, FilteredSensorDTO, HistorySensorDTO, SensorDTO} from '../dtos/SensorDTO';
+import {
+  FilteredByContentSensorDTO,
+  FilteredSensorDTO, GPSSensorLatestData,
+  HistorySensorDTO,
+  SensorDataDTO,
+  SensorDTO
+} from '../dtos/SensorDTO';
 import {SensorCoordinates} from '../model/SensorCoordinates';
 import {GPSSensorData} from "../model/GPSSensorData";
 import {RecordEntry} from "../model/RecordEntry";
@@ -13,8 +19,10 @@ export class SensorMapper {
       value = dto.locations;
     } else if ("locationByContent" in dto) {
       value = dto.locationByContent;
-    } else {
+    } else if ("location" in dto){
       value = dto.location;
+    } else {
+      value = dto;
     }
     const coordinates = new SensorCoordinates(value.data.gps.latitude, value.data.gps.longitude);
     const entries = value.device.records.map(e => new RecordEntry(e.label, e.content));

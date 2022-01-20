@@ -11,6 +11,7 @@ import {GPSSensorDataQuery, SensorDTO} from "../../dtos/SensorDTO";
 import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByContent";
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
 import {DeviceHistory} from "../../model/DeviceHistory";
+import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
 
 @Component({
   selector: 'frontend-services-map',
@@ -38,11 +39,18 @@ export class MapComponent implements OnInit, OnDestroy {
   constructor(private locationEmitter: SubscribeToGPDDataByDevice,
               private locationByDeviceIdEmitter: SubscribeToAllGPSData,
               private locationByContentEmitter: SubscribeToGPSDataByContent,
-              private historyQuery: QueryGPSDeviceHistory) {
+              private historyQuery: QueryGPSDeviceHistory,
+              private latestDeviceData: QueryLatestGPSDeviceData) {
   }
 
   ngOnInit(): void {
     this.initializeMap();
+    this.latestDeviceData.getData().subscribe(
+      next => {
+        if (next.data && next.data.latest) next.data.latest.forEach(d => this.verifyAndDraw(d, "#a9d6e5"))
+      }
+    )
+    ;
     this.subscription = this.locationEmitter.getData().subscribe(
       next => this.verifyAndDraw(next.data)
     );
@@ -124,9 +132,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.removeSource('route');
   }
 
-  private verifyAndDraw(data: SensorDTO | null | undefined) {
+  private verifyAndDraw(data: SensorDTO | null | undefined, color?: string) {
     if (data !== undefined && data !== null) {
-      this.drawPoint(SensorMapper.dtoToModel(data));
+      this.drawPoint(SensorMapper.dtoToModel(data), color);
     }
   }
 
@@ -155,7 +163,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.on('load', () => this.map.resize());
   }
 
-  private drawPoint(sensor: GPSSensorData): void {
+  private drawPoint(sensor: GPSSensorData, color?: string): void {
     //TODO: remove once we have a way to deal with errors
     if (!((sensor.coordinates.longitude > 0.5 || sensor.coordinates.longitude < -0.5) && (sensor.coordinates.latitude > 0.5 || sensor.coordinates.latitude < -0.5))) {
       return;
@@ -163,7 +171,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const found = this.points.find(point => point.isSameSensor(sensor));
     if (found === undefined) {
-      const newPoint = new GPSPointData(sensor);
+      const newPoint = new GPSPointData(sensor, color);
       newPoint.point.addTo(this.map)
       this.points.push(newPoint)
     } else {

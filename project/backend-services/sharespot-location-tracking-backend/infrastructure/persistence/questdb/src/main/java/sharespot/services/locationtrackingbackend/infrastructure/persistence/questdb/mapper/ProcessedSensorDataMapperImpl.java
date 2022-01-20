@@ -3,6 +3,10 @@ package sharespot.services.locationtrackingbackend.infrastructure.persistence.qu
 import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import sharespot.services.locationtrackingbackend.domain.model.GPSDataDetails;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataFilter;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataHistory;
@@ -10,7 +14,9 @@ import sharespot.services.locationtrackingbackend.infrastructure.persistence.que
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +48,14 @@ public class ProcessedSensorDataMapperImpl {
             }).collect(Collectors.toList());
         }
         return history;
+    }
+
+    public ProcessedSensorDataWithRecordsDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
+        var dataId = UUID.fromString(dao.dataId);
+        var device = new DeviceInformationWithRecordsDTO(UUID.fromString(dao.deviceId), dao.deviceName, new DeviceRecordDTO(new HashSet<>()));
+        var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
+        var gpsDataDTO = new GPSDataDTO(originatingPoint.getLatitude(), originatingPoint.getLongitude());
+        var details = new SensorDataDetailsDTO().withGps(gpsDataDTO);
+        return new ProcessedSensorDataWithRecordsDTO(dataId, device, dao.reportedAt.getTime(), details);
     }
 }

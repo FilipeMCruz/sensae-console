@@ -54,3 +54,7 @@ export interface GPSSensorDataHistory {
   endTime: string;
   data: Array<SensorDataDetailsDTO>;
 }
+
+export interface GPSSensorLatestData {
+  latest: Array<SensorDTO>;
+}

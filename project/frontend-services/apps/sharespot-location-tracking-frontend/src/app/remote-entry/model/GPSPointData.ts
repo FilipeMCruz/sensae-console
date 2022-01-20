@@ -7,11 +7,11 @@ export class GPSPointData {
 
   public point: mapboxgl.Marker;
 
-  constructor(value: GPSSensorData) {
+  constructor(value: GPSSensorData, color?: string) {
     this.value = value;
     this.point = new mapboxgl.Marker({
       draggable: false,
-      color: '#012A4A'
+      color: color ? color : '#012A4A'
     });
     this.setPopup().setCoordinates();
   }

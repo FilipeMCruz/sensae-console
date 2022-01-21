@@ -1,5 +1,6 @@
 import {SensorCoordinates} from "./SensorCoordinates";
 import {GeoJSONSourceRaw, LineLayer} from "mapbox-gl";
+import {Feature} from "@turf/helpers";
 
 export class DeviceHistory {
   constructor(public deviceName: string, public deviceId: string, public startTime: number, public endTime: number, public gpsData: Array<SensorCoordinates>) {
@@ -32,6 +33,18 @@ export class DeviceHistory {
           0.8, '#013a63',
           1, '#012A4A'
         ]
+      }
+    }
+  }
+
+  public asLineString(): Feature<any> {
+    const coordinates = this.gpsData.map(d => [d.longitude, d.latitude]);
+    return {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'LineString',
+        coordinates
       }
     }
   }

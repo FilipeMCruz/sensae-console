@@ -12,6 +12,7 @@ import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByCo
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
 import {DeviceHistory} from "../../model/DeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
+import length from "@turf/length";
 
 @Component({
   selector: 'frontend-services-map',
@@ -30,7 +31,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
-  private history!: DeviceHistory;
+  private history?: DeviceHistory;
 
   private followContent = "";
 
@@ -68,13 +69,10 @@ export class MapComponent implements OnInit, OnDestroy {
     this.historyQuery.getData(filters).subscribe(
       next => {
         if (next.data != undefined) {
-          if (this.history != undefined) {
-            this.map.removeLayer('route');
-            this.map.removeSource('route');
-          }
+          this.cleanHistory();
           this.history = SensorMapper.dtoToModelHistory(next.data);
-          this.map.addSource('route', this.history.asGeoJSON());
-          this.map.addLayer(DeviceHistory.buildLayer('route'));
+          this.addHistory();
+          this.calculateDistance();
         }
       }
     )
@@ -128,8 +126,44 @@ export class MapComponent implements OnInit, OnDestroy {
     );
   }
 
+  addHistory() {
+    if (this.history == undefined) return;
+    this.map.addSource('route', this.history.asGeoJSON());
+    this.map.addLayer(DeviceHistory.buildLayer('route'));
+  }
+
   cleanHistory() {
+    if (this.history == undefined) return;
+    this.map.removeLayer('route');
     this.map.removeSource('route');
+  }
+
+  buildMap(): void {
+    this.map = new mapboxgl.Map({
+      container: 'map',
+      style: environment.mapbox.style,
+      zoom: 8,
+      center: [this.lng, this.lat]
+    });
+    this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.on('load', () => this.map.resize());
+  }
+
+  private calculateDistance() {
+    const popup = new mapboxgl.Popup({maxWidth: 'none'});
+    if (this.history == undefined) return;
+    const distance = +length(this.history.asLineString(), {units: "kilometers"}).toFixed(2);
+    this.map.on('click', 'route', (e) => {
+      popup.setLngLat(e.lngLat)
+        .setHTML("<strong>Distance Travelled:</strong> " + distance + " kilometers.")
+        .addTo(this.map);
+    });
+    this.map.on('mouseenter', 'route', () => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+    this.map.on('mouseleave', 'route', () => {
+      this.map.getCanvas().style.cursor = '';
+    });
   }
 
   private verifyAndDraw(data: SensorDTO | null | undefined, color?: string) {
@@ -150,17 +184,6 @@ export class MapComponent implements OnInit, OnDestroy {
       });
     }
     this.buildMap();
-  }
-
-  buildMap(): void {
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: environment.mapbox.style,
-      zoom: 8,
-      center: [this.lng, this.lat]
-    });
-    this.map.addControl(new mapboxgl.NavigationControl());
-    this.map.on('load', () => this.map.resize());
   }
 
   private drawPoint(sensor: GPSSensorData, color?: string): void {

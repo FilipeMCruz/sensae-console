@@ -126,6 +126,11 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
+        '@turf/length': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: '0',
+        },
         ...sharedMappings.getDescriptors(),
       }),
     }),

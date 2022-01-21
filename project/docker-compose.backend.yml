@@ -138,7 +138,7 @@ services:
       - 9000:9000
       - 9003:9003
     volumes:
-      - ./databases-data/dev/questdb:/root/.questdb/
+      - ./databases-data/prod/questdb:/root/.questdb/
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database
@@ -149,7 +149,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./databases-data/dev/sharespot-data-store-database:/data/db
+      - ./databases-data/prod/sharespot-data-store-database:/data/db
       - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
   sharespot-network: {}

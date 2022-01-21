@@ -3,9 +3,9 @@ export enum PropertyName {
   DEVICE_ID = "Device ID",
   DEVICE_NAME = "Device Name",
   DEVICE_RECORDS = "Device Records",
-  REPORTED_AT = "Reported At",
+  REPORTED_AT = "Reported At (in milis)",
   LATITUDE = "GPS - Latitude",
   LONGITUDE = "GPS - Longitude",
-  TEMPERATURE = "Temperature",
+  TEMPERATURE = "Temperature (in celsius)",
   INVALID = "Invalid"
 }

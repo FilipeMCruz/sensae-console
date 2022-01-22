@@ -7,17 +7,12 @@ import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
-import sharespot.services.locationtrackingbackend.domain.model.GPSDataDetails;
-import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataFilter;
-import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataHistory;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ProcessedSensorDataMapperImpl {
@@ -31,23 +26,6 @@ public class ProcessedSensorDataMapperImpl {
         dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
         dao.gpsData = GeoHash.withCharacterPrecision(in.data.gps.latitude, in.data.gps.longitude, 12).toBase32();
         return dao;
-    }
-
-    public GPSSensorDataHistory daoToModel(GPSSensorDataFilter filters, List<ProcessedSensorDataDAOImpl> dto) {
-        var history = new GPSSensorDataHistory();
-        history.deviceId = filters.device;
-        history.deviceName = filters.device;
-        history.startTime = filters.startTime.getTime();
-        history.endTime = filters.endTime.getTime();
-        if (dto.size() != 0) {
-            history.deviceId = dto.get(0).deviceId;
-            history.deviceName = dto.get(0).deviceName;
-            history.data = dto.stream().map(data -> {
-                var originatingPoint = GeoHash.fromGeohashString(data.gpsData).getOriginatingPoint();
-                return new GPSDataDetails(originatingPoint.getLatitude(), originatingPoint.getLongitude());
-            }).collect(Collectors.toList());
-        }
-        return history;
     }
 
     public ProcessedSensorDataWithRecordsDTO daoToDto(ProcessedSensorDataDAOImpl dao) {

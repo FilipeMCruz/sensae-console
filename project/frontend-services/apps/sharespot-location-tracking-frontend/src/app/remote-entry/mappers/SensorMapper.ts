@@ -41,6 +41,11 @@ export class SensorMapper {
       //TODO: remove once we have a way to deal with errors
       .filter(d => (d.longitude > 0.5 || d.longitude < -0.5) && (d.latitude > 0.5 || d.latitude < -0.5))
       .map(d => new DeviceCoordinates(d.latitude, d.longitude));
-    return new DeviceHistory(dto.history.deviceName, dto.history.deviceId, Number(dto.history.startTime), Number(dto.history.endTime), gpsData)
+    return new DeviceHistory(dto.history.deviceName,
+      dto.history.deviceId,
+      Number(dto.history.startTime),
+      Number(dto.history.endTime),
+      +dto.history.distance.toFixed(2),
+      gpsData);
   }
 }

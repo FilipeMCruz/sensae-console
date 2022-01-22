@@ -3,12 +3,18 @@ package sharespot.services.locationtrackingbackend.application;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Haversine {
     private static final double R = 6372.8; // In kilometers
 
     public static boolean isMoving(ProcessedSensorDataWithRecordsDTO center, List<ProcessedSensorDataWithRecordsDTO> gpsData, Double distanceInKm) {
         return gpsData.stream().anyMatch(point -> calcHaversine(point, center) > distanceInKm);
+    }
+
+    public static double calcDistance(List<ProcessedSensorDataWithRecordsDTO> gpsData) {
+        if (gpsData.size() < 2) return 0;
+        return IntStream.range(1, gpsData.size()).mapToDouble(i -> calcHaversine(gpsData.get(i - 1), gpsData.get(i))).sum();
     }
 
     public static double calcHaversine(ProcessedSensorDataWithRecordsDTO first, ProcessedSensorDataWithRecordsDTO second) {

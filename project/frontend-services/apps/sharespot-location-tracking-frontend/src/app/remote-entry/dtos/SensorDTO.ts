@@ -57,6 +57,7 @@ export interface GPSSensorDataHistory {
   deviceName: string;
   startTime: string;
   endTime: string;
+  distance: number;
   data: Array<GPSDataDetailsDTO>;
 }
 

@@ -12,7 +12,6 @@ import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByCo
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
 import {DeviceHistory} from "../../model/DeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
-import length from "@turf/length";
 
 @Component({
   selector: 'frontend-services-map',
@@ -152,7 +151,7 @@ export class MapComponent implements OnInit, OnDestroy {
   private calculateDistance() {
     const popup = new mapboxgl.Popup({maxWidth: 'none'});
     if (this.history == undefined) return;
-    const distance = +length(this.history.asLineString(), {units: "kilometers"}).toFixed(2);
+    const distance = this.history.distance;
     this.map.on('click', 'route', (e) => {
       popup.setLngLat(e.lngLat)
         .setHTML("<strong>Distance Travelled:</strong> " + distance + " kilometers.")

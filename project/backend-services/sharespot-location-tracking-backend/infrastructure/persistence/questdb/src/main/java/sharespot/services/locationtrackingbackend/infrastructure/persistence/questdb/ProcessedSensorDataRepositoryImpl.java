@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import sharespot.services.locationtrackingbackend.domain.ProcessedSensorDataRepository;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataFilter;
-import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataHistory;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 
@@ -30,9 +29,9 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     }
 
     @Override
-    public GPSSensorDataHistory queryDevice(GPSSensorDataFilter filters) {
+    public List<ProcessedSensorDataWithRecordsDTO> queryDevice2(GPSSensorDataFilter filters) {
         var data = repository.queryByDevice(filters.device, filters.startTime.toString(), filters.endTime.toString());
-        return mapper.daoToModel(filters, data);
+        return data.stream().map(mapper::daoToDto).collect(Collectors.toList());
     }
 
     @Override

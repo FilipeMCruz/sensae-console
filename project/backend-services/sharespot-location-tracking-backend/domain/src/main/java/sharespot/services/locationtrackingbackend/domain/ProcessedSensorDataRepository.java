@@ -11,7 +11,7 @@ public interface ProcessedSensorDataRepository {
 
     void insert(ProcessedSensorDataWithRecordsDTO dao);
 
-    GPSSensorDataHistory queryDevice(GPSSensorDataFilter filters);
+    List<ProcessedSensorDataWithRecordsDTO> queryDevice2(GPSSensorDataFilter filters);
     
     List<ProcessedSensorDataWithRecordsDTO> lastDataOfEachDevice();
 

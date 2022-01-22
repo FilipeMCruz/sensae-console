@@ -20,6 +20,7 @@ export class QueryGPSDeviceHistory {
           deviceName
           startTime
           endTime
+          distance
           data{
             longitude
             latitude

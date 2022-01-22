@@ -12,6 +12,7 @@ public class GPSSensorDataHistory {
     public List<GPSDataDetails> data;
     public Long startTime;
     public Long endTime;
+    public Double distance;
 
     public GPSSensorDataHistory() {
         data = new ArrayList<>();

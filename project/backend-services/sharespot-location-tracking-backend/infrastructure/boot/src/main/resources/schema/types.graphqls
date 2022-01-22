@@ -41,5 +41,6 @@ type GPSSensorDataHistory {
     deviceName: String
     startTime : String
     endTime : String
+    distance : Float
     data : [GPSSensorDetails]
 }

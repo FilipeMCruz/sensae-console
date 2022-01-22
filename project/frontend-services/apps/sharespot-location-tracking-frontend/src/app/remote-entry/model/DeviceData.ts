@@ -1,8 +1,8 @@
-import {SensorCoordinates} from "./SensorCoordinates";
 import {Device} from "./Device";
+import {DeviceDataDetails} from "./DeviceDataDetails";
 
-export class GPSSensorData {
-  constructor(public dataId: string, public device: Device, public reportedAt: Date, public coordinates: SensorCoordinates) {
+export class DeviceData {
+  constructor(public dataId: string, public device: Device, public reportedAt: Date, public data: DeviceDataDetails) {
   }
 
   generatePopupText(): string {

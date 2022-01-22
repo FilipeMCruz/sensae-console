@@ -34,10 +34,19 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
         var data = repository.queryByDevice(filters.device, filters.startTime.toString(), filters.endTime.toString());
         return mapper.daoToModel(filters, data);
     }
-    
+
     @Override
     public List<ProcessedSensorDataWithRecordsDTO> lastDataOfEachDevice() {
         var data = repository.latestDataOfEachDevice();
         return data.stream().map(mapper::daoToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProcessedSensorDataWithRecordsDTO> queryPastData(ProcessedSensorDataWithRecordsDTO dao, Integer timeSpanMinutes) {
+        var data = mapper.dtoToDao(dao);
+        return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt, timeSpanMinutes)
+                .stream()
+                .map(mapper::daoToDto)
+                .collect(Collectors.toList());
     }
 }

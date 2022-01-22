@@ -31,6 +31,9 @@ export class SubscribeToGPDDataByDevice {
               longitude
               latitude
             }
+            status{
+              motion
+            }
           }
         }
       }

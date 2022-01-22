@@ -31,6 +31,9 @@ export class QueryLatestGPSDeviceData {
               longitude
               latitude
             }
+            status{
+              motion
+            }
           }
         }
       }

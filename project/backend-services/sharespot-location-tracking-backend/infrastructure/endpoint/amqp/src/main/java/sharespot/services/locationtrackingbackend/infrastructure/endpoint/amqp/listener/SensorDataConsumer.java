@@ -6,6 +6,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import sharespot.services.locationtrackingbackend.application.GPSDataArchiver;
 import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
 
 @Component
@@ -15,9 +16,9 @@ public class SensorDataConsumer {
 
     public static final String INGRESS_QUEUE = "Sharespot Location Tracking Queue";
 
-    private final GPSDataPublisher handler;
+    private final GPSDataArchiver handler;
 
-    public SensorDataConsumer(GPSDataPublisher handler) {
+    public SensorDataConsumer(GPSDataArchiver handler) {
         this.handler = handler;
     }
 
@@ -25,7 +26,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
         try {
             logConsumedMessage(in);
-            handler.publish(in.data);
+            handler.save(in.data);
         } catch (Exception ignore) {
         }
     }

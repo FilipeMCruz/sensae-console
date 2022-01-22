@@ -19,6 +19,9 @@ public interface ProcessedSensorDataRepositoryJDBC extends CrudRepository<Proces
 
     @Query(value = "SELECT * FROM data WHERE reported_at > :startTime AND reported_at < :endTime AND (device_name = :device OR device_id = :device)")
     List<ProcessedSensorDataDAOImpl> queryByDevice(@Param("device") String device, @Param("startTime") String startTime, @Param("endTime") String endTime);
+
+    @Query(value = "SELECT * FROM data WHERE datediff('m', reported_at, :reportedAt) < :time_span AND device_id = :deviceId;")
+    List<ProcessedSensorDataDAOImpl> latestDeviceDataInTime(@Param("deviceId") String deviceId, @Param("reportedAt") Timestamp reportedAt, @Param("time_span") Integer timeSpanMinutes);
     
     @Query(value = "SELECT * FROM data LATEST BY device_id;")
     List<ProcessedSensorDataDAOImpl> latestDataOfEachDevice();

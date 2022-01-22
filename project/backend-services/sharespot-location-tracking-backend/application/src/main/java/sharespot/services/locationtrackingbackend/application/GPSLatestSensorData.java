@@ -1,10 +1,11 @@
 package sharespot.services.locationtrackingbackend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import sharespot.services.locationtrackingbackend.domain.ProcessedSensorDataRepository;
+import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GPSLatestSensorData {
@@ -15,7 +16,10 @@ public class GPSLatestSensorData {
         this.repository = repository;
     }
 
-    public List<ProcessedSensorDataWithRecordsDTO> latest() {
-        return repository.lastDataOfEachDevice();
+    public List<SensorData> latest() {
+        return repository.lastDataOfEachDevice()
+                .stream()
+                .map(GPSDataMapper::transform)
+                .collect(Collectors.toList());
     }
 }

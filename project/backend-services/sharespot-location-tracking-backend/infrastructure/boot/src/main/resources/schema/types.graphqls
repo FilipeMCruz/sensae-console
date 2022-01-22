@@ -18,11 +18,16 @@ type RecordEntry {
 
 type SensorDataDetails {
     gps : GPSSensorDetails
+    status : StatusSensorDetails
 }
 
 type GPSSensorDetails {
     longitude : Float
     latitude : Float
+}
+
+type StatusSensorDetails {
+    motion: String
 }
 
 input GPSSensorDataQuery {

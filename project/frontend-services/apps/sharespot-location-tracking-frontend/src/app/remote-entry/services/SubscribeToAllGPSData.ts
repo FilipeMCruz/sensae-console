@@ -31,6 +31,9 @@ export class SubscribeToAllGPSData {
               longitude
               latitude
             }
+            status{
+              motion
+            }
           }
         }
       }

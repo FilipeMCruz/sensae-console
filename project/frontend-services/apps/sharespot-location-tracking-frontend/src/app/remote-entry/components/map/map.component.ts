@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {GPSSensorData} from "../../model/GPSSensorData";
+import {DeviceData} from "../../model/DeviceData";
 import {GPSPointData} from "../../model/GPSPointData";
 import {Subscription} from "rxjs";
 import {SubscribeToGPDDataByDevice} from "../../services/SubscribeToGPDDataByDevice";
@@ -186,19 +186,31 @@ export class MapComponent implements OnInit, OnDestroy {
     this.buildMap();
   }
 
-  private drawPoint(sensor: GPSSensorData, color?: string): void {
+  private drawPoint(sensor: DeviceData, color?: string): void {
     //TODO: remove once we have a way to deal with errors
-    if (!((sensor.coordinates.longitude > 0.5 || sensor.coordinates.longitude < -0.5) && (sensor.coordinates.latitude > 0.5 || sensor.coordinates.latitude < -0.5))) {
+    if (!((sensor.data.gps.longitude > 0.5 || sensor.data.gps.longitude < -0.5) && (sensor.data.gps.latitude > 0.5 || sensor.data.gps.latitude < -0.5))) {
       return;
     }
 
     const found = this.points.find(point => point.isSameSensor(sensor));
     if (found === undefined) {
       const newPoint = new GPSPointData(sensor, color);
-      newPoint.point.addTo(this.map)
-      this.points.push(newPoint)
+      newPoint.point.addTo(this.map);
+      this.points.push(newPoint);
     } else {
-      found.updateGPSData(sensor)
+      if (found.willChangeColor(sensor)) {
+        this.points.forEach((sensor, index, array) => {
+          if (found.isSameSensor(sensor.value)) {
+            sensor.point.remove();
+            array.splice(index, 1);
+          }
+        });
+        const newPoint = new GPSPointData(sensor, color);
+        newPoint.point.addTo(this.map);
+        this.points.push(newPoint);
+      } else {
+        found.updateGPSData(sensor)
+      }
     }
   }
 

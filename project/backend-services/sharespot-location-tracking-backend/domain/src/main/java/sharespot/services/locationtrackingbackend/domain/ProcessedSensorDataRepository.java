@@ -14,5 +14,6 @@ public interface ProcessedSensorDataRepository {
     GPSSensorDataHistory queryDevice(GPSSensorDataFilter filters);
     
     List<ProcessedSensorDataWithRecordsDTO> lastDataOfEachDevice();
-    
+
+    List<ProcessedSensorDataWithRecordsDTO> queryPastData(ProcessedSensorDataWithRecordsDTO dao, Integer timeSpanInMinutes);
 }

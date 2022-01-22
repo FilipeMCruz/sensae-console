@@ -1,9 +1,9 @@
-import {SensorCoordinates} from "./SensorCoordinates";
+import {DeviceCoordinates} from "./DeviceCoordinates";
 import {GeoJSONSourceRaw, LineLayer} from "mapbox-gl";
 import {Feature} from "@turf/helpers";
 
 export class DeviceHistory {
-  constructor(public deviceName: string, public deviceId: string, public startTime: number, public endTime: number, public gpsData: Array<SensorCoordinates>) {
+  constructor(public deviceName: string, public deviceId: string, public startTime: number, public endTime: number, public gpsData: Array<DeviceCoordinates>) {
   }
 
   static buildLayer(id: string): LineLayer {

@@ -18,7 +18,7 @@ export interface SensorDataDTO {
   dataId: string;
   device: DeviceDTO;
   reportedAt: string;
-  data: GPSDataDetailsDTO;
+  data: SensorSataDetailsDTO;
 }
 
 export interface DeviceDTO {
@@ -27,13 +27,18 @@ export interface DeviceDTO {
   records: Array<RecordEntryDTO>;
 }
 
-export interface SensorDataDetailsDTO {
+export interface GPSDataDetailsDTO {
   latitude: number;
   longitude: number;
 }
 
-export interface GPSDataDetailsDTO {
-  gps: SensorDataDetailsDTO;
+export interface StatusDataDetailsDTO {
+  motion: string;
+}
+
+export interface SensorSataDetailsDTO {
+  gps: GPSDataDetailsDTO;
+  status: StatusDataDetailsDTO;
 }
 
 export interface RecordEntryDTO {
@@ -52,7 +57,7 @@ export interface GPSSensorDataHistory {
   deviceName: string;
   startTime: string;
   endTime: string;
-  data: Array<SensorDataDetailsDTO>;
+  data: Array<GPSDataDetailsDTO>;
 }
 
 export interface GPSSensorLatestData {

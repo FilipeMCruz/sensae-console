@@ -19,6 +19,6 @@ public class ContentFilteredGPSSensorDataChangesSubscription {
 
     @DgsSubscription
     public Publisher<SensorData> locationByContent(@InputArgument("content") String content) {
-        return publisher.getContentFilteredPublisher(content).map(GPSDataMapper::transform);
+        return publisher.getContentFilteredPublisher(content);
     }
 }

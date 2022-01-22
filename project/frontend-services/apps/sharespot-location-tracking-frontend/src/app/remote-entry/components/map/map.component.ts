@@ -187,7 +187,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private drawPoint(sensor: DeviceData, color?: string): void {
     //TODO: remove once we have a way to deal with errors
-    if (!((sensor.data.gps.longitude > 0.5 || sensor.data.gps.longitude < -0.5) && (sensor.data.gps.latitude > 0.5 || sensor.data.gps.latitude < -0.5))) {
+    if (sensor.data.gps.longitude < 2 && sensor.data.gps.longitude > -2 && sensor.data.gps.latitude < 2 && sensor.data.gps.latitude > -2) {
       return;
     }
 

@@ -39,7 +39,7 @@ export class SensorMapper {
     const gpsData = dto.history
       .data
       //TODO: remove once we have a way to deal with errors
-      .filter(d => (d.longitude > 0.5 || d.longitude < -0.5) && (d.latitude > 0.5 || d.latitude < -0.5))
+      .filter(d => d.longitude < 2 && d.longitude > -2 && d.latitude < 2 && d.latitude > -2)
       .map(d => new DeviceCoordinates(d.latitude, d.longitude));
     return new DeviceHistory(dto.history.deviceName,
       dto.history.deviceId,

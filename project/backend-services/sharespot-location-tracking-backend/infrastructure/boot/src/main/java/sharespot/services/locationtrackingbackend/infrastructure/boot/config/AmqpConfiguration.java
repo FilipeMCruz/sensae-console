@@ -7,10 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.GPSDataOptions;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.*;
 import sharespot.services.locationtrackingbackend.application.RoutingKeysProvider;
 
 import static sharespot.services.locationtrackingbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
@@ -44,13 +41,14 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var lgt92 = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
+                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .missingAsAny();
-        if (lgt92.isPresent()) {
-            return BindingBuilder.bind(queue).to(topic).with(lgt92.get().toString());
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

@@ -1,4 +1,4 @@
-package sharespot.services.devicerecordsbackend.infrastructure.boot.config;
+package sharespot.services.datavalidator.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -8,23 +8,24 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.routing.keys.GPSDataOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import sharespot.services.devicerecordsbackend.application.RoutingKeysProvider;
+import sharespot.services.datavalidator.application.RoutingKeysProvider;
 
-import static sharespot.services.devicerecordsbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
-import static sharespot.services.devicerecordsbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
+import static sharespot.services.datavalidator.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
+import static sharespot.services.datavalidator.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String MASTER_EXCHANGE = "Sharespot Device Records Master Exchange";
-    public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
-
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
-    public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
+
+    public static final String MASTER_EXCHANGE = "Sharespot Data Processor Master Exchange";
+
+    public static final String MASTER_QUEUE = "Sharespot Data Processor Master Exchange -> Sharespot Data Processor Slave Queue";
 
     private final RoutingKeysProvider provider;
 
@@ -65,13 +66,13 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+        var decoded = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+                .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .missingAsAny();
-        if (keys.isPresent()) {
-            return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
+        if (decoded.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(decoded.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

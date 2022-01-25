@@ -10,15 +10,23 @@
   width: 100%;
 }
 
-.cards {
-  position: absolute;
-  width: 15%;
-  min-width: 250px;
-  min-height: 60%;
-  left: 2%;
-  top: 10%;
-}
 .additional-selection {
   opacity: 0.75;
   font-size: 0.75em;
+}
+
+.toggle {
+  margin-top: 10px;
+  height: 34px;
+  align-items: center;
+}
+
+.toggle-item {
+  width: 80px;
+}
+
+.select-all {
+  height: 30px;
+  align-items: center;
+  margin: 5px 17px;
 }

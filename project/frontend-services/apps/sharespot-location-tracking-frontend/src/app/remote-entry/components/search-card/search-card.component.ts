@@ -18,13 +18,17 @@ export class SearchCardComponent {
   @Output() historyCleaned = new EventEmitter<null>();
   @Input() devices: Array<Device> = [];
 
-  selectedDevices = new FormControl();
+  selectedDevices = new FormControl([]);
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
 
   searchContent = "";
+  queryType = "devices";
+  dateQueryType = "liveData";
+  allSelected = false;
+  panelOpenState = true;
 
   onContentClick() {
     if (this.searchContent.trim().length > 0) {
@@ -94,6 +98,53 @@ export class SearchCardComponent {
         return this.range.valid;
       }
     }
-    return false
+    return false;
+  }
+
+  clearDevices() {
+    this.selectedDevices.setValue([]);
+  }
+
+  selectAllDevices() {
+    this.selectedDevices.setValue(this.devices);
+  }
+
+  toggleAllSelection() {
+    if (this.allSelected) {
+      this.selectedDevices.setValue(this.devices);
+    } else {
+      this.selectedDevices.setValue([]);
+    }
+  }
+
+  valid() {
+    if (this.queryType === "devices" && this.selectedDevices.value.length === 0) {
+      return false;
+    }
+    if (this.queryType === "content" && this.searchContent.trim().length === 0) {
+      return false;
+    }
+    if (this.dateQueryType === "pastData" && (!this.range.value.start || !this.range.value.end || this.range.value.start > this.range.value.end)) {
+      return false;
+    }
+    if (this.dateQueryType === "pastData" && this.queryType === "content") {
+      return false; //Currently not supported
+    }
+    return true;
+  }
+
+  applyFilter() {
+    if (this.dateQueryType === "pastData" && this.queryType === "devices") {
+      this.onHistoryClick();
+      return;
+    }
+    if (this.dateQueryType === "liveData" && this.queryType === "devices") {
+      this.onDeviceClick();
+      return;
+    }
+    if (this.dateQueryType === "liveData" && this.queryType === "content") {
+      this.onContentClick();
+      return;
+    }
   }
 }

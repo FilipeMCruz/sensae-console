@@ -54,8 +54,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.devices = next.data.latest.map(d => DeviceMapper.dtoToModel(d.device));
         }
       }
-    )
-    ;
+    );
     this.subscription = this.locationEmitter.getData().subscribe(
       next => {
         if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations)

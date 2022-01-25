@@ -17,6 +17,12 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import {MatDividerModule} from "@angular/material/divider";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatTabsModule} from "@angular/material/tabs";
+import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -26,20 +32,26 @@ import {MatSelectModule} from "@angular/material/select";
     SearchCardComponent
   ],
   imports: [
+    MatSlideToggleModule,
+    MatDividerModule,
     MatTooltipModule,
     MatSelectModule,
     MatSidenavModule,
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCheckboxModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
     FormsModule,
+    MatExpansionModule,
     MatInputModule,
     MatButtonModule,
     HttpClientModule,
     CommonModule,
+    MatTabsModule,
+    MatButtonToggleModule,
     RouterModule.forChild([
       {
         path: '',

@@ -211,6 +211,15 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
+  sharespot-data-validator-backend:
+    build: backend-services/sharespot-data-validator-backend
+    image: sharespot-data-validator-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-validator-backend.env
+    networks:
+      - sharespot-network
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database

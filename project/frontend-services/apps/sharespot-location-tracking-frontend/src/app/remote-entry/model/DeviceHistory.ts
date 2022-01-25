@@ -14,7 +14,7 @@ export class DeviceHistory {
     return {
       id: id,
       type: 'line',
-      source: 'route',
+      source: id,
       layout: {
         'line-join': 'round',
         'line-cap': 'round'

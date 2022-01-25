@@ -9,6 +9,8 @@ import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashSet;
@@ -35,5 +37,16 @@ public class ProcessedSensorDataMapperImpl {
         var gpsDataDTO = new GPSDataDTO(originatingPoint.getLatitude(), originatingPoint.getLongitude());
         var details = new SensorDataDetailsDTO().withGps(gpsDataDTO);
         return new ProcessedSensorDataWithRecordsDTO(dataId, device, dao.reportedAt.getTime(), details);
+    }
+
+    public ProcessedSensorDataDAOImpl toSensorData(ResultSet resultSet) throws SQLException {
+        ProcessedSensorDataDAOImpl dataDAO = new ProcessedSensorDataDAOImpl();
+        dataDAO.gpsData = resultSet.getString("gps_data");
+        dataDAO.dataId = resultSet.getString("data_id");
+        dataDAO.deviceId = resultSet.getString("device_id");
+        dataDAO.deviceName = resultSet.getString("device_name");
+        dataDAO.reportedAt = resultSet.getTimestamp("reported_at");
+        dataDAO.ts = resultSet.getTimestamp("ts");
+        return dataDAO;
     }
 }

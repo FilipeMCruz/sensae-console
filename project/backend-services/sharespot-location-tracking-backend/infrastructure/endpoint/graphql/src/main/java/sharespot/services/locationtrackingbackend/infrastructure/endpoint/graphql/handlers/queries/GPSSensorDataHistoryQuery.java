@@ -8,6 +8,8 @@ import sharespot.services.locationtrackingbackend.application.GPSDataCollector;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataHistory;
 import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSensorDataQuery;
 
+import java.util.List;
+
 @DgsComponent
 public class GPSSensorDataHistoryQuery {
 
@@ -18,7 +20,7 @@ public class GPSSensorDataHistoryQuery {
     }
 
     @DgsQuery
-    public GPSSensorDataHistory history(@InputArgument("filters") GPSSensorDataQuery query) {
+    public List<GPSSensorDataHistory> history(@InputArgument("filters") GPSSensorDataQuery query) {
         return collector.history(query.toFilter());
     }
 }

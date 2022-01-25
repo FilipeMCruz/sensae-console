@@ -8,6 +8,7 @@ import sharespot.services.locationtrackingbackend.domain.model.livedata.RecordEn
 import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 public class GPSDataPublisher {
@@ -35,9 +36,9 @@ public class GPSDataPublisher {
                         .anyMatch(e -> e.contains(content)));
     }
 
-    public Flux<SensorData> getSinglePublisher(String id) {
+    public Flux<SensorData> getSinglePublisher(List<String> ids) {
         return dataPublisher
-                .filter(gpsData -> gpsData.device().id().toString().equals(id) || gpsData.device().name().equals(id));
+                .filter(gpsData -> ids.contains(gpsData.device().id().toString()));
     }
 
     public void publish(SensorData data) {

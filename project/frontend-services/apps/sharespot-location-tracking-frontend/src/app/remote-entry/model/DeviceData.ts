@@ -5,6 +5,10 @@ export class DeviceData {
   constructor(public dataId: string, public device: Device, public reportedAt: Date, public data: DeviceDataDetails) {
   }
 
+  isAny(devices: Array<Device>): boolean {
+    return devices.some(d => d.has(this.device.id));
+  }
+
   generatePopupText(): string {
     return "<strong>Device Name:</strong> " + this.device.name +
       "<br><strong>Device Id:</strong> " + this.device.id +

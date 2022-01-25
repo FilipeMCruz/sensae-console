@@ -32,4 +32,4 @@ services:
       - 9000:9000
       - 9003:9003
     volumes:
-      - ./databases-data/dev/questdb:/root/.questdb/
+      - ./databases-data/prod/questdb:/root/.questdb/

@@ -31,7 +31,7 @@ type StatusSensorDetails {
 }
 
 input GPSSensorDataQuery {
-    device: String
+    device: [String]
     startTime : String
     endTime : String
 }

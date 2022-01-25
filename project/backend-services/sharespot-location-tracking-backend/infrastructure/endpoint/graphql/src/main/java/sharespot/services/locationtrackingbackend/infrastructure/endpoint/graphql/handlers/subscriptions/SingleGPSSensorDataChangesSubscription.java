@@ -7,6 +7,8 @@ import org.reactivestreams.Publisher;
 import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
 import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 
+import java.util.List;
+
 @DgsComponent
 public class SingleGPSSensorDataChangesSubscription {
 
@@ -17,7 +19,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> location(@InputArgument("device") String id) {
-        return publisher.getSinglePublisher(id);
+    public Publisher<SensorData> location(@InputArgument("devices") List<String> ids) {
+        return publisher.getSinglePublisher(ids);
     }
 }

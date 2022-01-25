@@ -6,8 +6,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.sql.Timestamp;
 
-//TODO anotacoes s�o desnecess�rias, tentar usa-las
-@Table("sensor_gps_data")
+@Table("data")
 public class ProcessedSensorDataDAOImpl {
 
     @Id

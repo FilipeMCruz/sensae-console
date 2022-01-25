@@ -1,4 +1,4 @@
-import {FilteredByContentSensorDTO, FilteredSensorDTO, HistorySensorDTO, SensorDTO} from '../dtos/SensorDTO';
+import {HistorySensorDTO, SensorDataDTO} from '../dtos/SensorDTO';
 import {DeviceCoordinates} from '../model/DeviceCoordinates';
 import {DeviceData} from "../model/DeviceData";
 import {RecordEntry} from "../model/RecordEntry";
@@ -9,17 +9,7 @@ import {DeviceDataDetails} from "../model/DeviceDataDetails";
 
 export class SensorMapper {
 
-  static dtoToModel(dto: SensorDTO | FilteredSensorDTO | FilteredByContentSensorDTO): DeviceData {
-    let value;
-    if ("locations" in dto) {
-      value = dto.locations;
-    } else if ("locationByContent" in dto) {
-      value = dto.locationByContent;
-    } else if ("location" in dto) {
-      value = dto.location;
-    } else {
-      value = dto;
-    }
+  static dtoToModel(value: SensorDataDTO): DeviceData {
     const coordinates = new DeviceCoordinates(value.data.gps.latitude, value.data.gps.longitude);
     let status;
     if (value.data.status.motion == "ACTIVE") {
@@ -35,17 +25,18 @@ export class SensorMapper {
     return new DeviceData(value.dataId, sensor, new Date(Number(value.reportedAt)), details);
   }
 
-  static dtoToModelHistory(dto: HistorySensorDTO): DeviceHistory {
-    const gpsData = dto.history
-      .data
-      //TODO: remove once we have a way to deal with errors
-      .filter(d => d.longitude < 2 && d.longitude > -2 && d.latitude < 2 && d.latitude > -2)
-      .map(d => new DeviceCoordinates(d.latitude, d.longitude));
-    return new DeviceHistory(dto.history.deviceName,
-      dto.history.deviceId,
-      Number(dto.history.startTime),
-      Number(dto.history.endTime),
-      +dto.history.distance.toFixed(2),
-      gpsData);
+  static dtoToModelHistory(dto: HistorySensorDTO): Array<DeviceHistory> {
+    return dto.history.map(h => {
+      const gpsData = h.data
+        //TODO: remove once we have a way to deal with errors
+        // .filter(d => d.longitude < 2 && d.longitude > -2 && d.latitude < 2 && d.latitude > -2)
+        .map(d => new DeviceCoordinates(d.latitude, d.longitude));
+      return new DeviceHistory(h.deviceName,
+        h.deviceId,
+        Number(h.startTime),
+        Number(h.endTime),
+        +h.distance.toFixed(2),
+        gpsData);
+    });
   }
 }

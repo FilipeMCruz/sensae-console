@@ -22,16 +22,23 @@ public class GPSDataCollector {
         this.repository = repository;
     }
 
-    public GPSSensorDataHistory history(GPSSensorDataFilter filters) {
+    public List<GPSSensorDataHistory> history(GPSSensorDataFilter filters) {
         validate(filters);
-        var data = repository.queryDevice2(filters);
-        return createHistory(filters, data);
+        var data = repository.queryMultipleDevices(filters);
+        return createHistories(filters, data);
+    }
+
+    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, List<ProcessedSensorDataWithRecordsDTO> dto) {
+        return dto.stream()
+                .collect(Collectors.groupingBy(x -> x.device.id))
+                .values()
+                .stream()
+                .map(set -> createHistory(filters, set))
+                .collect(Collectors.toList());
     }
 
     public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<ProcessedSensorDataWithRecordsDTO> dto) {
         var history = new GPSSensorDataHistory();
-        history.deviceId = filters.device;
-        history.deviceName = filters.device;
         history.startTime = filters.startTime.getTime();
         history.endTime = filters.endTime.getTime();
         if (dto.size() != 0) {
@@ -44,7 +51,7 @@ public class GPSDataCollector {
     }
 
     private void validate(GPSSensorDataFilter filters) {
-        if (filters.device == null || filters.device.isEmpty()) {
+        if (filters.devices == null || filters.devices.isEmpty()) {
             throw new NotValidException("A device id or name must be provided");
         }
         if (filters.startTime == null) {

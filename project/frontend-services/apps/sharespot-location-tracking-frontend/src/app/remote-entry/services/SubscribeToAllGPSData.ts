@@ -12,10 +12,10 @@ export class SubscribeToAllGPSData {
   constructor(private apollo: Apollo) {
   }
 
-  getData(device: string): Observable<FetchResult<SensorDTO>> {
+  getData(): Observable<FetchResult<SensorDTO>> {
     const query = gql`
-      subscription location($device: String){
-        location(device: $device){
+      subscription locations{
+        locations{
           dataId
           device{
             id
@@ -39,6 +39,6 @@ export class SubscribeToAllGPSData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query, variables: {device}});
+    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query});
   }
 }

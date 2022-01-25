@@ -1,5 +1,7 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {GPSSensorDataQuery} from "../../dtos/SensorDTO";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Device} from "../../model/Device";
+import {FormControl, FormGroup} from "@angular/forms";
+import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
 
 @Component({
   selector: 'frontend-services-search-card',
@@ -8,65 +10,57 @@ import {GPSSensorDataQuery} from "../../dtos/SensorDTO";
 })
 export class SearchCardComponent {
 
-  @Output() devicePicked = new EventEmitter<string>();
+  @Output() devicesPicked = new EventEmitter<Array<Device>>();
   @Output() contentPicked = new EventEmitter<string>();
   @Output() deviceCleaned = new EventEmitter<null>();
   @Output() contentCleaned = new EventEmitter<null>();
-  @Output() deviceHistory = new EventEmitter<GPSSensorDataQuery>();
+  @Output() deviceHistory = new EventEmitter<DeviceHistoryQuery>();
   @Output() historyCleaned = new EventEmitter<null>();
+  @Input() devices: Array<Device> = [];
 
-  searchDevice = "";
+  selectedDevices = new FormControl();
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
   searchContent = "";
-  searchCurrent = "None";
-  searchCurrentType = "";
-
-  historyDevice = "";
-  historyStartDate!: Date;
-  historyEndDate!: Date;
-  historyCurrent = "None";
 
   onContentClick() {
     if (this.searchContent.trim().length > 0) {
       this.pickContent(this.searchContent);
-      this.searchCurrentType = " Content";
-      this.searchCurrent = this.searchContent + this.searchCurrentType;
     }
   }
 
   onContentClear() {
-    if (this.searchCurrentType == " Content") this.searchCurrent = "None";
     this.searchContent = "";
     this.cleanContent();
   }
 
   onDeviceClick() {
-    if (this.searchDevice.trim().length > 0) {
-      this.pickDevice(this.searchDevice);
-      this.searchCurrentType = " Device";
-      this.searchCurrent = this.searchDevice + this.searchCurrentType;
+    if (this.selectedDevices) {
+      const devices = this.selectedDevices.value as Array<Device>;
+      if (devices.length > 0) {
+        this.pickDevices(devices);
+      }
     }
   }
 
   onDeviceClear() {
-    if (this.searchCurrentType == " Device") this.searchCurrent = "None";
-    this.searchDevice = "";
     this.cleanDevice();
   }
 
   onDeviceHistoryClear() {
-    this.historyCurrent = "None";
-    this.historyDevice = "";
     this.cleanHistory();
   }
 
   onHistoryClick() {
-    this.historyCurrent = this.historyDevice + " Device";
-    const query: GPSSensorDataQuery = {
-      device: this.historyDevice,
-      endTime: Math.round(this.historyEndDate.getTime() / 1000).toString(),
-      startTime: Math.round(this.historyStartDate.getTime() / 1000).toString()
+    if (this.selectedDevices) {
+      const devices = this.selectedDevices.value as Array<Device>;
+      if (devices.length > 0) {
+        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, this.range.value.end));
+      }
     }
-    this.pickHistory(query);
   }
 
   public pickContent(id: string): void {
@@ -77,15 +71,15 @@ export class SearchCardComponent {
     this.contentCleaned.emit();
   }
 
-  public pickDevice(id: string): void {
-    this.devicePicked.emit(id);
+  public pickDevices(devices: Array<Device>): void {
+    this.devicesPicked.emit(devices);
   }
 
   public cleanDevice(): void {
     this.deviceCleaned.emit();
   }
 
-  public pickHistory(query: GPSSensorDataQuery): void {
+  public pickHistory(query: DeviceHistoryQuery): void {
     this.deviceHistory.emit(query);
   }
 
@@ -94,8 +88,12 @@ export class SearchCardComponent {
   }
 
   validHistoryQuery() {
-    return this.historyDevice.trim().length !== 0 &&
-      (this.historyStartDate == undefined ||
-        (this.historyEndDate != undefined && this.historyEndDate >= this.historyStartDate))
+    if (this.selectedDevices) {
+      const devices = this.selectedDevices.value as Array<Device>;
+      if (devices && devices.length > 0) {
+        return this.range.valid;
+      }
+    }
+    return false
   }
 }

@@ -7,7 +7,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MapComponent} from "./components/map/map.component";
@@ -16,6 +16,7 @@ import {environment} from "../../environments/environment";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -26,7 +27,9 @@ import {MatNativeDateModule} from "@angular/material/core";
   ],
   imports: [
     MatTooltipModule,
+    MatSelectModule,
     MatSidenavModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,

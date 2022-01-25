@@ -7,15 +7,15 @@ import {SensorDTO} from "../dtos/SensorDTO";
 @Injectable({
   providedIn: 'root'
 })
-export class SubscribeToGPDDataByDevice {
+export class SubscribeToGPSDataByDevice {
 
   constructor(private apollo: Apollo) {
   }
 
-  getData(): Observable<FetchResult<SensorDTO>> {
+  getData(devices: Array<string>): Observable<FetchResult<SensorDTO>> {
     const query = gql`
-      subscription locations{
-        locations{
+      subscription location($devices: String){
+        location(devices: $devices){
           dataId
           device{
             id
@@ -39,6 +39,6 @@ export class SubscribeToGPDDataByDevice {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query});
+    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query, variables: {devices}});
   }
 }

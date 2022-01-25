@@ -11,7 +11,7 @@ export interface FilteredSensorDTO {
 }
 
 export interface HistorySensorDTO {
-  history: GPSSensorDataHistory;
+  history: Array<GPSSensorDataHistory>;
 }
 
 export interface SensorDataDTO {
@@ -47,7 +47,7 @@ export interface RecordEntryDTO {
 }
 
 export interface GPSSensorDataQuery {
-  device: string;
+  device: Array<string>;
   startTime: string;
   endTime: string;
 }
@@ -62,5 +62,5 @@ export interface GPSSensorDataHistory {
 }
 
 export interface GPSSensorLatestData {
-  latest: Array<SensorDTO>;
+  latest: Array<SensorDataDTO>;
 }

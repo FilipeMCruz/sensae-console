@@ -1,10 +1,10 @@
 type Subscription {
     locations : GPSSensorData
-    location(device: String) : GPSSensorData
+    location(devices: [String]) : GPSSensorData
     locationByContent(content: String) : GPSSensorData
 }
 
 type Query {
-    history(filters: GPSSensorDataQuery) : GPSSensorDataHistory
+    history(filters: GPSSensorDataQuery) : [GPSSensorDataHistory]
     latest: [GPSSensorData]
 }

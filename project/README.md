@@ -292,6 +292,17 @@ spring.rabbitmq.password=guest
 sharespot.auth.key=<auth key to authenticate requests>
 ```
 
+File: `project/backend-services/sharespot-data-validator-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8093
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+
 File: `project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
@@ -525,4 +536,11 @@ File. `project/secrets/prod/sharespot-simple-auth-backend.env`
 ``` conf
 SHARESPOT_SIMPLE_AUTH_USER_NAME=<user name>
 SHARESPOT_SIMPLE_AUTH_USER_SECRET=<user password>
+```
+
+File. `project/secrets/prod/sharespot-data-validator-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```

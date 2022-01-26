@@ -44,8 +44,6 @@ public class SensorDataHandlerService {
     public void publish(MessageConsumed<ObjectNode> message) {
         mapper.inToOut(message.data, SensorTypeId.of(message.routingKeys.sensorTypeId))
                 .ifPresent(dto -> provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                        .keepSensorTypeId()
-                        .keepChannel()
                         .withUpdated(dto)
                         .from(message.routingKeys)
                         .ifPresent(keys -> dataStream.next(new MessageSupplied<>(keys, dto))));

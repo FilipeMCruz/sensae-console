@@ -44,8 +44,6 @@ public class SensorDataHandlerService {
         var dataWithRecordDTO = appender.tryToAppend(message.data);
 
         var routingKeys = provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .keepSensorTypeId()
-                .keepChannel()
                 .withUpdated(dataWithRecordDTO)
                 .from(message.routingKeys);
 

@@ -14,14 +14,14 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./databases-data/dev/sharespot-common-database:/var/lib/postgresql/data/
+      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   sharespot-data-store-database:
     image: mongo:latest
     container_name: sharespot-data-store-database
     ports:
       - 27017:27017
     volumes:
-      - ./databases-data/dev/sharespot-data-store-database:/data/db
+      - ./databases-data/prod/sharespot-data-store-database:/data/db
       - ./secrets/dev/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     env_file:
       - ./secrets/dev/sharespot-data-store-database.env

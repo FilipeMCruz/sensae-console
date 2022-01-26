@@ -21,34 +21,12 @@ public class AmqpConfiguration {
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
-    public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
-
-    public static final String MASTER_EXCHANGE = "Sharespot Data Processor Master Exchange";
-
-    public static final String MASTER_QUEUE = "Sharespot Data Processor Master Exchange -> Sharespot Data Processor Slave Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Data Validator Queue";
 
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
         this.provider = provider;
-    }
-
-    @Bean
-    public Queue slaveQueue() {
-        return QueueBuilder.durable(MASTER_QUEUE)
-                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
-                .build();
-    }
-
-    @Bean
-    public FanoutExchange masterExchange() {
-        return new FanoutExchange(MASTER_EXCHANGE);
-    }
-
-    @Bean
-    Binding bindingMaster(Queue slaveQueue, FanoutExchange masterExchange) {
-        return BindingBuilder.bind(slaveQueue).to(masterExchange);
     }
 
     @Bean

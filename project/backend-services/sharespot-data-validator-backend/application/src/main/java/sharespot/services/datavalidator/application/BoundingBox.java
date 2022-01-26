@@ -17,6 +17,6 @@ public class BoundingBox {
     }
 
     public boolean isInside(double latitude, double longitude) {
-        return longitude < north && longitude > south && latitude > west && latitude < east;
+        return latitude < north && latitude > south && longitude > west && longitude < east;
     }
 }

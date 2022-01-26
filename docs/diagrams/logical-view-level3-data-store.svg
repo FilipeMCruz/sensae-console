@@ -18,7 +18,7 @@ link BOOT_API to BOOT--><path d="M196,123.27 C196,139.96 196,178.16 196,202.71 "
 link AMQP to APP_API--><path d="M255.02,473.26 C240.86,494.31 219.93,525.43 207.17,544.39 " fill="none" id="AMQP-to-APP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M210.2132,555.0351 A9,9 0 0 0 196.1881 545.5802" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[73b303eb9ebb19ea357ec4272966f8d5]
 link POSTG to APP_API--><path d="M136.98,473.26 C151.14,494.31 172.07,525.43 184.83,544.39 " fill="none" id="POSTG-to-APP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M195.8119,545.5802 A9,9 0 0 0 181.7868 555.0351" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4379324cd2c7c1b2cbe82266d6d3e2c8]
 link BOOT to POSTG_API--><path d="M181.02,249.26 C166.86,270.31 145.93,301.43 133.17,320.39 " fill="none" id="BOOT-to-POSTG_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M136.2132,331.0351 A9,9 0 0 0 122.1881 321.5802" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[825637d1efb63c5c00802efb716c3c83]
-link BOOT to AMQP_API--><path d="M210.98,249.26 C225.14,270.31 246.07,301.43 258.83,320.39 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M269.8119,321.5802 A9,9 0 0 0 255.7868 331.0351" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[ec743441dfc64682e3c2161083e1a7b5]
+link BOOT to AMQP_API--><path d="M210.98,249.26 C225.14,270.31 246.07,301.43 258.83,320.39 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M269.8119,321.5802 A9,9 0 0 0 255.7868 331.0351" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[9a9bf94372ddbcf47728ed4b651d8399]
 @startuml logical-view-level3-data-store
 
 skinparam Monochrome true
@@ -53,7 +53,7 @@ component "Data Store" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

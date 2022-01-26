@@ -24,7 +24,7 @@ link BOOT to QUEST_API--><path d="M173.96,249.04 C159.62,264.35 142.36,286.06 13
 link BOOT to AMQP_API--><path d="M220.73,249.31 C235.23,264.57 252.57,286.13 261,309 C291.52,391.8 280.81,500.4 274.86,542.87 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M282.2079,551.0086 A9,9 0 0 0 265.4772 548.5219" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[5d9a2f651ca28f65d24b6769c535d032]
 link BOOT to MAP_API--><path d="M197,249.26 C197,269.74 197,299.73 197,318.81 " fill="none" id="BOOT-to-MAP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M205.4572,325.7818 A9,9 0 0 0 188.5428 325.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[31d281a3e01de46d82c910cbc328fbb4]
 link MAP to AMQP_API--><path d="M212.18,473.26 C226.53,494.31 247.75,525.43 260.68,544.39 " fill="none" id="MAP-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M271.7102,545.5572 A9,9 0 0 0 257.7263 555.073" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[15fd6b4ec414d2f3f093ff502d905959]
-link MAP to QUEST_API--><path d="M182.02,473.26 C167.86,494.31 146.93,525.43 134.17,544.39 " fill="none" id="MAP-to-QUEST_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M137.2132,555.0351 A9,9 0 0 0 123.1881 545.5802" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[c40bde70764ac590b0bd98622d7b18b0]
+link MAP to QUEST_API--><path d="M182.02,473.26 C167.86,494.31 146.93,525.43 134.17,544.39 " fill="none" id="MAP-to-QUEST_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M137.2132,555.0351 A9,9 0 0 0 123.1881 545.5802" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[cc1b37077bad6fc950acf6d9a6999dbd]
 @startuml logical-view-level3-chrono-data-store
 
 skinparam Monochrome true
@@ -65,7 +65,7 @@ component "Chrono Data Store" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

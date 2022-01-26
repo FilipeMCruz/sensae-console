@@ -24,9 +24,9 @@ component "Environment" <<System>> {
     }
     component "Data Processor Slave Backend" as DPSB <<Container>>
     component "Data Processor Master Backend" as DPMB <<Container>>
+    component "Data Validator Backend" as DVB <<Container>>
     component "Device Records Database" as DRDB <<Container>>
     component "Data Processor Database" as DPDB <<Container>>
-    component "Chrono Data Store" as CDS <<Container>>
     component "Data Store" as DS <<Container>>
     component "QuestDB" as QUESTDB <<Container>>
     component "MongoDB" as MONGODB <<Container>>
@@ -41,7 +41,7 @@ component "Environment" <<System>> {
     interface "MongoDB\nAPI" as MONGODB_API
     interface "Data Gateway\nAPI" as DDG_API
 
-    CDS --( QUESTDB_API
+    LTB --( QUESTDB_API
     DS --( MONGODB_API
     DDG -- DDG_API
     DPMB_API -- DPMB
@@ -61,7 +61,7 @@ component "Environment" <<System>> {
     DPF --( DPMB_API
     DRF --( DRB_API
 
-    CDS --( MB_API
+    DVB --( MB_API
     DS --( MB_API
     LTB --( MB_API
     DRB --( MB_API

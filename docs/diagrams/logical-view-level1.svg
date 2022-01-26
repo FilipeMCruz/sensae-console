@@ -7,7 +7,7 @@ entity Client--><ellipse cx="289" cy="14" fill="#F8F8F8" rx="8" ry="8" style="st
 link Client to UI--><path d="M289,82.65 C289,105.81 289,134.31 289,152.45 " fill="none" id="Client-to-UI" style="stroke:#383838;stroke-width:1.0;"/><path d="M297.4572,159.4018 A9,9 0 0 0 280.5428 159.4018" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3e8ab27e271cab250bab3c48ba85ccff]
 link UI to S--><path d="M289,180.77 C289,197.46 289,235.66 289,260.21 " fill="none" id="UI-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[22f4cc187e84fb2fb1bd4dd9300a3601]
 link IN_ENDPOINT to S--><path d="M208.14,283.5 C219.83,283.5 231.51,283.5 243.2,283.5 " fill="none" id="IN_ENDPOINT-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[fa8c142ca78a1b3209a65449c7906a9c]
-link HC to IN_ENDPOINT--><path d="M155.21,283.5 C163.31,283.5 171.41,283.5 179.51,283.5 " fill="none" id="HC-to-IN_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><path d="M186.6818,275.0428 A9,9 0 0 0 186.6818 291.9572" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[60bb4c7b48e564e6976401abbf397a38]
+link HC to IN_ENDPOINT--><path d="M155.21,283.5 C163.31,283.5 171.41,283.5 179.51,283.5 " fill="none" id="HC-to-IN_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><path d="M186.6818,275.0428 A9,9 0 0 0 186.6818 291.9572" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3fad446372a659febc7d0aacb74f957f]
 @startuml logical-view-level1
 
 skinparam Monochrome true
@@ -34,7 +34,7 @@ HC -( IN_ENDPOINT
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

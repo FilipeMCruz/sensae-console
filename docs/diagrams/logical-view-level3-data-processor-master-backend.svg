@@ -29,7 +29,7 @@ link APP to DOM_SERV_API--><path d="M592.98,604.26 C591.11,624.74 588.39,654.73 
 link DOM_SERV to DOM_API--><path d="M585,828.26 C585,848.74 585,878.73 585,897.81 " fill="none" id="DOM_SERV-to-DOM_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M593.4572,904.7818 A9,9 0 0 0 576.5428 904.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3ab433faba4759891346c22302c8e76e]
 link BOOT to GRAPH_API--><path d="M322.61,242.26 C330.43,246.41 338.34,251.35 345,257 C368.87,277.24 388.82,308.07 399.81,327.08 " fill="none" id="BOOT-to-GRAPH_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M410.5963,329.0032 A9,9 0 0 0 395.8367 337.2647" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4379324cd2c7c1b2cbe82266d6d3e2c8]
 link BOOT to POSTG_API--><path d="M249.5,244.83 C242.55,248.61 235.44,252.75 229,257 C194.76,279.61 158.41,310.94 138.12,329.18 " fill="none" id="BOOT-to-POSTG_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M138.6486,340.1225 A9,9 0 0 0 127.2947 327.585" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[825637d1efb63c5c00802efb716c3c83]
-link BOOT to AMQP_API--><path d="M286,249.01 C286,271.13 286,304.86 286,325.6 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M294.4572,332.8118 A9,9 0 0 0 277.5428 332.8118" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[e4a1e22c9d3d85afca7eb5533336a365]
+link BOOT to AMQP_API--><path d="M286,249.01 C286,271.13 286,304.86 286,325.6 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M294.4572,332.8118 A9,9 0 0 0 277.5428 332.8118" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[a0e90fb426066225fa4cddcf871b842c]
 @startuml logical-view-level3-data-processor-master-backend
 
 skinparam Monochrome true
@@ -76,7 +76,7 @@ component "Data Processor Master Backend" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

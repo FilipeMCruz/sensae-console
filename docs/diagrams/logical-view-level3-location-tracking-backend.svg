@@ -20,7 +20,7 @@ link GRAPH_API to GRAPH--><path d="M254,354.34 C254,372.01 254,413.68 254,439.69
 link APP to DOM_API--><path d="M453,604.26 C453,624.74 453,654.73 453,673.81 " fill="none" id="APP-to-DOM_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M461.4572,680.7818 A9,9 0 0 0 444.5428 680.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3ab433faba4759891346c22302c8e76e]
 link BOOT to GRAPH_API--><path d="M202.85,249.01 C215.04,271.65 233.77,306.43 244.86,327.03 " fill="none" id="BOOT-to-GRAPH_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M255.6144,329.1679 A9,9 0 0 0 240.7248 337.1928" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[825637d1efb63c5c00802efb716c3c83]
 link BOOT to AMQP_API--><path d="M179.15,249.01 C166.96,271.65 148.23,306.43 137.14,327.03 " fill="none" id="BOOT-to-AMQP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M141.2752,337.1928 A9,9 0 0 0 126.3856 329.1679" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4650e1908a5caa745e5a54df07a9a97d]
-link ENDPOINT to APP_API--><path d="M347.1125,354.2549 C347.2962,354.4419 347.4826,354.6316 347.6717,354.824 C348.0497,355.2087 348.4383,355.6041 348.837,356.0098 C349.6345,356.8213 350.4724,357.6741 351.348,358.565 C358.3522,365.6925 367.7594,375.265 378.0338,385.72 C398.5825,406.63 422.6,431.07 437.8,446.54 " fill="none" id="ENDPOINT-to-APP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M448.9258,445.7821 A9,9 0 0 0 436.8452 457.621" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[47aff09d107b6dd2ad7065ff2ae2fce1]
+link ENDPOINT to APP_API--><path d="M347.1125,354.2549 C347.2962,354.4419 347.4826,354.6316 347.6717,354.824 C348.0497,355.2087 348.4383,355.6041 348.837,356.0098 C349.6345,356.8213 350.4724,357.6741 351.348,358.565 C358.3522,365.6925 367.7594,375.265 378.0338,385.72 C398.5825,406.63 422.6,431.07 437.8,446.54 " fill="none" id="ENDPOINT-to-APP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M448.9258,445.7821 A9,9 0 0 0 436.8452 457.621" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[d3df2b6cc1f2a225c6e10e6b0196b832]
 @startuml logical-view-level3-location-tracking-backend
 
 skinparam Monochrome true
@@ -58,7 +58,7 @@ component "Location Tracking Backend" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

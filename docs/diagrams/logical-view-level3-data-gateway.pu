@@ -1,8 +1,8 @@
-@startuml logical-view-level3-dynamic-data-gateway
+@startuml logical-view-level3-data-gateway
 
 skinparam Monochrome true
 
-component "Dynamic Data Gateway" {
+component "Data Gateway" {
     component "Application" as APP
     component "Infrastructure" as INFRA {
         component "Boot" as BOOT

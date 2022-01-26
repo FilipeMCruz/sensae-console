@@ -18,7 +18,7 @@ link SERV_API to SERV--><path d="M324,304.27 C324,320.96 324,359.16 324,383.71 "
 link SERV to DTO_API--><path d="M324,430.26 C324,450.74 324,480.73 324,499.81 " fill="none" id="SERV-to-DTO_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M332.4572,506.7818 A9,9 0 0 0 315.5428 506.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[7fd19f5cade1c886f17d36ca75ddd44a]
 link COMP to MOD_API--><path d="M199,206.26 C199,226.74 199,256.73 199,275.81 " fill="none" id="COMP-to-MOD_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M207.4572,282.7818 A9,9 0 0 0 190.5428 282.7818" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[c4d141063505c69177e8c2d9dc6285b9]
 link COMP to MAP_API--><path d="M173.5,206.26 C148.49,228.1 111.08,260.76 89.66,279.46 " fill="none" id="COMP-to-MAP_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M89.9204,290.4573 A9,9 0 0 0 78.7976 277.7144" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[16db6b5a63a1cfbf8d300951e8f69dbe]
-link COMP to SERV_API--><path d="M224.3,206.26 C248.98,227.99 285.85,260.43 307.15,279.17 " fill="none" id="COMP-to-SERV_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M318.0083,277.4744 A9,9 0 0 0 306.8462 290.1829" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[2cdf09f1745b1543237b70725de9e9be]
+link COMP to SERV_API--><path d="M224.3,206.26 C248.98,227.99 285.85,260.43 307.15,279.17 " fill="none" id="COMP-to-SERV_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M318.0083,277.4744 A9,9 0 0 0 306.8462 290.1829" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[b58f60c4be6386d1ab573b37b5fde745]
 @startuml logical-view-level3-data-processor-frontend
 
 skinparam Monochrome true
@@ -51,7 +51,7 @@ component "Data Processor Frontend" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

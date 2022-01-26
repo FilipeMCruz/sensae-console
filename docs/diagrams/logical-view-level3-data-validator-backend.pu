@@ -1,0 +1,34 @@
+@startuml logical-view-level3-data-validator
+
+skinparam Monochrome true
+
+component "Data Validator" {
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Endpoint" as ENDPOINT {
+            component "AMQP" as AMQP {
+                component "Ingress" as INGRESS
+                component "Egress" as EGRESS
+            }
+            interface "Ingress API" as INGRESS_API
+            interface "Egress API" as EGRESS_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+
+    EGRESS_API -- EGRESS
+    INGRESS_API -- INGRESS
+
+    APP_API -- APP
+    BOOT_API -- BOOT
+
+    BOOT --( EGRESS_API
+    BOOT --( INGRESS_API
+
+    ENDPOINT --( APP_API
+}
+
+@enduml

@@ -34,7 +34,7 @@ link DOM_SERV to DOM_API--><path d="M753,895.26 C753,915.74 753,945.73 753,964.8
 link BOOT to INTERNAL_API--><path d="M369.24,249.25 C356.59,281.37 333.47,340.08 321.94,369.39 " fill="none" id="BOOT-to-INTERNAL_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M327.2467,378.9923 A9,9 0 0 0 311.5139 372.7814" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[4379324cd2c7c1b2cbe82266d6d3e2c8]
 link BOOT to POSTG_API--><path d="M341.35,230.49 C315.37,234.19 280.39,241.73 253,257 C200.45,286.3 154.51,342.56 133.76,370.46 " fill="none" id="BOOT-to-POSTG_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M136.3591,381.2485 A9,9 0 0 0 122.684 371.2941" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[03a3a3da64142f805947a80cad3d7aa7]
 link BOOT to EGRESS_API--><path d="M414.54,227.25 C442.38,229.26 480.2,236.09 506,257 C541.58,285.84 557.5,340.22 563.66,368.65 " fill="none" id="BOOT-to-EGRESS_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M573.3706,374.1052 A9,9 0 0 0 556.7837 377.4177" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[5aaa978c22e8e54db4cd3befe40cb162]
-link BOOT to INGRESS_API--><path d="M386.9,249.25 C399.75,281.37 423.23,340.08 434.95,369.39 " fill="none" id="BOOT-to-INGRESS_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M445.4091,372.751 A9,9 0 0 0 429.7044 379.0329" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[633e69d0fcde4f93cc6b3224685eabf1]
+link BOOT to INGRESS_API--><path d="M386.9,249.25 C399.75,281.37 423.23,340.08 434.95,369.39 " fill="none" id="BOOT-to-INGRESS_API" style="stroke:#383838;stroke-width:1.0;"/><path d="M445.4091,372.751 A9,9 0 0 0 429.7044 379.0329" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[110fdad06c3e113fa0d47ef274c63b28]
 @startuml logical-view-level3-device-records-slave-backend
 
 skinparam Monochrome true
@@ -89,7 +89,7 @@ component "Device Records Slave Backend" {
 
 @enduml
 
-PlantUML version 1.2021.9(Sun Jul 25 11:13:56 WEST 2021)
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

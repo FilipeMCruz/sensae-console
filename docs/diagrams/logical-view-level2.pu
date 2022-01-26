@@ -21,6 +21,7 @@ component "Environment" <<System>> {
         component "Device Records Frontend" as DRF <<Container>>
         component "Data Processor Frontend" as DPF <<Container>>
         component "Location Tracking Frontend" as LTF <<Container>>
+        component "Simple Auth Frontend" as SAF <<Container>>
     }
     component "Data Processor Slave Backend" as DPSB <<Container>>
     component "Data Processor Master Backend" as DPMB <<Container>>
@@ -30,6 +31,7 @@ component "Environment" <<System>> {
     component "Data Store" as DS <<Container>>
     component "QuestDB" as QUESTDB <<Container>>
     component "MongoDB" as MONGODB <<Container>>
+    component "Simple Auth Backend" as SAB <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
     interface "Location Tracking Backend\nAPI" as LTB_API
@@ -40,6 +42,7 @@ component "Environment" <<System>> {
     interface "QuestDB\nAPI" as QUESTDB_API
     interface "MongoDB\nAPI" as MONGODB_API
     interface "Data Gateway\nAPI" as DDG_API
+    interface "Simple Auth\nAPI" as SAB_API
 
     LTB --( QUESTDB_API
     DS --( MONGODB_API
@@ -50,6 +53,7 @@ component "Environment" <<System>> {
     DRDB_API -- DRDB
     DPDB_API -- DPDB
     LTB_API -- LTB
+    SAB_API -- SAB
     UI -- UIAG
     MONGODB_API -- MONGODB
     QUESTDB_API -- QUESTDB
@@ -60,6 +64,7 @@ component "Environment" <<System>> {
     LTF --( LTB_API
     DPF --( DPMB_API
     DRF --( DRB_API
+    SAF --( SAB_API
 
     DVB --( MB_API
     DS --( MB_API

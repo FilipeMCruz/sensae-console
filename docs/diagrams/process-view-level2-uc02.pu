@@ -7,9 +7,9 @@ hide unlinked
 
 autonumber 1
 
-participant "Data\nRealyer" as DG
 participant "Data\nGateway" as SDDG
 participant "Data Processor Slave\nBackend" as DPSB
+participant "Data Validator\nBackend" as DVB
 participant "Device Records Slave\nBackend" as DRSB
 participant "Message\nBroker" as MB
 participant "Location Tracking\nBackend" as LTB
@@ -18,19 +18,13 @@ participant "Location Tracking\nFrontend" as LTF
 activate MB
 activate LTF
 
--> DG : new sensor data
-activate DG
-
-DG -> SDDG : new X type\nsensor data
+-> SDDG : new X type\nsensor data
 activate SDDG
 
 SDDG -> MB : publish event of new\nX type sensor data
 
-DG <-- SDDG : OK
+<-- SDDG : OK
 deactivate SDDG
-
-<-- DG : OK
-deactivate DG
 
 MB -> DPSB : send event of new\nX sensor data
 activate DPSB
@@ -38,13 +32,19 @@ activate DPSB
 DPSB -> MB : publish event of new\nprocessed sensor data
 deactivate DPSB
 
-MB -> DRSB : send event of new\nprocessed sensor data
+MB -> DVB : send event of new\nprocessed sensor data
+activate DVB
+
+DVB -> MB : publish event of new\nvalidated processed sensor data
+deactivate DVB
+
+MB -> DRSB : send event of new\nvalidated processed sensor data
 activate DRSB
 
-DRSB -> MB : new gps sensor data\nwith device records
+DRSB -> MB : new validated gps sensor data\nwith device records
 deactivate DRSB
 
-MB -> LTB : send event of new gps\nsensor data with records
+MB -> LTB : send event of new validated gps\nsensor data with records
 activate LTB
 
 LTB -> LTB : verify if new gps sensor\ndata matches the filter 

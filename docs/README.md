@@ -25,6 +25,7 @@ The system actors are:
 | **UC06**  | As the data admin I want to enhance the information provided by a device                  |
 | **UC07**  | As the data admin I want to see the information i've added to each device                 |
 | **UC08**  | As the data admin I want to delete information i've added about a specific device         |
+| **UC09**  | As the data admin I want to authenticate myself                                           |
 
 ## Architecture
 
@@ -49,11 +50,17 @@ The system is composed by the following containers:
 - **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
 - **Device Records Master Backend**: Backend that stores device data (records) and notifies slaves about changes to this data;
 - **Device Records Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
+- **Device Validator Backend**: Container that verifies if the data that goes trough him is valid, (e.g. gps data does not point to the sea, temperature isn't 500 ºC);
 - **Device Records Database**: Database that records information about each device;
 - **Message Broker**: Container responsible for routing messages/events sent by the containers;
-- **LGT 92 GPS Sensor Processor**: Container responsible for transforming the received data (LGT 92 GPS Sensor Data) into something that the system understands (GPS Sensor Data);
-- **LGT 92 GPS Sensor Gateway**: Container responsible for receiving data (LGT 92 GPS Sensor Data) from the outside and propagate it in the system;
-- **Data Relayer**: Container responsible for proxying sensor data requests to the assigned Sensor Gateway.
+- **Data Processor Frontend**: Frontend that allows the data admin to add, change and see information about a device transformation;
+- **Data Processor Slave Backend**: Container responsible for transforming the received data into something that the system understands;
+- **Data Processor Master Backend**: Container responsible for notifying slaves that new data transformation are available;
+- **Data Processor Database**: Database that records information about how each device type can be transformed;
+- **Data Gateway**: Container responsible for proxying sensor data requests to the assigned **Data Processor Slave**;
+- **Simple Auth Backend**: Container responsible for validating user credentials;
+- **Simple Auth Frontend**: Container responsible for requesting user credentials and provide access to the application;
+- **UI Aggregator**: Container responsible for loading other frontend.
 
 ### Process View - Container Level
 
@@ -130,7 +137,7 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-location-tracking-frontend](diagrams/logical-view-level3-location-tracking-frontend.svg)
 
-#### Tracking Devices Backend
+#### Location Tracking Backend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
@@ -179,19 +186,12 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-processor-frontend](diagrams/logical-view-level3-data-processor-frontend.svg)
 
-#### Static Data Gateway
+#### Data Gateway
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-static-data-gateway](diagrams/logical-view-level3-static-data-gateway.svg)
-
-#### Dynamic Data Gateway
-
-Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
-The following diagram describes it from a logical view.
-
-![logical-view-level3-dynamic-data-gateway](diagrams/logical-view-level3-dynamic-data-gateway.svg)
+![logical-view-level3-data-gateway](diagrams/logical-view-level3-data-gateway.svg)
 
 #### Data Store
 
@@ -207,6 +207,13 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-chrono-data-store](diagrams/logical-view-level3-chrono-data-store.svg)
 
+#### Data Validator
+
+Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
+The following diagram describes it from a logical view.
+
+![logical-view-level3-data-validator](diagrams/logical-view-level3-data-validator.svg)
+
 ## API
 
 This section will present the API that each backend service exposes.
@@ -218,7 +225,7 @@ This information can be consulted [here](http://localhost:8080/swagger-ui/index.
 The **endpoint** to register new sensor data is `/sensor-data/{infoType}/{sensorType}`.
 In production this endpoint can't be accessed, instead requests must be made to **Data Relayer**.
 
-### Data Gateway
+### Insert new sensor data
 
 **Endpoint**: POST to `/sensor-data/{infoType}/{sensorType}`
 
@@ -429,23 +436,26 @@ Since the communication is made using GraphQL the only two endpoints are `/graph
 **Query**:
 
 ``` graphql
-subscription {
-  locations() {
+subscription locations{
+  locations{
     dataId
     device{
       id
       name
+      records{
+        label
+        content
+      }
     }
     reportedAt
     data{
       gps{
-       longitude
-       latitude
+        longitude
+        latitude
       }
-    }
-    record{
-      label
-      content
+      status{
+        motion
+      }
     }
   }
 }
@@ -460,57 +470,137 @@ This is the resource used to subscribe to changes in the gps location of all sen
 **Query**:
 
 ``` graphql
-subscription {
-  location(deviceId: "XXX") {
+subscription location("a","b": String){
+  location(devices: "a","b"){
     dataId
     device{
       id
       name
+      records{
+        label
+        content
+      }
     }
     reportedAt
     data{
       gps{
-       longitude
-       latitude
+        longitude
+        latitude
       }
-    }
-    record{
-      label
-      content
+      status{
+        motion
+      }
     }
   }
 }
-
 ```
 
-This is the resource used to subscribe to changes in the gps location of a specific sensor registered in the network.
+This is the resource used to subscribe to changes in the gps location of an array of sensors registered in the network.
 
 #### Consult GPS Sensors that match the content sent
 
 ``` graphql
-subscription {
-  locationByContent(content: "XXX") {
+subscription locationByContent(XXX: String){
+  locationByContent(content: XXX){
     dataId
     device{
       id
       name
+      records{
+        label
+        content
+      }
     }
     reportedAt
     data{
       gps{
-       longitude
-       latitude
+        longitude
+        latitude
       }
-    }
-    record{
-      label
-      content
+      status{
+        motion
+      }
     }
   }
 }
 ```
 
 This is the resource used to subscribe to changes in the gps location of any sensor that has content matching the "content" sent.
+
+#### Consult GPS Sensors History
+
+```graphql
+query history($filters: GPSSensorDataQuery){
+  history(filters: $filters){
+    deviceId
+    deviceName
+    startTime
+    endTime
+    distance
+    data{
+      longitude
+      latitude
+    }
+  }
+}
+```
+
+The filter, GPSSensorDataQuery, has to following structure:
+
+```ts
+export interface GPSSensorDataQuery {
+  device: Array<string>;
+  startTime: string;
+  endTime: string;
+}
+```
+
+This is the resource used to fetch all history according to history.
+
+#### Consult Last entry of Each Sensor
+
+```graphql
+query latest{
+  latest{
+    dataId
+    device{
+      id
+      name
+      records{
+        label
+        content
+      }
+    }
+    reportedAt
+    data{
+      gps{
+        longitude
+        latitude
+      }
+      status{
+        motion
+      }
+    }
+  }
+}
+```
+
+This is the resource used to fetch the last location of each sensor.
+
+### Simple Auth Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL the only two endpoints are `/graphql`.
+
+```graphql
+query credentials($user: UserCredentials){
+  credentials(user: $user){
+    valid
+  }
+}
+```
+
+This is the resource that verifies the user credentials.
 
 ## Data Flow Diagram
 

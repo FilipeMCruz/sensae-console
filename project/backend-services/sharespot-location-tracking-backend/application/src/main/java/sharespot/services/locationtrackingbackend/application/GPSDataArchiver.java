@@ -27,13 +27,14 @@ public class GPSDataArchiver {
 
             // if no previous data exists motion status is unknown
             if (lastTenMinutesData.isEmpty()) {
-                data.data.withStatus(new StatusDataDTO().withMotion("UNKNOWN"));
+                //TODO: fix this in iot core
+                data.data = data.data.withStatus(StatusDataDTO.withMotion("UNKNOWN"));
             } else {
                 var moving = Haversine.isMoving(data, lastTenMinutesData, DISTANCE_IN_KM);
                 if (moving) {
-                    data.data.withStatus(new StatusDataDTO().withMotion("ACTIVE"));
+                    data.data = data.data.withStatus(StatusDataDTO.withMotion("ACTIVE"));
                 } else {
-                    data.data.withStatus(new StatusDataDTO().withMotion("INACTIVE"));
+                    data.data = data.data.withStatus(StatusDataDTO.withMotion("INACTIVE"));
                 }
             }
         }

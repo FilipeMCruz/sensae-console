@@ -52,7 +52,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     @Override
     public List<ProcessedSensorDataWithRecordsDTO> queryPastData(ProcessedSensorDataWithRecordsDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToDao(dao);
-        return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt, timeSpanMinutes)
+        return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)
                 .stream()
                 .map(mapper::daoToDto)
                 .collect(Collectors.toList());

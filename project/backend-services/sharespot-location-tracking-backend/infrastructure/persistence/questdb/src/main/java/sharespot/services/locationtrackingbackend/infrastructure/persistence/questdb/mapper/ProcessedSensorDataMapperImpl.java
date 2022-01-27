@@ -8,6 +8,7 @@ import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.data.StatusDataDTO;
 import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
+import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ public class ProcessedSensorDataMapperImpl {
     }
 
     private byte toDAO(ProcessedSensorDataWithRecordsDTO in) {
-        if (in.data.status.motion == null) {
+        if (!in.data.hasProperty(PropertyName.MOTION)) {
             return 0;
         } else if ("UNKNOWN".equals(in.data.status.motion)) {
             return 0;

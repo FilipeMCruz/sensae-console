@@ -8,5 +8,6 @@ public enum PropertyNameDTOImpl {
     REPORTED_AT,
     LATITUDE,
     LONGITUDE,
-    TEMPERATURE
+    TEMPERATURE,
+    MOTION
 }

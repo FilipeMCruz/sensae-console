@@ -5,15 +5,15 @@ import pt.sharespot.iot.core.sensor.properties.KnownPropertyTransformation;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import pt.sharespot.iot.core.sensor.properties.PropertyTransformation;
 import pt.sharespot.iot.core.sensor.properties.PropertyTransformations;
-import sharespot.services.dataprocessormaster.domain.DataTransformation;
-import sharespot.services.dataprocessormaster.domain.SensorTypeId;
-import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.SensorTypeIdDTOImpl;
 import sharespot.services.dataprocessormaster.application.DataTransformationDTO;
 import sharespot.services.dataprocessormaster.application.DataTransformationMapper;
 import sharespot.services.dataprocessormaster.application.SensorTypeIdDTO;
+import sharespot.services.dataprocessormaster.domain.DataTransformation;
+import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.DataTransformationDTOImpl;
 import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.PropertyNameDTOImpl;
 import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.PropertyTransformationDTOImpl;
+import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.SensorTypeIdDTOImpl;
 
 import java.util.Arrays;
 import java.util.function.Function;
@@ -35,6 +35,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case LATITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LATITUDE);
             case LONGITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LONGITUDE);
             case TEMPERATURE -> PropertyTransformation.create(e.oldPath, PropertyName.TEMPERATURE);
+            case MOTION -> PropertyTransformation.create(e.oldPath, PropertyName.MOTION);
         }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
@@ -78,6 +79,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case LATITUDE -> PropertyNameDTOImpl.LATITUDE;
             case LONGITUDE -> PropertyNameDTOImpl.LONGITUDE;
             case TEMPERATURE -> PropertyNameDTOImpl.TEMPERATURE;
+            case MOTION -> PropertyNameDTOImpl.MOTION;
         };
         entry.oldPath = kt.oldPath();
         return entry;

@@ -16,6 +16,7 @@ public class PropertyNamePostgres {
      * LATITUDE -> 5
      * LONGITUDE -> 6
      * TEMPERATURE -> 7
+     * MOTION -> 8
      */
     public int value;
 
@@ -64,6 +65,12 @@ public class PropertyNamePostgres {
     public static PropertyNamePostgres temperature() {
         var propertyName = new PropertyNamePostgres();
         propertyName.value = 7;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres motion() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 8;
         return propertyName;
     }
 }

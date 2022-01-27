@@ -10,24 +10,26 @@ export class GPSPointData {
 
   public point: mapboxgl.Marker;
 
-  constructor(value: DeviceData, color?: string) {
+  constructor(value: DeviceData, last: boolean) {
     this.value = value;
-    this.color = GPSPointData.defineColor(value, color);
+    this.color = GPSPointData.defineColor(value, last);
     this.point = new mapboxgl.Marker({
       draggable: false,
-      color: GPSPointData.defineColor(value, color)
+      color: GPSPointData.defineColor(value, last)
     });
     this.setPopup().setCoordinates();
   }
 
-  private static defineColor(value: DeviceData, color?: string): string {
-    if (color) return color;
-    if (value.data.status.motion === MotionType.INACTIVE) return '#fb4934';
-    return '#012A4A';
+  private static defineColor(value: DeviceData, last: boolean): string {
+    if (last) {
+      return value.data.status.motion === MotionType.INACTIVE ? "#f8888a" : "#a9d6e5";
+    } else {
+      return value.data.status.motion === MotionType.INACTIVE ? "#f34044" : "#012A4A";
+    }
   }
 
   willChangeColor(value: DeviceData): boolean {
-    return this.color != GPSPointData.defineColor(value);
+    return this.color != GPSPointData.defineColor(value, false);
   }
 
   updateGPSData(data: DeviceData): void {

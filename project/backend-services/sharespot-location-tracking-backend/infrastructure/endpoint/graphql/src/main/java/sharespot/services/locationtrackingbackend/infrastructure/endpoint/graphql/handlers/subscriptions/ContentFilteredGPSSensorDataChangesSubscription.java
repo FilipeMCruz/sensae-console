@@ -4,7 +4,6 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
-import sharespot.services.locationtrackingbackend.application.GPSDataMapper;
 import sharespot.services.locationtrackingbackend.application.GPSDataPublisher;
 import sharespot.services.locationtrackingbackend.domain.model.livedata.SensorData;
 

@@ -50,14 +50,14 @@ export class MapComponent implements OnInit, OnDestroy {
     this.latestDeviceData.getData().subscribe(
       next => {
         if (next.data && next.data.latest) {
-          next.data.latest.forEach(d => this.verifyAndDraw(d, "#a9d6e5"));
+          next.data.latest.forEach(d => this.verifyAndDraw(d, true));
           this.devices = next.data.latest.map(d => DeviceMapper.dtoToModel(d.device));
         }
       }
     );
     this.subscription = this.locationEmitter.getData().subscribe(
       next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations)
+        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
       }
     );
   }
@@ -69,6 +69,7 @@ export class MapComponent implements OnInit, OnDestroy {
   buildHistory(filters: DeviceHistoryQuery) {
     this.points.forEach(p => p.point.remove());
     this.points.splice(0, this.points.length);
+    this.subscription.unsubscribe();
     this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters)).subscribe(
       next => {
         if (next.data != undefined) {
@@ -85,7 +86,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
     this.subscription = this.locationEmitter.getData().subscribe(
       next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations)
+        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
       }
     );
   }
@@ -103,7 +104,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscription = this.locationByDeviceIdEmitter.getData(devices.map(d => d.id)).subscribe(
       next => {
         if (next.data !== undefined && next.data !== null) {
-          this.verifyAndDraw(next.data.locations)
+          this.verifyAndDraw(next.data.locations, false)
         }
       }
     );
@@ -121,7 +122,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.subscription = this.locationByContentEmitter.getData(content).subscribe(
       next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations)
+        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
       }
     );
   }
@@ -172,9 +173,9 @@ export class MapComponent implements OnInit, OnDestroy {
     })
   }
 
-  private verifyAndDraw(data: SensorDataDTO | null | undefined, color?: string) {
+  private verifyAndDraw(data: SensorDataDTO | null | undefined, last: boolean) {
     if (data !== undefined && data !== null) {
-      this.drawPoint(SensorMapper.dtoToModel(data), color);
+      this.drawPoint(SensorMapper.dtoToModel(data), last);
     }
   }
 
@@ -192,15 +193,10 @@ export class MapComponent implements OnInit, OnDestroy {
     this.buildMap();
   }
 
-  private drawPoint(sensor: DeviceData, color?: string): void {
-    //TODO: remove once we have a way to deal with errors
-    // if (sensor.data.gps.longitude < 2 && sensor.data.gps.longitude > -2 && sensor.data.gps.latitude < 2 && sensor.data.gps.latitude > -2) {
-    //   return;
-    // }
-
+  private drawPoint(sensor: DeviceData, last: boolean): void {
     const found = this.points.find(point => point.isSameSensor(sensor));
     if (found === undefined) {
-      const newPoint = new GPSPointData(sensor, color);
+      const newPoint = new GPSPointData(sensor, last);
       newPoint.point.addTo(this.map);
       this.points.push(newPoint);
     } else {
@@ -211,7 +207,7 @@ export class MapComponent implements OnInit, OnDestroy {
             array.splice(index, 1);
           }
         });
-        const newPoint = new GPSPointData(sensor, color);
+        const newPoint = new GPSPointData(sensor, last);
         newPoint.point.addTo(this.map);
         this.points.push(newPoint);
       } else {

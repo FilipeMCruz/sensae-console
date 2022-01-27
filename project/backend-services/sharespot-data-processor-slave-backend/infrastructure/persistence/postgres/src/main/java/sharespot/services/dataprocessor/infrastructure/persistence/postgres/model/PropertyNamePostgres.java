@@ -16,54 +16,7 @@ public class PropertyNamePostgres {
      * LATITUDE -> 5
      * LONGITUDE -> 6
      * TEMPERATURE -> 7
+     * MOTION -> 8
      */
     public int value;
-
-    public static PropertyNamePostgres dataId() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 0;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres deviceId() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 1;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres deviceName() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 2;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres deviceRecords() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 3;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres reportedAt() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 4;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres latitude() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 5;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres longitude() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 6;
-        return propertyName;
-    }
-
-    public static PropertyNamePostgres temperature() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 7;
-        return propertyName;
-    }
 }

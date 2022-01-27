@@ -24,7 +24,7 @@ public class DataValidatorServiceTest {
     public DataValidatorServiceTest() {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("dataprocessorslave.dataprocessorslave.0.1.6.data.processed.lgt92.default.without_records.with_gps_data.without_tempc_data.unknown.#");
+                .from("dataprocessorslave.dataprocessorslave.0.1.7.data.processed.lgt92.default.without_records.with_gps_data.without_tempc_data.unknown.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {

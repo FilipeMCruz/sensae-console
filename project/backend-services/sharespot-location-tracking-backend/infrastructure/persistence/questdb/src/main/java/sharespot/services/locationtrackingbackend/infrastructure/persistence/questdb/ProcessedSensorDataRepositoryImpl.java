@@ -8,7 +8,6 @@ import sharespot.services.locationtrackingbackend.domain.model.pastdata.GPSSenso
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,24 +18,21 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
     private final ProcessedSensorDataMapperImpl mapper;
 
-    private final DataSource dataSource;
-
     private final JdbcTemplate jdbcTemplate;
 
-    public ProcessedSensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository, ProcessedSensorDataMapperImpl mapper, DataSource dataSource, JdbcTemplate jdbcTemplate) {
+    public ProcessedSensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository, ProcessedSensorDataMapperImpl mapper, JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.mapper = mapper;
-        this.dataSource = dataSource;
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void insert(ProcessedSensorDataWithRecordsDTO dao) {
         var data = mapper.dtoToDao(dao);
-        this.repository.insert(data.dataId, data.deviceName, data.deviceId, data.gpsData, data.reportedAt);
+        this.repository.insert(data.dataId, data.deviceName, data.deviceId, data.gpsData, data.motion, data.reportedAt);
     }
 
-    //TODO: in clause has a bug in Questdb, for now better use this
+    //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
     public List<ProcessedSensorDataWithRecordsDTO> queryMultipleDevices(GPSSensorDataFilter filters) {
@@ -56,7 +52,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     @Override
     public List<ProcessedSensorDataWithRecordsDTO> queryPastData(ProcessedSensorDataWithRecordsDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToDao(dao);
-        return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt, timeSpanMinutes)
+        return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)
                 .stream()
                 .map(mapper::daoToDto)
                 .collect(Collectors.toList());

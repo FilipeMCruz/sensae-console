@@ -15,14 +15,11 @@ import java.util.List;
 public interface ProcessedSensorDataRepositoryJDBC extends CrudRepository<ProcessedSensorDataDAOImpl, Long> {
 
     @Modifying
-    @Query(value = "INSERT INTO data VALUES ( :dataId, :deviceName, :deviceId, :gpsData, :reportedAt, now());")
-    void insert(@Param("dataId") String dataId, @Param("deviceName") String deviceName, @Param("deviceId") String deviceId, @Param("gpsData") String gpsData, @Param("reportedAt") Timestamp reportedAt);
-
-    @Query(value = "SELECT * FROM data WHERE device_id IN (:devices) AND reported_at BETWEEN :startTime AND :endTime;")
-    List<ProcessedSensorDataDAOImpl> queryByMultipleDevice(@Param("devices") MapSqlParameterSource devices, @Param("startTime") String startTime, @Param("endTime") String endTime);
+    @Query(value = "INSERT INTO data (data_id, device_name, device_id, gps_data, motion, reported_at, ts) VALUES ( :dataId, :deviceName, :deviceId, :gpsData, :motion, :reportedAt, now());")
+    void insert(@Param("dataId") String dataId, @Param("deviceName") String deviceName, @Param("deviceId") String deviceId, @Param("gpsData") String gpsData, @Param("motion") Byte motion, @Param("reportedAt") Timestamp reportedAt);
 
     @Query(value = "SELECT * FROM data WHERE datediff('m', reported_at, :reportedAt) < :time_span AND device_id = :deviceId;")
-    List<ProcessedSensorDataDAOImpl> latestDeviceDataInTime(@Param("deviceId") String deviceId, @Param("reportedAt") Timestamp reportedAt, @Param("time_span") Integer timeSpanMinutes);
+    List<ProcessedSensorDataDAOImpl> latestDeviceDataInTime(@Param("deviceId") String deviceId, @Param("reportedAt") String reportedAt, @Param("time_span") Integer timeSpanMinutes);
 
     @Query(value = "SELECT * FROM data LATEST BY device_id;")
     List<ProcessedSensorDataDAOImpl> latestDataOfEachDevice();

@@ -34,6 +34,7 @@ public class DataTransformationMapper {
             case 5 -> PropertyName.LATITUDE;
             case 6 -> PropertyName.LONGITUDE;
             case 7 -> PropertyName.TEMPERATURE;
+            case 8 -> PropertyName.MOTION;
             default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }
@@ -67,6 +68,7 @@ public class DataTransformationMapper {
             case LATITUDE -> PropertyNamePostgres.latitude();
             case LONGITUDE -> PropertyNamePostgres.longitude();
             case TEMPERATURE -> PropertyNamePostgres.temperature();
+            case MOTION -> PropertyNamePostgres.motion();
         };
     }
 }

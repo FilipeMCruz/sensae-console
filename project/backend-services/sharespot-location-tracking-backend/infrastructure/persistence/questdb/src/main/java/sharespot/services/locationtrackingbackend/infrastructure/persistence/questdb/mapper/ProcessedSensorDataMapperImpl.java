@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.data.StatusDataDTO;
 import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import sharespot.services.locationtrackingbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
@@ -26,8 +27,37 @@ public class ProcessedSensorDataMapperImpl {
         dao.deviceId = String.valueOf(in.device.id);
         dao.deviceName = String.valueOf(in.device.name);
         dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
+        dao.motion = toDAO(in);
         dao.gpsData = GeoHash.withCharacterPrecision(in.data.gps.latitude, in.data.gps.longitude, 12).toBase32();
         return dao;
+    }
+
+    private byte toDAO(ProcessedSensorDataWithRecordsDTO in) {
+        if (in.data.status.motion == null) {
+            return 1;
+        } else if ("UNKNOWN".equals(in.data.status.motion)) {
+            return 1;
+        } else if ("ACTIVE".equalsIgnoreCase(in.data.status.motion)) {
+            return 2;
+        } else if ("INACTIVE".equalsIgnoreCase(in.data.status.motion)) {
+            return 3;
+        } else {
+            return 1;
+        }
+    }
+
+    private String fromDAO(ProcessedSensorDataDAOImpl dao) {
+        if (dao.motion == null) {
+            return "UNKNOWN";
+        } else if (dao.motion == 1) {
+            return "UNKNOWN";
+        } else if (dao.motion == 2) {
+            return "ACTIVE";
+        } else if (dao.motion == 3) {
+            return "INACTIVE";
+        } else {
+            return "UNKNOWN";
+        }
     }
 
     public ProcessedSensorDataWithRecordsDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
@@ -35,7 +65,8 @@ public class ProcessedSensorDataMapperImpl {
         var device = new DeviceInformationWithRecordsDTO(UUID.fromString(dao.deviceId), dao.deviceName, new DeviceRecordDTO(new HashSet<>()));
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
         var gpsDataDTO = new GPSDataDTO(originatingPoint.getLatitude(), originatingPoint.getLongitude());
-        var details = new SensorDataDetailsDTO().withGps(gpsDataDTO);
+        var statusDTO = new StatusDataDTO().withMotion(fromDAO(dao));
+        var details = new SensorDataDetailsDTO().withGps(gpsDataDTO).withStatus(statusDTO);
         return new ProcessedSensorDataWithRecordsDTO(dataId, device, dao.reportedAt.getTime(), details);
     }
 
@@ -46,6 +77,7 @@ public class ProcessedSensorDataMapperImpl {
         dataDAO.deviceId = resultSet.getString("device_id");
         dataDAO.deviceName = resultSet.getString("device_name");
         dataDAO.reportedAt = resultSet.getTimestamp("reported_at");
+        dataDAO.motion = resultSet.getByte("motion");
         dataDAO.ts = resultSet.getTimestamp("ts");
         return dataDAO;
     }

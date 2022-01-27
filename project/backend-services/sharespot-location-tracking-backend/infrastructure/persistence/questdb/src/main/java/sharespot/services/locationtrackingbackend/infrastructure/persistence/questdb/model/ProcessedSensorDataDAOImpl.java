@@ -15,7 +15,7 @@ public class ProcessedSensorDataDAOImpl {
 
     @Column("device_id")
     public String deviceId;
-    
+
     @Column("device_name")
     public String deviceName;
 
@@ -24,6 +24,9 @@ public class ProcessedSensorDataDAOImpl {
 
     @Column("gps_data")
     public String gpsData;
+
+    @Column("motion")
+    public Byte motion;
 
     @Column("ts")
     public Timestamp ts;

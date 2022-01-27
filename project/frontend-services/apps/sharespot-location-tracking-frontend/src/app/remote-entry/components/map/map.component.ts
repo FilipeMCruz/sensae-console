@@ -69,6 +69,7 @@ export class MapComponent implements OnInit, OnDestroy {
   buildHistory(filters: DeviceHistoryQuery) {
     this.points.forEach(p => p.point.remove());
     this.points.splice(0, this.points.length);
+    this.subscription.unsubscribe();
     this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters)).subscribe(
       next => {
         if (next.data != undefined) {

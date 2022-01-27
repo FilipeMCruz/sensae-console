@@ -34,26 +34,26 @@ public class ProcessedSensorDataMapperImpl {
 
     private byte toDAO(ProcessedSensorDataWithRecordsDTO in) {
         if (in.data.status.motion == null) {
-            return 1;
+            return 0;
         } else if ("UNKNOWN".equals(in.data.status.motion)) {
-            return 1;
+            return 0;
         } else if ("ACTIVE".equalsIgnoreCase(in.data.status.motion)) {
-            return 2;
-        } else if ("INACTIVE".equalsIgnoreCase(in.data.status.motion)) {
-            return 3;
-        } else {
             return 1;
+        } else if ("INACTIVE".equalsIgnoreCase(in.data.status.motion)) {
+            return 2;
+        } else {
+            return 0;
         }
     }
 
     private String fromDAO(ProcessedSensorDataDAOImpl dao) {
         if (dao.motion == null) {
             return "UNKNOWN";
-        } else if (dao.motion == 1) {
+        } else if (dao.motion == 0) {
             return "UNKNOWN";
-        } else if (dao.motion == 2) {
+        } else if (dao.motion == 1) {
             return "ACTIVE";
-        } else if (dao.motion == 3) {
+        } else if (dao.motion == 2) {
             return "INACTIVE";
         } else {
             return "UNKNOWN";
@@ -65,7 +65,7 @@ public class ProcessedSensorDataMapperImpl {
         var device = new DeviceInformationWithRecordsDTO(UUID.fromString(dao.deviceId), dao.deviceName, new DeviceRecordDTO(new HashSet<>()));
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
         var gpsDataDTO = new GPSDataDTO(originatingPoint.getLatitude(), originatingPoint.getLongitude());
-        var statusDTO = new StatusDataDTO().withMotion(fromDAO(dao));
+        var statusDTO = StatusDataDTO.withMotion(fromDAO(dao));
         var details = new SensorDataDetailsDTO().withGps(gpsDataDTO).withStatus(statusDTO);
         return new ProcessedSensorDataWithRecordsDTO(dataId, device, dao.reportedAt.getTime(), details);
     }

@@ -71,6 +71,9 @@ public class GPSDataCollector {
                     subSegment.add(steps.get(i));
                     i++;
                 }
+                if (steps.size() > i) {
+                    subSegment.add(steps.get(i));
+                }
                 i--;
                 preSegments.add(new GPSSensorDataHistorySegment(type, subSegment));
             }
@@ -94,15 +97,23 @@ public class GPSDataCollector {
             if (isUnknown == null) {
                 isUnknown = tempIsUnknown;
             } else if (isUnknown != tempIsUnknown) {
-                finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), new ArrayList<>(temp)));
+                finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), defineSegmentSteps(preSeg, temp)));
                 temp = new ArrayList<>();
                 isUnknown = null;
                 i--;
             }
         }
         if (isUnknown != null)
-            finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), new ArrayList<>(temp)));
+            finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), defineSegmentSteps(preSeg, temp)));
         return finalList;
+    }
+
+    private List<GPSSensorDataHistoryStep> defineSegmentSteps(GPSSensorDataHistorySegment preSeg, List<GPSSensorDataHistoryStep> steps) {
+        if (preSeg.type() == GPSSensorDataHistorySegmentType.INACTIVE) {
+            return List.of(steps.get(0), steps.get(steps.size() - 1));
+        } else {
+            return new ArrayList<>(steps);
+        }
     }
 
     private GPSSensorDataHistorySegmentType defineSegmentType(GPSSensorDataHistorySegment preSeg, Boolean isUnknown) {

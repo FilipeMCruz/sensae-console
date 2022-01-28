@@ -17,6 +17,7 @@ import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
 import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
 import {DeviceHistory} from "../../model/DeviceHistory";
 import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
+import {HistoryColorSetPicker} from "../../model/HistoryColorSet";
 
 @Component({
   selector: 'frontend-services-map',
@@ -24,6 +25,8 @@ import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy {
+
+  private historyColors = HistoryColorSetPicker.generateColorSet();
 
   private map!: mapboxgl.Map;
 
@@ -129,17 +132,16 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   addHistory() {
-    this.history.forEach(h => {
-      this.map.addSource('route-' + h.deviceId, h.asGeoJSON());
-      DeviceHistory.buildLayers('route-' + h.deviceId).forEach(layer => this.map.addLayer(layer));
+    this.history.forEach((h, index) => {
+      this.map.addSource(h.getSourceId(), h.asGeoJSON());
+      h.buildLayers(this.historyColors.filter(c => c.valid(index))[0]).forEach(layer => this.map.addLayer(layer));
     })
   }
 
   cleanHistory() {
     this.history.forEach(h => {
-      this.map.removeLayer('route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString());
-      this.map.removeLayer('route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString());
-      this.map.removeSource('route-' + h.deviceId);
+      h.getLayersId().forEach(l => this.map.removeLayer(l));
+      this.map.removeSource(h.getSourceId());
     });
     this.history.splice(0, this.history.length);
   }
@@ -159,31 +161,20 @@ export class MapComponent implements OnInit, OnDestroy {
     this.history.forEach(h => {
       const popup = new mapboxgl.Popup({maxWidth: 'none'});
       const distance = h.distance;
-      this.map.on('click', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), (e) => {
-        popup.setLngLat(e.lngLat)
-          .setHTML("<strong>Device Name:</strong> " + h.deviceName +
-            "<br><strong>Device Id:</strong> " + h.deviceId +
-            "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
-          .addTo(this.map);
-      });
-      this.map.on('click', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), (e) => {
-        popup.setLngLat(e.lngLat)
-          .setHTML("<strong>Device Name:</strong> " + h.deviceName +
-            "<br><strong>Device Id:</strong> " + h.deviceId +
-            "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
-          .addTo(this.map);
-      });
-      this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
-        this.map.getCanvas().style.cursor = 'pointer';
-      });
-      this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
-        this.map.getCanvas().style.cursor = '';
-      });
-      this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), () => {
-        this.map.getCanvas().style.cursor = 'pointer';
-      });
-      this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), () => {
-        this.map.getCanvas().style.cursor = '';
+      h.getLayersId().forEach(l => {
+        this.map.on('click', l, (e) => {
+          popup.setLngLat(e.lngLat)
+            .setHTML("<strong>Device Name:</strong> " + h.deviceName +
+              "<br><strong>Device Id:</strong> " + h.deviceId +
+              "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
+            .addTo(this.map);
+        });
+        this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
+          this.map.getCanvas().style.cursor = 'pointer';
+        });
+        this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
+          this.map.getCanvas().style.cursor = '';
+        });
       });
     })
   }

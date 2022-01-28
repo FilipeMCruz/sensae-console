@@ -62,7 +62,9 @@ export class SearchCardComponent {
     if (this.selectedDevices) {
       const devices = this.selectedDevices.value as Array<Device>;
       if (devices.length > 0) {
-        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, this.range.value.end));
+        const result = new Date(this.range.value.end);
+        result.setDate(result.getDate() + 1);
+        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, result));
       }
     }
   }

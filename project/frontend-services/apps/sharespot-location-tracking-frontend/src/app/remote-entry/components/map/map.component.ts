@@ -10,12 +10,13 @@ import {environment} from "../../../../environments/environment";
 import {SensorDataDTO} from "../../dtos/SensorDTO";
 import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByContent";
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
-import {DeviceHistory} from "../../model/DeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
 import {Device} from "../../model/Device";
 import {DeviceMapper} from "../../mappers/DeviceMapper";
 import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
 import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
+import {DeviceHistory} from "../../model/DeviceHistory";
+import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
 
 @Component({
   selector: 'frontend-services-map',
@@ -130,13 +131,14 @@ export class MapComponent implements OnInit, OnDestroy {
   addHistory() {
     this.history.forEach(h => {
       this.map.addSource('route-' + h.deviceId, h.asGeoJSON());
-      this.map.addLayer(DeviceHistory.buildLayer('route-' + h.deviceId));
+      DeviceHistory.buildLayers('route-' + h.deviceId).forEach(layer => this.map.addLayer(layer));
     })
   }
 
   cleanHistory() {
     this.history.forEach(h => {
-      this.map.removeLayer('route-' + h.deviceId);
+      this.map.removeLayer('route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString());
+      this.map.removeLayer('route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString());
       this.map.removeSource('route-' + h.deviceId);
     });
     this.history.splice(0, this.history.length);
@@ -157,17 +159,30 @@ export class MapComponent implements OnInit, OnDestroy {
     this.history.forEach(h => {
       const popup = new mapboxgl.Popup({maxWidth: 'none'});
       const distance = h.distance;
-      this.map.on('click', 'route-' + h.deviceId, (e) => {
+      this.map.on('click', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), (e) => {
         popup.setLngLat(e.lngLat)
           .setHTML("<strong>Device Name:</strong> " + h.deviceName +
             "<br><strong>Device Id:</strong> " + h.deviceId +
             "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
           .addTo(this.map);
       });
-      this.map.on('mouseenter', 'route-' + h.deviceId, () => {
+      this.map.on('click', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), (e) => {
+        popup.setLngLat(e.lngLat)
+          .setHTML("<strong>Device Name:</strong> " + h.deviceName +
+            "<br><strong>Device Id:</strong> " + h.deviceId +
+            "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
+          .addTo(this.map);
+      });
+      this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
         this.map.getCanvas().style.cursor = 'pointer';
       });
-      this.map.on('mouseleave', 'route-' + h.deviceId, () => {
+      this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+      this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
+      this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(), () => {
         this.map.getCanvas().style.cursor = '';
       });
     })

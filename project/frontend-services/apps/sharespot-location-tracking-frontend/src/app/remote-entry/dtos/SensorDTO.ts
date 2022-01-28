@@ -18,7 +18,7 @@ export interface SensorDataDTO {
   dataId: string;
   device: DeviceDTO;
   reportedAt: string;
-  data: SensorSataDetailsDTO;
+  data: SensorDataDetailsDTO;
 }
 
 export interface DeviceDTO {
@@ -36,7 +36,7 @@ export interface StatusDataDetailsDTO {
   motion: string;
 }
 
-export interface SensorSataDetailsDTO {
+export interface SensorDataDetailsDTO {
   gps: GPSDataDetailsDTO;
   status: StatusDataDetailsDTO;
 }
@@ -58,9 +58,27 @@ export interface GPSSensorDataHistory {
   startTime: string;
   endTime: string;
   distance: number;
-  data: Array<GPSDataDetailsDTO>;
+  segments: Array<GPSSegmentDetailsDTO>;
+}
+
+export interface GPSSegmentDetailsDTO {
+  type: GPSSegmentType,
+  steps: Array<GPSStepDetailsDTO>
+}
+
+export interface GPSStepDetailsDTO {
+  gps: GPSDataDetailsDTO;
+  status: StatusDataDetailsDTO;
+  reportedAt: string;
 }
 
 export interface GPSSensorLatestData {
   latest: Array<SensorDataDTO>;
+}
+
+export enum GPSSegmentType {
+  INACTIVE = "INACTIVE",
+  ACTIVE = "ACTIVE",
+  UNKNOWN_ACTIVE = "UNKNOWN_ACTIVE",
+  UNKNOWN_INACTIVE = "UNKNOWN_INACTIVE"
 }

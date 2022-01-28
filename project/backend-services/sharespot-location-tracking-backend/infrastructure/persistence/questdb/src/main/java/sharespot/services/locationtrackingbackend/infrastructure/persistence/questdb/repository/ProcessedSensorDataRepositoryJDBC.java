@@ -16,7 +16,7 @@ public interface ProcessedSensorDataRepositoryJDBC extends CrudRepository<Proces
 
     @Modifying
     @Query(value = "INSERT INTO data (data_id, device_name, device_id, gps_data, motion, reported_at, ts) VALUES ( :dataId, :deviceName, :deviceId, :gpsData, :motion, :reportedAt, now());")
-    void insert(@Param("dataId") String dataId, @Param("deviceName") String deviceName, @Param("deviceId") String deviceId, @Param("gpsData") String gpsData, @Param("motion") Byte motion, @Param("reportedAt") Timestamp reportedAt);
+    void insert(@Param("dataId") String dataId, @Param("deviceName") String deviceName, @Param("deviceId") String deviceId, @Param("gpsData") String gpsData, @Param("motion") String motion, @Param("reportedAt") Timestamp reportedAt);
 
     @Query(value = "SELECT * FROM data WHERE datediff('m', reported_at, :reportedAt) < :time_span AND device_id = :deviceId;")
     List<ProcessedSensorDataDAOImpl> latestDeviceDataInTime(@Param("deviceId") String deviceId, @Param("reportedAt") String reportedAt, @Param("time_span") Integer timeSpanMinutes);

@@ -13,7 +13,6 @@ export class QueryGPSDeviceHistory {
   }
 
   getData(filters: GPSSensorDataQuery): Observable<FetchResult<HistorySensorDTO>> {
-    console.log(filters)
     const query = gql`
       query history($filters: GPSSensorDataQuery){
         history(filters: $filters){
@@ -22,9 +21,18 @@ export class QueryGPSDeviceHistory {
           startTime
           endTime
           distance
-          data{
-            longitude
-            latitude
+          segments {
+            type
+            steps {
+              status {
+                motion
+              }
+              reportedAt
+              gps {
+                longitude
+                latitude
+              }
+            }
           }
         }
       }

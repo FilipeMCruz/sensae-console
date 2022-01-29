@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 @Service
 public class GPSDataCollector {
 
-    public static final int MAX_TIME_BETWEEN_INFO_IN_SECONDS = 60;
     private final ProcessedSensorDataRepository repository;
 
     @Value("${sharespot.location.heuristic.motion.detection.distance}")
     public double DISTANCE_IN_KM;
+
+    @Value("${sharespot.location.heuristic.complete.history.maxtime.window}")
+    public int MAX_TIME_BETWEEN_INFO_IN_SECONDS;
 
     public GPSDataCollector(ProcessedSensorDataRepository repository) {
         this.repository = repository;

@@ -193,13 +193,23 @@ export class MapComponent implements OnInit, OnDestroy {
           const end = new Date(info.end);
           const startDisplay = start.toLocaleDateString() + " " + start.toLocaleTimeString();
           const endDisplay = end.toLocaleDateString() + " " + end.toLocaleTimeString();
-          const diffTime = new Date(end.getTime() - start.getTime()).toISOString().slice(11, -5);
-          popup.setLngLat(e.lngLat)
-            .setHTML("<strong>Device Name:</strong> " + h.deviceName +
+          const diffTime = new Date(end.getTime() - start.getTime());
+          const diffTimeDisplay = diffTime.toISOString().slice(11, -5);
+          let toDisplay;
+          if (diffTime.getTime() === 0) {
+            toDisplay = "<strong>Device Name:</strong> " + h.deviceName +
+              "<br><strong>Device Id:</strong> " + h.deviceId +
+              "<br><strong>Date:</strong> " + startDisplay;
+          } else {
+            toDisplay = "<strong>Device Name:</strong> " + h.deviceName +
               "<br><strong>Device Id:</strong> " + h.deviceId +
               "<br><strong>Start Date:</strong> " + startDisplay +
               "<br><strong>End Date:</strong> " + endDisplay +
-              "<br><strong>Stop Duration:</strong> " + diffTime)
+              "<br><strong>Stop Duration:</strong> " + diffTimeDisplay;
+          }
+
+          popup.setLngLat(e.lngLat)
+            .setHTML(toDisplay)
             .addTo(this.map);
         }
       });

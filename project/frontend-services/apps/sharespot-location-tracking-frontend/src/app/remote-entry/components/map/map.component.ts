@@ -18,6 +18,7 @@ import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
 import {DeviceHistory} from "../../model/DeviceHistory";
 import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
 import {HistoryColorSetPicker} from "../../model/HistoryColorSet";
+import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
 
 @Component({
   selector: 'frontend-services-map',
@@ -43,6 +44,7 @@ export class MapComponent implements OnInit, OnDestroy {
   devices: Array<Device> = [];
 
   constructor(private locationEmitter: SubscribeToAllGPSData,
+              private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
               private locationByDeviceIdEmitter: SubscribeToGPSDataByDevice,
               private locationByContentEmitter: SubscribeToGPSDataByContent,
               private historyQuery: QueryGPSDeviceHistory,
@@ -98,31 +100,37 @@ export class MapComponent implements OnInit, OnDestroy {
   subscribeToDevice(devices: Array<Device>) {
     this.cleanHistory();
     this.subscription.unsubscribe();
-    this.points.forEach((sensor, index, array) => {
-      if (!sensor.value.isAny(devices)) {
-        sensor.point.remove();
-        array.splice(index, 1);
-      }
-    });
 
-    this.subscription = this.locationByDeviceIdEmitter.getData(devices.map(d => d.id)).subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) {
-          this.verifyAndDraw(next.data.locations, false)
+    const toRemove = this.points.filter(sensor => !sensor.value.isAny(devices));
+    toRemove.forEach(p => p.point.remove());
+    this.points = this.points.filter(sensor => sensor.value.isAny(devices));
+
+    const idsToReFetch = devices.filter(d => !this.points.some(old => old.value.device.id === d.id)).map(d => d.id);
+    if (idsToReFetch.length !== 0) {
+      this.latestSpecificDeviceData.getData(idsToReFetch).subscribe(
+        next => {
+          if (next.data && next.data.latestByDevice) {
+            next.data.latestByDevice.forEach(d => this.verifyAndDraw(d, true));
+          }
         }
-      }
-    );
+      );
+      this.subscription = this.locationByDeviceIdEmitter.getData(idsToReFetch).subscribe(
+        next => {
+          if (next.data !== undefined && next.data !== null) {
+            this.verifyAndDraw(next.data.locations, false)
+          }
+        }
+      );
+    }
   }
 
   subscribeToContent(content: string) {
     this.cleanHistory();
     this.subscription.unsubscribe();
-    this.points.forEach((sensor, index, array) => {
-      if (!sensor.value.device.hasContent(content)) {
-        sensor.point.remove();
-        array.splice(index, 1);
-      }
-    });
+
+    const toRemove = this.points.filter(sensor => !sensor.value.device.hasContent(content));
+    toRemove.forEach(p => p.point.remove());
+    this.points = this.points.filter(sensor => sensor.value.device.hasContent(content));
 
     this.subscription = this.locationByContentEmitter.getData(content).subscribe(
       next => {

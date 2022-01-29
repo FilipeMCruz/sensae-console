@@ -76,6 +76,10 @@ export interface GPSSensorLatestData {
   latest: Array<SensorDataDTO>;
 }
 
+export interface FilteredByDeviceGPSSensorLatestData {
+  latestByDevice: Array<SensorDataDTO>;
+}
+
 export enum GPSSegmentType {
   INACTIVE = "INACTIVE",
   ACTIVE = "ACTIVE",

@@ -93,6 +93,8 @@ export class DataTransformationComponent implements OnChanges {
       return "thermostat";
     } else if (nameType === PropertyName.REPORTED_AT) {
       return "schedule";
+    } else if (nameType === PropertyName.MOTION) {
+      return "gesture";
     }
     return "error";
   }

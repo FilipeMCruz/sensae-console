@@ -16,9 +16,9 @@ import {DeviceMapper} from "../../mappers/DeviceMapper";
 import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
 import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
 import {DeviceHistory} from "../../model/DeviceHistory";
-import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
 import {HistoryColorSetPicker} from "../../model/HistoryColorSet";
 import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
+import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
 
 @Component({
   selector: 'frontend-services-map',
@@ -168,21 +168,46 @@ export class MapComponent implements OnInit, OnDestroy {
   private calculateDistance() {
     this.history.forEach(h => {
       const popup = new mapboxgl.Popup({maxWidth: 'none'});
-      const distance = h.distance;
-      h.getLayersId().forEach(l => {
+      h.getLayersId().filter(l => !l.endsWith(DeviceHistorySegmentType.INACTIVE.toString())).forEach(l => {
         this.map.on('click', l, (e) => {
+          if (e.features && e.features[0].properties != null) {
+            popup.setLngLat(e.lngLat)
+              .setHTML("<strong>Device Name:</strong> " + h.deviceName +
+                "<br><strong>Device Id:</strong> " + h.deviceId +
+                "<br><strong>Distance Travelled:</strong> " + e.features[0].properties.distance + " kilometers.")
+              .addTo(this.map);
+          }
+        });
+        this.map.on('mouseenter', l, () => {
+          this.map.getCanvas().style.cursor = 'pointer';
+        });
+        this.map.on('mouseleave', l, () => {
+          this.map.getCanvas().style.cursor = '';
+        });
+      });
+      const inactiveLayer = h.getLayerId(DeviceHistorySegmentType.INACTIVE);
+      this.map.on('click', inactiveLayer, (e) => {
+        if (e.features && e.features[0].properties != null) {
+          const info = e.features[0].properties;
+          const start = new Date(info.start);
+          const end = new Date(info.end);
+          const startDisplay = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+          const endDisplay = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+          const diffTime = new Date(end.getTime() - start.getTime()).toISOString().slice(11, -5);
           popup.setLngLat(e.lngLat)
             .setHTML("<strong>Device Name:</strong> " + h.deviceName +
               "<br><strong>Device Id:</strong> " + h.deviceId +
-              "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
+              "<br><strong>Start Date:</strong> " + startDisplay +
+              "<br><strong>End Date:</strong> " + endDisplay +
+              "<br><strong>Stop Duration:</strong> " + diffTime)
             .addTo(this.map);
-        });
-        this.map.on('mouseenter', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
-          this.map.getCanvas().style.cursor = 'pointer';
-        });
-        this.map.on('mouseleave', 'route-' + h.deviceId + "-" + DeviceHistorySegmentType.ACTIVE.toString(), () => {
-          this.map.getCanvas().style.cursor = '';
-        });
+        }
+      });
+      this.map.on('mouseenter', inactiveLayer, () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
+      this.map.on('mouseleave', inactiveLayer, () => {
+        this.map.getCanvas().style.cursor = '';
       });
     })
   }

@@ -72,23 +72,18 @@ export class DeviceHistory {
       },
       paint: {
         'line-dasharray': [2, 4],
-        'line-color': '#00ff00',
+        'line-color': '#f34044',
         'line-width': 2,
       },
       'filter': ['==', ['get', 'status'], DeviceHistorySegmentType.UNKNOWN_INACTIVE.toString()]
     });
     layers.push({
       id: this.getLayerId(DeviceHistorySegmentType.INACTIVE),
-      type: 'line',
+      type: 'circle',
       source: id,
-      layout: {
-        'line-join': 'round',
-        'line-cap': 'round'
-      },
       paint: {
-        'line-dasharray': [2, 4],
-        'line-color': '#ff0000',
-        'line-width': 2,
+        'circle-radius': 8,
+        'circle-color': '#f34044',
       },
       'filter': ['==', ['get', 'status'], DeviceHistorySegmentType.INACTIVE.toString()]
     });
@@ -99,7 +94,6 @@ export class DeviceHistory {
   asGeoJSON(): GeoJSONSourceRaw {
     return {
       type: 'geojson',
-      // lineMetrics: true,
       data: {
         type: 'FeatureCollection',
         features: this.buildFeatures()
@@ -113,16 +107,34 @@ export class DeviceHistory {
     console.log("Nº unknown active seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_ACTIVE).length)
     console.log("Nº inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.INACTIVE).length)
     console.log("Nº unknown inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_INACTIVE).length)
+    console.log("Inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.INACTIVE))
+    console.log("Unknown Inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_INACTIVE))
     return this.segments.filter(s => s.steps.length != 1).map(seg => {
       const coordinates = seg.steps.map(d => [d.gps.longitude, d.gps.latitude]);
-      return {
-        type: 'Feature',
-        properties: {
-          status: seg.type.toString()
-        },
-        geometry: {
-          type: 'LineString',
-          coordinates
+      if (seg.type !== DeviceHistorySegmentType.INACTIVE) {
+        return {
+          type: 'Feature',
+          properties: {
+            status: seg.type.toString(),
+            distance: this.distance
+          },
+          geometry: {
+            type: 'LineString',
+            coordinates
+          }
+        }
+      } else {
+        return {
+          type: 'Feature',
+          properties: {
+            status: seg.type.toString(),
+            start: seg.steps[0].reportedAt,
+            end: seg.steps[1].reportedAt
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: coordinates[0],
+          }
         }
       }
     })

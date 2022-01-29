@@ -1,5 +1,6 @@
 package sharespot.services.locationtrackingbackend.application;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import sharespot.services.locationtrackingbackend.domain.ProcessedSensorDataRepository;
@@ -19,6 +20,9 @@ public class GPSDataCollector {
 
     public static final int MAX_TIME_BETWEEN_INFO_IN_SECONDS = 60;
     private final ProcessedSensorDataRepository repository;
+
+    @Value("${sharespot.location.heuristic.motion.detection.distance}")
+    public double DISTANCE_IN_KM;
 
     public GPSDataCollector(ProcessedSensorDataRepository repository) {
         this.repository = repository;
@@ -85,6 +89,52 @@ public class GPSDataCollector {
     }
 
     private List<GPSSensorDataHistorySegment> splitPreSegments(GPSSensorDataHistorySegment preSeg) {
+        if (preSeg.type() == GPSSensorDataHistorySegmentType.ACTIVE) {
+            return splitActivePreSegments(preSeg);
+        } else {
+            return splitInactivePreSegments(preSeg);
+        }
+    }
+
+    private List<GPSSensorDataHistorySegment> splitInactivePreSegments(GPSSensorDataHistorySegment preSeg) {
+        var finalList = new ArrayList<GPSSensorDataHistorySegment>();
+        var temp = new ArrayList<GPSSensorDataHistoryStep>();
+
+        for (int i = 0; i < preSeg.steps().size() - 1; i++) {
+            GPSSensorDataHistoryStep first = preSeg.steps().get(i);
+            GPSSensorDataHistoryStep second = preSeg.steps().get(i + 1);
+            temp.add(first);
+            var isNewSeg = isNewSeg(first, second);
+            if (isNewSeg) {
+                finalList.add(prepareInactiveSubSegment(temp, preSeg));
+                finalList.add(createSubSegment(preSeg, List.of(first, second), true));
+                temp.clear();
+            }
+        }
+        if (temp.size() != 0) {
+            finalList.add(prepareInactiveSubSegment(temp, preSeg));
+        }
+        return finalList;
+    }
+
+    private GPSSensorDataHistorySegment prepareInactiveSubSegment(ArrayList<GPSSensorDataHistoryStep> temp, GPSSensorDataHistorySegment preSeg) {
+        if (temp.size() == 1) {
+            return createSubSegment(preSeg, List.of(temp.get(0), temp.get(0)), false);
+        } else {
+            return createSubSegment(preSeg, List.of(temp.get(0), temp.get(temp.size() - 1)), false);
+        }
+    }
+
+    private boolean isNewSeg(GPSSensorDataHistoryStep first, GPSSensorDataHistoryStep second) {
+        var isUnknown = Math.abs(first.reportedAt() - second.reportedAt()) > MAX_TIME_BETWEEN_INFO_IN_SECONDS * 1000;
+        if (isUnknown) {
+            return Haversine.calcHaversine(first.gps(), second.gps()) > DISTANCE_IN_KM;
+        } else {
+            return false;
+        }
+    }
+
+    private List<GPSSensorDataHistorySegment> splitActivePreSegments(GPSSensorDataHistorySegment preSeg) {
         var finalList = new ArrayList<GPSSensorDataHistorySegment>();
         var temp = new ArrayList<GPSSensorDataHistoryStep>();
         Boolean isUnknown = null;
@@ -97,15 +147,19 @@ public class GPSDataCollector {
             if (isUnknown == null) {
                 isUnknown = tempIsUnknown;
             } else if (isUnknown != tempIsUnknown) {
-                finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), defineSegmentSteps(preSeg, temp)));
-                temp = new ArrayList<>();
+                finalList.add(createSubSegment(preSeg, temp, isUnknown));
+                temp.clear();
                 isUnknown = null;
                 i--;
             }
         }
         if (isUnknown != null)
-            finalList.add(new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), defineSegmentSteps(preSeg, temp)));
+            finalList.add(createSubSegment(preSeg, temp, isUnknown));
         return finalList;
+    }
+
+    private GPSSensorDataHistorySegment createSubSegment(GPSSensorDataHistorySegment preSeg, List<GPSSensorDataHistoryStep> steps, Boolean isUnknown) {
+        return new GPSSensorDataHistorySegment(defineSegmentType(preSeg, isUnknown), defineSegmentSteps(preSeg, steps));
     }
 
     private List<GPSSensorDataHistoryStep> defineSegmentSteps(GPSSensorDataHistorySegment preSeg, List<GPSSensorDataHistoryStep> steps) {

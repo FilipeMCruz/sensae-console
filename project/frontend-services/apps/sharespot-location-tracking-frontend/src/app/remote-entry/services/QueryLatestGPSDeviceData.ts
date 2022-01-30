@@ -4,7 +4,7 @@ import {GPSSensorLatestData} from "../dtos/SensorDTO";
 import {Injectable} from "@angular/core";
 import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "./ObservableFunctions";
-import {SensorMapper} from "../mappers/SensorMapper";
+import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
 
 @Injectable({
@@ -46,7 +46,7 @@ export class QueryLatestGPSDeviceData {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: GPSSensorLatestData) => data.latest.map(s => SensorMapper.dtoToModel(s)))
+        map((data: GPSSensorLatestData) => data.latest.map(s => DeviceLiveDataMapper.dtoToModel(s)))
       );
   }
 }

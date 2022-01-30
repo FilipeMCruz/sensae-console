@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {SensorDTO} from "../dtos/SensorDTO";
 import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "./ObservableFunctions";
-import {SensorMapper} from "../mappers/SensorMapper";
+import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
 
 @Injectable({
@@ -46,7 +46,7 @@ export class SubscribeToAllGPSData {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: SensorDTO) => SensorMapper.dtoToModel(data.locations))
+        map((data: SensorDTO) => DeviceLiveDataMapper.dtoToModel(data.locations))
       );
   }
 }

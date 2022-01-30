@@ -1,7 +1,6 @@
-import {DeviceHistorySegment} from "./DeviceHistorySegment";
+import {DeviceHistorySegment, DeviceHistorySegmentType} from "./DeviceHistorySegment";
 import {GeoJSONSourceRaw, LineLayer} from "mapbox-gl";
 import {Feature} from "geojson";
-import {DeviceHistorySegmentType} from "./DeviceHistorySegmentType";
 import {HistoryColorSet} from "./HistoryColorSet";
 
 export class DeviceHistory {

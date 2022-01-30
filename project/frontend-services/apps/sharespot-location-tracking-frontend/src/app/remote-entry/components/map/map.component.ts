@@ -4,20 +4,18 @@ import {DeviceData} from "../../model/livedata/DeviceData";
 import {GPSPointData} from "../../model/livedata/GPSPointData";
 import {Subscription} from "rxjs";
 import {SubscribeToAllGPSData} from "../../services/SubscribeToAllGPSData";
-import {SensorMapper} from "../../mappers/SensorMapper";
 import {SubscribeToGPSDataByDevice} from "../../services/SubscribeToGPSDataByDevice";
 import {environment} from "../../../../environments/environment";
-import {SensorDataDTO} from "../../dtos/SensorDTO";
 import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByContent";
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
 import {Device} from "../../model/Device";
 import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
-import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
+import {DevicePastDataMapper} from "../../mappers/DevicePastDataMapper";
 import {DeviceHistory} from "../../model/pastdata/DeviceHistory";
 import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
-import {DeviceHistorySegmentType} from "../../model/pastdata/DeviceHistorySegmentType";
 import {HistoryColorSet} from "../../model/pastdata/HistoryColorSet";
+import {DeviceHistorySegmentType} from "../../model/pastdata/DeviceHistorySegment";
 
 @Component({
   selector: 'frontend-services-map',
@@ -69,7 +67,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.points.forEach(p => p.point.remove());
     this.points.splice(0, this.points.length);
     this.subscription.unsubscribe();
-    this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters))
+    this.historyQuery.getData(DevicePastDataMapper.modelToDto(filters))
       .subscribe(next => {
         this.cleanHistory();
         this.history = next;

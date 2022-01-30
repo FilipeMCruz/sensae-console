@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {FetchResult} from "@apollo/client/core";
 import {FilteredByContentSensorDTO, SensorDTO} from "../dtos/SensorDTO";
 import {filter, map} from "rxjs/operators";
-import {SensorMapper} from "../mappers/SensorMapper";
+import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
 import {extract, isNonNull} from "./ObservableFunctions";
 
@@ -47,7 +47,7 @@ export class SubscribeToGPSDataByContent {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: FilteredByContentSensorDTO) => SensorMapper.dtoToModel(data.locationByContent))
+        map((data: FilteredByContentSensorDTO) => DeviceLiveDataMapper.dtoToModel(data.locationByContent))
       );
   }
 }

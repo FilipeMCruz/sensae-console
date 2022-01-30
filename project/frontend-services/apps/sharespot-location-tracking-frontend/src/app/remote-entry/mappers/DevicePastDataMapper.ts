@@ -1,40 +1,28 @@
 import {
   GPSSegmentDetailsDTO,
   GPSSegmentType,
+  GPSSensorDataQuery,
   GPSStepDetailsDTO,
-  HistorySensorDTO,
-  SensorDataDTO
-} from '../dtos/SensorDTO';
-import {DeviceCoordinates} from '../model/DeviceCoordinates';
-import {DeviceData} from "../model/livedata/DeviceData";
-import {RecordEntry} from "../model/livedata/RecordEntry";
-import {Device} from "../model/Device";
-import {DeviceStatus, MotionType} from "../model/DeviceStatus";
-import {DeviceDataDetails} from "../model/livedata/DeviceDataDetails";
-import {DeviceHistorySegment} from "../model/pastdata/DeviceHistorySegment";
+  HistorySensorDTO
+} from "../dtos/SensorDTO";
+import {DeviceHistoryQuery} from "../model/pastdata/DeviceHistoryQuery";
 import {DeviceHistory} from "../model/pastdata/DeviceHistory";
-import {DeviceHistorySegmentType} from "../model/pastdata/DeviceHistorySegmentType";
+import {DeviceHistorySegment, DeviceHistorySegmentType} from "../model/pastdata/DeviceHistorySegment";
 import {DeviceHistoryStep} from "../model/pastdata/DeviceHistoryStep";
+import {DeviceStatus, MotionType} from "../model/DeviceStatus";
+import {DeviceCoordinates} from "../model/DeviceCoordinates";
 
-export class SensorMapper {
+export class DevicePastDataMapper {
 
-  static dtoToModel(value: SensorDataDTO): DeviceData {
-    const coordinates = new DeviceCoordinates(value.data.gps.latitude, value.data.gps.longitude);
-    let status;
-    if (value.data.status.motion == "ACTIVE") {
-      status = new DeviceStatus(MotionType.ACTIVE);
-    } else if (value.data.status.motion == "INACTIVE") {
-      status = new DeviceStatus(MotionType.INACTIVE);
-    } else {
-      status = new DeviceStatus(MotionType.UNKWOWN);
+  static modelToDto(value: DeviceHistoryQuery): GPSSensorDataQuery {
+    return {
+      device: value.devices.map(d => d.id),
+      endTime: Math.round(value.endTime.getTime() / 1000).toString(),
+      startTime: Math.round(value.startTime.getTime() / 1000).toString()
     }
-    const details = new DeviceDataDetails(coordinates, status);
-    const entries = value.device.records.map(e => new RecordEntry(e.label, e.content));
-    const sensor = new Device(value.device.id, value.device.name, entries);
-    return new DeviceData(value.dataId, sensor, new Date(Number(value.reportedAt)), details);
   }
 
-  static dtoToModelHistory(dto: HistorySensorDTO): Array<DeviceHistory> {
+  static dtoToModel(dto: HistorySensorDTO): Array<DeviceHistory> {
     return dto.history.map(h => {
       const segments = h.segments.map(d => this.dtoToModelSeg(d));
       return new DeviceHistory(h.deviceName,

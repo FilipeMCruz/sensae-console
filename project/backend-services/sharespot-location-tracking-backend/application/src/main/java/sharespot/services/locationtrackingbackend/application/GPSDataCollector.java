@@ -128,7 +128,7 @@ public class GPSDataCollector {
     }
 
     private boolean isNewSeg(GPSSensorDataHistoryStep first, GPSSensorDataHistoryStep second) {
-        var isUnknown = Math.abs(first.reportedAt() - second.reportedAt()) > MAX_TIME_BETWEEN_INFO_IN_SECONDS * 1000;
+        var isUnknown = Math.abs(first.reportedAt() - second.reportedAt()) > MAX_TIME_BETWEEN_INFO_IN_SECONDS * 1000L;
         if (isUnknown) {
             return Haversine.calcHaversine(first.gps(), second.gps()) > DISTANCE_IN_KM;
         } else {

@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Device} from "../../model/Device";
 import {FormControl, FormGroup} from "@angular/forms";
-import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
+import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
 
 @Component({
   selector: 'frontend-services-search-card',

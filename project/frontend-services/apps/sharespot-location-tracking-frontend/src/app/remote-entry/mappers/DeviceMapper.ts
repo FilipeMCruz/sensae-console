@@ -1,5 +1,5 @@
 import {DeviceDTO} from "../dtos/SensorDTO";
-import {RecordEntry} from "../model/RecordEntry";
+import {RecordEntry} from "../model/livedata/RecordEntry";
 import {Device} from "../model/Device";
 
 export class DeviceMapper {

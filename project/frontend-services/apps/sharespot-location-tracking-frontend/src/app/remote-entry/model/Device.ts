@@ -1,4 +1,4 @@
-import {RecordEntry} from "./RecordEntry";
+import {RecordEntry} from "./livedata/RecordEntry";
 
 export class Device {
   constructor(public id: string, public name: string, public records: Array<RecordEntry>) {

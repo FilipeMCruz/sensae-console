@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {DeviceData} from "../../model/DeviceData";
-import {GPSPointData} from "../../model/GPSPointData";
+import {DeviceData} from "../../model/livedata/DeviceData";
+import {GPSPointData} from "../../model/livedata/GPSPointData";
 import {Subscription} from "rxjs";
 import {SubscribeToAllGPSData} from "../../services/SubscribeToAllGPSData";
 import {SensorMapper} from "../../mappers/SensorMapper";
@@ -12,13 +12,12 @@ import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByCo
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
 import {Device} from "../../model/Device";
-import {DeviceMapper} from "../../mappers/DeviceMapper";
-import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
+import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
 import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
-import {DeviceHistory} from "../../model/DeviceHistory";
-import {HistoryColorSetPicker} from "../../model/HistoryColorSet";
+import {DeviceHistory} from "../../model/pastdata/DeviceHistory";
 import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
-import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
+import {DeviceHistorySegmentType} from "../../model/pastdata/DeviceHistorySegmentType";
+import {HistoryColorSet} from "../../model/pastdata/HistoryColorSet";
 
 @Component({
   selector: 'frontend-services-map',
@@ -26,8 +25,6 @@ import {DeviceHistorySegmentType} from "../../model/DeviceHistorySegmentType";
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit, OnDestroy {
-
-  private historyColors = HistoryColorSetPicker.generateColorSet();
 
   private map!: mapboxgl.Map;
 
@@ -55,17 +52,13 @@ export class MapComponent implements OnInit, OnDestroy {
     this.initializeMap();
     this.latestDeviceData.getData().subscribe(
       next => {
-        if (next.data && next.data.latest) {
-          next.data.latest.forEach(d => this.verifyAndDraw(d, true));
-          this.devices = next.data.latest.map(d => DeviceMapper.dtoToModel(d.device));
-        }
-      }
-    );
-    this.subscription = this.locationEmitter.getData().subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+        next.forEach(d => this.drawPoint(d, true));
+        this.devices = next.map(d => d.device);
+      });
+
+    this.subscription = this.locationEmitter
+      .getData()
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   ngOnDestroy() {
@@ -76,30 +69,28 @@ export class MapComponent implements OnInit, OnDestroy {
     this.points.forEach(p => p.point.remove());
     this.points.splice(0, this.points.length);
     this.subscription.unsubscribe();
-    this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters)).subscribe(
-      next => {
-        if (next.data != undefined) {
-          this.cleanHistory();
-          this.history = SensorMapper.dtoToModelHistory(next.data);
-          this.addHistory();
-          this.calculateDistance();
-        }
-      }
-    )
+    this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters))
+      .subscribe(next => {
+        this.cleanHistory();
+        this.history = next;
+        this.addHistory();
+        this.calculateDistance();
+      });
   }
 
   cleanSubscriber() {
     this.subscription.unsubscribe();
-    this.subscription = this.locationEmitter.getData().subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+    this.subscription = this.locationEmitter
+      .getData()
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   subscribeToDevice(devices: Array<Device>) {
     this.cleanHistory();
     this.subscription.unsubscribe();
+    this.subscription = this.locationByDeviceIdEmitter
+      .getData(devices.map(d => d.id))
+      .subscribe(next => this.drawPoint(next, false));
 
     const toRemove = this.points.filter(sensor => !sensor.value.isAny(devices));
     toRemove.forEach(p => p.point.remove());
@@ -107,20 +98,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
     const idsToReFetch = devices.filter(d => !this.points.some(old => old.value.device.id === d.id)).map(d => d.id);
     if (idsToReFetch.length !== 0) {
-      this.latestSpecificDeviceData.getData(idsToReFetch).subscribe(
-        next => {
-          if (next.data && next.data.latestByDevice) {
-            next.data.latestByDevice.forEach(d => this.verifyAndDraw(d, true));
-          }
-        }
-      );
-      this.subscription = this.locationByDeviceIdEmitter.getData(idsToReFetch).subscribe(
-        next => {
-          if (next.data !== undefined && next.data !== null) {
-            this.verifyAndDraw(next.data.locations, false)
-          }
-        }
-      );
+      this.latestSpecificDeviceData
+        .getData(idsToReFetch)
+        .subscribe(next => next.forEach(d => this.drawPoint(d, true)));
     }
   }
 
@@ -132,17 +112,15 @@ export class MapComponent implements OnInit, OnDestroy {
     toRemove.forEach(p => p.point.remove());
     this.points = this.points.filter(sensor => sensor.value.device.hasContent(content));
 
-    this.subscription = this.locationByContentEmitter.getData(content).subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+    this.subscription = this.locationByContentEmitter
+      .getData(content)
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   addHistory() {
     this.history.forEach((h, index) => {
       this.map.addSource(h.getSourceId(), h.asGeoJSON());
-      h.buildLayers(this.historyColors.filter(c => c.valid(index))[0]).forEach(layer => this.map.addLayer(layer));
+      h.buildLayers(HistoryColorSet.get(index)).forEach(layer => this.map.addLayer(layer));
     })
   }
 
@@ -220,12 +198,6 @@ export class MapComponent implements OnInit, OnDestroy {
         this.map.getCanvas().style.cursor = '';
       });
     })
-  }
-
-  private verifyAndDraw(data: SensorDataDTO | null | undefined, last: boolean) {
-    if (data !== undefined && data !== null) {
-      this.drawPoint(SensorMapper.dtoToModel(data), last);
-    }
   }
 
   private initializeMap(): void {

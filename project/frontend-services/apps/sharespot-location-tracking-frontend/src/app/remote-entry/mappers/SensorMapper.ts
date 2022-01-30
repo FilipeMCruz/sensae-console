@@ -6,15 +6,15 @@ import {
   SensorDataDTO
 } from '../dtos/SensorDTO';
 import {DeviceCoordinates} from '../model/DeviceCoordinates';
-import {DeviceData} from "../model/DeviceData";
-import {RecordEntry} from "../model/RecordEntry";
+import {DeviceData} from "../model/livedata/DeviceData";
+import {RecordEntry} from "../model/livedata/RecordEntry";
 import {Device} from "../model/Device";
 import {DeviceStatus, MotionType} from "../model/DeviceStatus";
-import {DeviceDataDetails} from "../model/DeviceDataDetails";
-import {DeviceHistorySegment} from "../model/DeviceHistorySegment";
-import {DeviceHistory} from "../model/DeviceHistory";
-import {DeviceHistorySegmentType} from "../model/DeviceHistorySegmentType";
-import {DeviceHistoryStep} from "../model/DeviceHistoryStep";
+import {DeviceDataDetails} from "../model/livedata/DeviceDataDetails";
+import {DeviceHistorySegment} from "../model/pastdata/DeviceHistorySegment";
+import {DeviceHistory} from "../model/pastdata/DeviceHistory";
+import {DeviceHistorySegmentType} from "../model/pastdata/DeviceHistorySegmentType";
+import {DeviceHistoryStep} from "../model/pastdata/DeviceHistoryStep";
 
 export class SensorMapper {
 

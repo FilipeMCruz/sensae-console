@@ -1,5 +1,5 @@
 import {GPSSensorDataQuery} from "../dtos/SensorDTO";
-import {DeviceHistoryQuery} from "../model/DeviceHistoryQuery";
+import {DeviceHistoryQuery} from "../model/pastdata/DeviceHistoryQuery";
 
 export class DeviceHistoryMapper {
 

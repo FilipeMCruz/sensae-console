@@ -1,8 +1,11 @@
 import {Injectable} from "@angular/core";
 import {Apollo, gql} from "apollo-angular";
 import {Observable} from "rxjs";
-import {FetchResult} from "@apollo/client/core";
 import {SensorDTO} from "../dtos/SensorDTO";
+import {filter, map} from "rxjs/operators";
+import {extract, isNonNull} from "./ObservableFunctions";
+import {SensorMapper} from "../mappers/SensorMapper";
+import {DeviceData} from "../model/livedata/DeviceData";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class SubscribeToAllGPSData {
   constructor(private apollo: Apollo) {
   }
 
-  getData(): Observable<FetchResult<SensorDTO>> {
+  getData(): Observable<DeviceData> {
     const query = gql`
       subscription locations{
         locations{
@@ -39,6 +42,11 @@ export class SubscribeToAllGPSData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query});
+    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query})
+      .pipe(
+        map(extract),
+        filter(isNonNull),
+        map((data: SensorDTO) => SensorMapper.dtoToModel(data.locations))
+      );
   }
 }

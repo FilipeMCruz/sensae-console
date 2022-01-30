@@ -4,8 +4,9 @@ import {GPSSensorDataQuery, HistorySensorDTO} from "../dtos/SensorDTO";
 import {Injectable} from "@angular/core";
 import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "./ObservableFunctions";
-import {DeviceHistory} from "../model/pastdata/DeviceHistory";
 import {DevicePastDataMapper} from "../mappers/DevicePastDataMapper";
+import {DeviceHistorySource} from "../model/pastdata/DeviceHistorySource";
+import {DeviceHistory} from "../model/pastdata/DeviceHistory";
 
 @Injectable({
   providedIn: 'root'

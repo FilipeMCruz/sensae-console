@@ -1,5 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import {GeoJSONSource} from 'mapbox-gl';
 import {DeviceData} from "../../model/livedata/DeviceData";
 import {GPSPointData} from "../../model/livedata/GPSPointData";
 import {Subscription} from "rxjs";
@@ -12,10 +13,9 @@ import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData"
 import {Device} from "../../model/Device";
 import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
 import {DevicePastDataMapper} from "../../mappers/DevicePastDataMapper";
-import {DeviceHistory} from "../../model/pastdata/DeviceHistory";
 import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
-import {HistoryColorSet} from "../../model/pastdata/HistoryColorSet";
 import {DeviceHistorySegmentType} from "../../model/pastdata/DeviceHistorySegment";
+import {DeviceHistorySource} from "../../model/pastdata/DeviceHistorySource";
 
 @Component({
   selector: 'frontend-services-map',
@@ -32,7 +32,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
-  private history: Array<DeviceHistory> = [];
+  private history = new DeviceHistorySource();
 
   private subscription!: Subscription;
 
@@ -70,9 +70,9 @@ export class MapComponent implements OnInit, OnDestroy {
     this.historyQuery.getData(DevicePastDataMapper.modelToDto(filters))
       .subscribe(next => {
         this.cleanHistory();
-        this.history = next;
+        this.history.setHistories(next);
         this.addHistory();
-        this.calculateDistance();
+        this.setPopups();
       });
   }
 
@@ -116,18 +116,26 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   addHistory() {
-    this.history.forEach((h, index) => {
-      this.map.addSource(h.getSourceId(), h.asGeoJSON());
-      h.buildLayers(HistoryColorSet.get(index)).forEach(layer => this.map.addLayer(layer));
-    })
+    this.history.getPathSources().forEach(history => this.map.addSource(history.id, history.source))
+    this.history.getPathLayers().forEach(layer => this.map.addLayer(layer));
+
+    this.map.addSource(this.history.getStepSourceId(), this.history.asGeoJSONForTime(this.history.deviceHistories[0].startTime));
+    this.map.addLayer(this.history.getStepLayer());
   }
 
   cleanHistory() {
-    this.history.forEach(h => {
-      h.getLayersId().forEach(l => this.map.removeLayer(l));
-      this.map.removeSource(h.getSourceId());
-    });
-    this.history.splice(0, this.history.length);
+    if (!this.history.isEmpty()) {
+      this.map.removeLayer(this.history.getStepSourceId());
+      this.map.removeSource(this.history.getStepSourceId());
+    }
+    this.history.getPathLayersIds().forEach(layer => this.map.removeLayer(layer));
+    this.history.getPathSourcesIds().forEach(source => this.map.removeSource(source));
+    this.history.cleanHistories();
+  }
+
+  showDevicesIn(time: number) {
+    const source = this.map.getSource(this.history.getStepSourceId()) as GeoJSONSource;
+    source.setData(this.history.asGoeJsonFeatureCollection(time));
   }
 
   buildMap(): void {
@@ -141,8 +149,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.on('load', () => this.map.resize());
   }
 
-  private calculateDistance() {
-    this.history.forEach(h => {
+  private setPopups() {
+    this.history.deviceHistories.forEach(h => {
       const popup = new mapboxgl.Popup({maxWidth: 'none'});
       h.getLayersId().filter(l => !l.endsWith(DeviceHistorySegmentType.INACTIVE.toString())).forEach(l => {
         this.map.on('click', l, (e) => {

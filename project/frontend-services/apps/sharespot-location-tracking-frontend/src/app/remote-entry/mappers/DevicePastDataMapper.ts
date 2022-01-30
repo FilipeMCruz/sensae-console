@@ -11,6 +11,7 @@ import {DeviceHistorySegment, DeviceHistorySegmentType} from "../model/pastdata/
 import {DeviceHistoryStep} from "../model/pastdata/DeviceHistoryStep";
 import {DeviceStatus, MotionType} from "../model/DeviceStatus";
 import {DeviceCoordinates} from "../model/DeviceCoordinates";
+import {HistoryColorSet} from "../model/pastdata/HistoryColorSet";
 
 export class DevicePastDataMapper {
 
@@ -23,14 +24,15 @@ export class DevicePastDataMapper {
   }
 
   static dtoToModel(dto: HistorySensorDTO): Array<DeviceHistory> {
-    return dto.history.map(h => {
+    return dto.history.map((h, index) => {
       const segments = h.segments.map(d => this.dtoToModelSeg(d));
       return new DeviceHistory(h.deviceName,
         h.deviceId,
         Number(h.startTime),
         Number(h.endTime),
         +h.distance.toFixed(2),
-        segments);
+        segments,
+        HistoryColorSet.get(index));
     });
   }
 
@@ -61,6 +63,6 @@ export class DevicePastDataMapper {
       status = new DeviceStatus(MotionType.UNKWOWN);
     }
     const coordinates = new DeviceCoordinates(dto.gps.latitude, dto.gps.longitude);
-    return new DeviceHistoryStep(coordinates, status, new Date(Number(dto.reportedAt)))
+    return new DeviceHistoryStep(coordinates, status, Number(dto.reportedAt))
   }
 }

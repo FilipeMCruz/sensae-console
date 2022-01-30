@@ -23,6 +23,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatSliderModule} from "@angular/material/slider";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -32,6 +33,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
     SearchCardComponent
   ],
   imports: [
+    MatSliderModule,
     MatSlideToggleModule,
     MatDividerModule,
     MatTooltipModule,

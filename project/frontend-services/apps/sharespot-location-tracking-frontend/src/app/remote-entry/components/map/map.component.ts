@@ -32,11 +32,13 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
-  private history = new DeviceHistorySource();
+  history = new DeviceHistorySource();
 
   private subscription!: Subscription;
 
   devices: Array<Device> = [];
+
+  currentHistoryTime = 0;
 
   constructor(private locationEmitter: SubscribeToAllGPSData,
               private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
@@ -121,6 +123,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
     this.map.addSource(this.history.getStepSourceId(), this.history.asGeoJSONForTime(this.history.deviceHistories[0].startTime));
     this.map.addLayer(this.history.getStepLayer());
+    this.currentHistoryTime = this.history.startTime;
   }
 
   cleanHistory() {
@@ -133,9 +136,14 @@ export class MapComponent implements OnInit, OnDestroy {
     this.history.cleanHistories();
   }
 
-  showDevicesIn(time: number) {
+  showDevices() {
     const source = this.map.getSource(this.history.getStepSourceId()) as GeoJSONSource;
-    source.setData(this.history.asGoeJsonFeatureCollection(time));
+    source.setData(this.history.asGoeJsonFeatureCollection(this.currentHistoryTime));
+  }
+
+  formatLabel(): string {
+    const start = new Date(this.currentHistoryTime);
+    return start.toLocaleDateString() + " " + start.toLocaleTimeString();
   }
 
   buildMap(): void {

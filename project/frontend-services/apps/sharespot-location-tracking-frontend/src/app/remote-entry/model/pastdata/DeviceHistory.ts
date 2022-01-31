@@ -115,14 +115,6 @@ export class DeviceHistory {
   }
 
   private buildFeatures(): Array<Feature> {
-    // console.log("Nº seg:", this.segments.length)
-    // console.log("Nº active seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.ACTIVE).length)
-    // console.log("Nº unknown active seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_ACTIVE).length)
-    // console.log("Nº inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.INACTIVE).length)
-    // console.log("Nº unknown inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_INACTIVE).length)
-    // console.log("Inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.INACTIVE))
-    // console.log("Unknown Inactive seg:", this.segments.filter(s => s.type === DeviceHistorySegmentType.UNKNOWN_INACTIVE))
-
     return this.segments.map(seg => {
       const coordinates = seg.steps.map(d => d.gps.toCoordinates());
       if (seg.type === DeviceHistorySegmentType.INACTIVE) {

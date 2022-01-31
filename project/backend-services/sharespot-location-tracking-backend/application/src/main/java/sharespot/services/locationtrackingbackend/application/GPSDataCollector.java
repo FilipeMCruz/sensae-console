@@ -40,7 +40,7 @@ public class GPSDataCollector {
         return dto.stream()
                 .collect(Collectors.groupingBy(x -> x.device.id))
                 .values()
-                .stream()
+                .parallelStream()
                 .map(set -> createHistory(filters, set))
                 .collect(Collectors.toList());
     }
@@ -60,34 +60,43 @@ public class GPSDataCollector {
         return history;
     }
 
+    private GPSSensorDataHistorySegmentType determineMotion(GPSSensorDataHistoryStep step) {
+        return "INACTIVE".equals(step.status().motion()) ?
+                GPSSensorDataHistorySegmentType.INACTIVE : GPSSensorDataHistorySegmentType.ACTIVE;
+    }
+
     private List<GPSSensorDataHistorySegment> buildHistorySegments(List<GPSSensorDataHistoryStep> steps) {
+        //edge case
         if (steps.size() == 1) {
             var type = "INACTIVE".equals(steps.get(0).status().motion()) ?
                     GPSSensorDataHistorySegmentType.INACTIVE : GPSSensorDataHistorySegmentType.ACTIVE;
             return List.of(new GPSSensorDataHistorySegment(type, steps));
-        } else {
-            //order in "In motion" and "Stoped"
-            var preSegments = new ArrayList<GPSSensorDataHistorySegment>();
-            for (int i = 0; i < steps.size(); i++) {
-                GPSSensorDataHistoryStep first = steps.get(i);
-                var type = "INACTIVE".equals(first.status().motion()) ?
-                        GPSSensorDataHistorySegmentType.INACTIVE : GPSSensorDataHistorySegmentType.ACTIVE;
-                var subSegment = new ArrayList<GPSSensorDataHistoryStep>();
-                while (i < steps.size() && first.status().sameSegment(steps.get(i).status())) {
-                    subSegment.add(steps.get(i));
-                    i++;
-                }
-                if (steps.size() > i) {
-                    subSegment.add(steps.get(i));
-                }
-                i--;
-                preSegments.add(new GPSSensorDataHistorySegment(type, subSegment));
-            }
-            return preSegments.stream()
-                    .map(this::splitPreSegments)
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
         }
+
+        //order in "In motion" and "Stoped"
+        var preSegments = new ArrayList<GPSSensorDataHistorySegment>();
+        for (int i = 0; i < steps.size(); i++) {
+            GPSSensorDataHistoryStep first = steps.get(i);
+            var type = determineMotion(first);
+            var subSegment = new ArrayList<GPSSensorDataHistoryStep>();
+            if (type == GPSSensorDataHistorySegmentType.ACTIVE && i != 0) {
+                //active segments should start and end in inactive points if possible, so that a continuous path is built
+                subSegment.add(steps.get(i - 1));
+            }
+            while (i < steps.size() && first.status().sameSegment(steps.get(i).status())) {
+                subSegment.add(steps.get(i));
+                i++;
+            }
+            if (type == GPSSensorDataHistorySegmentType.ACTIVE && steps.size() > i) {
+                subSegment.add(steps.get(i));
+            }
+//            i--;
+            preSegments.add(new GPSSensorDataHistorySegment(type, subSegment));
+        }
+        return preSegments.stream()
+                .map(this::splitPreSegments)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
     private List<GPSSensorDataHistorySegment> splitPreSegments(GPSSensorDataHistorySegment preSeg) {
@@ -142,10 +151,10 @@ public class GPSDataCollector {
         Boolean isUnknown = null;
 
         for (int i = 0; i < preSeg.steps().size() - 1; i++) {
-            GPSSensorDataHistoryStep first = preSeg.steps().get(i);
-            GPSSensorDataHistoryStep second = preSeg.steps().get(i + 1);
+            var first = preSeg.steps().get(i);
+            var second = preSeg.steps().get(i + 1);
             temp.add(first);
-            var tempIsUnknown = Math.abs(first.reportedAt() - second.reportedAt()) > MAX_TIME_BETWEEN_INFO_IN_SECONDS * 1000;
+            var tempIsUnknown = Math.abs(first.reportedAt() - second.reportedAt()) > MAX_TIME_BETWEEN_INFO_IN_SECONDS * 1000L;
             if (isUnknown == null) {
                 isUnknown = tempIsUnknown;
             } else if (isUnknown != tempIsUnknown) {

@@ -90,7 +90,6 @@ public class GPSDataCollector {
             if (type == GPSSensorDataHistorySegmentType.ACTIVE && steps.size() > i) {
                 subSegment.add(steps.get(i));
             }
-//            i--;
             preSegments.add(new GPSSensorDataHistorySegment(type, subSegment));
         }
         return preSegments.stream()

@@ -9,5 +9,9 @@ public enum PropertyNameDTOImpl {
     LATITUDE,
     LONGITUDE,
     TEMPERATURE,
-    MOTION
+    MOTION,
+    VELOCITY,
+    AQI,
+    HUMIDITY,
+    PRESSURE
 }

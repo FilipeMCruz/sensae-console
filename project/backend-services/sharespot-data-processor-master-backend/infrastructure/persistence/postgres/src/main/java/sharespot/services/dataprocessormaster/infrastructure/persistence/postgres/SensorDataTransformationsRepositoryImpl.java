@@ -6,10 +6,8 @@ import sharespot.services.dataprocessormaster.domain.DataTransformation;
 import sharespot.services.dataprocessormaster.domain.SensorDataTransformationsRepository;
 import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.mapper.DataTransformationMapper;
-import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.model.DataTransformationPostgres;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.repository.SensorDataTransformationsRepositoryPostgres;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -30,7 +28,7 @@ public class SensorDataTransformationsRepositoryImpl implements SensorDataTransf
         var transformationPostgres = DataTransformationMapper.domainToPostgres(domain);
 
         var byDeviceType = repositoryPostgres.findByDeviceType(id.getValue());
-        if(byDeviceType.isPresent()) {
+        if (byDeviceType.isPresent()) {
             var old = byDeviceType.get();
             old.entries.clear();
             old.entries.addAll(transformationPostgres.entries);

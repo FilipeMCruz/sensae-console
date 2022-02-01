@@ -36,6 +36,10 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case LONGITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LONGITUDE);
             case TEMPERATURE -> PropertyTransformation.create(e.oldPath, PropertyName.TEMPERATURE);
             case MOTION -> PropertyTransformation.create(e.oldPath, PropertyName.MOTION);
+            case VELOCITY -> PropertyTransformation.create(e.oldPath, PropertyName.VELOCITY);
+            case AQI -> PropertyTransformation.create(e.oldPath, PropertyName.AQI);
+            case HUMIDITY -> PropertyTransformation.create(e.oldPath, PropertyName.HUMIDITY);
+            case PRESSURE -> PropertyTransformation.create(e.oldPath, PropertyName.PRESSURE);
         }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
@@ -80,6 +84,10 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case LONGITUDE -> PropertyNameDTOImpl.LONGITUDE;
             case TEMPERATURE -> PropertyNameDTOImpl.TEMPERATURE;
             case MOTION -> PropertyNameDTOImpl.MOTION;
+            case VELOCITY -> PropertyNameDTOImpl.VELOCITY;
+            case AQI -> PropertyNameDTOImpl.AQI;
+            case HUMIDITY -> PropertyNameDTOImpl.HUMIDITY;
+            case PRESSURE -> PropertyNameDTOImpl.PRESSURE;
         };
         entry.oldPath = kt.oldPath();
         return entry;

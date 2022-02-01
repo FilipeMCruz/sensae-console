@@ -16,6 +16,14 @@ public class GPSLatestSensorData {
         this.repository = repository;
     }
 
+    public List<SensorData> latest(List<String> devices) {
+        return repository.lastDataOfEachDevice()
+                .stream()
+                .map(GPSDataMapper::transform)
+                .filter(s -> devices.contains(s.device().id().toString()))
+                .collect(Collectors.toList());
+    }
+
     public List<SensorData> latest() {
         return repository.lastDataOfEachDevice()
                 .stream()

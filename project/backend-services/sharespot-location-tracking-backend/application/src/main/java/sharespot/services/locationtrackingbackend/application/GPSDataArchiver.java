@@ -1,5 +1,6 @@
 package sharespot.services.locationtrackingbackend.application;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
 import pt.sharespot.iot.core.sensor.data.StatusDataDTO;
@@ -9,8 +10,11 @@ import sharespot.services.locationtrackingbackend.domain.ProcessedSensorDataRepo
 @Service
 public class GPSDataArchiver {
 
-    public static final int TIME_SPAN_IN_MINUTES = 10;
-    public static final double DISTANCE_IN_KM = 0.2;
+    @Value("${sharespot.location.heuristic.motion.detection.time}")
+    public int TIME_SPAN_IN_MINUTES;
+
+    @Value("${sharespot.location.heuristic.motion.detection.distance}")
+    public double DISTANCE_IN_KM;
 
     private final ProcessedSensorDataRepository repository;
     private final GPSDataPublisher publisher;

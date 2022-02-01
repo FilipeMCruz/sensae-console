@@ -32,6 +32,10 @@ public class DataValidatorService {
         this.boxes.add(new BoundingBox("AN", 45, 40, 0, 5));
         this.boxes.add(new BoundingBox("FR", 50, 45, -5, 10));
         this.boxes.add(new BoundingBox("GR", 55, 45, 5, 15));
+        this.boxes.add(new BoundingBox("DE/NW", 65, 55, 5, 15));
+        this.boxes.add(new BoundingBox("PL/BL/UR/HUN", 55, 45, 15, 40));
+        this.boxes.add(new BoundingBox("IT/SE/GR", 45, 35, 10, 30));
+        this.boxes.add(new BoundingBox("UK", 60, 50, -10, 5));
     }
 
     public Optional<RoutingKeys> decide(MessageConsumed<ProcessedSensorDataDTO> message) {

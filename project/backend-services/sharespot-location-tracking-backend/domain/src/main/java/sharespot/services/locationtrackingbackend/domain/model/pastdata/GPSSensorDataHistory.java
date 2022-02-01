@@ -1,7 +1,5 @@
 package sharespot.services.locationtrackingbackend.domain.model.pastdata;
 
-import sharespot.services.locationtrackingbackend.domain.model.GPSDataDetails;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +7,12 @@ public class GPSSensorDataHistory {
 
     public String deviceId;
     public String deviceName;
-    public List<GPSDataDetails> data;
+    public List<GPSSensorDataHistorySegment> segments;
     public Long startTime;
     public Long endTime;
     public Double distance;
 
     public GPSSensorDataHistory() {
-        data = new ArrayList<>();
+        segments = new ArrayList<>();
     }
 }

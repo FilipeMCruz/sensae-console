@@ -1,21 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {DeviceData} from "../../model/DeviceData";
-import {GPSPointData} from "../../model/GPSPointData";
+import {GeoJSONSource} from 'mapbox-gl';
+import {DeviceData} from "../../model/livedata/DeviceData";
+import {GPSPointData} from "../../model/livedata/GPSPointData";
 import {Subscription} from "rxjs";
 import {SubscribeToAllGPSData} from "../../services/SubscribeToAllGPSData";
-import {SensorMapper} from "../../mappers/SensorMapper";
 import {SubscribeToGPSDataByDevice} from "../../services/SubscribeToGPSDataByDevice";
 import {environment} from "../../../../environments/environment";
-import {SensorDataDTO} from "../../dtos/SensorDTO";
 import {SubscribeToGPSDataByContent} from "../../services/SubscribeToGPSDataByContent";
 import {QueryGPSDeviceHistory} from "../../services/QueryGPSDeviceHistory";
-import {DeviceHistory} from "../../model/DeviceHistory";
 import {QueryLatestGPSDeviceData} from "../../services/QueryLatestGPSDeviceData";
 import {Device} from "../../model/Device";
-import {DeviceMapper} from "../../mappers/DeviceMapper";
-import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
-import {DeviceHistoryMapper} from "../../mappers/DeviceHistoryMapper";
+import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
+import {DevicePastDataMapper} from "../../mappers/DevicePastDataMapper";
+import {QueryLatestGPSSpecificDeviceData} from "../../services/QueryLatestGPSSpecificDeviceData";
+import {DeviceHistorySegmentType} from "../../model/pastdata/DeviceHistorySegment";
+import {DeviceHistorySource} from "../../model/pastdata/DeviceHistorySource";
 
 @Component({
   selector: 'frontend-services-map',
@@ -32,13 +32,16 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private points: Array<GPSPointData> = new Array<GPSPointData>();
 
-  private history: Array<DeviceHistory> = [];
+  history = new DeviceHistorySource();
 
   private subscription!: Subscription;
 
   devices: Array<Device> = [];
 
+  currentHistoryTime = 0;
+
   constructor(private locationEmitter: SubscribeToAllGPSData,
+              private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
               private locationByDeviceIdEmitter: SubscribeToGPSDataByDevice,
               private locationByContentEmitter: SubscribeToGPSDataByContent,
               private historyQuery: QueryGPSDeviceHistory,
@@ -49,17 +52,13 @@ export class MapComponent implements OnInit, OnDestroy {
     this.initializeMap();
     this.latestDeviceData.getData().subscribe(
       next => {
-        if (next.data && next.data.latest) {
-          next.data.latest.forEach(d => this.verifyAndDraw(d, true));
-          this.devices = next.data.latest.map(d => DeviceMapper.dtoToModel(d.device));
-        }
-      }
-    );
-    this.subscription = this.locationEmitter.getData().subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+        next.forEach(d => this.drawPoint(d, true));
+        this.devices = next.map(d => d.device);
+      });
+
+    this.subscription = this.locationEmitter
+      .getData()
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   ngOnDestroy() {
@@ -70,76 +69,81 @@ export class MapComponent implements OnInit, OnDestroy {
     this.points.forEach(p => p.point.remove());
     this.points.splice(0, this.points.length);
     this.subscription.unsubscribe();
-    this.historyQuery.getData(DeviceHistoryMapper.modelToDto(filters)).subscribe(
-      next => {
-        if (next.data != undefined) {
-          this.cleanHistory();
-          this.history = SensorMapper.dtoToModelHistory(next.data);
-          this.addHistory();
-          this.calculateDistance();
-        }
-      }
-    )
+    this.historyQuery.getData(DevicePastDataMapper.modelToDto(filters))
+      .subscribe(next => {
+        this.cleanHistory();
+        this.history.setHistories(next);
+        this.addHistory();
+        this.setPopups();
+      });
   }
 
   cleanSubscriber() {
     this.subscription.unsubscribe();
-    this.subscription = this.locationEmitter.getData().subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+    this.subscription = this.locationEmitter
+      .getData()
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   subscribeToDevice(devices: Array<Device>) {
     this.cleanHistory();
     this.subscription.unsubscribe();
-    this.points.forEach((sensor, index, array) => {
-      if (!sensor.value.isAny(devices)) {
-        sensor.point.remove();
-        array.splice(index, 1);
-      }
-    });
+    this.subscription = this.locationByDeviceIdEmitter
+      .getData(devices.map(d => d.id))
+      .subscribe(next => this.drawPoint(next, false));
 
-    this.subscription = this.locationByDeviceIdEmitter.getData(devices.map(d => d.id)).subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) {
-          this.verifyAndDraw(next.data.locations, false)
-        }
-      }
-    );
+    const toRemove = this.points.filter(sensor => !sensor.value.isAny(devices));
+    toRemove.forEach(p => p.point.remove());
+    this.points = this.points.filter(sensor => sensor.value.isAny(devices));
+
+    const idsToReFetch = devices.filter(d => !this.points.some(old => old.value.device.id === d.id)).map(d => d.id);
+    if (idsToReFetch.length !== 0) {
+      this.latestSpecificDeviceData
+        .getData(idsToReFetch)
+        .subscribe(next => next.forEach(d => this.drawPoint(d, true)));
+    }
   }
 
   subscribeToContent(content: string) {
     this.cleanHistory();
     this.subscription.unsubscribe();
-    this.points.forEach((sensor, index, array) => {
-      if (!sensor.value.device.hasContent(content)) {
-        sensor.point.remove();
-        array.splice(index, 1);
-      }
-    });
 
-    this.subscription = this.locationByContentEmitter.getData(content).subscribe(
-      next => {
-        if (next.data !== undefined && next.data !== null) this.verifyAndDraw(next.data.locations, false)
-      }
-    );
+    const toRemove = this.points.filter(sensor => !sensor.value.device.hasContent(content));
+    toRemove.forEach(p => p.point.remove());
+    this.points = this.points.filter(sensor => sensor.value.device.hasContent(content));
+
+    this.subscription = this.locationByContentEmitter
+      .getData(content)
+      .subscribe(next => this.drawPoint(next, false));
   }
 
   addHistory() {
-    this.history.forEach(h => {
-      this.map.addSource('route-' + h.deviceId, h.asGeoJSON());
-      this.map.addLayer(DeviceHistory.buildLayer('route-' + h.deviceId));
-    })
+    this.history.getPathSources().forEach(history => this.map.addSource(history.id, history.source))
+    this.history.getPathLayers().forEach(layer => this.map.addLayer(layer));
+
+    this.map.addSource(this.history.getStepSourceId(), this.history.asGeoJSONForTime(this.history.deviceHistories[0].startTime));
+    this.map.addLayer(this.history.getStepLayer());
+    this.currentHistoryTime = this.history.startTime;
   }
 
   cleanHistory() {
-    this.history.forEach(h => {
-      this.map.removeLayer('route-' + h.deviceId);
-      this.map.removeSource('route-' + h.deviceId);
-    });
-    this.history.splice(0, this.history.length);
+    if (!this.history.isEmpty()) {
+      this.map.removeLayer(this.history.getStepSourceId());
+      this.map.removeSource(this.history.getStepSourceId());
+    }
+    this.history.getPathLayersIds().forEach(layer => this.map.removeLayer(layer));
+    this.history.getPathSourcesIds().forEach(source => this.map.removeSource(source));
+    this.history.cleanHistories();
+  }
+
+  showDevices() {
+    const source = this.map.getSource(this.history.getStepSourceId()) as GeoJSONSource;
+    source.setData(this.history.asGoeJsonFeatureCollection(this.currentHistoryTime));
+  }
+
+  formatLabel(): string {
+    const start = new Date(this.currentHistoryTime);
+    return start.toLocaleDateString() + " " + start.toLocaleTimeString();
   }
 
   buildMap(): void {
@@ -153,30 +157,61 @@ export class MapComponent implements OnInit, OnDestroy {
     this.map.on('load', () => this.map.resize());
   }
 
-  private calculateDistance() {
-    this.history.forEach(h => {
+  private setPopups() {
+    this.history.deviceHistories.forEach(h => {
       const popup = new mapboxgl.Popup({maxWidth: 'none'});
-      const distance = h.distance;
-      this.map.on('click', 'route-' + h.deviceId, (e) => {
-        popup.setLngLat(e.lngLat)
-          .setHTML("<strong>Device Name:</strong> " + h.deviceName +
-            "<br><strong>Device Id:</strong> " + h.deviceId +
-            "<br><strong>Distance Travelled:</strong> " + distance + " kilometers.")
-          .addTo(this.map);
+      h.getLayersId().filter(l => !l.endsWith(DeviceHistorySegmentType.INACTIVE.toString())).forEach(l => {
+        this.map.on('click', l, (e) => {
+          if (e.features && e.features[0].properties != null) {
+            popup.setLngLat(e.lngLat)
+              .setHTML("<strong>Device Name:</strong> " + h.deviceName +
+                "<br><strong>Device Id:</strong> " + h.deviceId +
+                "<br><strong>Distance Travelled:</strong> " + e.features[0].properties.distance + " kilometers.")
+              .addTo(this.map);
+          }
+        });
+        this.map.on('mouseenter', l, () => {
+          this.map.getCanvas().style.cursor = 'pointer';
+        });
+        this.map.on('mouseleave', l, () => {
+          this.map.getCanvas().style.cursor = '';
+        });
       });
-      this.map.on('mouseenter', 'route-' + h.deviceId, () => {
+      const inactiveLayer = h.getLayerId(DeviceHistorySegmentType.INACTIVE);
+      this.map.on('click', inactiveLayer, (e) => {
+        if (e.features && e.features[0].properties != null) {
+          const info = e.features[0].properties;
+          const start = new Date(info.start);
+          const end = new Date(info.end);
+          const startDisplay = start.toLocaleDateString() + " " + start.toLocaleTimeString();
+          const endDisplay = end.toLocaleDateString() + " " + end.toLocaleTimeString();
+          const diffTime = new Date(end.getTime() - start.getTime());
+          const diffTimeDisplay = diffTime.toISOString().slice(11, -5);
+          let toDisplay;
+          if (diffTime.getTime() === 0) {
+            toDisplay = "<strong>Device Name:</strong> " + h.deviceName +
+              "<br><strong>Device Id:</strong> " + h.deviceId +
+              "<br><strong>Date:</strong> " + startDisplay;
+          } else {
+            toDisplay = "<strong>Device Name:</strong> " + h.deviceName +
+              "<br><strong>Device Id:</strong> " + h.deviceId +
+              "<br><strong>Start Date:</strong> " + startDisplay +
+              "<br><strong>End Date:</strong> " + endDisplay +
+              "<br><strong>Stop Duration:</strong> " + diffTimeDisplay;
+          }
+
+          popup.setLngLat(e.lngLat)
+            .setHTML(toDisplay)
+            .addTo(this.map);
+        }
+      });
+      this.map.on('mouseenter', inactiveLayer, () => {
         this.map.getCanvas().style.cursor = 'pointer';
       });
-      this.map.on('mouseleave', 'route-' + h.deviceId, () => {
+      this.map.on('mouseleave', inactiveLayer, () => {
         this.map.getCanvas().style.cursor = '';
       });
     })
-  }
-
-  private verifyAndDraw(data: SensorDataDTO | null | undefined, last: boolean) {
-    if (data !== undefined && data !== null) {
-      this.drawPoint(SensorMapper.dtoToModel(data), last);
-    }
   }
 
   private initializeMap(): void {

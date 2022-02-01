@@ -1,6 +1,6 @@
 import {DeviceData} from "./DeviceData";
 import * as mapboxgl from "mapbox-gl";
-import {MotionType} from "./DeviceStatus";
+import {MotionType} from "../DeviceStatus";
 
 export class GPSPointData {
 

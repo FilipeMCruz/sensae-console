@@ -212,7 +212,7 @@ services:
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:
-    image: questdb/questdb
+    image: questdb/questdb:6.2
     container_name: questdb
     networks:
       - sharespot-network

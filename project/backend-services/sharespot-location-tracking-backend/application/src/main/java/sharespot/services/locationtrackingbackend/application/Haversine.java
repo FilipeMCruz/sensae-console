@@ -1,6 +1,7 @@
 package sharespot.services.locationtrackingbackend.application;
 
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import sharespot.services.locationtrackingbackend.domain.model.GPSDataDetails;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -15,6 +16,10 @@ public class Haversine {
     public static double calcDistance(List<ProcessedSensorDataWithRecordsDTO> gpsData) {
         if (gpsData.size() < 2) return 0;
         return IntStream.range(1, gpsData.size()).mapToDouble(i -> calcHaversine(gpsData.get(i - 1), gpsData.get(i))).sum();
+    }
+
+    public static double calcHaversine(GPSDataDetails first, GPSDataDetails second) {
+        return haversine(first.latitude(), first.longitude(), second.latitude(), second.longitude());
     }
 
     public static double calcHaversine(ProcessedSensorDataWithRecordsDTO first, ProcessedSensorDataWithRecordsDTO second) {

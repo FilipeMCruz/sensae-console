@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Device} from "../../model/Device";
 import {FormControl, FormGroup} from "@angular/forms";
-import {DeviceHistoryQuery} from "../../model/DeviceHistoryQuery";
+import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
 
 @Component({
   selector: 'frontend-services-search-card',
@@ -62,7 +62,9 @@ export class SearchCardComponent {
     if (this.selectedDevices) {
       const devices = this.selectedDevices.value as Array<Device>;
       if (devices.length > 0) {
-        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, this.range.value.end));
+        const result = new Date(this.range.value.end);
+        result.setDate(result.getDate() + 1);
+        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, result));
       }
     }
   }

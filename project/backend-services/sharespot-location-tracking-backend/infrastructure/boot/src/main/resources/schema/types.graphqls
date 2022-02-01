@@ -42,5 +42,23 @@ type GPSSensorDataHistory {
     startTime : String
     endTime : String
     distance : Float
-    data : [GPSSensorDetails]
+    segments : [GPSSensorDataHistorySegment]
+}
+
+type GPSSensorDataHistorySegment {
+    type: GPSSensorDataHistorySegmentType
+    steps: [GPSSensorDataHistoryStep]
+}
+
+enum GPSSensorDataHistorySegmentType {
+    INACTIVE,
+    ACTIVE,
+    UNKNOWN_ACTIVE,
+    UNKNOWN_INACTIVE
+}
+
+type GPSSensorDataHistoryStep {
+    status: StatusSensorDetails
+    reportedAt : String
+    gps : GPSSensorDetails
 }

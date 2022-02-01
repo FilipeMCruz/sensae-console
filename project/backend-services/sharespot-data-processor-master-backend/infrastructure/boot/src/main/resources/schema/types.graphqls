@@ -34,5 +34,6 @@ enum PropertyName {
     REPORTED_AT,
     LATITUDE,
     LONGITUDE,
-    TEMPERATURE
+    TEMPERATURE,
+    MOTION
 }

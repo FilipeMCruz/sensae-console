@@ -1,8 +1,11 @@
 import {Apollo, gql} from "apollo-angular";
 import {Observable} from "rxjs";
-import {FetchResult} from "@apollo/client/core";
 import {GPSSensorLatestData} from "../dtos/SensorDTO";
 import {Injectable} from "@angular/core";
+import {filter, map} from "rxjs/operators";
+import {extract, isNonNull} from "./ObservableFunctions";
+import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
+import {DeviceData} from "../model/livedata/DeviceData";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class QueryLatestGPSDeviceData {
   constructor(private apollo: Apollo) {
   }
 
-  getData(): Observable<FetchResult<GPSSensorLatestData>> {
+  getData(): Observable<DeviceData[]> {
     const query = gql`
       query latest{
         latest{
@@ -39,6 +42,11 @@ export class QueryLatestGPSDeviceData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<GPSSensorLatestData>({query});
+    return this.apollo.use("locationTracking").subscribe<GPSSensorLatestData>({query})
+      .pipe(
+        map(extract),
+        filter(isNonNull),
+        map((data: GPSSensorLatestData) => data.latest.map(s => DeviceLiveDataMapper.dtoToModel(s)))
+      );
   }
 }

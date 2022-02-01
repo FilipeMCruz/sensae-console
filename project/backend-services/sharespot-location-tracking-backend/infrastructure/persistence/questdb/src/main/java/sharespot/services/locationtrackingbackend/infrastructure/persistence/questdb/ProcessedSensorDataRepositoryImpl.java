@@ -37,7 +37,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     @Override
     public List<ProcessedSensorDataWithRecordsDTO> queryMultipleDevices(GPSSensorDataFilter filters) {
         String inParams = filters.devices.stream().map(device -> "'" + device + "'").collect(Collectors.joining(","));
-        var query = String.format("SELECT * FROM data WHERE device_id IN (%s) AND reported_at BETWEEN '%s' AND '%s';", inParams, filters.startTime.toString(), filters.endTime.toString());
+        var query = String.format("SELECT * FROM data WHERE device_id IN (%s) AND ts BETWEEN '%s' AND '%s';", inParams, filters.startTime.toString(), filters.endTime.toString());
         var data = jdbcTemplate.query(query,
                 (resultSet, i) -> mapper.toSensorData(resultSet));
         return data.stream().map(mapper::daoToDto).collect(Collectors.toList());

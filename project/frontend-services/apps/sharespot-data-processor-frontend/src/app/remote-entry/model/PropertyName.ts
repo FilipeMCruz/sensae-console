@@ -6,6 +6,7 @@ export enum PropertyName {
   REPORTED_AT = "Reported At (in milis)",
   LATITUDE = "GPS - Latitude",
   LONGITUDE = "GPS - Longitude",
+  MOTION = "GPS - Motion",
   TEMPERATURE = "Temperature (in celsius)",
   INVALID = "Invalid"
 }

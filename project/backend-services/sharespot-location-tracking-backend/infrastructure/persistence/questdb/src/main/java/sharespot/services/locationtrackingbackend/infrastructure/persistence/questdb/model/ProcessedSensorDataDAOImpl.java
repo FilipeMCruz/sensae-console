@@ -26,7 +26,7 @@ public class ProcessedSensorDataDAOImpl {
     public String gpsData;
 
     @Column("motion")
-    public Byte motion;
+    public String motion;
 
     @Column("ts")
     public Timestamp ts;

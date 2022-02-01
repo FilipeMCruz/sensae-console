@@ -25,6 +25,8 @@ export class DataTransformationMapper {
       return PropertyName.LATITUDE;
     } else if (dto === PropertyNameDTO.LONGITUDE) {
       return PropertyName.LONGITUDE;
+    } else if (dto === PropertyNameDTO.MOTION) {
+      return PropertyName.MOTION;
     } else if (dto === PropertyNameDTO.TEMPERATURE) {
       return PropertyName.TEMPERATURE;
     } else if (dto === PropertyNameDTO.REPORTED_AT) {
@@ -54,6 +56,8 @@ export class DataTransformationMapper {
       return PropertyNameDTO.LATITUDE;
     } else if (model === PropertyName.LONGITUDE) {
       return PropertyNameDTO.LONGITUDE;
+    } else if (model === PropertyName.MOTION) {
+      return PropertyNameDTO.MOTION;
     } else if (model === PropertyName.TEMPERATURE) {
       return PropertyNameDTO.TEMPERATURE;
     } else if (model === PropertyName.REPORTED_AT) {

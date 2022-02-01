@@ -17,6 +17,7 @@ public class PropertyNamePostgres {
      * LONGITUDE -> 6
      * TEMPERATURE -> 7
      * MOTION -> 8
+     * AQI -> 9
      */
     public int value;
 

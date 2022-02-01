@@ -68,7 +68,7 @@ public class AmqpConfiguration {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .withRecords(RecordsOptions.WITHOUT_RECORDS) //TODO: change to UNIDENTIFIED_RECORDS with iot-core version 0.1.9
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

@@ -7,10 +7,11 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.GPSDataOptions;
+import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
 import sharespot.services.fastdatastore.application.RoutingKeysProvider;
 
 import static sharespot.services.fastdatastore.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
@@ -46,8 +47,9 @@ public class AmqpConfiguration {
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .withRecords(RecordsOptions.WITHOUT_RECORDS) //TODO: change to UNIDENTIFIED_RECORDS with iot-core version 0.1.9
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
+                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

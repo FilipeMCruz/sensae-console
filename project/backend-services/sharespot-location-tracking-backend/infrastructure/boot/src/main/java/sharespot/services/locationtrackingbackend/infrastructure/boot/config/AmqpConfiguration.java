@@ -7,7 +7,11 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.*;
+import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
 import sharespot.services.locationtrackingbackend.application.RoutingKeysProvider;
 
 import static sharespot.services.locationtrackingbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;

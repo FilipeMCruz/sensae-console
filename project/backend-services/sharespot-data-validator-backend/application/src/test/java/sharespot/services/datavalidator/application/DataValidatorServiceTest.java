@@ -24,7 +24,7 @@ public class DataValidatorServiceTest {
     public DataValidatorServiceTest() {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("dataprocessorslave.dataprocessorslave.0.1.7.data.processed.lgt92.default.without_records.with_gps_data.without_tempc_data.unknown.#");
+                .from("dataprocessorslave.dataprocessorslave.0.1.8.data.processed.lgt92.default.without_records.with_gps_data.without_tempc_data.unknown.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {
@@ -36,7 +36,7 @@ public class DataValidatorServiceTest {
     void ensureValidDataIsClassifiedAsCorrect() {
         DataValidatorService service = new DataValidatorService(internal);
 
-        var gps = new GPSDataDTO(45.756, 14.432);
+        var gps = GPSDataDTO.ofLatLong(45.756, 14.432);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
         assertEquals("correct", decide.get().legitimacy);
@@ -46,7 +46,7 @@ public class DataValidatorServiceTest {
     void ensureValidDataIsClassifiedAsCorrect2() {
         DataValidatorService service = new DataValidatorService(internal);
 
-        var gps = new GPSDataDTO(38.750244, -9.229148);
+        var gps = GPSDataDTO.ofLatLong(38.750244, -9.229148);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
         assertEquals("correct", decide.get().legitimacy);
@@ -56,7 +56,7 @@ public class DataValidatorServiceTest {
     void ensureWrongDataIsClassifiedAsIncorrect() {
         DataValidatorService service = new DataValidatorService(internal);
 
-        var gps = new GPSDataDTO(-138.123422352, 2.23426624);
+        var gps = GPSDataDTO.ofLatLong(-138.123422352, 2.23426624);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
         assertEquals("incorrect", decide.get().legitimacy);

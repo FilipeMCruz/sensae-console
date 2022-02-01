@@ -77,26 +77,36 @@ export class DataTransformationComponent implements OnChanges {
 
   getNameType(entry: PropertyTransformation) {
     const nameType = entry.newPath;
-    if (nameType === PropertyName.DEVICE_NAME) {
-      return "badge";
-    } else if (nameType === PropertyName.DATA_ID) {
-      return "fingerprint";
-    } else if (nameType === PropertyName.DEVICE_ID) {
-      return "sensors";
-    } else if (nameType === PropertyName.DEVICE_RECORDS) {
-      return "info";
-    } else if (nameType === PropertyName.LATITUDE) {
-      return "share_location";
-    } else if (nameType === PropertyName.LONGITUDE) {
-      return "share_location";
-    } else if (nameType === PropertyName.TEMPERATURE) {
-      return "thermostat";
-    } else if (nameType === PropertyName.REPORTED_AT) {
-      return "schedule";
-    } else if (nameType === PropertyName.MOTION) {
-      return "gesture";
+    switch (nameType) {
+      case PropertyName.DATA_ID:
+        return "fingerprint";
+      case PropertyName.DEVICE_ID:
+        return "sensors";
+      case PropertyName.DEVICE_NAME:
+        return "badge";
+      case PropertyName.DEVICE_RECORDS:
+        return "info";
+      case PropertyName.REPORTED_AT:
+        return "schedule";
+      case PropertyName.LATITUDE:
+        return "share_location";
+      case PropertyName.LONGITUDE:
+        return "share_location";
+      case PropertyName.MOTION:
+        return "gesture";
+      case PropertyName.VELOCITY:
+        return "speed";
+      case PropertyName.HUMIDITY:
+        return "opacity";
+      case PropertyName.PRESSURE:
+        return "compress";
+      case PropertyName.TEMPERATURE:
+        return "thermostat";
+      case PropertyName.AQI:
+        return "air";
+      case PropertyName.INVALID:
+        return "error";
     }
-    return "error";
   }
 
   editEntry(index: number) {

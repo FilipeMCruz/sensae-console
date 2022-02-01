@@ -35,5 +35,9 @@ enum PropertyName {
     LATITUDE,
     LONGITUDE,
     TEMPERATURE,
-    MOTION
+    MOTION,
+    VELOCITY,
+    AQI,
+    HUMIDITY,
+    PRESSURE
 }

@@ -47,7 +47,7 @@ public class AmqpConfiguration {
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.WITHOUT_RECORDS) //TODO: change to UNIDENTIFIED_RECORDS with iot-core version 0.1.9
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .missingAsAny();

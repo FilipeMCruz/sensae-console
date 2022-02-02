@@ -3,7 +3,6 @@ package sharespot.services.datagateway.application;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
@@ -35,9 +34,8 @@ public class SensorDataPublisherService {
                 .withInfoType(type)
                 .withSensorTypeId(sensorType)
                 .withChannel("default")
-                .withRecords(RecordsOptions.WITHOUT_RECORDS) //TODO: change to UNIDENTIFIED_RECORDS in next version
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
                 .withUnidentifiedData()
-                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN) //TODO: remove in version 0.1.9, due to bug in 0.1.8 version
                 .build()
                 .ifPresent(routingKeys -> this.sensorDataPublisher.publish(new MessageSupplied<>(routingKeys, sensorDataDTO)));
     }

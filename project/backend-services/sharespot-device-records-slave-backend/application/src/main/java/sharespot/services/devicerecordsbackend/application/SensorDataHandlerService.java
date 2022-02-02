@@ -3,9 +3,11 @@ package sharespot.services.devicerecordsbackend.application;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
+import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -43,8 +45,11 @@ public class SensorDataHandlerService {
 
         var dataWithRecordDTO = appender.tryToAppend(message.data);
 
+        var hasRecords = dataWithRecordDTO.hasProperty(PropertyName.DEVICE_RECORDS);
+        
         var routingKeys = provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(dataWithRecordDTO)
+                .withRecords(hasRecords ? RecordsOptions.WITH_RECORDS : RecordsOptions.WITHOUT_RECORDS)
                 .from(message.routingKeys);
 
         routingKeys.ifPresent(keys -> dataStream.next(new MessageSupplied<>(keys, appender.tryToAppend(message.data))));

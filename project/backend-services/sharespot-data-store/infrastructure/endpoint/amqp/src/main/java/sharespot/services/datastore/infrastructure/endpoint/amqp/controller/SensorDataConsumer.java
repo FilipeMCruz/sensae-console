@@ -29,6 +29,6 @@ public class SensorDataConsumer {
 
     private void logConsumedMessage(MessageConsumed<ObjectNode> in) {
         logger.info("Data Consumed: Unknown");
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

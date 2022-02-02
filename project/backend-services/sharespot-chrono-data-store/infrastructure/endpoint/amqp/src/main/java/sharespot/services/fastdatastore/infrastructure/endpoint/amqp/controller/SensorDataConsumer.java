@@ -33,12 +33,12 @@ public class SensorDataConsumer {
 
     private void logDroppedMessage(MessageConsumed<ProcessedSensorDataDTO> in, Exception exception) {
         logger.warn("Data dropped: {}", in.data.dataId);
-        logger.warn("RoutingKeys: {}", in.routingKeys.toString());
+        logger.warn("RoutingKeys: {}", in.routingKeys.details());
         logger.warn(exception.getMessage());
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.data.dataId);
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

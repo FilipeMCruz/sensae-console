@@ -26,6 +26,6 @@ public class SensorDataSupplier {
 
     private void logSuppliedMessage(MessageSupplied<SensorDataDTO> in) {
         logger.info("Data Id Supplied: {}", in.data.dataId());
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

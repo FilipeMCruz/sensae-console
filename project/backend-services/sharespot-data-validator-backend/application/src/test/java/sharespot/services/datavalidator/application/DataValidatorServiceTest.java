@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.keys.RoutingKeys;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.data.TemperatureDataOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
@@ -23,13 +24,15 @@ public class DataValidatorServiceTest {
 
     public DataValidatorServiceTest() {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
+
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("dataprocessorslave.dataprocessorslave.0.1.9.data.processed.lgt92.default.without_records.with_gps_data.without_tempc_data.unknown.#");
+                .from("dataprocessorslave.dataprocessorslave.0.1.10.data.p.lgt92.default.u.u.y.n.n.n.n.n.n.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {
             throw new IllegalArgumentException();
         }
+        System.out.println(externalKeys.details());
     }
 
     @Test
@@ -39,7 +42,7 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(45.756, 14.432);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
-        assertEquals("correct", decide.get().legitimacy);
+        assertEquals("c", decide.get().legitimacy);
     }
 
     @Test
@@ -49,7 +52,7 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(38.750244, -9.229148);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
-        assertEquals("correct", decide.get().legitimacy);
+        assertEquals("c", decide.get().legitimacy);
     }
 
     @Test
@@ -59,7 +62,7 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(-138.123422352, 2.23426624);
         var decide = service.decide(randomWithGPSData(gps));
         assertTrue(decide.isPresent());
-        assertEquals("incorrect", decide.get().legitimacy);
+        assertEquals("i", decide.get().legitimacy);
     }
 
     private MessageConsumed<ProcessedSensorDataDTO> randomWithGPSData(GPSDataDTO gps) {

@@ -22,9 +22,9 @@ public class SensorDataPublisherService {
     public void registerSensorData(ObjectNode sensorDataDTO, String infoType, String sensorType) {
 
         InfoTypeOptions type;
-        if (InfoTypeOptions.DECODED.value().equalsIgnoreCase(infoType)) {
+        if ("decoded".equalsIgnoreCase(infoType)) {
             type = InfoTypeOptions.DECODED;
-        } else if (InfoTypeOptions.ENCODED.value().equalsIgnoreCase(infoType)) {
+        } else if ("encoded".equalsIgnoreCase(infoType)) {
             type = InfoTypeOptions.ENCODED;
         } else {
             throw new NotValidException("Info Type must be of value encoded or decoded");

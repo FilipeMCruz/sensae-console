@@ -33,6 +33,6 @@ public class SensorDataConsumer {
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
         logger.info("Data Consumed: {}", in.data.dataId);
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

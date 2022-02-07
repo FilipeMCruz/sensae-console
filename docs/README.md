@@ -1,6 +1,6 @@
 # Docs
 
-This document aggregates all important info and documentation about location tracking.
+This document aggregates all important info and documentation about this environment.
 It's intended mostly for developers and stakeholders.
 
 ## Functional Requirements
@@ -46,7 +46,7 @@ Logical View of the containers that constitute the system and it's interactions.
 The system is composed by the following containers:
 
 - **Location Tracking Frontend**: Frontend that displays live information in a map;
-- **Location Tracking Backend**: Backend that sends live information to the frontend;
+- **Fleet Management Backend**: Backend that sends live information to the frontend;
 - **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
 - **Device Records Master Backend**: Backend that stores device data (records) and notifies slaves about changes to this data;
 - **Device Records Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
@@ -137,12 +137,12 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-location-tracking-frontend](diagrams/logical-view-level3-location-tracking-frontend.svg)
 
-#### Location Tracking Backend
+#### Fleet Management Backend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-location-tracking-backend](diagrams/logical-view-level3-location-tracking-backend.svg)
+![logical-view-level3-fleet-management-backend](diagrams/logical-view-level3-fleet-management-backend.svg)
 
 #### Device Records Frontend
 
@@ -199,13 +199,6 @@ Currently the adopted architecture has, as reference architecture, the [Onion Ar
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-store](diagrams/logical-view-level3-data-store.svg)
-
-#### Chrono Data Store
-
-Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
-The following diagram describes it from a logical view.
-
-![logical-view-level3-chrono-data-store](diagrams/logical-view-level3-chrono-data-store.svg)
 
 #### Data Validator
 
@@ -424,7 +417,7 @@ mutation delete($device: DeviceInput){
 
 This is the resource used to remove a device record from the cache and database.
 
-### Location Tracking Backend API
+### Fleet Management Backend API
 
 This section will present every endpoint available in this service.
 Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.

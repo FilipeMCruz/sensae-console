@@ -1,39 +1,44 @@
-@startuml logical-view-level3-chrono-data-store
+@startuml logical-view-level3-fleet-management-backend
 
 skinparam Monochrome true
 
-component "Chrono Data Store" {
+component "Fleet Management Backend" {
+    component "Domain" as DOM
     component "Application" as APP
     component "Infrastructure" as INFRA {
         component "Boot" as BOOT
-        component "Mapper" as MAP
-        component "Presistence" as PERSIST {
+        component "Persistence" as PERS {
             component "QuestDB" as QUEST
             interface "QuestDB API" as QUEST_API
         }
         component "Endpoint" as ENDPOINT {
+            component "GraphQL" as GRAPH
             component "AMQP" as AMQP
+            interface "GraphQL API" as GRAPH_API
             interface "AMQP API" as AMQP_API
         }
         interface "Boot API" as BOOT_API
-        interface "Mapper API" as MAP_API
     }
+
+    interface "Domain API" as DOM_API
     interface "Application API" as APP_API
 
-    MAP_API -- MAP
-    QUEST_API -- QUEST
-    AMQP_API -- AMQP
+    DOM_API -- DOM
     APP_API -- APP
     BOOT_API -- BOOT
+    AMQP_API -- AMQP
+    GRAPH_API -- GRAPH
+    QUEST_API -- QUEST
 
-    AMQP --( APP_API
-    QUEST --( APP_API
-    BOOT --( QUEST_API
+    APP --( DOM_API
+    BOOT --( GRAPH_API
     BOOT --( AMQP_API
-    BOOT --( MAP_API
+    BOOT --( QUEST_API
 
-    MAP --( AMQP_API
-    MAP --( QUEST_API
+    GRAPH --( APP_API
+    AMQP   --( APP_API
+    QUEST --( APP_API
+
 }
 
 @enduml

@@ -14,7 +14,7 @@ component "Environment" <<System>> {
     component "Message Broker" as MB <<Container>>
     component "Device Records Master Backend" as DRB <<Container>>
     component "Device Records Slave Backend" as DRSB <<Container>>
-    component "Location Tracking Backend" as LTB <<Container>>
+    component "Fleet Management Backend" as LTB <<Container>>
     component "Data Gateway" as DDG <<Container>>
     component "Data Relayer" as DR <<Container>>
     component "UI Aggregator" as UIAG <<Container>> {
@@ -34,7 +34,7 @@ component "Environment" <<System>> {
     component "Simple Auth Backend" as SAB <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
-    interface "Location Tracking Backend\nAPI" as LTB_API
+    interface "Fleet Management Backend\nAPI" as LTB_API
     interface "Device Records Master Backend\nAPI" as DRB_API
     interface "Data Processor Master Backend\nAPI" as DPMB_API
     interface "Device Records Database\nAPI" as DRDB_API

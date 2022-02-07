@@ -21,6 +21,11 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
             <version>2.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>sharespot.services</groupId>
+            <artifactId>application</artifactId>
+            <version>0.4.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -20,7 +20,7 @@ component "Environment" <<System>> {
     component "UI Aggregator" as UIAG <<Container>> {
         component "Device Records Frontend" as DRF <<Container>>
         component "Data Processor Frontend" as DPF <<Container>>
-        component "Location Tracking Frontend" as LTF <<Container>>
+        component "Fleet Management Frontend" as LTF <<Container>>
         component "Simple Auth Frontend" as SAF <<Container>>
     }
     component "Data Processor Slave Backend" as DPSB <<Container>>

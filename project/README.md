@@ -42,7 +42,7 @@ nx serve <frontend-name>
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace any identified tag (`<this is a tag>`).
 
-File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.ts`
+File: `project/frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.ts`
 
 ```ts
 export const environment = {
@@ -107,7 +107,7 @@ export const environment = {
         http: 'http://localhost:8083/graphql'
       }
     },
-    locationTracking: {
+    fleetManagement: {
       backendURL: {
         websocket: "ws://localhost:8086/subscriptions",
         http: "http://localhost:8086/graphql"
@@ -336,7 +336,7 @@ ln -s /etc/letsencrypt/live/<yourdomain>/privkey.pem /etc/nginx/ssl/nginx.key
 
 All communications between backend services, databases and message brokers are authenticated so there's a need to create users and it's account passwords, for that create the following files, be sure to replace all identified tags (`<this is a tag>`). All `environment.prod.ts` need it's associated `environment.ts` config.
 
-File: `project/frontend-services/apps/sharespot-location-tracking-frontend/src/environments/environment.prod.ts`
+File: `project/frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.prod.ts`
 
 ``` ts
 export const environment = {
@@ -401,7 +401,7 @@ export const environment = {
         http: 'https://localhost/data-processor/graphql'
       }
     },
-    locationTracking: {
+    fleetManagement: {
       backendURL: {
         websocket: 'wss://localhost/location-tracking/subscriptions',
         http: 'https://localhost/location-tracking/graphql',

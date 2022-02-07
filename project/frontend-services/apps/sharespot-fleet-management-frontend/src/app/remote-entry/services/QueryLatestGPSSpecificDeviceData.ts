@@ -42,7 +42,7 @@ export class QueryLatestGPSSpecificDeviceData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<FilteredByDeviceGPSSensorLatestData>({
+    return this.apollo.use("fleetManagement").subscribe<FilteredByDeviceGPSSensorLatestData>({
       query,
       variables: {devices}
     }).pipe(

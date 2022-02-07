@@ -45,7 +45,7 @@ Logical View of the containers that constitute the system and it's interactions.
 
 The system is composed by the following containers:
 
-- **Location Tracking Frontend**: Frontend that displays live information in a map;
+- **Fleet Management Frontend**: Frontend that displays live information in a map;
 - **Fleet Management Backend**: Backend that sends live information to the frontend;
 - **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
 - **Device Records Master Backend**: Backend that stores device data (records) and notifies slaves about changes to this data;
@@ -130,12 +130,12 @@ This flow is almost the same as the UC01, the only difference is that in this on
 
 Logical View of each container's component and it's interactions with other components.
 
-#### Location Tracking Frontend
+#### Fleet Management Frontend
 
 Currently the adopted architecture has, as reference architecture, the [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/).
 The following diagram describes it from a logical view.
 
-![logical-view-level3-location-tracking-frontend](diagrams/logical-view-level3-location-tracking-frontend.svg)
+![logical-view-level3-fleet-managment-frontend](diagrams/logical-view-level3-fleet-managment-frontend.svg)
 
 #### Fleet Management Backend
 

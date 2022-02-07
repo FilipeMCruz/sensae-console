@@ -16,10 +16,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'sharespot-location-tracking-frontend'`, () => {
+  it(`should have as title 'sharespot-fleet-management-frontend'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sharespot-location-tracking-frontend');
+    expect(app.title).toEqual('sharespot-fleet-management-frontend');
   });
 
   it('should render title', () => {
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome to sharespot-location-tracking-frontend!'
+      'Welcome to sharespot-fleet-management-frontend!'
     );
   });
 });

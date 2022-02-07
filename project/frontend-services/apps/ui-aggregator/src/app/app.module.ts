@@ -67,8 +67,8 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       }),
       cache: new InMemoryCache(),
     },
-    locationTracking: {
-      link: createLinkWithWebsocket(httpLink, environment.endpoints.locationTracking.backendURL.websocket, environment.endpoints.locationTracking.backendURL.http),
+    fleetManagement: {
+      link: createLinkWithWebsocket(httpLink, environment.endpoints.fleetManagement.backendURL.websocket, environment.endpoints.fleetManagement.backendURL.http),
       cache: new InMemoryCache(),
     },
     simpleAuth: {

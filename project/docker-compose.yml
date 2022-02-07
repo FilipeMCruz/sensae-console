@@ -22,7 +22,7 @@ services:
     depends_on:
       - sharespot-device-records-frontend
       - sharespot-data-processor-frontend
-      - sharespot-location-tracking-frontend
+      - sharespot-fleet-management-frontend
       - sharespot-simple-auth-frontend
   sharespot-simple-auth-frontend:
     build:
@@ -66,11 +66,11 @@ services:
       - 443
     depends_on:
       - sharespot-data-processor-master-backend
-  sharespot-location-tracking-frontend:
+  sharespot-fleet-management-frontend:
     build:
-      dockerfile: docker/sharespot-location-tracking-frontend/Dockerfile
+      dockerfile: docker/sharespot-fleet-management-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-location-tracking-frontend
+    image: sharespot-fleet-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/

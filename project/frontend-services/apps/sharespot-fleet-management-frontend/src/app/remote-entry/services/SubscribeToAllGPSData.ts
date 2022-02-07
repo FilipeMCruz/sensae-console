@@ -42,7 +42,7 @@ export class SubscribeToAllGPSData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<SensorDTO>({query})
+    return this.apollo.use("fleetManagement").subscribe<SensorDTO>({query})
       .pipe(
         map(extract),
         filter(isNonNull),

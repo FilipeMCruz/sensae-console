@@ -42,7 +42,7 @@ export class QueryGPSDeviceHistory {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<HistorySensorDTO>({query, variables: {filters}})
+    return this.apollo.use("fleetManagement").subscribe<HistorySensorDTO>({query, variables: {filters}})
       .pipe(
         map(extract),
         filter(isNonNull),

@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('sharespot-location-tracking-frontend', () => {
+describe('sharespot-fleet-management-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('sharespot-location-tracking-frontend', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to sharespot-location-tracking-frontend!');
+    getGreeting().contains('Welcome to sharespot-fleet-management-frontend!');
   });
 });

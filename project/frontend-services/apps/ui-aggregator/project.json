@@ -102,7 +102,7 @@
         "commands": [
           "nx serve sharespot-simple-auth-frontend",
           "nx serve sharespot-data-processor-frontend",
-          "nx serve sharespot-location-tracking-frontend",
+          "nx serve sharespot-fleet-management-frontend",
           "nx serve sharespot-device-records-frontend",
           "nx serve ui-aggregator"
         ]

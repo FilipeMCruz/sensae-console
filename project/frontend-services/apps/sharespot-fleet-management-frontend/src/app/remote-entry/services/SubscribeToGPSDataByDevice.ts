@@ -42,7 +42,7 @@ export class SubscribeToGPSDataByDevice {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<FilteredSensorDTO>({query, variables: {devices}})
+    return this.apollo.use("fleetManagement").subscribe<FilteredSensorDTO>({query, variables: {devices}})
       .pipe(
         map(extract),
         filter(isNonNull),

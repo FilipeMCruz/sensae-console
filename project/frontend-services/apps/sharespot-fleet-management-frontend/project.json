@@ -1,27 +1,27 @@
 {
   "projectType": "application",
-  "root": "apps/sharespot-location-tracking-frontend",
-  "sourceRoot": "apps/sharespot-location-tracking-frontend/src",
+  "root": "apps/sharespot-fleet-management-frontend",
+  "sourceRoot": "apps/sharespot-fleet-management-frontend/src",
   "prefix": "frontend-services",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/sharespot-location-tracking-frontend",
-        "index": "apps/sharespot-location-tracking-frontend/src/index.html",
-        "main": "apps/sharespot-location-tracking-frontend/src/main.ts",
-        "polyfills": "apps/sharespot-location-tracking-frontend/src/polyfills.ts",
-        "tsConfig": "apps/sharespot-location-tracking-frontend/tsconfig.app.json",
+        "outputPath": "dist/apps/sharespot-fleet-management-frontend",
+        "index": "apps/sharespot-fleet-management-frontend/src/index.html",
+        "main": "apps/sharespot-fleet-management-frontend/src/main.ts",
+        "polyfills": "apps/sharespot-fleet-management-frontend/src/polyfills.ts",
+        "tsConfig": "apps/sharespot-fleet-management-frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/sharespot-location-tracking-frontend/src/favicon.ico",
-          "apps/sharespot-location-tracking-frontend/src/assets"
+          "apps/sharespot-fleet-management-frontend/src/favicon.ico",
+          "apps/sharespot-fleet-management-frontend/src/assets"
         ],
-        "styles": ["apps/sharespot-location-tracking-frontend/src/styles.scss"],
+        "styles": ["apps/sharespot-fleet-management-frontend/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
-          "path": "apps/sharespot-location-tracking-frontend/webpack.config.js"
+          "path": "apps/sharespot-fleet-management-frontend/webpack.config.js"
         }
       },
       "configurations": {
@@ -40,13 +40,13 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/sharespot-location-tracking-frontend/src/environments/environment.ts",
-              "with": "apps/sharespot-location-tracking-frontend/src/environments/environment.prod.ts"
+              "replace": "apps/sharespot-fleet-management-frontend/src/environments/environment.ts",
+              "with": "apps/sharespot-fleet-management-frontend/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all",
           "customWebpackConfig": {
-            "path": "apps/sharespot-location-tracking-frontend/webpack.prod.config.js"
+            "path": "apps/sharespot-fleet-management-frontend/webpack.prod.config.js"
           }
         },
         "development": {
@@ -64,10 +64,10 @@
       "executor": "@nrwl/angular:webpack-server",
       "configurations": {
         "production": {
-          "browserTarget": "sharespot-location-tracking-frontend:build:production"
+          "browserTarget": "sharespot-fleet-management-frontend:build:production"
         },
         "development": {
-          "browserTarget": "sharespot-location-tracking-frontend:build:development"
+          "browserTarget": "sharespot-fleet-management-frontend:build:development"
         }
       },
       "defaultConfiguration": "development",
@@ -78,23 +78,23 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "sharespot-location-tracking-frontend:build"
+        "browserTarget": "sharespot-fleet-management-frontend:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/sharespot-location-tracking-frontend/src/**/*.ts",
-          "apps/sharespot-location-tracking-frontend/src/**/*.html"
+          "apps/sharespot-fleet-management-frontend/src/**/*.ts",
+          "apps/sharespot-fleet-management-frontend/src/**/*.html"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/sharespot-location-tracking-frontend"],
+      "outputs": ["coverage/apps/sharespot-fleet-management-frontend"],
       "options": {
-        "jestConfig": "apps/sharespot-location-tracking-frontend/jest.config.js",
+        "jestConfig": "apps/sharespot-fleet-management-frontend/jest.config.js",
         "passWithNoTests": true
       }
     }

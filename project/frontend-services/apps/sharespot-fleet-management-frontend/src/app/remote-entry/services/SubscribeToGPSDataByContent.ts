@@ -1,24 +1,25 @@
+import {Injectable} from "@angular/core";
 import {Apollo, gql} from "apollo-angular";
 import {Observable} from "rxjs";
-import {GPSSensorLatestData} from "../dtos/SensorDTO";
-import {Injectable} from "@angular/core";
+import {FetchResult} from "@apollo/client/core";
+import {FilteredByContentSensorDTO, SensorDTO} from "../dtos/SensorDTO";
 import {filter, map} from "rxjs/operators";
-import {extract, isNonNull} from "./ObservableFunctions";
 import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
+import {extract, isNonNull} from "./ObservableFunctions";
 
 @Injectable({
   providedIn: 'root'
 })
-export class QueryLatestGPSDeviceData {
+export class SubscribeToGPSDataByContent {
 
   constructor(private apollo: Apollo) {
   }
 
-  getData(): Observable<DeviceData[]> {
+  getData(content: string): Observable<DeviceData> {
     const query = gql`
-      query latest{
-        latest{
+      subscription locationByContent($content: String){
+        locationByContent(content: $content){
           dataId
           device{
             id
@@ -42,11 +43,11 @@ export class QueryLatestGPSDeviceData {
       }
     `;
 
-    return this.apollo.use("locationTracking").subscribe<GPSSensorLatestData>({query})
+    return this.apollo.use("fleetManagement").subscribe<FilteredByContentSensorDTO>({query, variables: {content}})
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: GPSSensorLatestData) => data.latest.map(s => DeviceLiveDataMapper.dtoToModel(s)))
+        map((data: FilteredByContentSensorDTO) => DeviceLiveDataMapper.dtoToModel(data.locationByContent))
       );
   }
 }

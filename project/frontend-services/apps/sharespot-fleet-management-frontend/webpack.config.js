@@ -28,7 +28,7 @@ sharedMappings.register(
 
 module.exports = {
   output: {
-    uniqueName: 'sharespotlocationtrackingfrontend',
+    uniqueName: 'sharespotfleetmanagementfrontend',
     publicPath: 'auto',
     clean: true
   },
@@ -43,11 +43,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: 'sharespotlocationtrackingfrontend',
+      name: 'sharespotfleetmanagementfrontend',
       filename: 'remoteEntry.js',
       exposes: {
         './Module':
-          'apps/sharespot-location-tracking-frontend/src/app/remote-entry/entry.module.ts',
+          'apps/sharespot-fleet-management-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {

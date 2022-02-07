@@ -1,8 +1,10 @@
-# Location Tracking
+# IoT Environment
 
-This document presents all the information needed to install, run and understand what was built by the Platform *IoT Service Builder*.
+This document presents all the information needed to install, run and understand what was built.
 
-This configuration was built by Filipe Cruz.
+The services currently supported are:
+
+- Fleet Management
 
 ## Links
 

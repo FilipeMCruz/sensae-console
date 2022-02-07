@@ -147,26 +147,6 @@ db.createUser({
 });
 ```
 
-File: `project/backend-services/sharespot-chrono-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
-
-``` conf
-server.port=8086
-
-spring.rabbitmq.host=localhost
-spring.rabbitmq.port=5672
-spring.rabbitmq.username=guest
-spring.rabbitmq.password=guest
-
-logging.level.org.springframework.web=DEBUG
-logging.level.web=DEBUG
-
-spring.datasource.url=jdbc:postgresql://localhost:8812/qdb?sslmode=disable
-spring.datasource.username=admin
-spring.datasource.password=quest
-```
-
-`Important`: Chrono data store is currently not in use.
-
 File: `project/backend-services/sharespot-data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
@@ -303,7 +283,7 @@ spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
 ```
 
-File: `project/backend-services/sharespot-location-tracking-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/sharespot-fleet-management-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8085
@@ -446,16 +426,6 @@ db.createUser({
 });
 ```
 
-File. `project/secrets/prod/sharespot-chrono-data-store-backend.env`
-
-``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
-SPRING_DATASOURCE_USERNAME=admin
-SPRING_DATASOURCE_PASSWORD=quest
-```
-
-`Important`: Chrono data store is currently not in use.
-
 File. `project/secrets/prod/sharespot-common-database.env`
 
 ``` conf
@@ -521,7 +491,7 @@ SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
 ```
 
-File. `project/secrets/prod/sharespot-location-tracking-backend.env`
+File. `project/secrets/prod/sharespot-fleet-management-backend.env`
 
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest

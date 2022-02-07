@@ -3,7 +3,7 @@ package sharespot.services.fleetmanagementbackend.application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
-import pt.sharespot.iot.core.sensor.data.StatusDataDTO;
+import pt.sharespot.iot.core.sensor.data.MotionDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 
@@ -31,14 +31,13 @@ public class GPSDataArchiver {
 
             // if no previous data exists motion status is unknown
             if (lastTenMinutesData.isEmpty()) {
-                //TODO: fix this in iot core
-                data.data = data.data.withStatus(StatusDataDTO.withMotion("UNKNOWN"));
+                data.data.withMotion(MotionDataDTO.of("UNKNOWN"));
             } else {
                 var moving = Haversine.isMoving(data, lastTenMinutesData, DISTANCE_IN_KM);
                 if (moving) {
-                    data.data = data.data.withStatus(StatusDataDTO.withMotion("ACTIVE"));
+                    data.data.withMotion(MotionDataDTO.of("ACTIVE"));
                 } else {
-                    data.data = data.data.withStatus(StatusDataDTO.withMotion("INACTIVE"));
+                    data.data.withMotion(MotionDataDTO.of("INACTIVE"));
                 }
             }
         }

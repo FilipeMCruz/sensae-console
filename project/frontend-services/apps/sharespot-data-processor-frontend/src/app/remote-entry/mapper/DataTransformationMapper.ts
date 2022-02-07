@@ -13,26 +13,36 @@ export class DataTransformationMapper {
   }
 
   private static propertyNameDtoToModel(dto: PropertyNameDTO): PropertyName {
-    if (dto === PropertyNameDTO.DEVICE_NAME) {
-      return PropertyName.DEVICE_NAME;
-    } else if (dto === PropertyNameDTO.DATA_ID) {
-      return PropertyName.DATA_ID;
-    } else if (dto === PropertyNameDTO.DEVICE_ID) {
-      return PropertyName.DEVICE_ID;
-    } else if (dto === PropertyNameDTO.DEVICE_RECORDS) {
-      return PropertyName.DEVICE_RECORDS;
-    } else if (dto === PropertyNameDTO.LATITUDE) {
-      return PropertyName.LATITUDE;
-    } else if (dto === PropertyNameDTO.LONGITUDE) {
-      return PropertyName.LONGITUDE;
-    } else if (dto === PropertyNameDTO.MOTION) {
-      return PropertyName.MOTION;
-    } else if (dto === PropertyNameDTO.TEMPERATURE) {
-      return PropertyName.TEMPERATURE;
-    } else if (dto === PropertyNameDTO.REPORTED_AT) {
-      return PropertyName.REPORTED_AT;
+    switch (dto) {
+      case PropertyNameDTO.DATA_ID:
+        return PropertyName.DATA_ID;
+      case PropertyNameDTO.DEVICE_ID:
+        return PropertyName.DEVICE_ID;
+      case PropertyNameDTO.DEVICE_NAME:
+        return PropertyName.DEVICE_NAME;
+      case PropertyNameDTO.DEVICE_RECORDS:
+        return PropertyName.DEVICE_RECORDS;
+      case PropertyNameDTO.REPORTED_AT:
+        return PropertyName.REPORTED_AT;
+      case PropertyNameDTO.LATITUDE:
+        return PropertyName.LATITUDE;
+      case PropertyNameDTO.LONGITUDE:
+        return PropertyName.LONGITUDE;
+      case PropertyNameDTO.MOTION:
+        return PropertyName.MOTION;
+      case PropertyNameDTO.VELOCITY:
+        return PropertyName.VELOCITY;
+      case PropertyNameDTO.HUMIDITY:
+        return PropertyName.HUMIDITY;
+      case PropertyNameDTO.PRESSURE:
+        return PropertyName.PRESSURE;
+      case PropertyNameDTO.TEMPERATURE:
+        return PropertyName.TEMPERATURE;
+      case PropertyNameDTO.AQI:
+        return PropertyName.AQI;
+      case PropertyNameDTO.INVALID:
+        return PropertyName.INVALID;
     }
-    return PropertyName.INVALID;
   }
 
   static modelToDto(model: DataTransformation): DataTransformationDTO {
@@ -44,25 +54,35 @@ export class DataTransformationMapper {
   }
 
   private static propertyNameModelToDto(model: PropertyName): PropertyNameDTO {
-    if (model === PropertyName.DEVICE_NAME) {
-      return PropertyNameDTO.DEVICE_NAME;
-    } else if (model === PropertyName.DATA_ID) {
-      return PropertyNameDTO.DATA_ID;
-    } else if (model === PropertyName.DEVICE_ID) {
-      return PropertyNameDTO.DEVICE_ID;
-    } else if (model === PropertyName.DEVICE_RECORDS) {
-      return PropertyNameDTO.DEVICE_RECORDS;
-    } else if (model === PropertyName.LATITUDE) {
-      return PropertyNameDTO.LATITUDE;
-    } else if (model === PropertyName.LONGITUDE) {
-      return PropertyNameDTO.LONGITUDE;
-    } else if (model === PropertyName.MOTION) {
-      return PropertyNameDTO.MOTION;
-    } else if (model === PropertyName.TEMPERATURE) {
-      return PropertyNameDTO.TEMPERATURE;
-    } else if (model === PropertyName.REPORTED_AT) {
-      return PropertyNameDTO.REPORTED_AT;
+    switch (model) {
+      case PropertyName.DATA_ID:
+        return PropertyNameDTO.DATA_ID;
+      case PropertyName.DEVICE_ID:
+        return PropertyNameDTO.DEVICE_ID;
+      case PropertyName.DEVICE_NAME:
+        return PropertyNameDTO.DEVICE_NAME;
+      case PropertyName.DEVICE_RECORDS:
+        return PropertyNameDTO.DEVICE_RECORDS;
+      case PropertyName.REPORTED_AT:
+        return PropertyNameDTO.REPORTED_AT;
+      case PropertyName.LATITUDE:
+        return PropertyNameDTO.LATITUDE;
+      case PropertyName.LONGITUDE:
+        return PropertyNameDTO.LONGITUDE;
+      case PropertyName.MOTION:
+        return PropertyNameDTO.MOTION;
+      case PropertyName.VELOCITY:
+        return PropertyNameDTO.VELOCITY;
+      case PropertyName.HUMIDITY:
+        return PropertyNameDTO.HUMIDITY;
+      case PropertyName.PRESSURE:
+        return PropertyNameDTO.PRESSURE;
+      case PropertyName.TEMPERATURE:
+        return PropertyNameDTO.TEMPERATURE;
+      case PropertyName.AQI:
+        return PropertyNameDTO.AQI;
+      case PropertyName.INVALID:
+        return PropertyNameDTO.INVALID;
     }
-    return PropertyNameDTO.INVALID;
   }
 }

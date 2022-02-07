@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
             <artifactId>graphql-dgs-spring-boot-starter</artifactId>
-            <version>4.9.16</version>
+            <version>4.9.17</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -39,24 +39,24 @@
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
             <artifactId>graphql-dgs-subscriptions-websockets-autoconfigure</artifactId>
-            <version>4.9.16</version>
+            <version>4.9.17</version>
         </dependency>
         <dependency>
             <groupId>pt.sharespot</groupId>
             <artifactId>iot-core</artifactId>
-            <version>0.1.7</version>
+            <version>0.1.10</version>
         </dependency>
 
         <!--         this dependencies are here just to prevent transitive dependencies to be used so that JAVA 17 can be used-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.2</version>
+            <version>2.6.3</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

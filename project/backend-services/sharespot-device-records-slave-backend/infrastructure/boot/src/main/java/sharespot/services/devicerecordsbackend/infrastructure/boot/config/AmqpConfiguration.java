@@ -66,9 +66,9 @@ public class AmqpConfiguration {
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
+                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

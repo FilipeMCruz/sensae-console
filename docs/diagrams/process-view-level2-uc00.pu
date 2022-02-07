@@ -12,7 +12,7 @@ participant "Data Store" as DS
 participant "Chrono Data Store" as CDS
 participant "Data Processor Slave\nBackend" as SDP
 participant "Message Broker" as MB
-participant "Location Tracking\nBackend" as LTB
+participant "Fleet Management\nBackend" as LTB
 participant "Device Records Slave\nBackend" as DRSB
 participant "Location Tracking\nFrontend" as LTF
 participant "Data Validator\nBackend" as DVB

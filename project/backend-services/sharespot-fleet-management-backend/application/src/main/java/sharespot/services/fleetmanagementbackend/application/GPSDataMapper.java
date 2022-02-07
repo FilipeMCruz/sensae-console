@@ -12,7 +12,7 @@ public class GPSDataMapper {
         var details = new GPSDataDetails(dto.data.gps.latitude, dto.data.gps.longitude);
         var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
         var device = new Device(dto.device.name, dto.device.id, entries);
-        var status = new StatusDataDetails(dto.data.status.motion);
+        var status = new StatusDataDetails(dto.data.motion.value);
         return new SensorData(dto.dataId, device, dto.reportedAt, new SensorDataDetails(details, status));
     }
 }

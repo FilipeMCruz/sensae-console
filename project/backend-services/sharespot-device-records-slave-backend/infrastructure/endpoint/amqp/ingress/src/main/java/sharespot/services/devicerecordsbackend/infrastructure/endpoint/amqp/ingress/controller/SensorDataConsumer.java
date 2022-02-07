@@ -29,6 +29,6 @@ public class SensorDataConsumer {
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.data.dataId);
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

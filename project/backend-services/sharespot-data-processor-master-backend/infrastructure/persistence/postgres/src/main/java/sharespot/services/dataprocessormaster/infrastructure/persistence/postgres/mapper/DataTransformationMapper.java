@@ -69,6 +69,10 @@ public class DataTransformationMapper {
             case LONGITUDE -> PropertyNamePostgres.longitude();
             case TEMPERATURE -> PropertyNamePostgres.temperature();
             case MOTION -> PropertyNamePostgres.motion();
+            case VELOCITY -> PropertyNamePostgres.velocity();
+            case AQI -> PropertyNamePostgres.aqi();
+            case HUMIDITY -> PropertyNamePostgres.humidity();
+            case PRESSURE -> PropertyNamePostgres.pressure();
         };
     }
 }

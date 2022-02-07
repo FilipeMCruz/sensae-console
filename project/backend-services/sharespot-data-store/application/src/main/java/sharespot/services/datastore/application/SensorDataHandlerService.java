@@ -14,6 +14,6 @@ public class SensorDataHandlerService {
     }
 
     public void publish(MessageConsumed<ObjectNode> in) {
-        repository.insert(in.routingKeys.toString(), in.data);
+        repository.insert(in.routingKeys.details(), in.data);
     }
 }

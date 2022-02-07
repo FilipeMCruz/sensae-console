@@ -12,7 +12,7 @@ participant "Data Processor Slave\nBackend" as DPSB
 participant "Data Validator\nBackend" as DVB
 participant "Device Records Slave\nBackend" as DRSB
 participant "Message\nBroker" as MB
-participant "Location Tracking\nBackend" as LTB
+participant "Fleet Management\nBackend" as LTB
 participant "Location Tracking\nFrontend" as LTF
 
 activate MB

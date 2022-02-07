@@ -3,7 +3,9 @@ package sharespot.services.datagateway.application;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.*;
+import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 
 @Service
 public class SensorDataPublisherService {
@@ -20,9 +22,9 @@ public class SensorDataPublisherService {
     public void registerSensorData(ObjectNode sensorDataDTO, String infoType, String sensorType) {
 
         InfoTypeOptions type;
-        if (InfoTypeOptions.DECODED.value().equalsIgnoreCase(infoType)) {
+        if ("decoded".equalsIgnoreCase(infoType)) {
             type = InfoTypeOptions.DECODED;
-        } else if (InfoTypeOptions.ENCODED.value().equalsIgnoreCase(infoType)) {
+        } else if ("encoded".equalsIgnoreCase(infoType)) {
             type = InfoTypeOptions.ENCODED;
         } else {
             throw new NotValidException("Info Type must be of value encoded or decoded");
@@ -31,11 +33,9 @@ public class SensorDataPublisherService {
         provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withInfoType(type)
                 .withSensorTypeId(sensorType)
-                .withDefaultChannel()
-                .withRecords(RecordsOptions.WITHOUT_RECORDS)
-                .withGps(GPSDataOptions.WITHOUT_GPS_DATA)
-                .withTempC(TempCDataOptions.WITHOUT_TEMPC_DATA)
-                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+                .withChannel("default")
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
+                .withUnidentifiedData()
                 .build()
                 .ifPresent(routingKeys -> this.sensorDataPublisher.publish(new MessageSupplied<>(routingKeys, sensorDataDTO)));
     }

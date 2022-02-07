@@ -14,7 +14,7 @@ public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Location Tracking Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Fleet Management Queue";
 
     private final GPSDataArchiver handler;
 
@@ -33,6 +33,6 @@ public class SensorDataConsumer {
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
         logger.info("Data Consumed: {}", in.data.dataId);
-        logger.info("RoutingKeys: {}", in.routingKeys.toString());
+        logger.info("RoutingKeys: {}", in.routingKeys.details());
     }
 }

@@ -79,7 +79,7 @@ services:
     ports:
       - 443
     depends_on:
-      - sharespot-location-tracking-backend
+      - sharespot-fleet-management-backend
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
@@ -154,14 +154,14 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-location-tracking-backend:
-    build: backend-services/sharespot-location-tracking-backend
-    container_name: sharespot-location-tracking-backend
-    image: sharespot-location-tracking-backend
+  sharespot-fleet-management-backend:
+    build: backend-services/sharespot-fleet-management-backend
+    container_name: sharespot-fleet-management-backend
+    image: sharespot-fleet-management-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-location-tracking-backend.env
+      - ./secrets/prod/sharespot-fleet-management-backend.env
     networks:
       - sharespot-network
     ports:

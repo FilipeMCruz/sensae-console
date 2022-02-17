@@ -1,0 +1,8 @@
+type Query {
+    deviceRecords: [DeviceRecords]
+}
+
+type Mutation {
+    index(records : DeviceRecordsInput): DeviceRecords
+    delete(device: DeviceInput): Device
+}

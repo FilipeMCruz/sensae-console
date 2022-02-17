@@ -7,8 +7,6 @@
     "sharespot-device-records-frontend-e2e": "apps/sharespot-device-records-frontend-e2e",
     "sharespot-fleet-management-frontend": "apps/sharespot-fleet-management-frontend",
     "sharespot-fleet-management-frontend-e2e": "apps/sharespot-fleet-management-frontend-e2e",
-    "sharespot-simple-auth-frontend": "apps/sharespot-simple-auth-frontend",
-    "sharespot-simple-auth-frontend-e2e": "apps/sharespot-simple-auth-frontend-e2e",
     "simple-auth-lib": "libs/simple-auth-lib",
     "ui-aggregator": "apps/ui-aggregator",
     "ui-aggregator-e2e": "apps/ui-aggregator-e2e"

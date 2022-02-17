@@ -32,8 +32,8 @@ import {
   MsalBroadcastService,
   MsalGuard,
   MsalGuardConfiguration,
-  MsalService,
-  MsalRedirectComponent
+  MsalRedirectComponent,
+  MsalService
 } from "@azure/msal-angular";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 
@@ -100,12 +100,6 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     fleetManagement: {
       link: createLinkWithWebsocket(httpLink, environment.endpoints.fleetManagement.backendURL.websocket, environment.endpoints.fleetManagement.backendURL.http),
       cache: new InMemoryCache(),
-    },
-    simpleAuth: {
-      link: httpLink.create({
-        uri: environment.endpoints.simpleAuth.backendURL.http
-      }),
-      cache: new InMemoryCache()
     }
   };
 }

@@ -1,33 +1,31 @@
 import {Injectable} from "@angular/core";
 import {ValidateCredentials} from "./services/ValidateCredentials";
 import {ReplaySubject} from "rxjs";
+import {UserIdentity} from "./model/UserIdentity";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private outcome = false;
+  private id?: UserIdentity;
 
   constructor(private validator: ValidateCredentials) {
   }
 
-  login(userName: string, secret: string) {
+  login(userName: string, email: string, oid: string) {
     const subject = new ReplaySubject(1);
-    this.validator.validate({name: userName, secret: secret}).subscribe(
-      next => {
-        next.data ? this.outcome = next.data.credentials.valid : false;
-        subject.next(this.outcome)
-      }
-    )
+    //TODO: request access token to internal auth server;
+    this.id = new UserIdentity(userName, email, oid);
+    subject.next(true);
     return subject;
   }
 
   isAllowed() {
-    return this.outcome;
+    return this.id !== undefined;
   }
 
   logout() {
-    this.outcome = false;
+    this.id = undefined;
   }
 }

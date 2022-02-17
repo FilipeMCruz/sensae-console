@@ -24,6 +24,36 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatMenuModule} from '@angular/material/menu';
 import {AuthGuardService} from './services/AuthGuardService'
 import {AuthService} from "@frontend-services/simple-auth-lib";
+import {msalConfig} from './auth-config';
+import {InteractionType, IPublicClientApplication, PublicClientApplication} from "@azure/msal-browser";
+import {
+  MSAL_GUARD_CONFIG,
+  MSAL_INSTANCE,
+  MsalBroadcastService,
+  MsalGuard,
+  MsalGuardConfiguration,
+  MsalService,
+  MsalRedirectComponent
+} from "@azure/msal-angular";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+
+/**
+ * Here we pass the configuration parameters to create an MSAL instance.
+ * For more info, visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/configuration.md
+ */
+export function MSALInstanceFactory(): IPublicClientApplication {
+  return new PublicClientApplication(msalConfig);
+}
+
+/**
+ * Set your default interaction type for MSALGuard here. If you have any
+ * additional scopes you want the user to consent upon login, add them here as well.
+ */
+export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+  return {
+    interactionType: InteractionType.Redirect,
+  };
+}
 
 export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
   const http = httpLink.create({
@@ -94,6 +124,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     MatToolbarModule,
     MatMenuModule,
     LayoutModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
@@ -103,6 +134,17 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
   ],
   providers: [
     {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory
+    },
+    {
+      provide: MSAL_GUARD_CONFIG,
+      useFactory: MSALGuardConfigFactory
+    },
+    MsalService,
+    MsalGuard,
+    MsalBroadcastService,
+    {
       provide: APOLLO_NAMED_OPTIONS,
       useFactory: createNamedApollo,
       deps: [HttpLink],
@@ -110,7 +152,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     AuthGuardService,
     AuthService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule {
 }

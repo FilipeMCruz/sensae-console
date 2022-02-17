@@ -95,7 +95,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,
@@ -117,6 +117,21 @@ module.exports = {
           requiredVersion: 'auto',
         },
         '@angular/common/http': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@azure/msal-angular': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@azure/msal-browser': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        'core-js': {
           singleton: true,
           strictVersion: true,
           requiredVersion: 'auto',

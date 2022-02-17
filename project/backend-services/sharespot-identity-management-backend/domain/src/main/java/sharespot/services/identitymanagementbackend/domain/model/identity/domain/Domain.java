@@ -13,4 +13,16 @@ public class Domain {
         this.id = id;
         this.domainPath = domainPath;
     }
+
+    public DomainId getId() {
+        return id;
+    }
+
+    public DomainName getName() {
+        return name;
+    }
+
+    public DomainPath getDomainPath() {
+        return domainPath;
+    }
 }

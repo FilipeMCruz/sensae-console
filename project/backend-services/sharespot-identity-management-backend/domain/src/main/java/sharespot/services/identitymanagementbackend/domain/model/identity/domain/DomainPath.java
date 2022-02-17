@@ -2,5 +2,5 @@ package sharespot.services.identitymanagementbackend.domain.model.identity.domai
 
 import java.util.List;
 
-public record DomainPath(List<Domain> path) {
+public record DomainPath(List<DomainId> path) {
 }

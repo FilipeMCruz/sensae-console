@@ -13,7 +13,7 @@ public interface DomainRepository {
 
     Optional<Domain> moveDomain(DomainId toMove, DomainId newParent);
 
-    Optional<Domain> addDomain(DomainId newDomain, DomainId parent);
+    void addDomain(Domain domain);
 
     void deleteDomainAndChilds(DomainId id);
 }

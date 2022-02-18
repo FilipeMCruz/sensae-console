@@ -19,13 +19,30 @@
         <dependency>
             <groupId>com.netflix.graphql.dgs</groupId>
             <artifactId>graphql-dgs-spring-boot-starter</artifactId>
-            <version>4.9.16</version>
+            <version>4.9.17</version>
         </dependency>
         <dependency>
             <groupId>sharespot.services</groupId>
             <artifactId>application</artifactId>
             <version>0.4.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.11.2</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.11.2</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>

@@ -8,7 +8,7 @@ import java.util.Optional;
 @Repository
 public interface DomainRepository {
 
-    Domain getDefaultDomain();
+    Domain getUnallocatedRootDomain();
 
     Domain getRootDomain();
 

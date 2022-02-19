@@ -28,6 +28,7 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
+//TODO: move jwt creation and extraction to other service
 @Service
 public class TenantMapperImpl implements TenantMapper {
 

@@ -25,7 +25,7 @@ public class AuthenticateTenant {
         var tenantId = new TenantId(command.oid);
         var tenantOpt = tenantRepo.findTenantById(tenantId);
         Tenant tenant = tenantOpt.isEmpty() ?
-                new Tenant(tenantId, new TenantName(command.name), new TenantEmail(command.email), List.of(domainRepo.getDefaultDomain().getId())) :
+                new Tenant(tenantId, new TenantName(command.name), new TenantEmail(command.email), List.of(domainRepo.getUnallocatedRootDomain().getId())) :
                 tenantOpt.get();
         return toResult(tenant);
     }

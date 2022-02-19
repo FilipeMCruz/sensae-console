@@ -9,11 +9,13 @@ import sharespot.services.identitymanagementbackend.domainservices.model.domain.
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Service
 public class CreateDomain {
 
     private final TenantRepository identityRepo;
+
     private final DomainRepository domainRepo;
 
     public CreateDomain(TenantRepository identityRepo, DomainRepository domainRepo) {
@@ -28,11 +30,12 @@ public class CreateDomain {
         }
         var tenant = tenantOpt.get();
         var parentId = new DomainId(command.parentDomainId);
-        var parentDomains = domainRepo.findDomainById(parentId);
-        if (parentDomains.isEmpty()) {
+        var parentDomainOpt = domainRepo.findDomainById(parentId);
+        if (parentDomainOpt.isEmpty()) {
             throw new NotValidException("Invalid Parent Domain");
         }
-        var parentDomainIds = parentDomains.get().getDomainPath().path();
+        var parentDomain = parentDomainOpt.get();
+        var parentDomainIds = parentDomain.getDomainPath().path();
         if (tenant.getDomains().stream().noneMatch(parentDomainIds::contains)) {
             throw new NotValidException("No permissions");
         }
@@ -50,5 +53,14 @@ public class CreateDomain {
 
         var domain = new Domain(domainName, domainId, new DomainPath(domainPath));
         domainRepo.addDomain(domain);
+
+        if (parentDomain.isRoot()) {
+            var unallocatedDomainName = new DomainName(command.domainName + "unallocated");
+            var unallocatedDomainId = new DomainId(UUID.randomUUID());
+            var unallocatedDomainPath = new ArrayList<>(parentDomainIds);
+            unallocatedDomainPath.add(unallocatedDomainId);
+            var unallocatedDomain = new Domain(unallocatedDomainName, unallocatedDomainId, new DomainPath(unallocatedDomainPath));
+            domainRepo.addDomain(unallocatedDomain);
+        }
     }
 }

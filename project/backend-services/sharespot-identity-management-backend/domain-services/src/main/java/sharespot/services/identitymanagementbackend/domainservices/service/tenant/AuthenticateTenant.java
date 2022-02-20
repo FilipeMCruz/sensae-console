@@ -22,12 +22,17 @@ public class AuthenticateTenant {
     }
 
     public IdentityResult execute(IdentityQuery command) {
-        var tenantId = new TenantId(command.oid);
-        var tenantOpt = tenantRepo.findTenantById(tenantId);
-        Tenant tenant = tenantOpt.isEmpty() ?
-                new Tenant(tenantId, new TenantName(command.name), new TenantEmail(command.email), List.of(domainRepo.getUnallocatedRootDomain().getId())) :
-                tenantOpt.get();
+        var tenant = tenantRepo.findTenantById(TenantId.of(command.oid))
+                .orElseGet(() -> newTenant(command));
         return toResult(tenant);
+    }
+
+    private Tenant newTenant(IdentityQuery command) {
+        return new Tenant(
+                TenantId.of(command.oid),
+                new TenantName(command.name),
+                new TenantEmail(command.email),
+                List.of(domainRepo.getUnallocatedRootDomain().getId()));
     }
 
     private IdentityResult toResult(Tenant tenant) {

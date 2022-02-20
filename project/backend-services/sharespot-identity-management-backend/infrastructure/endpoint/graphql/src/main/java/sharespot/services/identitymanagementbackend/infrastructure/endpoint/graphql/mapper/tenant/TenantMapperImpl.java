@@ -4,11 +4,14 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.tenant.TenantMapper;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AuthenticationDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.JWTTokenDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.NewDomainForTenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityResult;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.PlaceTenantInDomainCommand;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthTokenHandler;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AuthenticationDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.NewDomainForTenantDTOImpl;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -47,5 +50,14 @@ public class TenantMapperImpl implements TenantMapper {
         identityCommand.name = claims.get("name", String.class);
         identityCommand.domains = Arrays.stream(claims.get("domains", String[].class)).toList();
         return identityCommand;
+    }
+
+    @Override
+    public PlaceTenantInDomainCommand dtoToCommand(NewDomainForTenantDTO dto) {
+        var info = (NewDomainForTenantDTOImpl) dto;
+        var command = new PlaceTenantInDomainCommand();
+        command.newDomain = info.domainOid;
+        command.tenant = info.tenantOid;
+        return command;
     }
 }

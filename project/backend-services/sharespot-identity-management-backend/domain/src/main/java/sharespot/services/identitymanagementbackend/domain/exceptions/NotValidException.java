@@ -5,5 +5,4 @@ public class NotValidException extends DomainException {
     public NotValidException(String message) {
         super(message);
     }
-
 }

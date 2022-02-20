@@ -7,9 +7,9 @@ import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenan
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
+import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 @Service
 public class CreateDomain {
@@ -24,43 +24,27 @@ public class CreateDomain {
     }
 
     public void execute(CreateDomainCommand command, IdentityCommand identity) {
-        var tenantOpt = identityRepo.findTenantById(new TenantId(identity.oid));
-        if (tenantOpt.isEmpty()) {
-            throw new NotValidException("Invalid Tenant");
-        }
-        var tenant = tenantOpt.get();
-        var parentId = new DomainId(command.parentDomainId);
-        var parentDomainOpt = domainRepo.findDomainById(parentId);
-        if (parentDomainOpt.isEmpty()) {
-            throw new NotValidException("Invalid Parent Domain");
-        }
-        var parentDomain = parentDomainOpt.get();
-        var parentDomainIds = parentDomain.getDomainPath().path();
-        if (tenant.getDomains().stream().noneMatch(parentDomainIds::contains)) {
-            throw new NotValidException("No permissions");
-        }
+        var tenant = identityRepo.findTenantById(TenantId.of(identity.oid))
+                .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
-        var children = domainRepo.getChildDomains(parentId);
+        var parentDomain = domainRepo.findDomainById(DomainId.of(command.parentDomainId))
+                .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        var domainName = new DomainName(command.domainName);
-        var domainId = new DomainId(command.domainId);
-
-        if (children.stream().anyMatch(d -> d.getName().equals(domainName) || d.getId().equals(domainId))) {
+        PermissionsValidator.verifyPermissions(tenant, parentDomain);
+        
+        var domainId = DomainId.of(command.domainId);
+        var domainPath = new ArrayList<>(parentDomain.getPath().path());
+        domainPath.add(domainId);
+        var domain = new Domain(DomainName.of(command.domainName), domainId, DomainPath.of(domainPath));
+        
+        var children = domainRepo.getChildDomains(DomainId.of(command.parentDomainId));
+        if (children.stream().anyMatch(domain::same)) {
             throw new NotValidException("Duplicate Child Domain");
         }
-        var domainPath = new ArrayList<>(parentDomainIds);
-        domainPath.add(domainId);
 
-        var domain = new Domain(domainName, domainId, new DomainPath(domainPath));
         domainRepo.addDomain(domain);
-
         if (parentDomain.isRoot()) {
-            var unallocatedDomainName = new DomainName(command.domainName + "unallocated");
-            var unallocatedDomainId = new DomainId(UUID.randomUUID());
-            var unallocatedDomainPath = new ArrayList<>(parentDomainIds);
-            unallocatedDomainPath.add(unallocatedDomainId);
-            var unallocatedDomain = new Domain(unallocatedDomainName, unallocatedDomainId, new DomainPath(unallocatedDomainPath));
-            domainRepo.addDomain(unallocatedDomain);
+            domainRepo.addDomain(Domain.unallocated(parentDomain));
         }
     }
 }

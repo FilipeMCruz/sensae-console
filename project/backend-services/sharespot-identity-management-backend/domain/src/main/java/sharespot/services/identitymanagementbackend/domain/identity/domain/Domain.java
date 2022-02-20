@@ -1,5 +1,8 @@
 package sharespot.services.identitymanagementbackend.domain.identity.domain;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 /**
  * A Domain represents a department in a hierarchical organization structure.
  * An organization is composed of several domains in a tree like format.
@@ -29,12 +32,16 @@ public class Domain {
 
     private final DomainId id;
 
-    private final DomainPath domainPath;
+    private final DomainPath path;
 
-    public Domain(DomainName name, DomainId id, DomainPath domainPath) {
+    public Domain(DomainName name, DomainId id, DomainPath path) {
         this.name = name;
         this.id = id;
-        this.domainPath = domainPath;
+        this.path = path;
+    }
+
+    public boolean same(Domain domain) {
+        return name.equals(domain.name) || id.equals(domain.id);
     }
 
     public DomainId getId() {
@@ -45,11 +52,24 @@ public class Domain {
         return name;
     }
 
-    public DomainPath getDomainPath() {
-        return domainPath;
+    public DomainPath getPath() {
+        return path;
     }
 
     public boolean isRoot() {
-        return domainPath.path().size() == 1;
+        return path.path().size() == 1;
+    }
+    
+    public boolean isUnallocated() {
+        return name.isUnallocated();
+    }
+    
+    public static Domain unallocated(Domain parent) {
+        var name = DomainName.UNALLOCATED;
+        var id = DomainId.of(UUID.randomUUID());
+        var unallocatedDomainPath = new ArrayList<>(parent.path.path());
+        unallocatedDomainPath.add(id);
+        var path = DomainPath.of(unallocatedDomainPath);
+        return new Domain(name, id, path);
     }
 }

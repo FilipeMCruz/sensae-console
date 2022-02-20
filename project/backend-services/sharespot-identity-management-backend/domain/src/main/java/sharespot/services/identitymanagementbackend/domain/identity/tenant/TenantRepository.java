@@ -11,7 +11,7 @@ public interface TenantRepository {
 
     Optional<Tenant> findTenantById(TenantId id);
     
-    Tenant moveTenant(Tenant tenant);
+    Tenant relocateTenant(Tenant tenant);
 
     Tenant registerNewTenant(Tenant tenant);
 

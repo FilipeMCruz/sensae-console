@@ -2,7 +2,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import sharespot.services.identitymanagementbackend.application.model.tenant.JWTTokenDTO;
 
-public class AccessTokenDTO implements JWTTokenDTO {
+public class AccessTokenDTOImpl implements JWTTokenDTO {
 
     public String token;
 }

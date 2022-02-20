@@ -12,4 +12,12 @@ public class Device {
         this.oid = oid;
         this.domains = domains;
     }
+
+    public DeviceId getOid() {
+        return oid;
+    }
+
+    public List<DeviceDomainPermissions> getDomains() {
+        return domains;
+    }
 }

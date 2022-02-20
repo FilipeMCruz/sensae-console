@@ -8,6 +8,7 @@ import sharespot.services.identitymanagementbackend.domainservices.service.tenan
 
 @Service
 public class AuthenticateTenantService {
+
     private final AuthenticateTenant service;
 
     private final TenantMapper mapper;

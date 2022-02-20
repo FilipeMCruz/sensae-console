@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.model.tenant.JWTTokenDTO;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthTokenHandler;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AccessTokenDTO;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AccessTokenDTOImpl;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -51,14 +51,14 @@ public class AuthTokenConfig implements AuthTokenHandler {
                 .setClaims(identity)
                 .signWith(getPrivateKey())
                 .compact();
-        var accessToken = new AccessTokenDTO();
+        var accessToken = new AccessTokenDTOImpl();
         accessToken.token = jws;
         return accessToken;
     }
 
     public Claims decode(JWTTokenDTO token) {
         try {
-            var dto = (AccessTokenDTO) token;
+            var dto = (AccessTokenDTOImpl) token;
             return Jwts.parserBuilder()
                     .setSigningKey(getPublicKey())
                     .setAllowedClockSkewSeconds(60)

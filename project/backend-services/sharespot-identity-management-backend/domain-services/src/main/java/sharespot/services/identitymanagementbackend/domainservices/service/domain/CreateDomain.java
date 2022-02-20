@@ -26,19 +26,24 @@ public class CreateDomain {
     public void execute(CreateDomainCommand command, IdentityCommand identity) {
         var tenant = identityRepo.findTenantById(TenantId.of(identity.oid))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
-
-        var parentDomain = domainRepo.findDomainById(DomainId.of(command.parentDomainId))
+        
+        var parentDomainId = DomainId.of(command.parentDomainId);
+        var parentDomain = domainRepo.findDomainById(parentDomainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
         PermissionsValidator.verifyPermissions(tenant, parentDomain);
-        
+
+        var domainName = DomainName.of(command.domainName);
+        if (domainName.isUnallocated()) {
+            throw new NotValidException("Invalid Domain Name: unallocated is reserved");
+        }
+
         var domainId = DomainId.of(command.domainId);
         var domainPath = new ArrayList<>(parentDomain.getPath().path());
         domainPath.add(domainId);
-        var domain = new Domain(DomainName.of(command.domainName), domainId, DomainPath.of(domainPath));
-        
-        var children = domainRepo.getChildDomains(DomainId.of(command.parentDomainId));
-        if (children.stream().anyMatch(domain::same)) {
+        var domain = new Domain(domainName, domainId, DomainPath.of(domainPath));
+
+        if (domainRepo.getChildDomains(parentDomainId).stream().anyMatch(domain::same)) {
             throw new NotValidException("Duplicate Child Domain");
         }
 

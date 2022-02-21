@@ -1,6 +1,5 @@
 package sharespot.services.identitymanagementbackend.application.mapper.tenant;
 
-import sharespot.services.identitymanagementbackend.application.model.tenant.AuthenticationDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.IdentityTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.NewDomainForTenantDTO;

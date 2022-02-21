@@ -1,9 +1,11 @@
 package sharespot.services.identitymanagementbackend.domainservices.model.tenant;
 
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class IdentityQuery {
-    public UUID oid;
+
+    @JsonProperty("preferred_username")
     public String preferredUsername;
+
     public String name;
 }

@@ -1,9 +1,11 @@
 input CreateDomain {
-    parentDomainOid: String,
-    newDomainOid: String,
+    parentDomainOid: String
+    newDomainOid: String
     newDomainName: String
 }
-
+input ViewDomain {
+    oid: String
+}
 input AddDeviceToDomain {
     deviceOid : String
     domainOid: String

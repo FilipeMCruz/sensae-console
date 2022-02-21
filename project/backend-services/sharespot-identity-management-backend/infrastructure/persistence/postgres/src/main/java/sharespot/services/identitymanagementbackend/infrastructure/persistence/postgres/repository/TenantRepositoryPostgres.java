@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface TenantRepositoryPostgres extends CrudRepository<TenantPostgres, Long> {
 
     Optional<TenantPostgres> findByOid(String tenantId);
+    
+    Optional<TenantPostgres> findByEmail(String tenantEmail);
 
     void deleteByOid(String tenantId);
 

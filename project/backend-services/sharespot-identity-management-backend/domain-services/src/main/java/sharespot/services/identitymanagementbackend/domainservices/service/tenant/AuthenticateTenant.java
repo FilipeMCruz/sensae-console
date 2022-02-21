@@ -8,6 +8,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityResult;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AuthenticateTenant {
@@ -22,14 +23,14 @@ public class AuthenticateTenant {
     }
 
     public IdentityResult execute(IdentityQuery command) {
-        var tenant = tenantRepo.findTenantById(TenantId.of(command.oid))
+        var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
                 .orElseGet(() -> newTenant(command));
         return toResult(tenant);
     }
 
     private Tenant newTenant(IdentityQuery command) {
         var tenant = new Tenant(
-                TenantId.of(command.oid),
+                TenantId.of(UUID.randomUUID()),
                 new TenantName(command.name),
                 new TenantEmail(command.preferredUsername),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));

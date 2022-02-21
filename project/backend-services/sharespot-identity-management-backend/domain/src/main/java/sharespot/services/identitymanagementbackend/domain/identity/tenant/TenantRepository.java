@@ -9,6 +9,8 @@ public interface TenantRepository {
 
     Optional<Tenant> findTenantById(TenantId id);
 
+    Optional<Tenant> findTenantByEmail(TenantEmail id);
+
     Tenant relocateTenant(Tenant tenant);
 
     Tenant registerNewTenant(Tenant tenant);

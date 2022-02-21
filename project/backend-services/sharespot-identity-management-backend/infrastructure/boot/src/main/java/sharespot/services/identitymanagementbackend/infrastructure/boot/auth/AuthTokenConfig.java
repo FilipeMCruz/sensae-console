@@ -1,8 +1,6 @@
 package sharespot.services.identitymanagementbackend.infrastructure.boot.auth;
 
 import io.jsonwebtoken.Jwts;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
@@ -48,13 +46,11 @@ public class AuthTokenConfig implements AuthTokenHandler {
     @Value("${sensae.auth.external.audience}")
     public String EXTERNAL_AUDIENCE;
 
-    public Logger logger = LoggerFactory.getLogger(AuthTokenConfig.class);
-
     private PrivateKey privateKey;
 
     private PublicKey publicKey;
 
-    private SigningKeyResolver keyResolver;
+    private final SigningKeyResolver keyResolver;
 
     public AuthTokenConfig() {
         this.keyResolver = new SigningKeyResolver();
@@ -69,7 +65,6 @@ public class AuthTokenConfig implements AuthTokenHandler {
             byte[] publicKeyBytes = Files.readAllBytes(Path.of(PATH_RSA_PUB));
             publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            logger.warn(e.getMessage());
             throw new RuntimeException("Private Key File not Found");
         }
     }
@@ -113,7 +108,6 @@ public class AuthTokenConfig implements AuthTokenHandler {
     public Map<String, Object> decode(AccessTokenDTO token) {
         try {
             var dto = (AccessTokenDTOImpl) token;
-
             return Jwts.parserBuilder()
                     .setSigningKey(publicKey)
                     .setAllowedClockSkewSeconds(60)

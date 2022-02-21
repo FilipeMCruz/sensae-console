@@ -3,6 +3,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.persistence.
 import org.springframework.stereotype.Repository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenant;
+import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantEmail;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.mapper.TenantMapper;
@@ -24,6 +25,12 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Override
     public Optional<Tenant> findTenantById(TenantId id) {
         return repository.findByOid(id.value().toString())
+                .map(TenantMapper::postgresToDomain);
+    }
+
+    @Override
+    public Optional<Tenant> findTenantByEmail(TenantEmail email) {
+        return repository.findByEmail(email.value())
                 .map(TenantMapper::postgresToDomain);
     }
 

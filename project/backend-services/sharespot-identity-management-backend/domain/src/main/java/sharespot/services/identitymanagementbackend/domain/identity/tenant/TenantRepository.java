@@ -16,6 +16,4 @@ public interface TenantRepository {
     Tenant registerNewTenant(Tenant tenant);
 
     List<Tenant> getTenantsInDomain(DomainId domain);
-
-    List<Tenant> getTenantsInDomainAndSubDomains(DomainId domain);
 }

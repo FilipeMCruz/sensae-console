@@ -32,7 +32,7 @@ public class AuthenticateTenant {
                 TenantId.of(command.oid),
                 new TenantName(command.name),
                 new TenantEmail(command.email),
-                List.of(domainRepo.getUnallocatedRootDomain().getId()));
+                List.of(domainRepo.getUnallocatedRootDomain().getOid()));
     }
 
     private IdentityResult toResult(Tenant tenant) {

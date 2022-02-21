@@ -34,7 +34,7 @@ public class PlaceTenantInDomain {
         var tenantToPlace = tenantRepo.findTenantById(TenantId.of(command.tenant))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
-        tenantToPlace.getDomains().add(domain.getId());
+        tenantToPlace.getDomains().add(domain.getOid());
         tenantRepo.relocateTenant(tenantToPlace);
     }
 }

@@ -41,7 +41,7 @@ public class CreateDomain {
         var domainId = DomainId.of(command.domainId);
         var domainPath = new ArrayList<>(parentDomain.getPath().path());
         domainPath.add(domainId);
-        var domain = new Domain(domainName, domainId, DomainPath.of(domainPath));
+        var domain = new Domain(domainId, domainName, DomainPath.of(domainPath));
 
         if (domainRepo.getChildDomains(parentDomainId).stream().anyMatch(domain::same)) {
             throw new NotValidException("Duplicate Child Domain");

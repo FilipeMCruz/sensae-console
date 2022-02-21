@@ -18,9 +18,9 @@ public interface DomainRepository {
 
     List<Domain> getChildDomains(DomainId id);
 
-    Optional<Domain> moveDomain(DomainId toMove, DomainId newParent);
+    void moveDomain(DomainId toMove, DomainId newParent);
 
     void addDomain(Domain domain);
 
-    void deleteDomainAndChilds(DomainId id);
+    void deleteDomainAndChildren(DomainId id);
 }

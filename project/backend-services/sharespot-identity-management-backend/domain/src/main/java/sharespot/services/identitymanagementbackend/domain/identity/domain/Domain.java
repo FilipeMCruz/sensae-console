@@ -34,9 +34,9 @@ public class Domain {
 
     private final DomainPath path;
 
-    public Domain(DomainName name, DomainId id, DomainPath path) {
+    public Domain(DomainId oid, DomainName name, DomainPath path) {
         this.name = name;
-        this.id = id;
+        this.id = oid;
         this.path = path;
     }
 
@@ -44,7 +44,7 @@ public class Domain {
         return name.equals(domain.name) || id.equals(domain.id);
     }
 
-    public DomainId getId() {
+    public DomainId getOid() {
         return id;
     }
 
@@ -70,6 +70,6 @@ public class Domain {
         var unallocatedDomainPath = new ArrayList<>(parent.path.path());
         unallocatedDomainPath.add(id);
         var path = DomainPath.of(unallocatedDomainPath);
-        return new Domain(name, id, path);
+        return new Domain(id, name, path);
     }
 }

@@ -14,6 +14,4 @@ public interface DeviceRepository {
     Device relocateDevice(Device tenant);
 
     List<Device> getDeviceInDomain(DomainId domain);
-
-    List<Device> getDeviceInDomainAndSubDomains(DomainId domain);
 }

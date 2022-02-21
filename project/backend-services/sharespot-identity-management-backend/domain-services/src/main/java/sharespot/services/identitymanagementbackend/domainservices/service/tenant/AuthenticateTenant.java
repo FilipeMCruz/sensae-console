@@ -31,7 +31,7 @@ public class AuthenticateTenant {
         var tenant = new Tenant(
                 TenantId.of(command.oid),
                 new TenantName(command.name),
-                new TenantEmail(command.email),
+                new TenantEmail(command.preferredUsername),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
         return tenantRepo.registerNewTenant(tenant);
     }

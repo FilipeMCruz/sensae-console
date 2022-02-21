@@ -1,12 +1,7 @@
-export interface CredentialsDTO {
-  name: string,
-  secret : string
-}
-
 export interface OutcomeDTOQuery {
-  credentials: OutcomeDTO
+  authenticate: OutcomeDTO
 }
 
 export interface OutcomeDTO {
-  valid: boolean
+  token: string
 }

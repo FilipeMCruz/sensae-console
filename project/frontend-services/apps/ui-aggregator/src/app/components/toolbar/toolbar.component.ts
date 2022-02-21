@@ -98,11 +98,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       const accounts = this.externalAuthService.instance.getAllAccounts();
       this.externalAuthService.instance.setActiveAccount(accounts[0]);
     }
-    const claims: any = this.externalAuthService.instance.getActiveAccount()?.idTokenClaims;
-    if (activeAccount && claims) {
-      this.authService.login(claims['name'], claims['preferred_username'], claims['oid']).subscribe(value => {
-        value ? this.openSnackBar("Valid Credentials") : this.openSnackBar("Invalid Credentials")
-      });
+
+    if (activeAccount) {
+      this.externalAuthService.instance.acquireTokenSilent({scopes: ["profile"]})
+        .then(token => this.authService.login(token.idToken).subscribe(value => {
+          value ? this.openSnackBar("Valid Credentials") : this.openSnackBar("Invalid Credentials")
+        }));
     }
   }
 

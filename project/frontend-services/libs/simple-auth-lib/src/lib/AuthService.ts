@@ -10,13 +10,16 @@ export class AuthService {
 
   private id?: UserIdentity;
 
+  private accessToken?: string;
+
   constructor(private validator: ValidateCredentials) {
   }
 
-  login(userName: string, email: string, oid: string) {
+  login(token: string) {
     const subject = new ReplaySubject(1);
-    //TODO: request access token to internal auth server;
-    this.id = new UserIdentity(userName, email, oid);
+    this.validator.validate(token).subscribe(next => {
+      this.accessToken = next.data?.authenticate.token
+    });
     subject.next(true);
     return subject;
   }
@@ -26,6 +29,7 @@ export class AuthService {
   }
 
   logout() {
+    this.accessToken = undefined;
     this.id = undefined;
   }
 }

@@ -20,6 +20,6 @@ public class DomainFactoryController {
 
     @DgsMutation(field = "createDomain")
     public DomainDTO create(@InputArgument(value = "domain") CreateDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
-        return service.create(info, AuthMiddleware.build(auth));
+        return service.create(info, AuthMiddleware.buildAccessToken(auth));
     }
 }

@@ -97,6 +97,12 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       }),
       cache: new InMemoryCache(),
     },
+    identity: {
+      link: httpLink.create({
+        uri: environment.endpoints.identity.backendURL.http
+      }),
+      cache: new InMemoryCache(),
+    },
     fleetManagement: {
       link: createLinkWithWebsocket(httpLink, environment.endpoints.fleetManagement.backendURL.websocket, environment.endpoints.fleetManagement.backendURL.http),
       cache: new InMemoryCache(),

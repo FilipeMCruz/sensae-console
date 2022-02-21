@@ -4,6 +4,6 @@ import java.util.UUID;
 
 public class IdentityQuery {
     public UUID oid;
-    public String email;
+    public String preferredUsername;
     public String name;
 }

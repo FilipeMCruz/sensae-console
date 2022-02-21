@@ -1,5 +1,5 @@
 type Query {
-    authenticate(tenant: TenantAuthentication): AccessToken
+    authenticate: AccessToken
 }
 
 type Mutation {

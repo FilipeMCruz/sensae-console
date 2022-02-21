@@ -6,14 +6,16 @@ import sharespot.services.identitymanagementbackend.application.model.device.New
 import sharespot.services.identitymanagementbackend.domainservices.model.device.PlaceDeviceInDomainCommand;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.device.NewDomainForDeviceDTOImpl;
 
+import java.util.UUID;
+
 @Service
 public class DeviceMapperImpl implements DeviceMapper {
     @Override
     public PlaceDeviceInDomainCommand dtoToCommand(NewDomainForDeviceDTO dto) {
         var info = (NewDomainForDeviceDTOImpl) dto;
         var command = new PlaceDeviceInDomainCommand();
-        command.newDomain = info.domainOid;
-        command.device = info.tenantOid;
+        command.newDomain = UUID.fromString(info.domainOid);
+        command.device = UUID.fromString(info.deviceOid);
         command.writePermission = info.writePermission;
         return command;
     }

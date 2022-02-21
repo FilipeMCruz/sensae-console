@@ -1,0 +1,9 @@
+type Query {
+    authenticate(tenant: TenantAuthentication): AccessToken
+}
+
+type Mutation {
+    createDomain(domain: CreateDomain): Domain
+    moveTenant(instructions: AddTenantToDomain): Boolean
+    moveDevice(instructions: AddDeviceToDomain): Boolean
+}

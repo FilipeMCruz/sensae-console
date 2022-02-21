@@ -1,11 +1,13 @@
 package sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.Domain;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.mapper.DomainMapper;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.DomainRepositoryPostgres;
+import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.util.PostgresArrayMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,11 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public List<Domain> getParentDomains(DomainId id) {
-        return repository.findDomainParents(id.value().toString())
+        var byOid = repository.findByOid(id.value().toString());
+        if (byOid.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return repository.findDomainParents(PostgresArrayMapper.toArray(List.of(byOid.get().path)))
                 .stream()
                 .map(DomainMapper::postgresToDomain)
                 .toList();
@@ -50,9 +56,8 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public List<Domain> getChildDomains(DomainId id) {
-        var byOid = repository.findByOid(id.value().toString());
-        if (byOid.isEmpty()) return new ArrayList<>();
-        return repository.findDomainChilds(byOid.get().path)
+        LoggerFactory.getLogger(DomainRepositoryImpl.class).info(id.value().toString());
+        return repository.findDomainChilds(PostgresArrayMapper.toArray(id.value().toString()))
                 .stream()
                 .map(DomainMapper::postgresToDomain)
                 .toList();
@@ -60,22 +65,22 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public void moveDomain(DomainId toMove, DomainId newParent) {
-        var byOid = repository.findByOid(toMove.value().toString());
         var parent = repository.findByOid(newParent.value().toString());
-        if (byOid.isPresent() && parent.isPresent()) {
-            repository.moveDomain(byOid.get().oid, parent.get().path);
-        }
+        parent.ifPresent(domainPostgres ->
+                repository.moveDomain(toMove.value().toString(),
+                        PostgresArrayMapper.toArray(toMove.value().toString()),
+                        PostgresArrayMapper.toArray(List.of(domainPostgres.path))));
     }
 
     @Override
-    public void addDomain(Domain domain) {
+    public Domain addDomain(Domain domain) {
         var domainPostgres = DomainMapper.domainToPostgres(domain);
-        repository.save(domainPostgres);
+        var saved = repository.save(domainPostgres);
+        return DomainMapper.postgresToDomain(saved);
     }
 
     @Override
     public void deleteDomainAndChildren(DomainId id) {
-        var byOid = repository.findByOid(id.value().toString());
-        byOid.ifPresent(domainPostgres -> repository.deleteDomainChilds(domainPostgres.path));
+        repository.deleteDomainChilds(PostgresArrayMapper.toArray(id.value().toString()));
     }
 }

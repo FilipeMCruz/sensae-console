@@ -28,11 +28,12 @@ public class AuthenticateTenant {
     }
 
     private Tenant newTenant(IdentityQuery command) {
-        return new Tenant(
+        var tenant = new Tenant(
                 TenantId.of(command.oid),
                 new TenantName(command.name),
                 new TenantEmail(command.email),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
+        return tenantRepo.registerNewTenant(tenant);
     }
 
     private IdentityResult toResult(Tenant tenant) {

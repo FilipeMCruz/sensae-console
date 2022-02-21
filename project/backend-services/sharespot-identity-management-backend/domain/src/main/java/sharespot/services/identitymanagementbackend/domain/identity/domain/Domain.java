@@ -41,7 +41,7 @@ public class Domain {
     }
 
     public boolean same(Domain domain) {
-        return name.equals(domain.name) || id.equals(domain.id);
+        return name.equals(domain.name);
     }
 
     public DomainId getOid() {
@@ -59,11 +59,11 @@ public class Domain {
     public boolean isRoot() {
         return path.path().size() == 1;
     }
-    
+
     public boolean isUnallocated() {
         return name.isUnallocated();
     }
-    
+
     public static Domain unallocated(Domain parent) {
         var name = DomainName.UNALLOCATED;
         var id = DomainId.of(UUID.randomUUID());

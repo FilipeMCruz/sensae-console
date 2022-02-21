@@ -5,7 +5,7 @@ import sharespot.services.identitymanagementbackend.application.model.tenant.Aut
 import java.util.UUID;
 
 public class AuthenticationDTOImpl implements AuthenticationDTO {
-    public UUID oid;
+    public String oid;
     public String email;
     public String name;
 }

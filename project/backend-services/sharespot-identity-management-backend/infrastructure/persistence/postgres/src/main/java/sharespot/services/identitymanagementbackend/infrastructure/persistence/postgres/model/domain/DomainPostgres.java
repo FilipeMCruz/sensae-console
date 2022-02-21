@@ -15,7 +15,7 @@ public class DomainPostgres {
     public String oid;
 
     public String name;
-    
+
     @Column(columnDefinition = "text[]")
     @Type(type = "sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.util.GenericArrayUserType")
     public String[] path;

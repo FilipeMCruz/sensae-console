@@ -1,0 +1,32 @@
+input CreateDomain {
+    parentDomainOid: String,
+    newDomainOid: String,
+    newDomainName: String
+}
+
+input AddDeviceToDomain {
+    deviceOid : String
+    domainOid: String
+    writePermission: Boolean
+}
+
+input AddTenantToDomain {
+    tenantOid : String
+    domainOid: String
+}
+
+input TenantAuthentication {
+    oid: String
+    email: String
+    name: String
+}
+
+type AccessToken {
+    token: String
+}
+
+type Domain {
+    oid: String,
+    name: String,
+    path: [String]
+}

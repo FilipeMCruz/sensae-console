@@ -1,11 +1,8 @@
 package sharespot.services.identitymanagementbackend.domain.identity.domain;
 
-import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface DomainRepository {
 
     Domain getUnallocatedRootDomain();
@@ -20,7 +17,7 @@ public interface DomainRepository {
 
     void moveDomain(DomainId toMove, DomainId newParent);
 
-    void addDomain(Domain domain);
+    Domain addDomain(Domain domain);
 
     void deleteDomainAndChildren(DomainId id);
 }

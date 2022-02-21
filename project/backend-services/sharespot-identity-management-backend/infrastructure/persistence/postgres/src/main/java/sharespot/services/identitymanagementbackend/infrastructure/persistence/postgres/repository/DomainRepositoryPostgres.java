@@ -14,21 +14,21 @@ public interface DomainRepositoryPostgres extends CrudRepository<DomainPostgres,
 
     Optional<DomainPostgres> findByOid(String domainId);
 
-    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 1")
+    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 1", nativeQuery = true)
     Optional<DomainPostgres> findRoot();
 
-    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 2 AND name EQUAL 'unallocated'")
+    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 2 AND name = 'unallocated'", nativeQuery = true)
     Optional<DomainPostgres> findRootUnallocated();
 
-    @Query(value = "SELECT * FROM domain WHERE path && ARRAY[:domainId]")
-    List<DomainPostgres> findDomainParents(@Param("domainId") String domainId);
+    @Query(value = "SELECT * FROM domain WHERE oid in Cast(:domains AS text[])", nativeQuery = true)
+    List<DomainPostgres> findDomainParents(@Param("domains") String domains);
 
-    @Query(value = "SELECT * FROM domain WHERE oid in :path")
-    List<DomainPostgres> findDomainChilds(@Param("path") String[] path);
-    
-    @Query(value = "DELETE FROM domain WHERE oid in :path")
-    void deleteDomainChilds(@Param("path") String[] path);
+    @Query(value = "SELECT * FROM domain WHERE path && Cast(:domainId AS text[])", nativeQuery = true)
+    List<DomainPostgres> findDomainChilds(@Param("domainId") String domainId);
 
-    @Query(value = "UPDATE domain SET path = ARRAY[:newpath] || path[:domainId:array_length(path,1)] WHERE path && ARRAY[:domainId]")
-    void moveDomain(@Param("domainId") String domainId, @Param("newpath") String[] path);
+    @Query(value = "DELETE FROM domain WHERE path && Cast(:domainId AS text[])", nativeQuery = true)
+    void deleteDomainChilds(@Param("domainId") String domainId);
+
+    @Query(value = "UPDATE domain SET path = Cast(:newpath AS text[]) || path[:domainId:array_length(path,1)] WHERE path && Cast(:domainPath AS text[])", nativeQuery = true)
+    void moveDomain(@Param("domainId") String domainId, @Param("domainPath") String domainPath, @Param("newpath") String path);
 }

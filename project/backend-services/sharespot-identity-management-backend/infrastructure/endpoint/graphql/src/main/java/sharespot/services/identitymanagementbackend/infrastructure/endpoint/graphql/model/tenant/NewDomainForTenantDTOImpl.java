@@ -5,6 +5,6 @@ import sharespot.services.identitymanagementbackend.application.model.tenant.New
 import java.util.UUID;
 
 public class NewDomainForTenantDTOImpl implements NewDomainForTenantDTO {
-    public UUID tenantOid;
-    public UUID domainOid;
+    public String tenantOid;
+    public String domainOid;
 }

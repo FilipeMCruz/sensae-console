@@ -5,7 +5,7 @@ import sharespot.services.identitymanagementbackend.application.model.device.New
 import java.util.UUID;
 
 public class NewDomainForDeviceDTOImpl implements NewDomainForDeviceDTO {
-    public UUID tenantOid;
-    public UUID domainOid;
+    public String deviceOid;
+    public String domainOid;
     public boolean writePermission;
 }

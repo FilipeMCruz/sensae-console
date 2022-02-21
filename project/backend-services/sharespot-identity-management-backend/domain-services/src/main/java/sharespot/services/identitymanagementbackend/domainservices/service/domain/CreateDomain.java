@@ -6,6 +6,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.*;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
+import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
@@ -23,13 +24,13 @@ public class CreateDomain {
         this.domainRepo = domainRepo;
     }
 
-    public void execute(CreateDomainCommand command, IdentityCommand identity) {
+    public DomainResult execute(CreateDomainCommand command, IdentityCommand identity) {
         var tenant = identityRepo.findTenantById(TenantId.of(identity.oid))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
-        
+
         var parentDomainId = DomainId.of(command.parentDomainId);
         var parentDomain = domainRepo.findDomainById(parentDomainId)
-                .orElseThrow(NotValidException.withMessage("Invalid Domain"));
+                .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
         PermissionsValidator.verifyPermissions(tenant, parentDomain);
 
@@ -44,12 +45,22 @@ public class CreateDomain {
         var domain = new Domain(domainId, domainName, DomainPath.of(domainPath));
 
         if (domainRepo.getChildDomains(parentDomainId).stream().anyMatch(domain::same)) {
-            throw new NotValidException("Duplicate Child Domain");
+            throw new NotValidException("Invalid Domain Name: Name Already used");
         }
 
-        domainRepo.addDomain(domain);
+        var newDomain = domainRepo.addDomain(domain);
         if (parentDomain.isRoot()) {
-            domainRepo.addDomain(Domain.unallocated(parentDomain));
+            domainRepo.addDomain(Domain.unallocated(domain));
         }
+        
+        var domainResult = new DomainResult();
+        domainResult.domainId = newDomain.getOid().value();
+        domainResult.domainName = newDomain.getName().value();
+        domainResult.path = newDomain.getPath()
+                .path()
+                .stream()
+                .map(d -> d.value().toString())
+                .toList();
+        return domainResult;
     }
 }

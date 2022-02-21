@@ -1,7 +1,7 @@
 package sharespot.services.identitymanagementbackend.application.mapper.tenant;
 
 import sharespot.services.identitymanagementbackend.application.model.tenant.AuthenticationDTO;
-import sharespot.services.identitymanagementbackend.application.model.tenant.JWTTokenDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.NewDomainForTenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
@@ -12,9 +12,9 @@ public interface TenantMapper {
 
     IdentityQuery dtoToCommand(AuthenticationDTO dto);
 
-    JWTTokenDTO commandToDto(IdentityResult result);
+    AccessTokenDTO commandToDto(IdentityResult result);
 
-    IdentityCommand dtoToCommand(JWTTokenDTO dto);
+    IdentityCommand dtoToCommand(AccessTokenDTO dto);
 
     PlaceTenantInDomainCommand dtoToCommand(NewDomainForTenantDTO dto);
 }

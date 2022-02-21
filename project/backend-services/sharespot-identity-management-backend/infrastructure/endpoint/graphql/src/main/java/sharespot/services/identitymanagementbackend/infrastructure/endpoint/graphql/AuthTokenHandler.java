@@ -1,13 +1,13 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql;
 
 import io.jsonwebtoken.Claims;
-import sharespot.services.identitymanagementbackend.application.model.tenant.JWTTokenDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 
 import java.util.Map;
 
 public interface AuthTokenHandler {
 
-    Claims decode(JWTTokenDTO token);
+    Map<String, Object> decode(AccessTokenDTO token);
 
-    JWTTokenDTO encode(Map<String, Object> identity);
+    AccessTokenDTO encode(Map<String, Object> identity);
 }

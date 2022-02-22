@@ -2,6 +2,8 @@ type Query {
     authenticate: AccessToken
     viewDomain(top: ViewDomain): [Domain]
     viewDomainInfo(domain: ViewDomain): DomainInfo
+    viewDevicesInDomain(domain: ViewDomain): [Device]
+    viewTenantsInDomain(domain: ViewDomain): [Tenant]
 }
 
 type Mutation {

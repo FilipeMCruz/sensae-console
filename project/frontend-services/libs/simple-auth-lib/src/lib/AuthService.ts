@@ -17,10 +17,8 @@ export class AuthService {
 
   login(token: string) {
     const subject = new ReplaySubject(1);
-    console.log(token);
     this.validator.validate(token).subscribe(next => {
       this.accessToken = next.data?.authenticate.token
-      console.log(this.accessToken);
     });
     subject.next(true);
     return subject;

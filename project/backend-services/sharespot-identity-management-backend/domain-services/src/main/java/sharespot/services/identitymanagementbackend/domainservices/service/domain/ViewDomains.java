@@ -8,7 +8,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.domain.
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantIdentityMapper;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class ViewDomains {
     }
 
     public List<DomainResult> fetch(ViewDomainQuery query, IdentityCommand identity) {
-        var tenant = TenantIdentityMapper.toDomain(identity);
+        var tenant = TenantResultMapper.toDomain(identity);
         var topId = DomainId.of(query.topDomainId);
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));

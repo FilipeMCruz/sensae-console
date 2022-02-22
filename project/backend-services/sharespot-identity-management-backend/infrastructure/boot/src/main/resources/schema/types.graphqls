@@ -3,9 +3,11 @@ input CreateDomain {
     newDomainOid: String
     newDomainName: String
 }
+
 input ViewDomain {
     oid: String
 }
+
 input AddDeviceToDomain {
     deviceOid : String
     domainOid: String
@@ -17,12 +19,6 @@ input AddTenantToDomain {
     domainOid: String
 }
 
-input TenantAuthentication {
-    oid: String
-    email: String
-    name: String
-}
-
 type AccessToken {
     token: String
 }
@@ -31,4 +27,31 @@ type Domain {
     oid: String,
     name: String,
     path: [String]
+}
+
+type DomainInfo {
+    domain: Domain
+    devices: [Device]
+    tenants: [Tenant]
+}
+
+type Tenant {
+    oid: String
+    email: String
+    name: String
+}
+
+type Device {
+    oid: String
+    domains: [DeviceDomainPermission]
+}
+
+type DeviceDomainPermission {
+    oid: String
+    permission: DevicePermission
+}
+
+enum DevicePermission {
+    READ,
+    READ_WRITE
 }

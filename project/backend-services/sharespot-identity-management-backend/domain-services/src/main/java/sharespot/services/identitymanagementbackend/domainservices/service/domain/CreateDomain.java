@@ -7,7 +7,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.domain.
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantIdentityMapper;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class CreateDomain {
     }
 
     public DomainResult execute(CreateDomainCommand command, IdentityCommand identity) {
-        var tenant = TenantIdentityMapper.toDomain(identity);
+        var tenant = TenantResultMapper.toDomain(identity);
 
         var parentDomainId = DomainId.of(command.parentDomainId);
         var parentDomain = domainRepo.findDomainById(parentDomainId)

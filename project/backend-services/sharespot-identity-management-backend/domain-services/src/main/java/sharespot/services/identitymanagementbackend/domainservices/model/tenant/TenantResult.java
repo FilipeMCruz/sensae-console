@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class IdentityResult {
+public class TenantResult {
     public UUID oid;
     public String email;
     public String name;

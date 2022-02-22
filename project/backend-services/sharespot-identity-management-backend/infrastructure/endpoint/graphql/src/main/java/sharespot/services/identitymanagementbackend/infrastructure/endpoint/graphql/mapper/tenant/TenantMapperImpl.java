@@ -6,12 +6,14 @@ import sharespot.services.identitymanagementbackend.application.mapper.tenant.Te
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.IdentityTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.NewDomainForTenantDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.TenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityResult;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.PlaceTenantInDomainCommand;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthTokenHandler;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.NewDomainForTenantDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.TenantDTOImpl;
 
 import java.util.UUID;
 
@@ -34,7 +36,7 @@ public class TenantMapperImpl implements TenantMapper {
     }
 
     @Override
-    public AccessTokenDTO commandToDto(IdentityResult result) {
+    public AccessTokenDTO commandToDto(TenantResult result) {
         return authHandler.encode(result.toClaims());
     }
 
@@ -51,5 +53,15 @@ public class TenantMapperImpl implements TenantMapper {
         command.newDomain = UUID.fromString(info.domainOid);
         command.tenant = UUID.fromString(info.tenantOid);
         return command;
+    }
+
+    @Override
+    public TenantDTO resultToDto(TenantResult result) {
+        var dto = new TenantDTOImpl();
+        dto.oid = result.oid.toString();
+        dto.email = result.email;
+        dto.name = result.name;
+        dto.domains = result.domains.stream().map(UUID::toString).toList();
+        return dto;
     }
 }

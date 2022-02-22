@@ -4,12 +4,15 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.domain.DomainMapper;
 import sharespot.services.identitymanagementbackend.application.model.domain.CreateDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.domain.DomainDTO;
+import sharespot.services.identitymanagementbackend.application.model.domain.DomainInfoDTO;
 import sharespot.services.identitymanagementbackend.application.model.domain.ViewDomainDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
+import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainInfoResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.CreateDomainDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.DomainDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.DomainInfoDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.ViewDomainDTOImpl;
 
 import java.util.UUID;

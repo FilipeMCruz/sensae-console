@@ -34,7 +34,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public List<Device> getDeviceInDomain(DomainId domain) {
+    public List<Device> getDevicesInDomain(DomainId domain) {
         return repository.findByDomainId(domain.value().toString())
                 .stream()
                 .map(DeviceMapper::postgresToDomain)

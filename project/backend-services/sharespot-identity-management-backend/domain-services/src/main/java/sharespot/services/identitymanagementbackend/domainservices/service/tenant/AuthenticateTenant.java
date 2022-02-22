@@ -5,7 +5,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityResult;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +22,7 @@ public class AuthenticateTenant {
         this.domainRepo = domainRepo;
     }
 
-    public IdentityResult execute(IdentityQuery command) {
+    public TenantResult execute(IdentityQuery command) {
         var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
                 .orElseGet(() -> newTenant(command));
         return toResult(tenant);
@@ -37,8 +37,8 @@ public class AuthenticateTenant {
         return tenantRepo.registerNewTenant(tenant);
     }
 
-    private IdentityResult toResult(Tenant tenant) {
-        var identityResult = new IdentityResult();
+    private TenantResult toResult(Tenant tenant) {
+        var identityResult = new TenantResult();
         identityResult.email = tenant.getEmail().value();
         identityResult.name = tenant.getName().value();
         identityResult.oid = tenant.getOid().value();

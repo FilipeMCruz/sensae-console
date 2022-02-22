@@ -1,6 +1,7 @@
 type Query {
     authenticate: AccessToken
     viewDomain(top: ViewDomain): [Domain]
+    viewDomainInfo(domain: ViewDomain): DomainInfo
 }
 
 type Mutation {

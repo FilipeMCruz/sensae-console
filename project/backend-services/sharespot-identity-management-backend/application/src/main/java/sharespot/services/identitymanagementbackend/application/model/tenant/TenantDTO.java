@@ -1,4 +1,4 @@
 package sharespot.services.identitymanagementbackend.application.model.tenant;
 
-public interface AuthenticationDTO {
+public interface TenantDTO {
 }

@@ -8,49 +8,66 @@ import sharespot.services.identitymanagementbackend.domain.identity.device.Devic
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
-import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
-import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.PlaceDeviceInDomainCommand;
+import sharespot.services.identitymanagementbackend.domainservices.model.device.RemoveDeviceFromDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 @Service
-public class PlaceDeviceInDomain {
-
-    private final TenantRepository tenantRepo;
+public class MoveDevice {
 
     private final DomainRepository domainRepo;
 
     private final DeviceRepository deviceRepo;
 
-    public PlaceDeviceInDomain(TenantRepository tenantRepo, DomainRepository domainRepo, DeviceRepository deviceRepo) {
-        this.tenantRepo = tenantRepo;
+    public MoveDevice(DomainRepository domainRepo, DeviceRepository deviceRepo) {
         this.domainRepo = domainRepo;
         this.deviceRepo = deviceRepo;
     }
 
     public DeviceResult execute(PlaceDeviceInDomainCommand command, IdentityCommand identity) {
-        var tenant = tenantRepo.findTenantById(TenantId.of(identity.oid))
-                .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
-
+        var tenant = TenantResultMapper.toDomain(identity);
         var domainId = DomainId.of(command.newDomain);
+        var deviceId = DeviceId.of(command.device);
+
         var domain = domainRepo.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
         PermissionsValidator.verifyPermissions(tenant, domain);
 
-        var device = deviceRepo.findDeviceById(DeviceId.of(command.device))
+        var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
-
-        if (device.getDomains().stream().anyMatch(d -> d.domain().equals(domainId))) {
-            throw new NotValidException("Device already in Domain");
-        }
 
         device.getDomains().add(new DeviceDomainPermissions(domainId, command.writePermission ?
                 DevicePermissions.READ_WRITE : DevicePermissions.READ));
-        
+
+        var relocateDevice = deviceRepo.relocateDevice(device);
+        return DeviceResultMapper.toResult(relocateDevice);
+    }
+
+    public DeviceResult execute(RemoveDeviceFromDomainCommand command, IdentityCommand identity) {
+        var tenant = TenantResultMapper.toDomain(identity);
+        var domainId = DomainId.of(command.domain);
+        var deviceId = DeviceId.of(command.device);
+
+        var domain = domainRepo.findDomainById(domainId)
+                .orElseThrow(NotValidException.withMessage("Invalid Domain"));
+
+        PermissionsValidator.verifyPermissions(tenant, domain);
+
+        var device = deviceRepo.findDeviceById(deviceId)
+                .orElseThrow(NotValidException.withMessage("Invalid Device"));
+
+        device.getDomains().removeIf(d -> d.domain().equals(domainId));
+
+        if (device.getDomains().isEmpty()) {
+            var rootDomain = domainRepo.getRootDomain();
+            device.getDomains().add(new DeviceDomainPermissions(rootDomain.getOid(), DevicePermissions.READ_WRITE));
+        }
+
         var relocateDevice = deviceRepo.relocateDevice(device);
         return DeviceResultMapper.toResult(relocateDevice);
     }

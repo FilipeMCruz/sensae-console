@@ -14,7 +14,17 @@ input AddDeviceToDomain {
     writePermission: Boolean
 }
 
+input RemoveDeviceFromDomain {
+    deviceOid : String
+    domainOid: String
+}
+
 input AddTenantToDomain {
+    tenantOid : String
+    domainOid: String
+}
+
+input RemoveTenantFromDomain {
     tenantOid : String
     domainOid: String
 }

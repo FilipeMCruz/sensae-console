@@ -6,6 +6,6 @@ type Query {
 
 type Mutation {
     createDomain(domain: CreateDomain): Domain
-    moveTenant(instructions: AddTenantToDomain): Boolean
-    moveDevice(instructions: AddDeviceToDomain): Boolean
+    addTenant(instructions: AddTenantToDomain): Tenant
+    addDevice(instructions: AddDeviceToDomain): Device
 }

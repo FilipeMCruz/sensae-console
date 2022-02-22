@@ -4,8 +4,9 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
+import sharespot.services.identitymanagementbackend.application.model.tenant.TenantDTO;
 import sharespot.services.identitymanagementbackend.application.service.tenant.PlaceTenantInDomainService;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AccessTokenDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthMiddleware;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.NewDomainForTenantDTOImpl;
 
 @DgsComponent
@@ -17,11 +18,8 @@ public class TenantTransporterController {
         this.service = service;
     }
 
-    @DgsMutation(field = "moveDevice")
-    public boolean moveDevice(@InputArgument(value = "instructions") NewDomainForTenantDTOImpl info, @RequestHeader("Authorization") String auth) {
-        var accessTokenDTO = new AccessTokenDTOImpl();
-        accessTokenDTO.token = auth.substring(7);
-        service.place(info, accessTokenDTO);
-        return true;
+    @DgsMutation(field = "addTenant")
+    public TenantDTO addTenant(@InputArgument(value = "instructions") NewDomainForTenantDTOImpl info, @RequestHeader("Authorization") String auth) {
+        return service.place(info, AuthMiddleware.buildAccessToken(auth));
     }
 }

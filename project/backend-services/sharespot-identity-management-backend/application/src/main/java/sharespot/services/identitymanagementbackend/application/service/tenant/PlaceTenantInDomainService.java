@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.tenant.TenantMapper;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.NewDomainForTenantDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.TenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.service.tenant.PlaceTenantInDomain;
 
 @Service
@@ -18,9 +19,9 @@ public class PlaceTenantInDomainService {
         this.tenantMapper = tenantMapper;
     }
 
-    public void place(NewDomainForTenantDTO dto, AccessTokenDTO claims) {
+    public TenantDTO place(NewDomainForTenantDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var createDomainCommand = tenantMapper.dtoToCommand(dto);
-        service.execute(createDomainCommand, identityCommand);
+        return tenantMapper.resultToDto(service.execute(createDomainCommand, identityCommand));
     }
 }

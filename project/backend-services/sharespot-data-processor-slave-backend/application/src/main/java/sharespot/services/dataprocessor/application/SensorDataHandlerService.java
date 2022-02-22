@@ -48,4 +48,19 @@ public class SensorDataHandlerService {
                         .from(message.routingKeys)
                         .ifPresent(keys -> dataStream.next(new MessageSupplied<>(keys, dto))));
     }
+
+//    next iot-core release
+//    public void publish(MessageConsumed<ObjectNode> message) {
+//        message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
+//    }
+//
+//    private Optional<SensorDataDTO> inToOutData(ObjectNode node, RoutingKeys keys) {
+//        return mapper.inToOut(node, SensorTypeId.of(keys.sensorTypeId));
+//    }
+//
+//    private Optional<RoutingKeys> inToOutKeys(SensorDataDTO data, RoutingKeys keys) {
+//        return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+//                .withUpdated(data)
+//                .from(keys);
+//    }
 }

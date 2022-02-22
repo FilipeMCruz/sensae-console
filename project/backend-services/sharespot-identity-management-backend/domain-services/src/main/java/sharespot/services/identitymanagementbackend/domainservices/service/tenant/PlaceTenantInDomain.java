@@ -4,10 +4,13 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
+import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenant;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.PlaceTenantInDomainCommand;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 @Service
@@ -22,7 +25,7 @@ public class PlaceTenantInDomain {
         this.domainRepo = domainRepo;
     }
 
-    public void execute(PlaceTenantInDomainCommand command, IdentityCommand identity) {
+    public TenantResult execute(PlaceTenantInDomainCommand command, IdentityCommand identity) {
         var tenant = tenantRepo.findTenantById(TenantId.of(identity.oid))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
@@ -35,6 +38,7 @@ public class PlaceTenantInDomain {
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
         tenantToPlace.getDomains().add(domain.getOid());
-        tenantRepo.relocateTenant(tenantToPlace);
+        var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);
+        return TenantResultMapper.toResult(relocateTenant);
     }
 }

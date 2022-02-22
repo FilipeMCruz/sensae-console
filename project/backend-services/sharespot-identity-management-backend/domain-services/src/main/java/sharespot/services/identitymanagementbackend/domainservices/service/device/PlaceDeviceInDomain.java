@@ -10,6 +10,8 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
+import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
+import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.PlaceDeviceInDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
@@ -29,7 +31,7 @@ public class PlaceDeviceInDomain {
         this.deviceRepo = deviceRepo;
     }
 
-    public void execute(PlaceDeviceInDomainCommand command, IdentityCommand identity) {
+    public DeviceResult execute(PlaceDeviceInDomainCommand command, IdentityCommand identity) {
         var tenant = tenantRepo.findTenantById(TenantId.of(identity.oid))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
@@ -46,7 +48,10 @@ public class PlaceDeviceInDomain {
             throw new NotValidException("Device already in Domain");
         }
 
-        device.getDomains().add(new DeviceDomainPermissions(domainId, command.writePermission ? DevicePermissions.READ_WRITE : DevicePermissions.READ));
-        deviceRepo.relocateDevice(device);
+        device.getDomains().add(new DeviceDomainPermissions(domainId, command.writePermission ?
+                DevicePermissions.READ_WRITE : DevicePermissions.READ));
+        
+        var relocateDevice = deviceRepo.relocateDevice(device);
+        return DeviceResultMapper.toResult(relocateDevice);
     }
 }

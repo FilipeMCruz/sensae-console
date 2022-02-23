@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sharespot.iot.core.routing.MessageConsumed;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.application.GPSDataArchiver;
-import sharespot.services.fleetmanagementbackend.application.GPSDataPublisher;
 
 @Component
 public class SensorDataConsumer {
@@ -23,7 +22,7 @@ public class SensorDataConsumer {
     }
 
     @RabbitListener(queues = INGRESS_QUEUE)
-    public void receiveUpdate(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
+    public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTO> in) {
         try {
             logConsumedMessage(in);
             handler.save(in.data);
@@ -31,7 +30,7 @@ public class SensorDataConsumer {
         }
     }
 
-    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataWithRecordsDTO> in) {
+    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
         logger.info("Data Consumed: {}", in.data.dataId);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
     }

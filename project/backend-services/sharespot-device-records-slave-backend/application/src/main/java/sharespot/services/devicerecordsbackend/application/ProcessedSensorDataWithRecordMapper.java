@@ -1,9 +1,9 @@
 package sharespot.services.devicerecordsbackend.application;
 
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
-import sharespot.services.devicerecordsbackend.domain.model.sensors.ProcessedSensorDataWithRecord;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 
 public interface ProcessedSensorDataWithRecordMapper {
 
-    ProcessedSensorDataWithRecordsDTO domainToDto(ProcessedSensorDataWithRecord domain);
+    ProcessedSensorDataDTO domainToDto(ProcessedSensorDataDTO domain, DeviceRecords records);
 }

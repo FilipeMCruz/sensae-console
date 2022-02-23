@@ -2,7 +2,7 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.data.MotionDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
@@ -24,7 +24,7 @@ public class GPSDataArchiver {
         this.publisher = publisher;
     }
 
-    public void save(ProcessedSensorDataWithRecordsDTO data) {
+    public void save(ProcessedSensorDataDTO data) {
         // if data received has no info about motion try to guess it
         if (!data.data.hasProperty(PropertyName.MOTION)) {
             var lastTenMinutesData = repository.queryPastData(data, TIME_SPAN_IN_MINUTES);

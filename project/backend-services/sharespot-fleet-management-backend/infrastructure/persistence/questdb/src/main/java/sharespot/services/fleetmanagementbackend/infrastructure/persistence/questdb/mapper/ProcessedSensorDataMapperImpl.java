@@ -2,11 +2,11 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 
 import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.data.MotionDataDTO;
 import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.device.DeviceInformationWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 public class ProcessedSensorDataMapperImpl {
 
-    public ProcessedSensorDataDAOImpl dtoToDao(ProcessedSensorDataWithRecordsDTO in) {
+    public ProcessedSensorDataDAOImpl dtoToDao(ProcessedSensorDataDTO in) {
         var dao = new ProcessedSensorDataDAOImpl();
 
         dao.dataId = in.dataId.toString();
@@ -33,7 +33,7 @@ public class ProcessedSensorDataMapperImpl {
         return dao;
     }
 
-    private String toDAO(ProcessedSensorDataWithRecordsDTO in) {
+    private String toDAO(ProcessedSensorDataDTO in) {
         if (!in.data.hasProperty(PropertyName.MOTION)) {
             return "UNKNOWN";
         } else if ("ACTIVE".equalsIgnoreCase(in.data.motion.value)) {
@@ -45,14 +45,17 @@ public class ProcessedSensorDataMapperImpl {
         }
     }
 
-    public ProcessedSensorDataWithRecordsDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
+    public ProcessedSensorDataDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
         var dataId = UUID.fromString(dao.dataId);
-        var device = new DeviceInformationWithRecordsDTO(UUID.fromString(dao.deviceId), dao.deviceName, new DeviceRecordDTO(new HashSet<>()));
+        var device = new DeviceInformationDTO();
+        device.id = UUID.fromString(dao.deviceId);
+        device.name = dao.deviceName;
+        device.records = new DeviceRecordDTO(new HashSet<>());
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
         var gpsDataDTO = GPSDataDTO.ofLatLong(originatingPoint.getLatitude(), originatingPoint.getLongitude());
         var statusDTO = MotionDataDTO.of(dao.motion);
         var details = new SensorDataDetailsDTO().withGps(gpsDataDTO).withMotion(statusDTO);
-        return new ProcessedSensorDataWithRecordsDTO(dataId, device, dao.reportedAt.getTime(), details);
+        return new ProcessedSensorDataDTO(dataId, device, dao.reportedAt.getTime(), details);
     }
 
     public ProcessedSensorDataDAOImpl toSensorData(ResultSet resultSet) throws SQLException {

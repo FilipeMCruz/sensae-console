@@ -2,7 +2,7 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.fleetmanagementbackend.domain.model.GPSDataDetails;
@@ -36,7 +36,7 @@ public class GPSDataCollector {
         return createHistories(filters, data);
     }
 
-    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, List<ProcessedSensorDataWithRecordsDTO> dto) {
+    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, List<ProcessedSensorDataDTO> dto) {
         return dto.stream()
                 .collect(Collectors.groupingBy(x -> x.device.id))
                 .values()
@@ -45,7 +45,7 @@ public class GPSDataCollector {
                 .collect(Collectors.toList());
     }
 
-    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<ProcessedSensorDataWithRecordsDTO> dto) {
+    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<ProcessedSensorDataDTO> dto) {
         var history = new GPSSensorDataHistory();
         history.startTime = filters.startTime.getTime();
         history.endTime = filters.endTime.getTime();

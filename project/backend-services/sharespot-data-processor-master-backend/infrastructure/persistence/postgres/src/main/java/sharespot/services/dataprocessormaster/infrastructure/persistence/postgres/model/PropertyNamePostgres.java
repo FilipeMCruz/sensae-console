@@ -42,12 +42,6 @@ public class PropertyNamePostgres {
         return propertyName;
     }
 
-    public static PropertyNamePostgres deviceRecords() {
-        var propertyName = new PropertyNamePostgres();
-        propertyName.value = 3;
-        return propertyName;
-    }
-
     public static PropertyNamePostgres reportedAt() {
         var propertyName = new PropertyNamePostgres();
         propertyName.value = 4;

@@ -29,7 +29,6 @@ public class DataTransformationMapper {
             case 0 -> PropertyName.DATA_ID;
             case 1 -> PropertyName.DEVICE_ID;
             case 2 -> PropertyName.DEVICE_NAME;
-            case 3 -> PropertyName.DEVICE_RECORDS;
             case 4 -> PropertyName.REPORTED_AT;
             case 5 -> PropertyName.LATITUDE;
             case 6 -> PropertyName.LONGITUDE;
@@ -63,7 +62,6 @@ public class DataTransformationMapper {
             case DATA_ID -> PropertyNamePostgres.dataId();
             case DEVICE_ID -> PropertyNamePostgres.deviceId();
             case DEVICE_NAME -> PropertyNamePostgres.deviceName();
-            case DEVICE_RECORDS -> PropertyNamePostgres.deviceRecords();
             case REPORTED_AT -> PropertyNamePostgres.reportedAt();
             case LATITUDE -> PropertyNamePostgres.latitude();
             case LONGITUDE -> PropertyNamePostgres.longitude();
@@ -73,6 +71,7 @@ public class DataTransformationMapper {
             case AQI -> PropertyNamePostgres.aqi();
             case HUMIDITY -> PropertyNamePostgres.humidity();
             case PRESSURE -> PropertyNamePostgres.pressure();
+            case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS -> throw new RuntimeException();
         };
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageSupplied;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
 import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 
@@ -35,8 +36,9 @@ public class SensorDataPublisherService {
                 .withSensorTypeId(sensorType)
                 .withChannel("default")
                 .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
+                .withPermissions(PermissionsOptions.WITHOUT_PERMISSIONS)
                 .withUnidentifiedData()
                 .build()
-                .ifPresent(routingKeys -> this.sensorDataPublisher.publish(new MessageSupplied<>(routingKeys, sensorDataDTO)));
+                .ifPresent(routingKeys -> this.sensorDataPublisher.publish(MessageSupplied.create(sensorDataDTO, routingKeys)));
     }
 }

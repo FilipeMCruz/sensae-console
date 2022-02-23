@@ -2,7 +2,7 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.GPSSensorDataFilter;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
@@ -27,7 +27,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     }
 
     @Override
-    public void insert(ProcessedSensorDataWithRecordsDTO dao) {
+    public void insert(ProcessedSensorDataDTO dao) {
         var data = mapper.dtoToDao(dao);
         this.repository.insert(data.dataId, data.deviceName, data.deviceId, data.gpsData, data.motion, data.reportedAt);
     }
@@ -35,7 +35,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public List<ProcessedSensorDataWithRecordsDTO> queryMultipleDevices(GPSSensorDataFilter filters) {
+    public List<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters) {
         String inParams = filters.devices.stream().map(device -> "'" + device + "'").collect(Collectors.joining(","));
         var query = String.format("SELECT * FROM data WHERE device_id IN (%s) AND ts BETWEEN '%s' AND '%s';", inParams, filters.startTime.toString(), filters.endTime.toString());
         var data = jdbcTemplate.query(query,
@@ -44,13 +44,13 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     }
 
     @Override
-    public List<ProcessedSensorDataWithRecordsDTO> lastDataOfEachDevice() {
+    public List<ProcessedSensorDataDTO> lastDataOfEachDevice() {
         var data = repository.latestDataOfEachDevice();
         return data.stream().map(mapper::daoToDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<ProcessedSensorDataWithRecordsDTO> queryPastData(ProcessedSensorDataWithRecordsDTO dao, Integer timeSpanMinutes) {
+    public List<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToDao(dao);
         return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)
                 .stream()

@@ -1,6 +1,6 @@
 package sharespot.services.fleetmanagementbackend.application;
 
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.model.GPSDataDetails;
 
 import java.util.List;
@@ -9,11 +9,11 @@ import java.util.stream.IntStream;
 public class Haversine {
     private static final double R = 6372.8; // In kilometers
 
-    public static boolean isMoving(ProcessedSensorDataWithRecordsDTO center, List<ProcessedSensorDataWithRecordsDTO> gpsData, Double distanceInKm) {
+    public static boolean isMoving(ProcessedSensorDataDTO center, List<ProcessedSensorDataDTO> gpsData, Double distanceInKm) {
         return gpsData.stream().anyMatch(point -> calcHaversine(point, center) > distanceInKm);
     }
 
-    public static double calcDistance(List<ProcessedSensorDataWithRecordsDTO> gpsData) {
+    public static double calcDistance(List<ProcessedSensorDataDTO> gpsData) {
         if (gpsData.size() < 2) return 0;
         return IntStream.range(1, gpsData.size()).mapToDouble(i -> calcHaversine(gpsData.get(i - 1), gpsData.get(i))).sum();
     }
@@ -22,7 +22,7 @@ public class Haversine {
         return haversine(first.latitude(), first.longitude(), second.latitude(), second.longitude());
     }
 
-    public static double calcHaversine(ProcessedSensorDataWithRecordsDTO first, ProcessedSensorDataWithRecordsDTO second) {
+    public static double calcHaversine(ProcessedSensorDataDTO first, ProcessedSensorDataDTO second) {
         return haversine(first.data.gps.latitude, first.data.gps.longitude, second.data.gps.latitude, second.data.gps.longitude);
     }
 

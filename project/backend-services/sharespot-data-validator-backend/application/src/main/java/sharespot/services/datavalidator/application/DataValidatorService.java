@@ -38,11 +38,11 @@ public class DataValidatorService {
         this.boxes.add(new BoundingBox("UK", 60, 50, -10, 5));
     }
 
-    public Optional<RoutingKeys> decide(MessageConsumed<ProcessedSensorDataDTO> message) {
+    public Optional<RoutingKeys> decide(ProcessedSensorDataDTO data, RoutingKeys keys) {
         var legitimacy = DataLegitimacyOptions.UNDETERMINED;
 
-        if (message.data.hasProperty(PropertyName.LATITUDE) && message.data.hasProperty(PropertyName.LONGITUDE)) {
-            if (inside(message.data.data.gps, boxes)) {
+        if (data.hasProperty(PropertyName.LATITUDE) && data.hasProperty(PropertyName.LONGITUDE)) {
+            if (inside(data.data.gps, boxes)) {
                 legitimacy = DataLegitimacyOptions.CORRECT;
             } else {
                 legitimacy = DataLegitimacyOptions.INCORRECT;
@@ -50,7 +50,7 @@ public class DataValidatorService {
         }
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withLegitimacyType(legitimacy)
-                .from(message.routingKeys);
+                .from(keys);
     }
 
     //TODO: consider this https://developers.google.com/maps/documentation/geocoding/requests-reverse-geocoding

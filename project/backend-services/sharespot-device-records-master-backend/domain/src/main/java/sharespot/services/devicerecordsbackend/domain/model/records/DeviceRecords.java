@@ -1,5 +1,7 @@
 package sharespot.services.devicerecordsbackend.domain.model.records;
 
+import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+
 public record DeviceRecords(Device device,
                             Records records) {
     public static DeviceRecords empty(DeviceId id) {

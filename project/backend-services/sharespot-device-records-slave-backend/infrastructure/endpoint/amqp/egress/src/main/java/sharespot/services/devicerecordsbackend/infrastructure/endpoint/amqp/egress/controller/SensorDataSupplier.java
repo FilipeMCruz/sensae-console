@@ -6,7 +6,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataWithRecordsDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.devicerecordsbackend.application.SensorDataHandlerService;
 
 @Component
@@ -24,7 +24,7 @@ public class SensorDataSupplier {
                 });
     }
 
-    private void logSuppliedMessage(MessageSupplied<ProcessedSensorDataWithRecordsDTO> in) {
+    private void logSuppliedMessage(MessageSupplied<ProcessedSensorDataDTO> in) {
         logger.info("Data Id Supplied: {}", in.data.dataId());
         logger.info("RoutingKeys: {}", in.routingKeys.details());
     }

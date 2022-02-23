@@ -6,4 +6,6 @@ import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecord
 public interface ProcessedSensorDataWithRecordMapper {
 
     ProcessedSensorDataDTO domainToDto(ProcessedSensorDataDTO domain, DeviceRecords records);
+
+    ProcessedSensorDataDTO domainToDto(ProcessedSensorDataDTO dto);
 }

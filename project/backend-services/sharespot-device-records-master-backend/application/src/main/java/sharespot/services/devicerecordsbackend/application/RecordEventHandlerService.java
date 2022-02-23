@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
 
 import javax.annotation.PostConstruct;
 

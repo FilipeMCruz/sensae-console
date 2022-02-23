@@ -2,7 +2,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.persistence.postg
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.records.DeviceRecordsPostgres;
 
 import java.util.Optional;
 

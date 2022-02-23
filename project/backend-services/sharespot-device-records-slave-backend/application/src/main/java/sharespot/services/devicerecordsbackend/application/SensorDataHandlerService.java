@@ -51,10 +51,9 @@ public class SensorDataHandlerService {
     }
 
     private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
-        var hasRecords = data.hasProperty(PropertyName.DEVICE_RECORDS);
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
-                .withRecords(hasRecords ? RecordsOptions.WITH_RECORDS : RecordsOptions.WITHOUT_RECORDS)
+                .withRecords(RecordsOptions.WITH_RECORDS)
                 .from(keys);
     }
 }

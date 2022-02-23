@@ -10,6 +10,7 @@ import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecord
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordLabel;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,5 +43,11 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
                 .collect(Collectors.toSet()));
         return domain;
+    }
+
+    @Override
+    public ProcessedSensorDataDTO domainToDto(ProcessedSensorDataDTO dto) {
+        dto.device.records = new DeviceRecordDTO(new HashSet<>());
+        return dto;
     }
 }

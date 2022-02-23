@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 import sharespot.services.devicerecordsbackend.application.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.RecordMapper;
+import sharespot.services.devicerecordsbackend.domain.model.records.Device;
+import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.exceptions.NotValidException;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;

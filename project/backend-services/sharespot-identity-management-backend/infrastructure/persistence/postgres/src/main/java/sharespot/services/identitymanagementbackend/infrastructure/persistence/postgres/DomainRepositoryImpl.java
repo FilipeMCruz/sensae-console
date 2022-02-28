@@ -12,6 +12,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class DomainRepositoryImpl implements DomainRepository {
@@ -59,6 +60,13 @@ public class DomainRepositoryImpl implements DomainRepository {
         LoggerFactory.getLogger(DomainRepositoryImpl.class).info(id.value().toString());
         return repository.findDomainChilds(PostgresArrayMapper.toArray(id.value().toString()))
                 .stream()
+                .map(DomainMapper::postgresToDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Domain> getDomains(List<DomainId> ids) {
+        return repository.findAllByOidIsIn(ids.stream().map(d -> d.value().toString()).collect(Collectors.toList())).stream()
                 .map(DomainMapper::postgresToDomain)
                 .toList();
     }

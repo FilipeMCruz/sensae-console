@@ -14,6 +14,8 @@ public interface DomainRepositoryPostgres extends CrudRepository<DomainPostgres,
 
     Optional<DomainPostgres> findByOid(String domainId);
 
+    List<DomainPostgres> findAllByOidIsIn(List<String> domainIds);
+
     @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 1", nativeQuery = true)
     Optional<DomainPostgres> findRoot();
 

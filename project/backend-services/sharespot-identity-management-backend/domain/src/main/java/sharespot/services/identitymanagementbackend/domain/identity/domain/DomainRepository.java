@@ -15,6 +15,8 @@ public interface DomainRepository {
 
     List<Domain> getChildDomains(DomainId id);
 
+    List<Domain> getDomains(List<DomainId> ids);
+
     void moveDomain(DomainId toMove, DomainId newParent);
 
     Domain addDomain(Domain domain);

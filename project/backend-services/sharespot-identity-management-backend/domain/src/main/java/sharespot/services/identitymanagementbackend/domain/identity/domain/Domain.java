@@ -1,5 +1,7 @@
 package sharespot.services.identitymanagementbackend.domain.identity.domain;
 
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.DomainPermissions;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -34,10 +36,13 @@ public class Domain {
 
     private final DomainPath path;
 
-    public Domain(DomainId oid, DomainName name, DomainPath path) {
+    private final DomainPermissions permissions;
+
+    public Domain(DomainId oid, DomainName name, DomainPath path, DomainPermissions permissions) {
         this.name = name;
         this.id = oid;
         this.path = path;
+        this.permissions = permissions;
     }
 
     public boolean same(Domain domain) {
@@ -56,6 +61,10 @@ public class Domain {
         return path;
     }
 
+    public DomainPermissions getPermissions() {
+        return permissions;
+    }
+
     public boolean isRoot() {
         return path.path().size() == 1;
     }
@@ -70,6 +79,6 @@ public class Domain {
         var unallocatedDomainPath = new ArrayList<>(parent.path.path());
         unallocatedDomainPath.add(id);
         var path = DomainPath.of(unallocatedDomainPath);
-        return new Domain(id, name, path);
+        return new Domain(id, name, path, DomainPermissions.empty());
     }
 }

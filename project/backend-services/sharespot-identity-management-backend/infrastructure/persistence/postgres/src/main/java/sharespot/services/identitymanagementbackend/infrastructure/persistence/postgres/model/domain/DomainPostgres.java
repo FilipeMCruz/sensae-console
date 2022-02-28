@@ -3,6 +3,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.persistence.
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "domain")
 public class DomainPostgres {
@@ -19,4 +20,7 @@ public class DomainPostgres {
     @Column(columnDefinition = "text[]")
     @Type(type = "sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.util.GenericArrayUserType")
     public String[] path;
+
+    @OneToMany(mappedBy = "domain", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<DomainPermissionPostgres> permissions;
 }

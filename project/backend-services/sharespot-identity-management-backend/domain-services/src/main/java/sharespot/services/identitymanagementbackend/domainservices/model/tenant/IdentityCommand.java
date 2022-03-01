@@ -8,4 +8,6 @@ public class IdentityCommand {
     public String name;
     public UUID oid;
     public List<String> domains;
+    public List<String> permissions;
+
 }

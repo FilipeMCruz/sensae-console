@@ -54,11 +54,17 @@ public class AuthenticateTenant {
         identityResult.domains = tenant.getDomains().stream().map(DomainId::value).toList();
         identityResult.permissions = permissions.stream().map(p ->
                 switch (p) {
-                    case READ_DEVICE_RECORDS -> "read:device_records";
-                    case WRITE_DEVICE_RECORDS -> "write:device_records";
-                    case READ_DATA_TRANSFORMATIONS -> "read:data_transformations";
-                    case WRITE_DATA_TRANSFORMATIONS -> "write:data_transformations";
-                    case READ_FLEET_MANAGEMENT -> "read:fleet_management";
+                    case READ_DEVICE_RECORDS -> "device_records:records:read";
+                    case WRITE_DEVICE_RECORDS -> "device_records:records:write";
+                    case READ_DATA_TRANSFORMATIONS -> "data_transformations:transformations:read";
+                    case WRITE_DATA_TRANSFORMATIONS -> "data_transformations:transformations:write";
+                    case READ_FLEET_MANAGEMENT -> "fleet_management:read";
+                    case WRITE_DOMAINS -> "identity_management:domains:create";
+                    case READ_DOMAINS -> "identity_management:domains:read";
+                    case READ_TENANT -> "identity_management:tenant:read";
+                    case READ_DEVICE -> "identity_management:device:read";
+                    case WRITE_TENANT -> "identity_management:tenant:write";
+                    case WRITE_DEVICE -> "identity_management:device:write";
                 }).toList();
         return identityResult;
     }

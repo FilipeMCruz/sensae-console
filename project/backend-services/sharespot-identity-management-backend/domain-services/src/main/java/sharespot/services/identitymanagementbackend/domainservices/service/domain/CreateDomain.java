@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.*;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.DomainPermissions;
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResultMapper;
@@ -12,6 +13,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CreateDomain {
@@ -29,7 +31,7 @@ public class CreateDomain {
         var parentDomain = domainRepo.findDomainById(parentDomainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, parentDomain);
+        PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.WRITE_DOMAINS));
 
         var domainName = DomainName.of(command.domainName);
         if (domainName.isUnallocated()) {

@@ -32,6 +32,12 @@ public class DomainPermissionTypePostgres {
             case READ_DATA_TRANSFORMATIONS -> new DomainPermissionTypePostgres(3);
             case WRITE_DATA_TRANSFORMATIONS -> new DomainPermissionTypePostgres(4);
             case READ_FLEET_MANAGEMENT -> new DomainPermissionTypePostgres(5);
+            case WRITE_DOMAINS -> new DomainPermissionTypePostgres(6);
+            case READ_DOMAINS -> new DomainPermissionTypePostgres(7);
+            case WRITE_DEVICE -> new DomainPermissionTypePostgres(8);
+            case READ_DEVICE -> new DomainPermissionTypePostgres(9);
+            case WRITE_TENANT -> new DomainPermissionTypePostgres(10);
+            case READ_TENANT -> new DomainPermissionTypePostgres(11);
         };
     }
 
@@ -42,6 +48,12 @@ public class DomainPermissionTypePostgres {
             case 3 -> PermissionType.READ_DATA_TRANSFORMATIONS;
             case 4 -> PermissionType.WRITE_DATA_TRANSFORMATIONS;
             case 5 -> PermissionType.READ_FLEET_MANAGEMENT;
+            case 6 -> PermissionType.WRITE_DOMAINS;
+            case 7 -> PermissionType.READ_DOMAINS;
+            case 8 -> PermissionType.WRITE_DEVICE;
+            case 9 -> PermissionType.READ_DEVICE;
+            case 10 -> PermissionType.WRITE_TENANT;
+            case 11 -> PermissionType.READ_TENANT;
             default -> throw new RuntimeException("Invalid Value");
         };
     }

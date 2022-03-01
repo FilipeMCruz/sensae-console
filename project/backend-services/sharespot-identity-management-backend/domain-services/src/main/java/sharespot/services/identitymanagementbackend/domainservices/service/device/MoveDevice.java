@@ -8,6 +8,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.device.Devic
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.PlaceDeviceInDomainCommand;
@@ -15,6 +16,8 @@ import sharespot.services.identitymanagementbackend.domainservices.model.device.
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
+
+import java.util.List;
 
 @Service
 public class MoveDevice {
@@ -36,7 +39,7 @@ public class MoveDevice {
         var domain = domainRepo.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain);
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DEVICE));
 
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
@@ -56,7 +59,7 @@ public class MoveDevice {
         var domain = domainRepo.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain);
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DEVICE));
 
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));

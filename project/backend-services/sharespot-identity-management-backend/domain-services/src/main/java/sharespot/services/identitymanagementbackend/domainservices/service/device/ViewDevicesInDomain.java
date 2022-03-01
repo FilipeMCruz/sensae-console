@@ -5,6 +5,7 @@ import sharespot.services.identitymanagementbackend.domain.exceptions.NotValidEx
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
@@ -32,7 +33,7 @@ public class ViewDevicesInDomain {
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, top);
+        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAINS));
 
         return deviceRepo.getDevicesInDomain(top.getOid())
                 .stream()

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
@@ -31,7 +32,7 @@ public class ViewTenantsInDomain {
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, top);
+        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_TENANT));
 
         return tenantRepo
                 .getTenantsInDomain(top.getOid())

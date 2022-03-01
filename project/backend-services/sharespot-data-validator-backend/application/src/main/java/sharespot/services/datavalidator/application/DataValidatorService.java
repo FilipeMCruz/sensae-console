@@ -49,6 +49,7 @@ public class DataValidatorService {
             }
         }
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+                .withUpdated(data)
                 .withLegitimacyType(legitimacy)
                 .from(keys);
     }

@@ -20,10 +20,11 @@ public class DeviceMapper {
         domainPostgres.oid = device.getOid().value().toString();
         domainPostgres.devicePermissions = device.getDomains().stream().map(p -> {
             var deviceDomainPermissionsPostgres = new DeviceDomainPermissionsPostgres();
-            deviceDomainPermissionsPostgres.domainOid = p.domain().toString();
+            deviceDomainPermissionsPostgres.domainOid = p.domain().value().toString();
             deviceDomainPermissionsPostgres.permission = p.permissions().equals(DevicePermissions.READ) ?
                     DevicePermissionsPostgres.read() :
                     DevicePermissionsPostgres.writeRead();
+            deviceDomainPermissionsPostgres.device = domainPostgres;
             return deviceDomainPermissionsPostgres;
         }).collect(Collectors.toSet());
         return domainPostgres;

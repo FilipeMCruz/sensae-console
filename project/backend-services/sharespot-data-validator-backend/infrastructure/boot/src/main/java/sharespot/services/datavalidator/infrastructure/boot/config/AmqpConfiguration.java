@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
 import sharespot.services.datavalidator.application.RoutingKeysProvider;
@@ -47,6 +48,7 @@ public class AmqpConfiguration {
         var decoded = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .missingAsAny();
         if (decoded.isPresent()) {

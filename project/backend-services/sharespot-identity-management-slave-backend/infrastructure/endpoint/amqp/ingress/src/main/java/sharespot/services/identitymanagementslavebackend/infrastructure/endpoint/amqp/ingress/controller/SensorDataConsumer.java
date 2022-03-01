@@ -13,7 +13,7 @@ public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Identity Management Slave Queue";
 
     private final SensorDataHandlerService handler;
 
@@ -28,7 +28,8 @@ public class SensorDataConsumer {
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
-        logger.info("Data Id Consumed: {}", in.data.dataId);
+        logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
+        logger.info("Hops: {}", in.hops);
     }
 }

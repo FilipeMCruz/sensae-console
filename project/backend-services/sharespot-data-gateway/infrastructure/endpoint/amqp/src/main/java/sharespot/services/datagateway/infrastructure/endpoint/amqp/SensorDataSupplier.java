@@ -28,7 +28,8 @@ public class SensorDataSupplier implements EventPublisher {
     }
 
     private void logSuppliedMessage(MessageSupplied<ObjectNode> in) {
-        logger.info("Data Id Supplied: Unknown");
+        logger.info("Data Id Supplied: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
+        logger.info("Hops: {}", in.hops);
     }
 }

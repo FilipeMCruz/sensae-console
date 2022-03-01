@@ -1,5 +1,6 @@
 package sharespot.services.identitymanagementslavebackend.infrastructure.boot.config;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -7,9 +8,8 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
 
@@ -64,8 +64,7 @@ public class AmqpConfiguration {
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
-                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+                .withPermissions(PermissionsOptions.UNIDENTIFIED_PERMISSIONS)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

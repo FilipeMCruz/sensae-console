@@ -11,15 +11,14 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): boolean | UrlTree {
-
-    if (!this.authService.isAllowed() && this.router.url !== "auth") {
+    if (!this.authService.isAuthenticated() && this.router.url !== "auth") {
       this.router.navigate(["auth"]);
       return false;
     }
     return true;
   }
 
-  canShow(route: string) {
-    return !(!this.authService.isAllowed() && route !== "auth");
+  canShow(permissions: string[], route: string) {
+    return !(!this.authService.isAllowed(permissions) && route !== "auth");
   }
 }

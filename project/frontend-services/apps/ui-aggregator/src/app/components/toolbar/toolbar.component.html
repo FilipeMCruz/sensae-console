@@ -3,15 +3,15 @@
     <mat-icon aria-label="home">home</mat-icon>
   </a>
   <div *ngFor="let mfe of microfrontendServices">
-    <span *ngIf="canShow(mfe.routePath)" class="spacer"></span>
-    <button *ngIf="canShow(mfe.routePath)" mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
+    <span *ngIf="canShow(mfe)" class="spacer"></span>
+    <button *ngIf="canShow(mfe)" mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
   </div>
 
   <div class="toolbar-spacer"></div>
   <button *ngIf="canShowAny(microfrontendTools)" class="menu" mat-button [matMenuTriggerFor]="menu">Tools</button>
   <mat-menu #menu="matMenu">
     <div *ngFor="let mfe of microfrontendTools">
-      <button mat-menu-item *ngIf="canShow(mfe.routePath)"
+      <button mat-menu-item *ngIf="canShow(mfe)"
               [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
     </div>
   </mat-menu>

@@ -151,11 +151,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
 
-  canShow(route: string) {
-    return this.authGuardService.canShow(route);
+  canShow(route: Microfrontend) {
+    return this.authGuardService.canShow(route.details.permissions, route.routePath);
   }
 
   canShowAny(routes: Microfrontend[]) {
-    return routes.some(r => this.authGuardService.canShow(r.routePath))
+    return routes.some(r => this.authGuardService.canShow(r.details.permissions, r.routePath))
   }
 }

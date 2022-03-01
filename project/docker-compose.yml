@@ -164,7 +164,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8080
+      - 8080:8080
   sharespot-identity-management-slave-backend:
     build: backend-services/sharespot-identity-management-slave-backend
     container_name: sharespot-identity-management-slave-backend

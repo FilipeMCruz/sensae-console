@@ -35,6 +35,7 @@ export class LookupService {
         details: {
           type: MicrofrontendType.SERVICE,
           protected: true,
+          permissions: Array.of("fleet_management:read")
         },
       },
       {
@@ -50,6 +51,7 @@ export class LookupService {
         details: {
           type: MicrofrontendType.TOOL,
           protected: true,
+          permissions: Array.of("device_records:records:read")
         },
       },
       {
@@ -65,6 +67,7 @@ export class LookupService {
         details: {
           type: MicrofrontendType.TOOL,
           protected: true,
+          permissions: Array.of("data_transformations:transformations:read")
         },
       },
     ] as Microfrontend[]);

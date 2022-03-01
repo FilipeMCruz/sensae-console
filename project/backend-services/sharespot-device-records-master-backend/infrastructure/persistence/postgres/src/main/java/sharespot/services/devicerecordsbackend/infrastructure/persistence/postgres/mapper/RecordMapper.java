@@ -3,9 +3,9 @@ package sharespot.services.devicerecordsbackend.infrastructure.persistence.postg
 import sharespot.services.devicerecordsbackend.domain.model.records.Device;
 import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
-import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.records.DeviceRecordEntryPostgres;
-import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.records.DeviceRecordEntryTypePostgres;
-import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.records.DeviceRecordsPostgres;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordEntryPostgres;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordEntryTypePostgres;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
 
 import java.util.List;
 import java.util.UUID;

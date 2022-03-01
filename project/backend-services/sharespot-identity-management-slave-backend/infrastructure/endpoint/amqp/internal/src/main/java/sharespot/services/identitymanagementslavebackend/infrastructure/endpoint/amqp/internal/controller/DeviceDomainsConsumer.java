@@ -6,13 +6,13 @@ import sharespot.services.identitymanagementslavebackend.application.UpdateDevic
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.model.DeviceIdDTOImpl;
 
 @Service
-public class DeviceRecordConsumer {
+public class DeviceDomainsConsumer {
 
     public static final String MASTER_QUEUE = "Sharespot Identity Management Master Exchange -> Sharespot Identity Management Slave Queue";
 
     private final UpdateDeviceService updater;
 
-    public DeviceRecordConsumer(UpdateDeviceService updater) {
+    public DeviceDomainsConsumer(UpdateDeviceService updater) {
         this.updater = updater;
     }
     

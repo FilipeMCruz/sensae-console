@@ -30,7 +30,6 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case DEVICE_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_ID);
             case DEVICE_NAME -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_NAME);
             case DATA_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DATA_ID);
-            case DEVICE_RECORDS -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_RECORDS);
             case REPORTED_AT -> PropertyTransformation.create(e.oldPath, PropertyName.REPORTED_AT);
             case LATITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LATITUDE);
             case LONGITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LONGITUDE);
@@ -78,7 +77,6 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case DATA_ID -> PropertyNameDTOImpl.DATA_ID;
             case DEVICE_ID -> PropertyNameDTOImpl.DEVICE_ID;
             case DEVICE_NAME -> PropertyNameDTOImpl.DEVICE_NAME;
-            case DEVICE_RECORDS -> PropertyNameDTOImpl.DEVICE_RECORDS;
             case REPORTED_AT -> PropertyNameDTOImpl.REPORTED_AT;
             case LATITUDE -> PropertyNameDTOImpl.LATITUDE;
             case LONGITUDE -> PropertyNameDTOImpl.LONGITUDE;
@@ -88,6 +86,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case AQI -> PropertyNameDTOImpl.AQI;
             case HUMIDITY -> PropertyNameDTOImpl.HUMIDITY;
             case PRESSURE -> PropertyNameDTOImpl.PRESSURE;
+            default -> throw new RuntimeException("Invalid Property");
         };
         entry.oldPath = kt.oldPath();
         return entry;

@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>sharespot.services</groupId>
-            <artifactId>amqp</artifactId>
+            <artifactId>internal</artifactId>
             <version>0.4.0</version>
         </dependency>
         <dependency>

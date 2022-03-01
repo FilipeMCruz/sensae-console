@@ -151,6 +151,32 @@ services:
       - sharespot-network
     ports:
       - 8080
+  sharespot-identity-management-backend:
+    build: backend-services/sharespot-identity-management-backend
+    container_name: sharespot-identity-management-backend
+    image: sharespot-identity-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-identity-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  sharespot-identity-management-slave-backend:
+    build: backend-services/sharespot-identity-management-slave-backend
+    container_name: sharespot-identity-management-slave-backend
+    image: sharespot-identity-management-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-identity-management-slave-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
   sharespot-data-store:
     build: backend-services/sharespot-data-store
     image: sharespot-data-store

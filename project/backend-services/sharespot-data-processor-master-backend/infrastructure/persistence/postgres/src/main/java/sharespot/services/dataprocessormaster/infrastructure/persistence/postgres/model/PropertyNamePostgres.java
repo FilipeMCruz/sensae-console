@@ -11,7 +11,6 @@ public class PropertyNamePostgres {
      * DATA_ID -> 0
      * DEVICE_ID -> 1
      * DEVICE_NAME -> 2
-     * DEVICE_RECORDS -> 3
      * REPORTED_AT -> 4
      * LATITUDE -> 5
      * LONGITUDE -> 6

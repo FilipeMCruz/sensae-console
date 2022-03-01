@@ -7,4 +7,6 @@ project/secrets/prod/*
 !project/secrets/prod/.gitkeep
 project/secrets/dev/*
 !project/secrets/dev/.gitkeep
+project/secrets/keys/*
+!project/secrets/keys/.gitkeep
 project/databases-data

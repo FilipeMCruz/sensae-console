@@ -76,16 +76,13 @@ export class DataTransformationComponent implements OnChanges {
   }
 
   getNameType(entry: PropertyTransformation) {
-    const nameType = entry.newPath;
-    switch (nameType) {
+    switch (entry.newPath) {
       case PropertyName.DATA_ID:
         return "fingerprint";
       case PropertyName.DEVICE_ID:
         return "sensors";
       case PropertyName.DEVICE_NAME:
         return "badge";
-      case PropertyName.DEVICE_RECORDS:
-        return "info";
       case PropertyName.REPORTED_AT:
         return "schedule";
       case PropertyName.LATITUDE:

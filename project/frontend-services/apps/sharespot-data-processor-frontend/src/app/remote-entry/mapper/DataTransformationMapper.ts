@@ -20,8 +20,6 @@ export class DataTransformationMapper {
         return PropertyName.DEVICE_ID;
       case PropertyNameDTO.DEVICE_NAME:
         return PropertyName.DEVICE_NAME;
-      case PropertyNameDTO.DEVICE_RECORDS:
-        return PropertyName.DEVICE_RECORDS;
       case PropertyNameDTO.REPORTED_AT:
         return PropertyName.REPORTED_AT;
       case PropertyNameDTO.LATITUDE:
@@ -61,8 +59,6 @@ export class DataTransformationMapper {
         return PropertyNameDTO.DEVICE_ID;
       case PropertyName.DEVICE_NAME:
         return PropertyNameDTO.DEVICE_NAME;
-      case PropertyName.DEVICE_RECORDS:
-        return PropertyNameDTO.DEVICE_RECORDS;
       case PropertyName.REPORTED_AT:
         return PropertyNameDTO.REPORTED_AT;
       case PropertyName.LATITUDE:

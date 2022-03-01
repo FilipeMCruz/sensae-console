@@ -1,4 +1,4 @@
-package sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.records;
+package sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model;
 
 import javax.persistence.Embeddable;
 

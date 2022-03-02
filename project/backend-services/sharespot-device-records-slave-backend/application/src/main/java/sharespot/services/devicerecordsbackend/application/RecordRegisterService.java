@@ -1,6 +1,7 @@
 package sharespot.services.devicerecordsbackend.application;
 
 import org.springframework.stereotype.Service;
+import sharespot.services.devicerecordsbackend.domain.model.records.DeviceName;
 import sharespot.services.devicerecordsbackend.domainservices.DeviceRecordCache;
 
 @Service
@@ -17,6 +18,6 @@ public class RecordRegisterService {
 
     public void update(DeviceIdDTO dto) {
         var deviceId = mapper.dtoToDomain(dto);
-        cache.update(deviceId);
+        cache.update(deviceId, new DeviceName("Unknown"));
     }
 }

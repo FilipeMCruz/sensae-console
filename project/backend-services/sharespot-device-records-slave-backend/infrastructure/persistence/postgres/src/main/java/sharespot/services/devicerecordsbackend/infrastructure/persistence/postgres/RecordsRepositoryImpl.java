@@ -23,4 +23,11 @@ public class RecordsRepositoryImpl implements RecordsRepository {
         return repositoryPostgres.findByDeviceId(id.value().toString())
                 .map(RecordMapper::postgresToDomain);
     }
+
+    @Override
+    public DeviceRecords add(DeviceRecords domain) {
+        var deviceRecordsPostgres = RecordMapper.domainToPostgres(domain);
+        repositoryPostgres.save(deviceRecordsPostgres);
+        return RecordMapper.postgresToDomain(deviceRecordsPostgres);
+    }
 }

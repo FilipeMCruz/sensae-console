@@ -2,6 +2,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.persistence.postg
 
 import sharespot.services.devicerecordsbackend.domain.model.Device;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
+import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordEntryPostgres;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordEntryTypePostgres;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
 
@@ -25,5 +26,23 @@ public class RecordMapper {
         var deviceName = new DeviceName(records.name);
 
         return new DeviceRecords(new Device(deviceId, deviceName), new Records(collect));
+    }
+
+    public static DeviceRecordsPostgres domainToPostgres(DeviceRecords domain) {
+        var deviceRecordsPostgres = new DeviceRecordsPostgres();
+        deviceRecordsPostgres.name = domain.device().name().value();
+        deviceRecordsPostgres.deviceId = domain.device().id().value().toString();
+        deviceRecordsPostgres.entries = domain.records().entries().stream().map(e -> {
+            var entry = new DeviceRecordEntryPostgres();
+            if (e instanceof BasicRecordEntry) {
+                entry.type = DeviceRecordEntryTypePostgres.basic();
+            } else {
+                entry.type = DeviceRecordEntryTypePostgres.sensorData();
+            }
+            entry.content = e.getContent();
+            entry.label = e.getLabel();
+            return entry;
+        }).collect(Collectors.toSet());
+        return deviceRecordsPostgres;
     }
 }

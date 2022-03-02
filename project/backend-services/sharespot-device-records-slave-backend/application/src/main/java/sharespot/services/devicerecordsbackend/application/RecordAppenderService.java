@@ -3,6 +3,7 @@ package sharespot.services.devicerecordsbackend.application;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.records.DeviceName;
 import sharespot.services.devicerecordsbackend.domainservices.DeviceRecordCache;
 
 @Service
@@ -18,8 +19,7 @@ public class RecordAppenderService {
     }
 
     public ProcessedSensorDataDTO tryToAppend(ProcessedSensorDataDTO dto) {
-        return cache.findByDeviceId(new DeviceId(dto.device.id))
-                .map(deviceRecords -> dataWithRecordMapper.domainToDto(dto, deviceRecords))
-                .orElseGet(() -> dataWithRecordMapper.domainToDto(dto));
+        var byDeviceId = cache.findByDeviceId(new DeviceId(dto.device.id), new DeviceName(dto.device.name));
+        return dataWithRecordMapper.domainToDto(dto, byDeviceId);
     }
 }

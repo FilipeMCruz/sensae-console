@@ -7,4 +7,5 @@ public interface RecordsRepository {
 
     Optional<DeviceRecords> findByDeviceId(DeviceId id);
 
+    DeviceRecords add(DeviceRecords domain);
 }

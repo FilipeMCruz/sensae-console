@@ -1,6 +1,5 @@
 package sharespot.services.identitymanagementslavebackend.infrastructure.boot.config;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

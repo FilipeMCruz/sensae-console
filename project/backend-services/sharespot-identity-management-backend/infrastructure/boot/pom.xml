@@ -28,6 +28,11 @@
             <artifactId>postgres</artifactId>
             <version>0.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>sharespot.services</groupId>
+            <artifactId>amqp</artifactId>
+            <version>0.4.0</version>
+        </dependency>
     </dependencies>
 
     <build>

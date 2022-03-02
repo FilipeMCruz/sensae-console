@@ -7,6 +7,7 @@ import sharespot.services.identitymanagementbackend.application.model.device.Dev
 import sharespot.services.identitymanagementbackend.application.model.device.ExpelDeviceFromDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
+import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
 import sharespot.services.identitymanagementbackend.domainservices.service.device.MoveDevice;
 
 @Service
@@ -18,21 +19,31 @@ public class PlaceDeviceInDomainService {
 
     private final DeviceMapper deviceMapper;
 
-    public PlaceDeviceInDomainService(MoveDevice service, TenantMapper tenantMapper, DeviceMapper deviceMapper) {
+    private final DeviceUpdateHandlerService emitter;
+
+    public PlaceDeviceInDomainService(MoveDevice service,
+                                      TenantMapper tenantMapper,
+                                      DeviceMapper deviceMapper,
+                                      DeviceUpdateHandlerService emitter) {
         this.service = service;
         this.tenantMapper = tenantMapper;
         this.deviceMapper = deviceMapper;
+        this.emitter = emitter;
     }
 
     public DeviceDTO place(PlaceDeviceInDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
-        var createDomainCommand = deviceMapper.dtoToCommand(dto);
-        return deviceMapper.resultToDto(service.execute(createDomainCommand, identityCommand));
+        var command = deviceMapper.dtoToCommand(dto);
+        var result = deviceMapper.resultToDto(service.execute(command, identityCommand));
+        emitter.publishUpdate(DeviceId.of(command.device));
+        return result;
     }
 
     public DeviceDTO expel(ExpelDeviceFromDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
-        var createDomainCommand = deviceMapper.dtoToCommand(dto);
-        return deviceMapper.resultToDto(service.execute(createDomainCommand, identityCommand));
+        var command = deviceMapper.dtoToCommand(dto);
+        var result = deviceMapper.resultToDto(service.execute(command, identityCommand));
+        emitter.publishUpdate(DeviceId.of(command.device));
+        return result;
     }
 }

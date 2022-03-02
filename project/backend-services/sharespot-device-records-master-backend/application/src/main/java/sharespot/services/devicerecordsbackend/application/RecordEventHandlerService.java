@@ -14,6 +14,7 @@ public class RecordEventHandlerService {
     private FluxSink<DeviceDTO> dataStream;
 
     private ConnectableFlux<DeviceDTO> dataPublisher;
+    
     private final RecordEventMapper mapper;
 
     public RecordEventHandlerService(RecordEventMapper mapper) {

@@ -2,8 +2,10 @@ package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.c
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
+import org.springframework.web.bind.annotation.RequestHeader;
 import sharespot.services.dataprocessormaster.application.DataTransformationDTO;
 import sharespot.services.dataprocessormaster.application.DataTransformationCollectorService;
+import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
 import java.util.Set;
 
@@ -17,7 +19,7 @@ public class DataTransformationCollectorController {
     }
 
     @DgsQuery(field = "transformation")
-    public Set<DataTransformationDTO> collect() {
-        return service.transformations();
+    public Set<DataTransformationDTO> collect(@RequestHeader("Authorization") String auth) {
+        return service.transformations(AuthMiddleware.buildAccessToken(auth));
     }
 }

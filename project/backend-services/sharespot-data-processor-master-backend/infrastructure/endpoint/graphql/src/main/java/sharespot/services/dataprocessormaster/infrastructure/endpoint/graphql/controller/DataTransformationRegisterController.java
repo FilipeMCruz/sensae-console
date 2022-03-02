@@ -3,6 +3,8 @@ package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.c
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
+import org.springframework.web.bind.annotation.RequestHeader;
+import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 import sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model.DataTransformationDTOImpl;
 import sharespot.services.dataprocessormaster.application.DataTransformationDTO;
 import sharespot.services.dataprocessormaster.application.DataTransformationRegisterService;
@@ -17,7 +19,7 @@ public class DataTransformationRegisterController {
     }
 
     @DgsMutation(field = "index")
-    public DataTransformationDTO index(@InputArgument(value = "transformation") DataTransformationDTOImpl dto) {
-        return service.register(dto);
+    public DataTransformationDTO index(@InputArgument(value = "transformation") DataTransformationDTOImpl dto, @RequestHeader("Authorization") String auth) {
+        return service.register(dto, AuthMiddleware.buildAccessToken(auth));
     }
 }

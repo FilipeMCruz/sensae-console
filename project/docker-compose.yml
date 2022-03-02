@@ -120,6 +120,8 @@ services:
   sharespot-device-records-master-backend:
     build: backend-services/sharespot-device-records-master-backend
     image: sharespot-device-records-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:

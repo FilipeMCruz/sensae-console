@@ -1,7 +1,7 @@
 type Subscription {
-    locations : GPSSensorData
-    location(devices: [String]) : GPSSensorData
-    locationByContent(content: String) : GPSSensorData
+    locations(Authorization: String) : GPSSensorData
+    location(devices: [String], Authorization: String) : GPSSensorData
+    locationByContent(content: String, Authorization: String) : GPSSensorData
 }
 
 type Query {

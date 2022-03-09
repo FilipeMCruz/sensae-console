@@ -19,7 +19,7 @@ public class ContentFilteredGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> locationByContent(@InputArgument("content") String content, @RequestHeader("Authorization") String auth) {
+    public Publisher<SensorData> locationByContent(@InputArgument("content") String content, @InputArgument("Authorization") String auth) {
         return publisher.getContentFilteredPublisher(content, AuthMiddleware.buildAccessToken(auth));
     }
 }

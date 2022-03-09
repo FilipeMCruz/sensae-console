@@ -100,7 +100,6 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
-          "nx serve sharespot-simple-auth-frontend",
           "nx serve sharespot-data-processor-frontend",
           "nx serve sharespot-fleet-management-frontend",
           "nx serve sharespot-device-records-frontend",

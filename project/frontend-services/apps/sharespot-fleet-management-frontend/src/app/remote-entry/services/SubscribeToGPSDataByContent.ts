@@ -6,7 +6,6 @@ import {filter, map} from "rxjs/operators";
 import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
 import {extract, isNonNull} from "./ObservableFunctions";
-import {HttpHeaders} from "@angular/common/http";
 import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({
@@ -21,8 +20,8 @@ export class SubscribeToGPSDataByContent {
     if (!this.auth.isAuthenticated()) return EMPTY;
 
     const query = gql`
-      subscription locationByContent($content: String){
-        locationByContent(content: $content){
+      subscription locationByContent($content: String, $Authorization: String){
+        locationByContent(content: $content, Authorization: $Authorization){
           dataId
           device{
             id
@@ -48,8 +47,7 @@ export class SubscribeToGPSDataByContent {
 
     return this.apollo.use("fleetManagement").subscribe<FilteredByContentSensorDTO>({
       query,
-      context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
-      variables: {content}
+      variables: {content, Authorization: 'Bearer ' + this.auth.getToken()}
     }).pipe(
       map(extract),
       filter(isNonNull),

@@ -7,7 +7,6 @@ import {extract, isNonNull} from "./ObservableFunctions";
 import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
 import {AuthService} from "@frontend-services/simple-auth-lib";
-import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +20,8 @@ export class SubscribeToAllGPSData {
     if (!this.auth.isAuthenticated()) return EMPTY;
 
     const query = gql`
-      subscription locations{
-        locations{
+      subscription locations($Authorization: String){
+        locations(Authorization: $Authorization){
           dataId
           device{
             id
@@ -48,7 +47,7 @@ export class SubscribeToAllGPSData {
 
     return this.apollo.use("fleetManagement").subscribe<SensorDTO>({
       query,
-      context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+      variables: {Authorization: 'Bearer ' + this.auth.getToken()},
     }).pipe(
       map(extract),
       filter(isNonNull),

@@ -3,13 +3,15 @@ import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
 import {DeviceRecordQuery} from '../dtos/RecordsDTO';
 import {FetchResult} from '@apollo/client/core';
+import {HttpHeaders} from "@angular/common/http";
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetAllDeviceRecords {
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
   getData(): Observable<FetchResult<DeviceRecordQuery>> {
@@ -29,6 +31,10 @@ export class GetAllDeviceRecords {
       }
     `;
     return this.apollo.use("deviceRecords")
-      .query<DeviceRecordQuery>({query, fetchPolicy: "no-cache"});
+      .query<DeviceRecordQuery>({
+        query,
+        context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+        fetchPolicy: "no-cache"
+      });
   }
 }

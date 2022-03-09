@@ -3,13 +3,15 @@ import {FetchResult} from '@apollo/client/core';
 import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
 import {DeviceDTO, DeviceRecordDelete} from '../dtos/RecordsDTO';
+import {AuthService} from "@frontend-services/simple-auth-lib";
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeleteDeviceRecord {
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
   delete(data: DeviceDTO): Observable<FetchResult<DeviceRecordDelete>> {
@@ -22,6 +24,10 @@ export class DeleteDeviceRecord {
       }
     `;
     return this.apollo.use("deviceRecords")
-      .mutate<DeviceRecordDelete>({mutation, variables: {device: data}});
+      .mutate<DeviceRecordDelete>({
+        mutation,
+        context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+        variables: {device: data}
+      });
   }
 }

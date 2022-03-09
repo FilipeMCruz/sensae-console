@@ -147,6 +147,8 @@ services:
     build: backend-services/sharespot-fleet-management-backend
     container_name: sharespot-fleet-management-backend
     image: sharespot-fleet-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:

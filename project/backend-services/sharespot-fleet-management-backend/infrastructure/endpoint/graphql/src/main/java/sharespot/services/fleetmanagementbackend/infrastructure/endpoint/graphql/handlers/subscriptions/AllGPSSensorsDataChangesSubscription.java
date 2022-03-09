@@ -2,7 +2,6 @@ package sharespot.services.fleetmanagementbackend.infrastructure.endpoint.graphq
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
-import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
 import org.springframework.web.bind.annotation.RequestHeader;
 import sharespot.services.fleetmanagementbackend.application.GPSDataPublisher;
@@ -19,7 +18,7 @@ public class AllGPSSensorsDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> locations(@InputArgument("Authorization") String auth) {
+    public Publisher<SensorData> locations(@RequestHeader("Authorization") String auth) {
         return publisher.getGeneralPublisher(AuthMiddleware.buildAccessToken(auth));
     }
 }

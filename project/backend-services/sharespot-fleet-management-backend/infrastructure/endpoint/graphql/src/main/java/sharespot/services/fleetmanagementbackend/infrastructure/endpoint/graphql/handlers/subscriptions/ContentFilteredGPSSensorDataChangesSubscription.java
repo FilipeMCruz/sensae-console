@@ -4,6 +4,7 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
+import org.springframework.web.bind.annotation.RequestHeader;
 import sharespot.services.fleetmanagementbackend.application.GPSDataPublisher;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.SensorData;
 import sharespot.services.fleetmanagementbackend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
@@ -18,7 +19,7 @@ public class ContentFilteredGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> locationByContent(@InputArgument("content") String content, @InputArgument("Authorization") String auth) {
+    public Publisher<SensorData> locationByContent(@InputArgument("content") String content, @RequestHeader("Authorization") String auth) {
         return publisher.getContentFilteredPublisher(content, AuthMiddleware.buildAccessToken(auth));
     }
 }

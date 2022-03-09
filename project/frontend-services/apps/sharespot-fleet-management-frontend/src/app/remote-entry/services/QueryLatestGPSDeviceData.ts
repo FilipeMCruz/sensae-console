@@ -6,13 +6,15 @@ import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "./ObservableFunctions";
 import {DeviceLiveDataMapper} from "../mappers/DeviceLiveDataMapper";
 import {DeviceData} from "../model/livedata/DeviceData";
+import {HttpHeaders} from "@angular/common/http";
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueryLatestGPSDeviceData {
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
   getData(): Observable<DeviceData[]> {
@@ -42,11 +44,13 @@ export class QueryLatestGPSDeviceData {
       }
     `;
 
-    return this.apollo.use("fleetManagement").subscribe<GPSSensorLatestData>({query})
-      .pipe(
-        map(extract),
-        filter(isNonNull),
-        map((data: GPSSensorLatestData) => data.latest.map(s => DeviceLiveDataMapper.dtoToModel(s)))
-      );
+    return this.apollo.use("fleetManagement").subscribe<GPSSensorLatestData>({
+      query,
+      context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+    }).pipe(
+      map(extract),
+      filter(isNonNull),
+      map((data: GPSSensorLatestData) => data.latest.map(s => DeviceLiveDataMapper.dtoToModel(s)))
+    );
   }
 }

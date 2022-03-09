@@ -5,15 +5,16 @@ import {Injectable} from "@angular/core";
 import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "./ObservableFunctions";
 import {DevicePastDataMapper} from "../mappers/DevicePastDataMapper";
-import {DeviceHistorySource} from "../model/pastdata/DeviceHistorySource";
 import {DeviceHistory} from "../model/pastdata/DeviceHistory";
+import {HttpHeaders} from "@angular/common/http";
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({
   providedIn: 'root'
 })
 export class QueryGPSDeviceHistory {
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
   getData(filters: GPSSensorDataQuery): Observable<Array<DeviceHistory>> {
@@ -42,11 +43,14 @@ export class QueryGPSDeviceHistory {
       }
     `;
 
-    return this.apollo.use("fleetManagement").subscribe<HistorySensorDTO>({query, variables: {filters}})
-      .pipe(
-        map(extract),
-        filter(isNonNull),
-        map((data: HistorySensorDTO) => DevicePastDataMapper.dtoToModel(data))
-      );
+    return this.apollo.use("fleetManagement").subscribe<HistorySensorDTO>({
+      query,
+      context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+      variables: {filters}
+    }).pipe(
+      map(extract),
+      filter(isNonNull),
+      map((data: HistorySensorDTO) => DevicePastDataMapper.dtoToModel(data))
+    );
   }
 }

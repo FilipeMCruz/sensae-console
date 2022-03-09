@@ -30,4 +30,19 @@ public class ProcessedSensorDataDAOImpl {
 
     @Column("ts")
     public Timestamp ts;
+
+    @Column("domain_id")
+    public String domainId;
+
+    public ProcessedSensorDataDAOImpl cloneWithDomain(String domain) {
+        var dao = new ProcessedSensorDataDAOImpl();
+        dao.dataId = dataId;
+        dao.deviceId = deviceId;
+        dao.deviceName = deviceName;
+        dao.reportedAt = reportedAt;
+        dao.motion = motion;
+        dao.gpsData = gpsData;
+        dao.domainId = domain;
+        return dao;
+    }
 }

@@ -3,9 +3,13 @@ package sharespot.services.fleetmanagementbackend.application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import sharespot.services.fleetmanagementbackend.application.auth.AccessTokenDTO;
+import sharespot.services.fleetmanagementbackend.application.auth.TokenExtractor;
+import sharespot.services.fleetmanagementbackend.application.auth.UnauthorizedException;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.fleetmanagementbackend.domain.model.GPSDataDetails;
+import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.StatusDataDetails;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.*;
 
@@ -13,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,19 +25,31 @@ public class GPSDataCollector {
 
     private final ProcessedSensorDataRepository repository;
 
+    private final TokenExtractor authHandler;
+
     @Value("${sharespot.location.heuristic.motion.detection.distance}")
     public double DISTANCE_IN_KM;
 
     @Value("${sharespot.location.heuristic.complete.history.maxtime.window}")
     public int MAX_TIME_BETWEEN_INFO_IN_SECONDS;
 
-    public GPSDataCollector(ProcessedSensorDataRepository repository) {
+    public GPSDataCollector(ProcessedSensorDataRepository repository, TokenExtractor authHandler) {
         this.repository = repository;
+        this.authHandler = authHandler;
     }
 
-    public List<GPSSensorDataHistory> history(GPSSensorDataFilter filters) {
+    public List<GPSSensorDataHistory> history(GPSSensorDataFilter filters, AccessTokenDTO claims) {
+        var extract = authHandler.extract(claims);
+        if (!extract.permissions.contains("fleet_management:read"))
+            throw new UnauthorizedException("No Permissions");
+
         validate(filters);
-        var data = repository.queryMultipleDevices(filters);
+        
+        var domains = extract.domains.stream()
+                .map(d -> DomainId.of(UUID.fromString(d)))
+                .collect(Collectors.toSet());
+
+        var data = repository.queryMultipleDevices(filters, domains);
         return createHistories(filters, data);
     }
 
@@ -73,7 +90,7 @@ public class GPSDataCollector {
             return List.of(new GPSSensorDataHistorySegment(type, steps));
         }
 
-        //order in "In motion" and "Stoped"
+        //order in "In motion" and "Stopped"
         var preSegments = new ArrayList<GPSSensorDataHistorySegment>();
         for (int i = 0; i < steps.size(); i++) {
             GPSSensorDataHistoryStep first = steps.get(i);
@@ -111,28 +128,19 @@ public class GPSDataCollector {
         var temp = new ArrayList<GPSSensorDataHistoryStep>();
 
         for (int i = 0; i < preSeg.steps().size() - 1; i++) {
-            GPSSensorDataHistoryStep first = preSeg.steps().get(i);
-            GPSSensorDataHistoryStep second = preSeg.steps().get(i + 1);
+            var first = preSeg.steps().get(i);
+            var second = preSeg.steps().get(i + 1);
             temp.add(first);
-            var isNewSeg = isNewSeg(first, second);
-            if (isNewSeg) {
-                finalList.add(prepareInactiveSubSegment(temp, preSeg));
+            if (isNewSeg(first, second)) {
+                finalList.add(createSubSegment(preSeg, List.of(temp.get(0), temp.get(temp.size() - 1)), false));
                 finalList.add(createSubSegment(preSeg, List.of(first, second), true));
                 temp.clear();
             }
         }
         if (temp.size() != 0) {
-            finalList.add(prepareInactiveSubSegment(temp, preSeg));
+            finalList.add(createSubSegment(preSeg, List.of(temp.get(0), temp.get(temp.size() - 1)), false));
         }
         return finalList;
-    }
-
-    private GPSSensorDataHistorySegment prepareInactiveSubSegment(ArrayList<GPSSensorDataHistoryStep> temp, GPSSensorDataHistorySegment preSeg) {
-        if (temp.size() == 1) {
-            return createSubSegment(preSeg, List.of(temp.get(0), temp.get(0)), false);
-        } else {
-            return createSubSegment(preSeg, List.of(temp.get(0), temp.get(temp.size() - 1)), false);
-        }
     }
 
     private boolean isNewSeg(GPSSensorDataHistoryStep first, GPSSensorDataHistoryStep second) {
@@ -173,7 +181,7 @@ public class GPSDataCollector {
     }
 
     private List<GPSSensorDataHistoryStep> defineSegmentSteps(GPSSensorDataHistorySegment preSeg, List<GPSSensorDataHistoryStep> steps) {
-        if (preSeg.type() == GPSSensorDataHistorySegmentType.INACTIVE) {
+        if (GPSSensorDataHistorySegmentType.INACTIVE == preSeg.type()) {
             return List.of(steps.get(0), steps.get(steps.size() - 1));
         } else {
             return new ArrayList<>(steps);

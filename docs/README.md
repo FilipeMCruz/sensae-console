@@ -3,6 +3,10 @@
 This document aggregates all important info and documentation about this environment.
 It's intended mostly for developers and stakeholders.
 
+## Know Problems
+
+- [Auth](auth/README.md)
+
 ## Functional Requirements
 
 This section defines the functionalities and operations that the system supports.

@@ -6,6 +6,7 @@ import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
 import sharespot.services.fleetmanagementbackend.application.GPSDataPublisher;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.SensorData;
+import sharespot.services.fleetmanagementbackend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class SingleGPSSensorDataChangesSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorData> location(@InputArgument("devices") List<String> ids) {
-        return publisher.getSinglePublisher(ids);
+    public Publisher<SensorData> location(@InputArgument("devices") List<String> ids, @InputArgument("Authorization") String auth) {
+        return publisher.getSinglePublisher(ids, AuthMiddleware.buildAccessToken(auth));
     }
 }

@@ -41,7 +41,7 @@ public class GPSDataArchiver {
                 }
             }
         }
-        publisher.publish(GPSDataMapper.transform(data));
+        publisher.publish(data);
         repository.insert(data);
     }
 }

@@ -3,11 +3,12 @@ package sharespot.services.fleetmanagementbackend.infrastructure.endpoint.graphq
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
+import org.springframework.web.bind.annotation.RequestHeader;
 import sharespot.services.fleetmanagementbackend.application.GPSLatestSensorData;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.SensorData;
+import sharespot.services.fleetmanagementbackend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
 import java.util.List;
-import java.util.UUID;
 
 @DgsComponent
 public class SpecificGPSLatestSensorDataQuery {
@@ -19,7 +20,7 @@ public class SpecificGPSLatestSensorDataQuery {
     }
 
     @DgsQuery
-    public List<SensorData> latestByDevice(@InputArgument("devices") List<String> devices) {
-        return collector.latest(devices);
+    public List<SensorData> latestByDevice(@InputArgument("devices") List<String> devices, @RequestHeader("Authorization") String auth) {
+        return collector.latest(devices, AuthMiddleware.buildAccessToken(auth));
     }
 }

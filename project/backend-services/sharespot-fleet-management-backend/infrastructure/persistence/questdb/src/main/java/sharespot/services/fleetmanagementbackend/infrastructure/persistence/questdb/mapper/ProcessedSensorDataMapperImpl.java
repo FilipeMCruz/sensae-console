@@ -81,7 +81,7 @@ public class ProcessedSensorDataMapperImpl {
         dataDAO.reportedAt = resultSet.getTimestamp("reported_at");
         dataDAO.motion = resultSet.getString("motion");
         dataDAO.ts = resultSet.getTimestamp("ts");
-        dataDAO.domainId = resultSet.getString("domain_id");
+        dataDAO.domainId = resultSet.getString("domain");
         return dataDAO;
     }
 }

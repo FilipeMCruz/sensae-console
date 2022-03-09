@@ -53,7 +53,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     public Stream<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
         var domainValues = inConcat(domains.map(d -> d.value().toString()));
         var deviceValues = inConcat(filters.devices.stream().map(UUID::toString));
-        var query = String.format("SELECT * FROM data WHERE device_id IN %s AND domain_id IN %s AND ts BETWEEN '%s' AND '%s';", deviceValues, domainValues, filters.startTime.toString(), filters.endTime.toString());
+        var query = String.format("SELECT * FROM data WHERE device_id IN %s AND domain IN %s AND ts BETWEEN '%s' AND '%s';", deviceValues, domainValues, filters.startTime.toString(), filters.endTime.toString());
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
@@ -66,7 +66,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     @Override
     public Stream<ProcessedSensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
         var values = inConcat(domains.map(d -> d.value().toString()));
-        var query = String.format("SELECT * FROM data LATEST BY device_id WHERE domain_id IN %s;", values);
+        var query = String.format("SELECT * FROM data LATEST BY device_id WHERE domain IN %s;", values);
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()

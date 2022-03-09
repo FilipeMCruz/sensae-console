@@ -31,7 +31,7 @@ public class ProcessedSensorDataDAOImpl {
     @Column("ts")
     public Timestamp ts;
 
-    @Column("domain_id")
+    @Column("domain")
     public String domainId;
 
     public ProcessedSensorDataDAOImpl cloneWithDomain(String domain) {

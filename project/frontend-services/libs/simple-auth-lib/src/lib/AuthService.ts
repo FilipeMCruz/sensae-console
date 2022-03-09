@@ -16,6 +16,20 @@ export class AuthService {
   constructor(private validator: ValidateCredentials) {
   }
 
+  private static toDto(payload: JwtPayload): TenantIdentity {
+    // @ts-ignore
+    const email = payload["email"];
+    // @ts-ignore
+    const name = payload["name"];
+    // @ts-ignore
+    const oid = payload["oid"];
+    // @ts-ignore
+    const domains = payload["domains"];
+    // @ts-ignore
+    const permissions = payload["permissions"];
+    return {email, domains, name, permissions, oid};
+  }
+
   login(token: string) {
     const subject = new ReplaySubject(1);
     this.validator.validate(token).subscribe(next => {
@@ -39,21 +53,11 @@ export class AuthService {
     this.accessToken = undefined;
   }
 
-  private static toDto(payload: JwtPayload): TenantIdentity {
-    // @ts-ignore
-    const email = payload["email"];
-    // @ts-ignore
-    const name = payload["name"];
-    // @ts-ignore
-    const oid = payload["oid"];
-    // @ts-ignore
-    const domains = payload["domains"];
-    // @ts-ignore
-    const permissions = payload["permissions"];
-    return {email, domains, name, permissions, oid};
-  }
-
   isAuthenticated() {
     return this.payload != null;
+  }
+
+  getToken(): string {
+    return this.accessToken ? this.accessToken : "";
   }
 }

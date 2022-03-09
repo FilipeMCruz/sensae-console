@@ -3,13 +3,15 @@ import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
 import {DataTransformationQuery} from '../dtos/DataTransformationDTO';
 import {FetchResult} from '@apollo/client/core';
+import {AuthService} from "@frontend-services/simple-auth-lib";
+import {HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetAllDataTransformations {
 
-  constructor(private apollo: Apollo) {
+  constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
   getData(): Observable<FetchResult<DataTransformationQuery>> {
@@ -27,6 +29,10 @@ export class GetAllDataTransformations {
       }
     `;
     return this.apollo.use("dataProcessor")
-      .query<DataTransformationQuery>({query, fetchPolicy: "no-cache"});
+      .query<DataTransformationQuery>({
+        query,
+        context: {headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.auth.getToken())},
+        fetchPolicy: "no-cache"
+      });
   }
 }

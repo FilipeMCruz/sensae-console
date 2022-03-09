@@ -57,7 +57,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
-                .filter(distinctByKey(d -> d.dataId))
+                .filter(distinctByKey(d -> d.dataId))   //TODO: maybe we can remove this by adding an equals to ProcessedSensorDataDTO and using distinct()
                 .map(mapper::daoToDto);
     }
 
@@ -70,7 +70,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
-                .filter(distinctByKey(d -> d.dataId))    //TODO: maybe we can remove this by adding an equals to ProcessedSensorDataDTO
+                .filter(distinctByKey(d -> d.dataId))    //TODO: maybe we can remove this by adding an equals to ProcessedSensorDataDTO and using distinct()
                 .map(mapper::daoToDto);
     }
 

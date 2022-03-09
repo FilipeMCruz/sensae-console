@@ -1,13 +1,15 @@
-import {DeviceHistoryStep} from "./DeviceHistoryStep";
+import { DeviceHistoryStep } from './DeviceHistoryStep';
 
 export enum DeviceHistorySegmentType {
   INACTIVE,
   ACTIVE,
   UNKNOWN_ACTIVE,
-  UNKNOWN_INACTIVE
+  UNKNOWN_INACTIVE,
 }
 
 export class DeviceHistorySegment {
-  constructor(public type: DeviceHistorySegmentType, public steps: Array<DeviceHistoryStep>) {
-  }
+  constructor(
+    public type: DeviceHistorySegmentType,
+    public steps: Array<DeviceHistoryStep>
+  ) {}
 }

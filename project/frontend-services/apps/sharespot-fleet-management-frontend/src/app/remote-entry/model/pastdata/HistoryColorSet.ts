@@ -1,8 +1,12 @@
-import {DeviceHistorySegmentType} from "./DeviceHistorySegment";
+import { DeviceHistorySegmentType } from './DeviceHistorySegment';
 
 export class HistoryColorSet {
-  constructor(public activeColor: string, public unknownActiveColor: string, public inactiveColor: string, public unknownInactiveColor: string) {
-  }
+  constructor(
+    public activeColor: string,
+    public unknownActiveColor: string,
+    public inactiveColor: string,
+    public unknownInactiveColor: string
+  ) {}
 
   static get(i: number): HistoryColorSet {
     const colorIndex = i % 8;
@@ -31,7 +35,7 @@ export class HistoryColorSet {
       case 7: {
         return new HistoryColorSet('#689d6a', '#8ec07c', '#f34044', '#f34044');
       }
-      default : {
+      default: {
         return new HistoryColorSet('#01497c', '#a9d6e5', '#f34044', '#f34044');
       }
     }

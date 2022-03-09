@@ -1,8 +1,9 @@
-import {Device} from "../Device";
+import { Device } from '../Device';
 
 export class DeviceHistoryQuery {
-  constructor(public devices: Array<Device>,
-              public startTime: Date,
-              public endTime: Date) {
-  }
+  constructor(
+    public devices: Array<Device>,
+    public startTime: Date,
+    public endTime: Date
+  ) {}
 }

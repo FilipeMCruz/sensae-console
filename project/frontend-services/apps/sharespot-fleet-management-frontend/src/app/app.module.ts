@@ -1,18 +1,22 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
-import {APOLLO_NAMED_OPTIONS} from "apollo-angular";
-import {HttpLink} from "apollo-angular/http";
-import {ApolloClientOptions, InMemoryCache, split} from "@apollo/client/core";
-import {WebSocketLink} from "@apollo/client/link/ws";
-import {getMainDefinition} from "@apollo/client/utilities";
-import {environment} from "../environments/environment";
-import {RouterModule} from "@angular/router";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {RemoteEntryModule} from "./remote-entry/entry.module";
+import { AppComponent } from './app.component';
+import {APOLLO_NAMED_OPTIONS, ApolloModule} from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { environment } from '../environments/environment';
+import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RemoteEntryModule } from './remote-entry/entry.module';
 
-export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
+export function createLinkWithWebsocket(
+  httpLink: HttpLink,
+  wsUrl: string,
+  httpUrl: string
+) {
   const http = httpLink.create({
     uri: httpUrl,
   });
@@ -30,39 +34,47 @@ export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpU
   // depending on what kind of operation is being sent
   return split(
     // split based on operation type
-    ({query}) => {
+    ({ query }) => {
       // @ts-ignore
-      const {kind, operation} = getMainDefinition(query);
-      return (kind === 'OperationDefinition' && operation === 'subscription');
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
     },
     ws,
-    http,
+    http
   );
 }
 
-export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
+export function createNamedApollo(
+  httpLink: HttpLink
+): Record<string, ApolloClientOptions<any>> {
   return {
     fleetManagement: {
-      link: createLinkWithWebsocket(httpLink, environment.backendURL.websocket, environment.backendURL.http),
+      link: createLinkWithWebsocket(
+        httpLink,
+        environment.backendURL.websocket,
+        environment.backendURL.http
+      ),
       cache: new InMemoryCache(),
-    }
+    },
   };
-};
+}
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    ApolloModule,
     BrowserModule,
     RemoteEntryModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot([], {initialNavigation: 'enabledBlocking'}),
+    RouterModule.forRoot([], { initialNavigation: 'enabledBlocking' }),
   ],
-  providers: [{
-    provide: APOLLO_NAMED_OPTIONS,
-    useFactory: createNamedApollo,
-    deps: [HttpLink],
-  }],
+  providers: [
+    {
+      provide: APOLLO_NAMED_OPTIONS,
+      useFactory: createNamedApollo,
+      deps: [HttpLink],
+    },
+  ],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

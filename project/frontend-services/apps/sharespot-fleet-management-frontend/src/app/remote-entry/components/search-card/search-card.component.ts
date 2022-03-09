@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Device} from "../../model/Device";
-import {FormControl, FormGroup} from "@angular/forms";
-import {DeviceHistoryQuery} from "../../model/pastdata/DeviceHistoryQuery";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Device } from '../../model/Device';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DeviceHistoryQuery } from '../../model/pastdata/DeviceHistoryQuery';
 
 @Component({
   selector: 'frontend-services-search-card',
   templateUrl: './search-card.component.html',
-  styleUrls: ['./search-card.component.scss']
+  styleUrls: ['./search-card.component.scss'],
 })
 export class SearchCardComponent {
-
   @Output() devicesPicked = new EventEmitter<Array<Device>>();
   @Output() contentPicked = new EventEmitter<string>();
   @Output() deviceCleaned = new EventEmitter<null>();
@@ -24,9 +23,9 @@ export class SearchCardComponent {
     end: new FormControl(),
   });
 
-  searchContent = "";
-  queryType = "devices";
-  dateQueryType = "liveData";
+  searchContent = '';
+  queryType = 'devices';
+  dateQueryType = 'liveData';
   allSelected = false;
   panelOpenState = true;
 
@@ -37,7 +36,7 @@ export class SearchCardComponent {
   }
 
   onContentClear() {
-    this.searchContent = "";
+    this.searchContent = '';
     this.cleanContent();
   }
 
@@ -64,7 +63,9 @@ export class SearchCardComponent {
       if (devices.length > 0) {
         const result = new Date(this.range.value.end);
         result.setDate(result.getDate() + 1);
-        this.pickHistory(new DeviceHistoryQuery(devices, this.range.value.start, result));
+        this.pickHistory(
+          new DeviceHistoryQuery(devices, this.range.value.start, result)
+        );
       }
     }
   }
@@ -120,31 +121,42 @@ export class SearchCardComponent {
   }
 
   valid() {
-    if (this.queryType === "devices" && this.selectedDevices.value.length === 0) {
+    if (
+      this.queryType === 'devices' &&
+      this.selectedDevices.value.length === 0
+    ) {
       return false;
     }
-    if (this.queryType === "content" && this.searchContent.trim().length === 0) {
+    if (
+      this.queryType === 'content' &&
+      this.searchContent.trim().length === 0
+    ) {
       return false;
     }
-    if (this.dateQueryType === "pastData" && (!this.range.value.start || !this.range.value.end || this.range.value.start > this.range.value.end)) {
+    if (
+      this.dateQueryType === 'pastData' &&
+      (!this.range.value.start ||
+        !this.range.value.end ||
+        this.range.value.start > this.range.value.end)
+    ) {
       return false;
     }
-    if (this.dateQueryType === "pastData" && this.queryType === "content") {
+    if (this.dateQueryType === 'pastData' && this.queryType === 'content') {
       return false; //Currently not supported
     }
     return true;
   }
 
   applyFilter() {
-    if (this.dateQueryType === "pastData" && this.queryType === "devices") {
+    if (this.dateQueryType === 'pastData' && this.queryType === 'devices') {
       this.onHistoryClick();
       return;
     }
-    if (this.dateQueryType === "liveData" && this.queryType === "devices") {
+    if (this.dateQueryType === 'liveData' && this.queryType === 'devices') {
       this.onDeviceClick();
       return;
     }
-    if (this.dateQueryType === "liveData" && this.queryType === "content") {
+    if (this.dateQueryType === 'liveData' && this.queryType === 'content') {
       this.onContentClick();
       return;
     }

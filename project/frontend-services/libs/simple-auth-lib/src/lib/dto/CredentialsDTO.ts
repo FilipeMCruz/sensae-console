@@ -1,15 +1,15 @@
 export interface OutcomeDTOQuery {
-  authenticate: OutcomeDTO
+  authenticate: OutcomeDTO;
 }
 
 export interface OutcomeDTO {
-  token: string
+  token: string;
 }
 
 export interface TenantIdentity {
-  email: string,
-  name: string,
-  oid: string,
-  domains: string[],
-  permissions: string[]
+  email: string;
+  name: string;
+  oid: string;
+  domains: string[];
+  permissions: string[];
 }

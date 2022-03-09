@@ -10,25 +10,5 @@
     "simple-auth-lib": "libs/simple-auth-lib",
     "ui-aggregator": "apps/ui-aggregator",
     "ui-aggregator-e2e": "apps/ui-aggregator-e2e"
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "generators": {
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
-    }
-  },
-  "defaultProject": "ui-aggregator"
+  }
 }

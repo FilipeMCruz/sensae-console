@@ -1,22 +1,28 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
-import {EntryViewType} from "../../model/EntryViewType";
-import {DataTransformation} from "../../model/DataTransformation";
-import {PropertyTransformation} from "../../model/PropertyTransformation";
-import {DataTransformationViewType} from "../../model/DataTransformationViewType";
-import {PropertyName} from "../../model/PropertyName";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
+import { EntryViewType } from '../../model/EntryViewType';
+import { DataTransformation } from '../../model/DataTransformation';
+import { PropertyTransformation } from '../../model/PropertyTransformation';
+import { DataTransformationViewType } from '../../model/DataTransformationViewType';
+import { PropertyName } from '../../model/PropertyName';
 
 @Component({
   selector: 'frontend-services-data-transformation',
   templateUrl: './data-transformation.component.html',
-  styleUrls: ['./data-transformation.component.scss']
+  styleUrls: ['./data-transformation.component.scss'],
 })
 export class DataTransformationComponent implements OnChanges {
-
   @Input() entry!: DataTransformation;
   @Input() dataTransformationViewEntry!: DataTransformationViewType;
 
   @Output() newDataTransformationEvent = new EventEmitter<DataTransformation>();
-  @Output() deleteDataTransformationEvent = new EventEmitter<DataTransformation>();
+  @Output() deleteDataTransformationEvent =
+    new EventEmitter<DataTransformation>();
 
   dataTransformation = DataTransformation.empty();
   currentEntry = PropertyTransformation.empty();
@@ -78,36 +84,38 @@ export class DataTransformationComponent implements OnChanges {
   getNameType(entry: PropertyTransformation) {
     switch (entry.newPath) {
       case PropertyName.DATA_ID:
-        return "fingerprint";
+        return 'fingerprint';
       case PropertyName.DEVICE_ID:
-        return "sensors";
+        return 'sensors';
       case PropertyName.DEVICE_NAME:
-        return "badge";
+        return 'badge';
       case PropertyName.REPORTED_AT:
-        return "schedule";
+        return 'schedule';
       case PropertyName.LATITUDE:
-        return "share_location";
+        return 'share_location';
       case PropertyName.LONGITUDE:
-        return "share_location";
+        return 'share_location';
       case PropertyName.MOTION:
-        return "gesture";
+        return 'gesture';
       case PropertyName.VELOCITY:
-        return "speed";
+        return 'speed';
       case PropertyName.HUMIDITY:
-        return "opacity";
+        return 'opacity';
       case PropertyName.PRESSURE:
-        return "compress";
+        return 'compress';
       case PropertyName.TEMPERATURE:
-        return "thermostat";
+        return 'thermostat';
       case PropertyName.AQI:
-        return "air";
+        return 'air';
       case PropertyName.INVALID:
-        return "error";
+        return 'error';
     }
   }
 
   editEntry(index: number) {
-    if (this.dataTransformationView != this.dataTransformationViewType.Compare) {
+    if (
+      this.dataTransformationView != this.dataTransformationViewType.Compare
+    ) {
       this.currentIndex = index;
       this.currentEntry = this.dataTransformation.entries[index];
       this.entryView = EntryViewType.Edit;
@@ -127,8 +135,12 @@ export class DataTransformationComponent implements OnChanges {
   }
 
   private resetOptions() {
-    const usedPropertyNameTypes = this.dataTransformation.entries.map(e => e.newPath.toString());
-    this.propertyNameTypes = Object.values(PropertyName).filter(v => !usedPropertyNameTypes.includes(v));
+    const usedPropertyNameTypes = this.dataTransformation.entries.map((e) =>
+      e.newPath.toString()
+    );
+    this.propertyNameTypes = Object.values(PropertyName).filter(
+      (v) => !usedPropertyNameTypes.includes(v)
+    );
   }
 
   private clearEntryFields() {

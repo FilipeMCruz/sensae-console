@@ -1,21 +1,25 @@
-import {DeviceHistorySegment, DeviceHistorySegmentType} from "./DeviceHistorySegment";
-import {GeoJSONSourceRaw, LineLayer} from "mapbox-gl";
-import {Feature} from "geojson";
-import {HistoryColorSet} from "./HistoryColorSet";
-import {DeviceHistoryStep} from "./DeviceHistoryStep";
+import {
+  DeviceHistorySegment,
+  DeviceHistorySegmentType,
+} from './DeviceHistorySegment';
+import { GeoJSONSourceRaw, LineLayer } from 'mapbox-gl';
+import { Feature } from 'geojson';
+import { HistoryColorSet } from './HistoryColorSet';
+import { DeviceHistoryStep } from './DeviceHistoryStep';
 
 export class DeviceHistory {
-
   public steps: Array<DeviceHistoryStep>;
 
-  constructor(public deviceName: string,
-              public deviceId: string,
-              public startTime: number,
-              public endTime: number,
-              public distance: number,
-              public segments: Array<DeviceHistorySegment>,
-              public colors: HistoryColorSet) {
-    this.steps = segments.map(s => s.steps).flat();
+  constructor(
+    public deviceName: string,
+    public deviceId: string,
+    public startTime: number,
+    public endTime: number,
+    public distance: number,
+    public segments: Array<DeviceHistorySegment>,
+    public colors: HistoryColorSet
+  ) {
+    this.steps = segments.map((s) => s.steps).flat();
   }
 
   getSourceId(): string {
@@ -27,12 +31,12 @@ export class DeviceHistory {
       this.getLayerId(DeviceHistorySegmentType.ACTIVE),
       this.getLayerId(DeviceHistorySegmentType.UNKNOWN_ACTIVE),
       this.getLayerId(DeviceHistorySegmentType.INACTIVE),
-      this.getLayerId(DeviceHistorySegmentType.UNKNOWN_INACTIVE)
+      this.getLayerId(DeviceHistorySegmentType.UNKNOWN_INACTIVE),
     ];
   }
 
   getLayerId(type: DeviceHistorySegmentType) {
-    return this.getSourceId() + "-" + type.toString();
+    return this.getSourceId() + '-' + type.toString();
   }
 
   buildLayers(): Array<LineLayer> {
@@ -44,13 +48,17 @@ export class DeviceHistory {
       source: id,
       layout: {
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
         'line-width': 4,
         'line-color': ['get', 'color'],
       },
-      'filter': ['==', ['get', 'status'], DeviceHistorySegmentType.ACTIVE.toString()]
+      filter: [
+        '==',
+        ['get', 'status'],
+        DeviceHistorySegmentType.ACTIVE.toString(),
+      ],
     });
     layers.push({
       id: this.getLayerId(DeviceHistorySegmentType.UNKNOWN_ACTIVE),
@@ -58,14 +66,18 @@ export class DeviceHistory {
       source: id,
       layout: {
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
         'line-dasharray': [2, 4],
         'line-color': ['get', 'color'],
         'line-width': 2,
       },
-      filter: ['==', ['get', 'status'], DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString()]
+      filter: [
+        '==',
+        ['get', 'status'],
+        DeviceHistorySegmentType.UNKNOWN_ACTIVE.toString(),
+      ],
     });
     layers.push({
       id: this.getLayerId(DeviceHistorySegmentType.UNKNOWN_INACTIVE),
@@ -73,14 +85,18 @@ export class DeviceHistory {
       source: id,
       layout: {
         'line-join': 'round',
-        'line-cap': 'round'
+        'line-cap': 'round',
       },
       paint: {
         'line-dasharray': [2, 4],
         'line-color': ['get', 'color'],
         'line-width': 2,
       },
-      filter: ['==', ['get', 'status'], DeviceHistorySegmentType.UNKNOWN_INACTIVE.toString()]
+      filter: [
+        '==',
+        ['get', 'status'],
+        DeviceHistorySegmentType.UNKNOWN_INACTIVE.toString(),
+      ],
     });
     layers.push({
       id: this.getLayerId(DeviceHistorySegmentType.INACTIVE),
@@ -90,7 +106,11 @@ export class DeviceHistory {
         'circle-radius': 8,
         'circle-color': ['get', 'color'],
       },
-      filter: ['==', ['get', 'status'], DeviceHistorySegmentType.INACTIVE.toString()]
+      filter: [
+        '==',
+        ['get', 'status'],
+        DeviceHistorySegmentType.INACTIVE.toString(),
+      ],
     });
 
     return layers;
@@ -101,9 +121,9 @@ export class DeviceHistory {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: this.buildFeatures()
-      }
-    }
+        features: this.buildFeatures(),
+      },
+    };
   }
 
   getClosestStepTo(time: number): DeviceHistoryStep | null {
@@ -111,12 +131,14 @@ export class DeviceHistory {
   }
 
   areStepsSorted(): boolean {
-    return this.steps.every((v, i, a) => !i || a[i - 1].reportedAt <= v.reportedAt);
+    return this.steps.every(
+      (v, i, a) => !i || a[i - 1].reportedAt <= v.reportedAt
+    );
   }
 
   private buildFeatures(): Array<Feature> {
-    return this.segments.map(seg => {
-      const coordinates = seg.steps.map(d => d.gps.toCoordinates());
+    return this.segments.map((seg) => {
+      const coordinates = seg.steps.map((d) => d.gps.toCoordinates());
       if (seg.type === DeviceHistorySegmentType.INACTIVE) {
         return {
           type: 'Feature',
@@ -129,27 +151,27 @@ export class DeviceHistory {
           geometry: {
             type: 'Point',
             coordinates: coordinates[0],
-          }
-        }
+          },
+        };
       } else {
         return {
           type: 'Feature',
           properties: {
             color: this.colors.pickColor(seg.type),
             status: seg.type.toString(),
-            distance: this.distance
+            distance: this.distance,
           },
           geometry: {
             type: 'LineString',
-            coordinates
-          }
-        }
+            coordinates,
+          },
+        };
       }
-    })
+    });
   }
 
   private binarySearch(target: number): DeviceHistoryStep | null {
-    const n = this.steps.length
+    const n = this.steps.length;
     if (target <= this.steps[0].reportedAt) {
       return null;
     }
@@ -157,9 +179,11 @@ export class DeviceHistory {
       return this.steps[n - 1];
     }
 
-    let i = 0, j = n, mid = 0;
+    let i = 0,
+      j = n,
+      mid = 0;
     while (i < j) {
-      mid = Math.floor((i + j) / 2)
+      mid = Math.floor((i + j) / 2);
 
       if (this.steps[mid].reportedAt == target) {
         return this.steps[mid];

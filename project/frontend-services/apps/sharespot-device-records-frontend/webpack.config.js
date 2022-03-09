@@ -20,34 +20,36 @@ const workspaceRootPath = path.join(__dirname, '../../');
 const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
-  [
-    '@frontend-services/simple-auth-lib'
-  ],
+  ['@frontend-services/simple-auth-lib'],
   workspaceRootPath
 );
 
 module.exports = {
+  experiments: {
+    outputModule: true
+  },
   output: {
     uniqueName: 'sharespotdevicerecordsfrontend',
     publicPath: 'auto',
-    clean: true
+    clean: true,
   },
   optimization: {
     runtimeChunk: false,
-    minimize: false
+    minimize: false,
   },
   resolve: {
     alias: {
-      ...sharedMappings.getAliases()
-    }
+      ...sharedMappings.getAliases(),
+    },
   },
   plugins: [
     new ModuleFederationPlugin({
+      library: {type: "module"},
       name: 'sharespotdevicerecordsfrontend',
       filename: 'remoteEntry.js',
       exposes: {
         './Module':
-          'apps/sharespot-device-records-frontend/src/app/remote-entry/entry.module.ts'
+          'apps/sharespot-device-records-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {
@@ -126,9 +128,9 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        ...sharedMappings.getDescriptors()
-      })
+        ...sharedMappings.getDescriptors(),
+      }),
     }),
-    sharedMappings.getPlugin()
-  ]
+    sharedMappings.getPlugin(),
+  ],
 };

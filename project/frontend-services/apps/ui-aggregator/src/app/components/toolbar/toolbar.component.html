@@ -4,15 +4,25 @@
   </a>
   <div *ngFor="let mfe of microfrontendServices">
     <span *ngIf="canShow(mfe)" class="spacer"></span>
-    <button *ngIf="canShow(mfe)" mat-button [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
+    <button *ngIf="canShow(mfe)" mat-button [routerLink]="mfe.routePath">
+      {{ mfe.displayName }}
+    </button>
   </div>
 
   <div class="toolbar-spacer"></div>
-  <button *ngIf="canShowAny(microfrontendTools)" class="menu" mat-button [matMenuTriggerFor]="menu">Tools</button>
+  <button
+    *ngIf="canShowAny(microfrontendTools)"
+    class="menu"
+    mat-button
+    [matMenuTriggerFor]="menu"
+  >
+    Tools
+  </button>
   <mat-menu #menu="matMenu">
     <div *ngFor="let mfe of microfrontendTools">
-      <button mat-menu-item *ngIf="canShow(mfe)"
-              [routerLink]="mfe.routePath">{{mfe.displayName}}</button>
+      <button mat-menu-item *ngIf="canShow(mfe)" [routerLink]="mfe.routePath">
+        {{ mfe.displayName }}
+      </button>
     </div>
   </mat-menu>
   <span *ngIf="canShowAny(microfrontendTools)" class="spacer"></span>

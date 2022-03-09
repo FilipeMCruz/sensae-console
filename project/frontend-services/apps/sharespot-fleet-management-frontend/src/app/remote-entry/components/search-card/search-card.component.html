@@ -1,6 +1,8 @@
 <mat-accordion>
-  <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h3>Filter Box:</h3>
@@ -8,36 +10,55 @@
     </mat-expansion-panel-header>
     <h3>Types:</h3>
     <mat-button-toggle-group class="toggle" [(ngModel)]="dateQueryType">
-      <mat-button-toggle class="toggle-item" value="liveData">Live Data</mat-button-toggle>
-      <mat-button-toggle class="toggle-item" value="pastData">Past Data</mat-button-toggle>
+      <mat-button-toggle class="toggle-item" value="liveData"
+        >Live Data</mat-button-toggle
+      >
+      <mat-button-toggle class="toggle-item" value="pastData"
+        >Past Data</mat-button-toggle
+      >
     </mat-button-toggle-group>
-    <br>
+    <br />
     <mat-button-toggle-group class="toggle" [(ngModel)]="queryType">
-      <mat-button-toggle class="toggle-item" value="devices">Devices</mat-button-toggle>
-      <mat-button-toggle class="toggle-item" value="content">Content</mat-button-toggle>
+      <mat-button-toggle class="toggle-item" value="devices"
+        >Devices</mat-button-toggle
+      >
+      <mat-button-toggle class="toggle-item" value="content"
+        >Content</mat-button-toggle
+      >
     </mat-button-toggle-group>
-    <br>
+    <br />
     <div *ngIf="queryType === 'devices'">
       <h3>Devices:</h3>
       <mat-form-field class="search-bar">
         <mat-label>Device Id/Name</mat-label>
         <mat-select [formControl]="selectedDevices" multiple>
           <mat-select-trigger>
-            {{selectedDevices.value ? selectedDevices.value[0]?.name : ''}}
-            <span *ngIf="selectedDevices.value?.length > 1" class="additional-selection">
-                (+{{selectedDevices.value.length - 1}} {{selectedDevices.value?.length === 2 ? 'other' : 'others'}})
-              </span>
+            {{ selectedDevices.value ? selectedDevices.value[0]?.name : '' }}
+            <span
+              *ngIf="selectedDevices.value?.length > 1"
+              class="additional-selection"
+            >
+              (+{{ selectedDevices.value.length - 1 }}
+              {{ selectedDevices.value?.length === 2 ? 'other' : 'others' }})
+            </span>
           </mat-select-trigger>
-          <mat-checkbox class="select-all" [(ngModel)]="allSelected"
-                        [ngModelOptions]="{standalone: true}"
-                        (change)="toggleAllSelection()">Select All
+          <mat-checkbox
+            class="select-all"
+            [(ngModel)]="allSelected"
+            [ngModelOptions]="{ standalone: true }"
+            (change)="toggleAllSelection()"
+            >Select All
           </mat-checkbox>
-          <mat-option *ngFor="let device of devices" [value]="device">{{device.name}}</mat-option>
+          <mat-option *ngFor="let device of devices" [value]="device">{{
+            device.name
+          }}</mat-option>
         </mat-select>
-        <button *ngIf="selectedDevices.value ? selectedDevices.value[0]: false"
-                matSuffix
-                mat-icon-button
-                (click)="clearDevices(); $event.stopPropagation()">
+        <button
+          *ngIf="selectedDevices.value ? selectedDevices.value[0] : false"
+          matSuffix
+          mat-icon-button
+          (click)="clearDevices(); $event.stopPropagation()"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -46,8 +67,18 @@
       <h3>Content:</h3>
       <mat-form-field class="search-bar">
         <mat-label>Content</mat-label>
-        <input matInput type="text" (keyup.enter)="onContentClick()" [(ngModel)]="searchContent">
-        <button *ngIf="searchContent" matSuffix mat-icon-button (click)="onContentClear()">
+        <input
+          matInput
+          type="text"
+          (keyup.enter)="onContentClick()"
+          [(ngModel)]="searchContent"
+        />
+        <button
+          *ngIf="searchContent"
+          matSuffix
+          mat-icon-button
+          (click)="onContentClear()"
+        >
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
@@ -57,17 +88,32 @@
       <mat-form-field class="search-bar">
         <mat-label>Enter a date range</mat-label>
         <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-          <input matStartDate formControlName="start" placeholder="Start date">
-          <input matEndDate formControlName="end" placeholder="End date">
+          <input
+            matStartDate
+            formControlName="start"
+            placeholder="Start date"
+          />
+          <input matEndDate formControlName="end" placeholder="End date" />
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
-        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-        <mat-error *ngIf="selectedDevices.value?.length === 0">No Devices Chosen</mat-error>
+        <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
+          >Invalid start date</mat-error
+        >
+        <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')"
+          >Invalid end date</mat-error
+        >
+        <mat-error *ngIf="selectedDevices.value?.length === 0"
+          >No Devices Chosen</mat-error
+        >
       </mat-form-field>
     </div>
-    <button [disabled]="!valid()" matSuffix mat-stroked-button (click)="applyFilter()">
+    <button
+      [disabled]="!valid()"
+      matSuffix
+      mat-stroked-button
+      (click)="applyFilter()"
+    >
       Filter
     </button>
   </mat-expansion-panel>

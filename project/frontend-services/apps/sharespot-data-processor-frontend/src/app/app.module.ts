@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {RouterModule} from '@angular/router';
 import {RemoteEntryModule} from './remote-entry/entry.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {APOLLO_NAMED_OPTIONS} from 'apollo-angular';
+import {APOLLO_NAMED_OPTIONS, ApolloModule} from 'apollo-angular';
 import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
 import {environment} from '../environments/environment';
 import {HttpLink} from 'apollo-angular/http';
@@ -24,6 +24,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    ApolloModule,
     BrowserModule,
     RemoteEntryModule,
     BrowserAnimationsModule,

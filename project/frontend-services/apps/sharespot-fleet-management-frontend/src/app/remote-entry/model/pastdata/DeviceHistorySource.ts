@@ -1,12 +1,12 @@
-import {DeviceHistory} from "./DeviceHistory";
-import {GeoJSONSourceRaw, LineLayer, SymbolLayer} from "mapbox-gl";
-import {DeviceHistorySegmentType} from "./DeviceHistorySegment";
-import {Feature, FeatureCollection} from "geojson";
-import {isNonNull} from "../../services/ObservableFunctions";
+import { DeviceHistory } from './DeviceHistory';
+import { GeoJSONSourceRaw, LineLayer, SymbolLayer } from 'mapbox-gl';
+import { DeviceHistorySegmentType } from './DeviceHistorySegment';
+import { Feature, FeatureCollection } from 'geojson';
+import { isNonNull } from '../../services/ObservableFunctions';
 
 export interface PathSource {
-  id: string,
-  source: GeoJSONSourceRaw,
+  id: string;
+  source: GeoJSONSourceRaw;
 }
 
 export class DeviceHistorySource {
@@ -16,7 +16,7 @@ export class DeviceHistorySource {
   public endTime = 1;
 
   getStepSourceId(): string {
-    return "steps";
+    return 'steps';
   }
 
   isEmpty() {
@@ -36,44 +36,44 @@ export class DeviceHistorySource {
   asGeoJSONForTime(time: number): GeoJSONSourceRaw {
     return {
       type: 'geojson',
-      data: this.asGoeJsonFeatureCollection(time)
-    }
+      data: this.asGoeJsonFeatureCollection(time),
+    };
   }
 
   asGoeJsonFeatureCollection(time: number): FeatureCollection {
     return {
       type: 'FeatureCollection',
-      features: this.getStepSourceForTime(time)
-    }
+      features: this.getStepSourceForTime(time),
+    };
   }
 
   private getStepSourceForTime(time: number): Array<Feature> {
-    return this.deviceHistories.map(d => d.getClosestStepTo(time))
+    return this.deviceHistories
+      .map((d) => d.getClosestStepTo(time))
       .filter(isNonNull)
-      .map(d => d.toFeature());
+      .map((d) => d.toFeature());
   }
 
   getPathSources(): Array<PathSource> {
-    return this.deviceHistories.map(h => {
-        return {id: h.getSourceId(), source: h.asGeoJSON()}
-      }
-    );
+    return this.deviceHistories.map((h) => {
+      return { id: h.getSourceId(), source: h.asGeoJSON() };
+    });
   }
 
   getPathSourcesIds(): Array<string> {
-    return this.deviceHistories.map(d => d.getSourceId());
+    return this.deviceHistories.map((d) => d.getSourceId());
   }
 
   getPathLayers(): Array<LineLayer> {
-    return this.deviceHistories.map(h => h.buildLayers()).flat();
+    return this.deviceHistories.map((h) => h.buildLayers()).flat();
   }
 
   getPathLayersIds(): Array<string> {
-    return this.deviceHistories.map(d => d.getLayersId()).flat();
+    return this.deviceHistories.map((d) => d.getLayersId()).flat();
   }
 
   getPathLayerIds(type: DeviceHistorySegmentType): Array<string> {
-    return this.deviceHistories.map(d => d.getLayerId(type)).flat();
+    return this.deviceHistories.map((d) => d.getLayerId(type)).flat();
   }
 
   getStepLayer(): SymbolLayer {
@@ -84,7 +84,7 @@ export class DeviceHistorySource {
       layout: {
         'icon-image': 'car-15',
         'icon-size': 1.5,
-      }
-    }
+      },
+    };
   }
 }

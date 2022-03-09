@@ -20,13 +20,14 @@ const workspaceRootPath = path.join(__dirname, '../../');
 const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
-  [
-    '@frontend-services/simple-auth-lib'
-  ],
+  ['@frontend-services/simple-auth-lib'],
   workspaceRootPath
 );
 
 module.exports = {
+  experiments: {
+    outputModule: true
+  },
   output: {
     uniqueName: 'ui-aggregator',
     publicPath: 'auto',
@@ -43,6 +44,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
+      library: {type: "module"},
       remotes: {},
       shared: share({
         '@angular/animations': {

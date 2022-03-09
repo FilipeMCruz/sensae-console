@@ -1,10 +1,13 @@
-import {DeviceCoordinates} from "../DeviceCoordinates";
-import {DeviceStatus} from "../DeviceStatus";
-import {Feature} from "geojson";
+import { DeviceCoordinates } from '../DeviceCoordinates';
+import { DeviceStatus } from '../DeviceStatus';
+import { Feature } from 'geojson';
 
 export class DeviceHistoryStep {
-  constructor(public gps: DeviceCoordinates, public status: DeviceStatus, public reportedAt: number) {
-  }
+  constructor(
+    public gps: DeviceCoordinates,
+    public status: DeviceStatus,
+    public reportedAt: number
+  ) {}
 
   getDate() {
     return new Date(this.reportedAt);
@@ -19,7 +22,7 @@ export class DeviceHistoryStep {
       geometry: {
         type: 'Point',
         coordinates: this.gps.toCoordinates(),
-      }
-    }
+      },
+    };
   }
 }

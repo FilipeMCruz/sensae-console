@@ -62,8 +62,8 @@ export interface GPSSensorDataHistory {
 }
 
 export interface GPSSegmentDetailsDTO {
-  type: GPSSegmentType,
-  steps: Array<GPSStepDetailsDTO>
+  type: GPSSegmentType;
+  steps: Array<GPSStepDetailsDTO>;
 }
 
 export interface GPSStepDetailsDTO {
@@ -81,8 +81,8 @@ export interface FilteredByDeviceGPSSensorLatestData {
 }
 
 export enum GPSSegmentType {
-  INACTIVE = "INACTIVE",
-  ACTIVE = "ACTIVE",
-  UNKNOWN_ACTIVE = "UNKNOWN_ACTIVE",
-  UNKNOWN_INACTIVE = "UNKNOWN_INACTIVE"
+  INACTIVE = 'INACTIVE',
+  ACTIVE = 'ACTIVE',
+  UNKNOWN_ACTIVE = 'UNKNOWN_ACTIVE',
+  UNKNOWN_INACTIVE = 'UNKNOWN_INACTIVE',
 }

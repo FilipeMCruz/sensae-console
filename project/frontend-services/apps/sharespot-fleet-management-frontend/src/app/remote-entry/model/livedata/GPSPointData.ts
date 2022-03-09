@@ -1,9 +1,8 @@
-import {DeviceData} from "./DeviceData";
-import * as mapboxgl from "mapbox-gl";
-import {MotionType} from "../DeviceStatus";
+import { DeviceData } from './DeviceData';
+import * as mapboxgl from 'mapbox-gl';
+import { MotionType } from '../DeviceStatus';
 
 export class GPSPointData {
-
   public value: DeviceData;
 
   private color = '#012A4A';
@@ -15,16 +14,20 @@ export class GPSPointData {
     this.color = GPSPointData.defineColor(value, last);
     this.point = new mapboxgl.Marker({
       draggable: false,
-      color: GPSPointData.defineColor(value, last)
+      color: GPSPointData.defineColor(value, last),
     });
     this.setPopup().setCoordinates();
   }
 
   private static defineColor(value: DeviceData, last: boolean): string {
     if (last) {
-      return value.data.status.motion === MotionType.INACTIVE ? "#f8888a" : "#a9d6e5";
+      return value.data.status.motion === MotionType.INACTIVE
+        ? '#f8888a'
+        : '#a9d6e5';
     } else {
-      return value.data.status.motion === MotionType.INACTIVE ? "#f34044" : "#012A4A";
+      return value.data.status.motion === MotionType.INACTIVE
+        ? '#f34044'
+        : '#012A4A';
     }
   }
 
@@ -42,7 +45,7 @@ export class GPSPointData {
   }
 
   private setPopup() {
-    const popup = new mapboxgl.Popup({offset: 25, maxWidth: 'none'}).setHTML(
+    const popup = new mapboxgl.Popup({ offset: 25, maxWidth: 'none' }).setHTML(
       this.value.generatePopupText()
     );
     this.point.setPopup(popup);
@@ -55,7 +58,10 @@ export class GPSPointData {
   }
 
   private setCoordinates() {
-    this.point.setLngLat([this.value.data.gps.longitude, this.value.data.gps.latitude]);
+    this.point.setLngLat([
+      this.value.data.gps.longitude,
+      this.value.data.gps.latitude,
+    ]);
     return this;
   }
 }

@@ -1,19 +1,20 @@
-import {LoadRemoteModuleOptions} from '@angular-architects/module-federation';
+import { LoadRemoteModuleOptions } from '@angular-architects/module-federation';
 
 export type Microfrontend = LoadRemoteModuleOptions & {
   displayName: string;
   routePath: string;
   ngModuleName: string;
-  details: MicrofrontendDetails,
+  type: string;
+  details: MicrofrontendDetails;
 };
 
 export type MicrofrontendDetails = {
-  type: MicrofrontendType,
-  protected: boolean,
-  permissions: string[]
-}
+  type: MicrofrontendType;
+  protected: boolean;
+  permissions: string[];
+};
 
 export enum MicrofrontendType {
   TOOL = 0,
-  SERVICE = 1
+  SERVICE = 1,
 }

@@ -1,31 +1,35 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {AppComponent} from './app.component';
-import {RouterModule} from '@angular/router';
-import {HomeComponent} from './components/home/home.component';
-import {NotFoundComponent} from './components/not-found/not-found.component';
-import {ToolbarComponent} from './components/toolbar/toolbar.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {LayoutModule} from '@angular/cdk/layout';
-import {MatButtonModule} from '@angular/material/button';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list';
-import {ROUTES} from './app.routes';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {APOLLO_NAMED_OPTIONS} from "apollo-angular";
-import {HttpLink} from "apollo-angular/http";
-import {ApolloClientOptions, InMemoryCache, split} from "@apollo/client/core";
-import {environment} from "../environments/environment";
-import {HttpClientModule} from "@angular/common/http";
-import {WebSocketLink} from "@apollo/client/link/ws";
-import {getMainDefinition} from "@apollo/client/utilities";
-import {MatTooltipModule} from "@angular/material/tooltip";
-import {MatMenuModule} from '@angular/material/menu';
-import {AuthGuardService} from './services/AuthGuardService'
-import {AuthService} from "@frontend-services/simple-auth-lib";
-import {msalConfig} from './auth-config';
-import {InteractionType, IPublicClientApplication, PublicClientApplication} from "@azure/msal-browser";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { RouterModule } from '@angular/router';
+import { HomeComponent } from './components/home/home.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { ROUTES } from './app.routes';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {APOLLO_NAMED_OPTIONS, ApolloModule} from 'apollo-angular';
+import { HttpLink } from 'apollo-angular/http';
+import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
+import { environment } from '../environments/environment';
+import { HttpClientModule } from '@angular/common/http';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { AuthGuardService } from './services/AuthGuardService';
+import { AuthService } from '@frontend-services/simple-auth-lib';
+import { msalConfig } from './auth-config';
+import {
+  InteractionType,
+  IPublicClientApplication,
+  PublicClientApplication,
+} from '@azure/msal-browser';
 import {
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
@@ -33,9 +37,9 @@ import {
   MsalGuard,
   MsalGuardConfiguration,
   MsalRedirectComponent,
-  MsalService
-} from "@azure/msal-angular";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+  MsalService,
+} from '@azure/msal-angular';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -55,7 +59,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
-export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpUrl: string) {
+export function createLinkWithWebsocket(
+  httpLink: HttpLink,
+  wsUrl: string,
+  httpUrl: string
+) {
   const http = httpLink.create({
     uri: httpUrl,
   });
@@ -73,40 +81,46 @@ export function createLinkWithWebsocket(httpLink: HttpLink, wsUrl: string, httpU
   // depending on what kind of operation is being sent
   return split(
     // split based on operation type
-    ({query}) => {
+    ({ query }) => {
       // @ts-ignore
-      const {kind, operation} = getMainDefinition(query);
-      return (kind === 'OperationDefinition' && operation === 'subscription');
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
     },
     ws,
-    http,
+    http
   );
 }
 
-export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClientOptions<any>> {
+export function createNamedApollo(
+  httpLink: HttpLink
+): Record<string, ApolloClientOptions<any>> {
   return {
     deviceRecords: {
       link: httpLink.create({
-        uri: environment.endpoints.deviceRecords.backendURL.http
+        uri: environment.endpoints.deviceRecords.backendURL.http,
       }),
-      cache: new InMemoryCache()
+      cache: new InMemoryCache(),
     },
     dataProcessor: {
       link: httpLink.create({
-        uri: environment.endpoints.dataProcessor.backendURL.http
+        uri: environment.endpoints.dataProcessor.backendURL.http,
       }),
       cache: new InMemoryCache(),
     },
     identity: {
       link: httpLink.create({
-        uri: environment.endpoints.identity.backendURL.http
+        uri: environment.endpoints.identity.backendURL.http,
       }),
       cache: new InMemoryCache(),
     },
     fleetManagement: {
-      link: createLinkWithWebsocket(httpLink, environment.endpoints.fleetManagement.backendURL.websocket, environment.endpoints.fleetManagement.backendURL.http),
+      link: createLinkWithWebsocket(
+        httpLink,
+        environment.endpoints.fleetManagement.backendURL.websocket,
+        environment.endpoints.fleetManagement.backendURL.http
+      ),
       cache: new InMemoryCache(),
-    }
+    },
   };
 }
 
@@ -115,7 +129,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     AppComponent,
     HomeComponent,
     NotFoundComponent,
-    ToolbarComponent
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,16 +144,17 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
     MatIconModule,
     MatListModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES, {initialNavigation: 'enabledBlocking'})
+    ApolloModule,
+    RouterModule.forRoot(ROUTES, { initialNavigation: 'enabledBlocking' }),
   ],
   providers: [
     {
       provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory
+      useFactory: MSALInstanceFactory,
     },
     {
       provide: MSAL_GUARD_CONFIG,
-      useFactory: MSALGuardConfigFactory
+      useFactory: MSALGuardConfigFactory,
     },
     MsalService,
     MsalGuard,
@@ -150,9 +165,8 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       deps: [HttpLink],
     },
     AuthGuardService,
-    AuthService
+    AuthService,
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

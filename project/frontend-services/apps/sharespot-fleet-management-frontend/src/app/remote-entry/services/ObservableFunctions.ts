@@ -1,4 +1,4 @@
-import {FetchResult} from "@apollo/client/core";
+import { FetchResult } from '@apollo/client/core';
 
 export function isNonNull<T>(value: T): value is NonNullable<T> {
   return value != null;

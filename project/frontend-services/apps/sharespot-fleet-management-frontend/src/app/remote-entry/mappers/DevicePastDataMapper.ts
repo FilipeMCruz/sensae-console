@@ -3,36 +3,40 @@ import {
   GPSSegmentType,
   GPSSensorDataQuery,
   GPSStepDetailsDTO,
-  HistorySensorDTO
-} from "../dtos/SensorDTO";
-import {DeviceHistoryQuery} from "../model/pastdata/DeviceHistoryQuery";
-import {DeviceHistory} from "../model/pastdata/DeviceHistory";
-import {DeviceHistorySegment, DeviceHistorySegmentType} from "../model/pastdata/DeviceHistorySegment";
-import {DeviceHistoryStep} from "../model/pastdata/DeviceHistoryStep";
-import {DeviceStatus, MotionType} from "../model/DeviceStatus";
-import {DeviceCoordinates} from "../model/DeviceCoordinates";
-import {HistoryColorSet} from "../model/pastdata/HistoryColorSet";
+  HistorySensorDTO,
+} from '../dtos/SensorDTO';
+import { DeviceHistoryQuery } from '../model/pastdata/DeviceHistoryQuery';
+import { DeviceHistory } from '../model/pastdata/DeviceHistory';
+import {
+  DeviceHistorySegment,
+  DeviceHistorySegmentType,
+} from '../model/pastdata/DeviceHistorySegment';
+import { DeviceHistoryStep } from '../model/pastdata/DeviceHistoryStep';
+import { DeviceStatus, MotionType } from '../model/DeviceStatus';
+import { DeviceCoordinates } from '../model/DeviceCoordinates';
+import { HistoryColorSet } from '../model/pastdata/HistoryColorSet';
 
 export class DevicePastDataMapper {
-
   static modelToDto(value: DeviceHistoryQuery): GPSSensorDataQuery {
     return {
-      device: value.devices.map(d => d.id),
+      device: value.devices.map((d) => d.id),
       endTime: Math.round(value.endTime.getTime() / 1000).toString(),
-      startTime: Math.round(value.startTime.getTime() / 1000).toString()
-    }
+      startTime: Math.round(value.startTime.getTime() / 1000).toString(),
+    };
   }
 
   static dtoToModel(dto: HistorySensorDTO): Array<DeviceHistory> {
     return dto.history.map((h, index) => {
-      const segments = h.segments.map(d => this.dtoToModelSeg(d));
-      return new DeviceHistory(h.deviceName,
+      const segments = h.segments.map((d) => this.dtoToModelSeg(d));
+      return new DeviceHistory(
+        h.deviceName,
         h.deviceId,
         Number(h.startTime),
         Number(h.endTime),
         +h.distance.toFixed(2),
         segments,
-        HistoryColorSet.get(index));
+        HistoryColorSet.get(index)
+      );
     });
   }
 
@@ -48,21 +52,24 @@ export class DevicePastDataMapper {
       type = DeviceHistorySegmentType.UNKNOWN_ACTIVE;
     }
 
-    const steps = dto.steps.map(step => this.dtoToModelStep(step));
+    const steps = dto.steps.map((step) => this.dtoToModelStep(step));
 
-    return new DeviceHistorySegment(type, steps)
+    return new DeviceHistorySegment(type, steps);
   }
 
   static dtoToModelStep(dto: GPSStepDetailsDTO): DeviceHistoryStep {
     let status;
-    if (dto.status.motion == "ACTIVE") {
+    if (dto.status.motion == 'ACTIVE') {
       status = new DeviceStatus(MotionType.ACTIVE);
-    } else if (dto.status.motion == "INACTIVE") {
+    } else if (dto.status.motion == 'INACTIVE') {
       status = new DeviceStatus(MotionType.INACTIVE);
     } else {
       status = new DeviceStatus(MotionType.UNKWOWN);
     }
-    const coordinates = new DeviceCoordinates(dto.gps.latitude, dto.gps.longitude);
-    return new DeviceHistoryStep(coordinates, status, Number(dto.reportedAt))
+    const coordinates = new DeviceCoordinates(
+      dto.gps.latitude,
+      dto.gps.longitude
+    );
+    return new DeviceHistoryStep(coordinates, status, Number(dto.reportedAt));
   }
 }

@@ -1,14 +1,23 @@
-import {DataTransformationDTO, PropertyNameDTO, PropertyTransformationDTO} from "../dtos/DataTransformationDTO";
-import {DataTransformation} from "../model/DataTransformation";
-import {SensorTypeMapper} from "./SensorTypeMapper";
-import {PropertyTransformation} from "../model/PropertyTransformation";
-import {PropertyName} from "../model/PropertyName";
+import {
+  DataTransformationDTO,
+  PropertyNameDTO,
+  PropertyTransformationDTO,
+} from '../dtos/DataTransformationDTO';
+import { DataTransformation } from '../model/DataTransformation';
+import { SensorTypeMapper } from './SensorTypeMapper';
+import { PropertyTransformation } from '../model/PropertyTransformation';
+import { PropertyName } from '../model/PropertyName';
 
 export class DataTransformationMapper {
-
   static dtoToModel(dto: DataTransformationDTO): DataTransformation {
     const sensorTypeId = SensorTypeMapper.dtoToModel(dto.data);
-    const entries = dto.entries.map(e => new PropertyTransformation(e.oldPath, DataTransformationMapper.propertyNameDtoToModel(e.newPath)));
+    const entries = dto.entries.map(
+      (e) =>
+        new PropertyTransformation(
+          e.oldPath,
+          DataTransformationMapper.propertyNameDtoToModel(e.newPath)
+        )
+    );
     return new DataTransformation(sensorTypeId, entries);
   }
 
@@ -44,11 +53,11 @@ export class DataTransformationMapper {
   }
 
   static modelToDto(model: DataTransformation): DataTransformationDTO {
-    const entries: PropertyTransformationDTO[] = model.entries.map(e => ({
+    const entries: PropertyTransformationDTO[] = model.entries.map((e) => ({
       oldPath: e.oldPath,
-      newPath: DataTransformationMapper.propertyNameModelToDto(e.newPath)
+      newPath: DataTransformationMapper.propertyNameModelToDto(e.newPath),
     }));
-    return {data: {type: model.data.type}, entries: entries}
+    return { data: { type: model.data.type }, entries: entries };
   }
 
   private static propertyNameModelToDto(model: PropertyName): PropertyNameDTO {

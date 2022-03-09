@@ -20,17 +20,18 @@ const workspaceRootPath = path.join(__dirname, '../../');
 const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
-  [
-    '@frontend-services/simple-auth-lib'
-  ],
+  ['@frontend-services/simple-auth-lib'],
   workspaceRootPath
 );
 
 module.exports = {
+  experiments: {
+    outputModule: true
+  },
   output: {
     uniqueName: 'sharespotfleetmanagementfrontend',
     publicPath: 'auto',
-    clean: true
+    clean: true,
   },
   optimization: {
     runtimeChunk: false,
@@ -43,6 +44,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
+      library: {type: "module"},
       name: 'sharespotfleetmanagementfrontend',
       filename: 'remoteEntry.js',
       exposes: {

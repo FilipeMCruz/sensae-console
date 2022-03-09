@@ -1,16 +1,19 @@
 <div>
   <div id="map" class="map"></div>
-  <frontend-services-search-card class="search-card" (devicesPicked)="subscribeToDevice($event)"
-                                 (deviceCleaned)="cleanSubscriber()"
-                                 (contentPicked)="subscribeToContent($event)"
-                                 (contentCleaned)="cleanSubscriber()"
-                                 (deviceHistory)="buildHistory($event)"
-                                 (historyCleaned)="cleanHistory()"
-                                 [devices]="devices">
+  <frontend-services-search-card
+    class="search-card"
+    (devicesPicked)="subscribeToDevice($event)"
+    (deviceCleaned)="cleanSubscriber()"
+    (contentPicked)="subscribeToContent($event)"
+    (contentCleaned)="cleanSubscriber()"
+    (deviceHistory)="buildHistory($event)"
+    (historyCleaned)="cleanHistory()"
+    [devices]="devices"
+  >
   </frontend-services-search-card>
   <mat-card class="history-card" *ngIf="!history.isEmpty()">
     <mat-card-title>History Details</mat-card-title>
-    <mat-card-subtitle>{{formatLabel()}}</mat-card-subtitle>
+    <mat-card-subtitle>{{ formatLabel() }}</mat-card-subtitle>
     <mat-card-content class="history-card-content">
       <mat-slider
         (change)="showDevices()"
@@ -18,7 +21,8 @@
         [min]="history.startTime"
         [max]="history.endTime"
         [(ngModel)]="currentHistoryTime"
-        aria-label="units">
+        aria-label="units"
+      >
       </mat-slider>
     </mat-card-content>
   </mat-card>

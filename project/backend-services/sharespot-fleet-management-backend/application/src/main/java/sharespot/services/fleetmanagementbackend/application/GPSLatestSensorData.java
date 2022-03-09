@@ -40,6 +40,6 @@ public class GPSLatestSensorData {
         if (!extract.permissions.contains("fleet_management:read"))
             throw new UnauthorizedException("No Permissions");
 
-        return extract.domains.stream().map(d -> DomainId.of(UUID.fromString(d)));
+        return extract.domains.stream().distinct().map(d -> DomainId.of(UUID.fromString(d)));
     }
 }

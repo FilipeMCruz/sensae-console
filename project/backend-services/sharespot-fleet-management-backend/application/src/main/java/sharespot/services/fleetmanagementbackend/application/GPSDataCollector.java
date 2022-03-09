@@ -47,8 +47,8 @@ public class GPSDataCollector {
         validate(filters);
 
         var domains = extract.domains.stream()
-                .map(d -> DomainId.of(UUID.fromString(d)))
-                .collect(Collectors.toSet());
+                .distinct()
+                .map(d -> DomainId.of(UUID.fromString(d)));
 
         var data = repository.queryMultipleDevices(filters, domains);
         return createHistories(filters, data);

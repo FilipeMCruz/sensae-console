@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class GPSDataCollector {
@@ -44,7 +45,7 @@ public class GPSDataCollector {
             throw new UnauthorizedException("No Permissions");
 
         validate(filters);
-        
+
         var domains = extract.domains.stream()
                 .map(d -> DomainId.of(UUID.fromString(d)))
                 .collect(Collectors.toSet());
@@ -53,9 +54,8 @@ public class GPSDataCollector {
         return createHistories(filters, data);
     }
 
-    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, List<ProcessedSensorDataDTO> dto) {
-        return dto.stream()
-                .collect(Collectors.groupingBy(x -> x.device.id))
+    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, Stream<ProcessedSensorDataDTO> dto) {
+        return dto.collect(Collectors.groupingBy(x -> x.device.id))
                 .values()
                 .parallelStream()
                 .map(set -> createHistory(filters, set))

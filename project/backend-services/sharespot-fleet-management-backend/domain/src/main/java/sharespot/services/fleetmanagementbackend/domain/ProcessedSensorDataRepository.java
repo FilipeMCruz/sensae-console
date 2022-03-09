@@ -4,16 +4,15 @@ import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.GPSSensorDataFilter;
 
-import java.util.List;
-import java.util.Set;
+import java.util.stream.Stream;
 
 public interface ProcessedSensorDataRepository {
 
     void insert(ProcessedSensorDataDTO dao);
 
-    List<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Set<DomainId> domains);
+    Stream<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains);
 
-    List<ProcessedSensorDataDTO> lastDataOfEachDevice(Set<DomainId> domains);
+    Stream<ProcessedSensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains);
 
-    List<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanInMinutes);
+    Stream<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanInMinutes);
 }

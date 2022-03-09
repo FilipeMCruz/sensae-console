@@ -10,7 +10,7 @@ import sharespot.services.fleetmanagementbackend.domain.model.livedata.SensorDat
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class GPSLatestSensorData {
@@ -24,34 +24,22 @@ public class GPSLatestSensorData {
         this.authHandler = authHandler;
     }
 
-    public List<SensorData> latest(List<String> devices, AccessTokenDTO claims) {
-        var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("fleet_management:read"))
-            throw new UnauthorizedException("No Permissions");
-
-        var domains = extract.domains.stream()
-                .map(d -> DomainId.of(UUID.fromString(d)))
-                .collect(Collectors.toSet());
-        
-        return repository.lastDataOfEachDevice(domains)
-                .stream()
+    public Stream<SensorData> latest(List<String> devices, AccessTokenDTO claims) {
+        return repository.lastDataOfEachDevice(extractDomainIds(claims))
                 .map(GPSDataMapper::transform)
-                .filter(s -> devices.contains(s.device().id().toString()))
-                .collect(Collectors.toList());
+                .filter(s -> devices.contains(s.device().id().toString()));
     }
 
-    public List<SensorData> latest(AccessTokenDTO claims) {
+    public Stream<SensorData> latest(AccessTokenDTO claims) {
+        return repository.lastDataOfEachDevice(extractDomainIds(claims))
+                .map(GPSDataMapper::transform);
+    }
+
+    private Stream<DomainId> extractDomainIds(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("fleet_management:read"))
             throw new UnauthorizedException("No Permissions");
 
-        var domains = extract.domains.stream()
-                .map(d -> DomainId.of(UUID.fromString(d)))
-                .collect(Collectors.toSet());
-        
-        return repository.lastDataOfEachDevice(domains)
-                .stream()
-                .map(GPSDataMapper::transform)
-                .collect(Collectors.toList());
+        return extract.domains.stream().map(d -> DomainId.of(UUID.fromString(d)));
     }
 }

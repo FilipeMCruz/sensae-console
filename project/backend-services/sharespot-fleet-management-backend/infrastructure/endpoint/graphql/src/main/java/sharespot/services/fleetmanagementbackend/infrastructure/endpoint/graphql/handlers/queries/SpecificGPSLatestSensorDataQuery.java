@@ -21,6 +21,6 @@ public class SpecificGPSLatestSensorDataQuery {
 
     @DgsQuery
     public List<SensorData> latestByDevice(@InputArgument("devices") List<String> devices, @RequestHeader("Authorization") String auth) {
-        return collector.latest(devices, AuthMiddleware.buildAccessToken(auth));
+        return collector.latest(devices, AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

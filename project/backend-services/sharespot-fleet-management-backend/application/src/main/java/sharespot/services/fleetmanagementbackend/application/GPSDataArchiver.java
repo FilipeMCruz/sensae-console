@@ -27,7 +27,7 @@ public class GPSDataArchiver {
     public void save(ProcessedSensorDataDTO data) {
         // if data received has no info about motion try to guess it
         if (!data.data.hasProperty(PropertyName.MOTION)) {
-            var lastTenMinutesData = repository.queryPastData(data, TIME_SPAN_IN_MINUTES);
+            var lastTenMinutesData = repository.queryPastData(data, TIME_SPAN_IN_MINUTES).toList();
 
             // if no previous data exists motion status is unknown
             if (lastTenMinutesData.isEmpty()) {

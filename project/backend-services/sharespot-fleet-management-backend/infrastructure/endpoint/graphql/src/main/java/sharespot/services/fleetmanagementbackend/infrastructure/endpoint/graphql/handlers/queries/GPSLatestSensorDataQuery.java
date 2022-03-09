@@ -20,6 +20,6 @@ public class GPSLatestSensorDataQuery {
 
     @DgsQuery
     public List<SensorData> latest(@RequestHeader("Authorization") String auth) {
-        return collector.latest(AuthMiddleware.buildAccessToken(auth));
+        return collector.latest(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

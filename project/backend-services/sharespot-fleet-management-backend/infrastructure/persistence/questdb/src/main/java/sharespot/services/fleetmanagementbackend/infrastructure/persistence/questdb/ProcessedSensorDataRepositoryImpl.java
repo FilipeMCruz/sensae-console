@@ -10,8 +10,6 @@ import sharespot.services.fleetmanagementbackend.infrastructure.persistence.ques
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -52,40 +50,37 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public List<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Set<DomainId> domains) {
-        var domainValues = inConcat(domains.stream().map(d -> d.value().toString()));
+    public Stream<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
+        var domainValues = inConcat(domains.map(d -> d.value().toString()));
         var deviceValues = inConcat(filters.devices.stream().map(UUID::toString));
         var query = String.format("SELECT * FROM data WHERE device_id IN %s AND domain_id IN %s AND ts BETWEEN '%s' AND '%s';", deviceValues, domainValues, filters.startTime.toString(), filters.endTime.toString());
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
                 .filter(distinctByKey(d -> d.dataId))
-                .map(mapper::daoToDto)
-                .toList();
+                .map(mapper::daoToDto);
     }
 
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public List<ProcessedSensorDataDTO> lastDataOfEachDevice(Set<DomainId> domains) {
-        var values = inConcat(domains.stream().map(d -> d.value().toString()));
+    public Stream<ProcessedSensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
+        var values = inConcat(domains.map(d -> d.value().toString()));
         var query = String.format("SELECT * FROM data LATEST BY device_id WHERE domain_id IN %s;", values);
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
-                .filter(distinctByKey(d -> d.dataId))
-                .map(mapper::daoToDto)
-                .toList();
+                .filter(distinctByKey(d -> d.dataId))    //TODO: maybe we can remove this by adding an equals to ProcessedSensorDataDTO
+                .map(mapper::daoToDto);
     }
 
     @Override
-    public List<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanMinutes) {
+    public Stream<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToSingleDao(dao);
 
         return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)
                 .stream()
-                .map(mapper::daoToDto)
-                .toList();
+                .map(mapper::daoToDto);
     }
 
     private String inConcat(Stream<String> values) {

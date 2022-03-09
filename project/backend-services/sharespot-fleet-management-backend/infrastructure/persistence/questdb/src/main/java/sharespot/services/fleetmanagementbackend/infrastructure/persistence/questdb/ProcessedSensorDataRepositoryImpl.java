@@ -7,11 +7,15 @@ import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepos
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.GPSSensorDataFilter;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
+import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,6 +59,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
+                .filter(distinctByKey(d -> d.dataId))
                 .map(mapper::daoToDto)
                 .toList();
     }
@@ -68,6 +73,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
         return jdbcTemplate.query(query, (resultSet, i) -> mapper.toSensorData(resultSet))
                 .stream()
+                .filter(distinctByKey(d -> d.dataId))
                 .map(mapper::daoToDto)
                 .toList();
     }
@@ -85,5 +91,10 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     private String inConcat(Stream<String> values) {
         return values.map(value -> "'" + value + "'")
                 .collect(Collectors.joining(",", "(", ")"));
+    }
+
+    private static Predicate<ProcessedSensorDataDAOImpl> distinctByKey(Function<ProcessedSensorDataDAOImpl, String> keyExtractor) {
+        var seen = ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 }

@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/device-records-dto",
+  "sourceRoot": "libs/device-records-dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/device-records-dto"],
+      "options": {
+        "jestConfig": "libs/device-records-dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/device-records-dto/src/**/*.ts",
+          "libs/device-records-dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

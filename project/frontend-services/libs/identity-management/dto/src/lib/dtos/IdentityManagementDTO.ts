@@ -1,130 +1,130 @@
 export interface ViewDomainResultDTO {
-  viewDomain: DomainDTO[]
+  viewDomain: DomainDTO[];
 }
 
 export interface ViewDomainInfoResultDTO {
-  viewDomainInfo: DomainInfoDTO
+  viewDomainInfo: DomainInfoDTO;
 }
 
 export interface ViewTenantsInDomainResultDTO {
-  viewTenantsInDomain: TenantDTO[]
+  viewTenantsInDomain: TenantDTO[];
 }
 
 export interface ViewDevicesInDomainResultDTO {
-  viewDevicesInDomain: DeviceDTO[]
+  viewDevicesInDomain: DeviceDTO[];
 }
 
 export interface ViewDomainQueryDTO {
-  domain: ViewDomainDTO
+  domain: ViewDomainDTO;
 }
 
 export interface ViewDomainDTO {
-  oid: string
+  oid: string;
 }
 
 export interface CreateDomainQueryDTO {
-  domain: CreateDomainDTO
+  domain: CreateDomainDTO;
 }
 
 export interface CreateDomainResultDTO {
-  createDomain: DomainDTO
+  createDomain: DomainDTO;
 }
 
 export interface CreateDomainDTO {
-  parentDomainOid: string
-  newDomainName: string
+  parentDomainOid: string;
+  newDomainName: string;
 }
 
 export interface AddDeviceResultDTO {
-  addDevice: DeviceDTO
+  addDevice: DeviceDTO;
 }
 
 export interface AddDeviceQueryDTO {
-  instructions: AddDeviceToDomainDTO
+  instructions: AddDeviceToDomainDTO;
 }
 
 export interface AddDeviceToDomainDTO {
-  deviceOid: string
-  domainOid: string
-  writePermission: boolean
+  deviceOid: string;
+  domainOid: string;
+  writePermission: boolean;
 }
 
 export interface RemoveTenantResultDTO {
-  removeTenant: TenantDTO
+  removeTenant: TenantDTO;
 }
 
 export interface RemoveDeviceResultDTO {
-  removeDevice: DeviceDTO
+  removeDevice: DeviceDTO;
 }
 
 export interface RemoveDeviceQueryDTO {
-  instructions: RemoveDeviceFromDomainDTO
+  instructions: RemoveDeviceFromDomainDTO;
 }
 
 export interface RemoveDeviceFromDomainDTO {
-  deviceOid: string
-  domainOid: string
+  deviceOid: string;
+  domainOid: string;
 }
 
 export interface AddTenantResultDTO {
-  addTenant: TenantDTO
+  addTenant: TenantDTO;
 }
 
 export interface AddTenantQueryDTO {
-  instructions: AddTenantToDomainDTO
+  instructions: AddTenantToDomainDTO;
 }
 
 export interface AddTenantToDomainDTO {
-  tenantOid: string
-  domainOid: string
+  tenantOid: string;
+  domainOid: string;
 }
 
 export interface RemoveTenantResultDTO {
-  removeTenant: TenantDTO
+  removeTenant: TenantDTO;
 }
 
 export interface RemoveTenantQueryDTO {
-  instructions: RemoveTenantFromDomainDTO
+  instructions: RemoveTenantFromDomainDTO;
 }
 
 export interface RemoveTenantFromDomainDTO {
-  tenantOid: string
-  domainOid: string
+  tenantOid: string;
+  domainOid: string;
 }
 
 export interface AccessTokenDTO {
-  token: string
+  token: string;
 }
 
 export interface DomainDTO {
-  oid: string,
-  name: string,
-  path: string[]
+  oid: string;
+  name: string;
+  path: string[];
 }
 
 export interface DomainInfoDTO {
-  domain: DomainDTO
-  devices: DeviceDTO[]
-  tenants: TenantDTO[]
+  domain: DomainDTO;
+  devices: DeviceDTO[];
+  tenants: TenantDTO[];
 }
 
 export interface TenantDTO {
-  oid: string
-  email: string
-  name: string
+  oid: string;
+  email: string;
+  name: string;
 }
 
 export interface DeviceDTO {
-  oid: string
-  domains: DeviceDomainPermissionDTO[]
+  oid: string;
+  domains: DeviceDomainPermissionDTO[];
 }
 
 export interface DeviceDomainPermissionDTO {
-  oid: string
-  permission: DevicePermissionDTO
+  oid: string;
+  permission: DevicePermissionDTO;
 }
 
 export enum DevicePermissionDTO {
   READ,
-  READ_WRITE
+  READ_WRITE,
 }

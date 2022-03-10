@@ -1,27 +1,29 @@
-import {Injectable} from '@angular/core';
-import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
-import {HttpHeaders} from '@angular/common/http';
-import {AuthService} from '@frontend-services/simple-auth-lib';
-import {filter, map} from 'rxjs/operators';
-import {extract, isNonNull} from "@frontend-services/core";
-import {DeviceInfo} from "@frontend-services/identity-management/model";
-import {DeviceMapper, QueryMapper} from "@frontend-services/identity-management/mapper";
-import {RemoveDeviceResultDTO} from "@frontend-services/identity-management/dto";
+import { Injectable } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from '@frontend-services/simple-auth-lib';
+import { filter, map } from 'rxjs/operators';
+import { extract, isNonNull } from '@frontend-services/core';
+import { DeviceInfo } from '@frontend-services/identity-management/model';
+import {
+  DeviceMapper,
+  QueryMapper,
+} from '@frontend-services/identity-management/mapper';
+import { RemoveDeviceResultDTO } from '@frontend-services/identity-management/dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RemoveDevice {
-  constructor(private apollo: Apollo, private auth: AuthService) {
-  }
+  constructor(private apollo: Apollo, private auth: AuthService) {}
 
-  index(tenantId: string, domainId: string): Observable<DeviceInfo> {
+  mutate(tenantId: string, domainId: string): Observable<DeviceInfo> {
     const mutation = gql`
-      mutation removeDevice($instructions: RemoveDeviceFromDomain){
-        removeDevice(instructions: $instructions){
+      mutation removeDevice($instructions: RemoveDeviceFromDomain) {
+        removeDevice(instructions: $instructions) {
           oid
-          domains{
+          domains {
             oid
             permission
           }

@@ -1,25 +1,27 @@
-import {Injectable} from '@angular/core';
-import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
-import {HttpHeaders} from '@angular/common/http';
-import {AuthService} from '@frontend-services/simple-auth-lib';
-import {filter, map} from 'rxjs/operators';
-import {extract, isNonNull} from "@frontend-services/core";
-import {ViewTenantsInDomainResultDTO} from "@frontend-services/identity-management/dto";
-import {QueryMapper, TenantMapper} from "@frontend-services/identity-management/mapper";
-import {TenantInfo} from "@frontend-services/identity-management/model";
+import { Injectable } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from '@frontend-services/simple-auth-lib';
+import { filter, map } from 'rxjs/operators';
+import { extract, isNonNull } from '@frontend-services/core';
+import { ViewTenantsInDomainResultDTO } from '@frontend-services/identity-management/dto';
+import {
+  QueryMapper,
+  TenantMapper,
+} from '@frontend-services/identity-management/mapper';
+import { TenantInfo } from '@frontend-services/identity-management/model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GetTenantsInDomain {
-  constructor(private apollo: Apollo, private auth: AuthService) {
-  }
+  constructor(private apollo: Apollo, private auth: AuthService) {}
 
-  getData(domainId: string): Observable<Array<TenantInfo>> {
+  query(domainId: string): Observable<Array<TenantInfo>> {
     const query = gql`
-      query viewTenantsInDomain($domain: ViewDomain){
-        viewTenantsInDomain(domain: $domain){
+      query viewTenantsInDomain($domain: ViewDomain) {
+        viewTenantsInDomain(domain: $domain) {
           oid
           email
           name
@@ -42,7 +44,9 @@ export class GetTenantsInDomain {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: ViewTenantsInDomainResultDTO) => data.viewTenantsInDomain.map(d => TenantMapper.dtoToModel(d)))
+        map((data: ViewTenantsInDomainResultDTO) =>
+          data.viewTenantsInDomain.map((d) => TenantMapper.dtoToModel(d))
+        )
       );
   }
 }

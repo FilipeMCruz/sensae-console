@@ -1,38 +1,40 @@
-import {Injectable} from '@angular/core';
-import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
-import {HttpHeaders} from '@angular/common/http';
-import {AuthService} from '@frontend-services/simple-auth-lib';
-import {filter, map} from 'rxjs/operators';
-import {extract, isNonNull} from "@frontend-services/core";
-import {ViewDomainInfoResultDTO} from "@frontend-services/identity-management/dto";
-import {DomainMapper, QueryMapper} from "@frontend-services/identity-management/mapper";
-import {DomainInfo} from "@frontend-services/identity-management/model";
+import { Injectable } from '@angular/core';
+import { Apollo, gql } from 'apollo-angular';
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+import { AuthService } from '@frontend-services/simple-auth-lib';
+import { filter, map } from 'rxjs/operators';
+import { extract, isNonNull } from '@frontend-services/core';
+import { ViewDomainInfoResultDTO } from '@frontend-services/identity-management/dto';
+import {
+  DomainMapper,
+  QueryMapper,
+} from '@frontend-services/identity-management/mapper';
+import { DomainInfo } from '@frontend-services/identity-management/model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GetDomainInfo {
-  constructor(private apollo: Apollo, private auth: AuthService) {
-  }
+  constructor(private apollo: Apollo, private auth: AuthService) {}
 
-  getData(domainId: string): Observable<DomainInfo> {
+  query(domainId: string): Observable<DomainInfo> {
     const query = gql`
-      query viewDomainInfo($domain: ViewDomain){
-        viewDomainInfo(domain: $domain){
-          domain{
+      query viewDomainInfo($domain: ViewDomain) {
+        viewDomainInfo(domain: $domain) {
+          domain {
             oid
             name
             path
           }
-          devices{
+          devices {
             oid
-            domains{
+            domains {
               oid
               permission
             }
           }
-          tenants{
+          tenants {
             oid
             email
             name
@@ -56,7 +58,9 @@ export class GetDomainInfo {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: ViewDomainInfoResultDTO) => DomainMapper.dtoDetailsToDto(data.viewDomainInfo))
+        map((data: ViewDomainInfoResultDTO) =>
+          DomainMapper.dtoDetailsToDto(data.viewDomainInfo)
+        )
       );
   }
 }

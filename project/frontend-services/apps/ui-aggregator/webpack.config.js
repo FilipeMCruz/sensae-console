@@ -28,6 +28,8 @@ sharedMappings.register(
     '@frontend-services/device-records-services',
     '@frontend-services/fleet-management/model',
     '@frontend-services/fleet-management/services',
+    '@frontend-services/identity-management/model',
+    '@frontend-services/identity-management/services',
   ],
   workspaceRootPath
 );

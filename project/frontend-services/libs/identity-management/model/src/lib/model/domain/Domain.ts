@@ -3,6 +3,5 @@ export class Domain {
     public id: string,
     public name: string,
     public path: Array<string>
-  ) {
-  }
+  ) {}
 }

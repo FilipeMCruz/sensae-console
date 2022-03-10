@@ -19,7 +19,7 @@ export function createNamedApollo(httpLink: HttpLink): Record<string, ApolloClie
       cache: new InMemoryCache()
     }
   };
-};
+}
 
 @NgModule({
   declarations: [AppComponent],

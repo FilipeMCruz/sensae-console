@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DataTransformationDialogComponent } from '../data-transformation-dialog/data-transformation-dialog.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {DataTransformationDialogComponent} from '../data-transformation-dialog/data-transformation-dialog.component';
 import {
   DataTransformation,
   DataTransformationPair,
   DataTransformationViewType,
   SensorTypeId,
-} from '@frontend-services/data-processor-model';
+} from '@frontend-services/data-processor/model';
 import {
   DeleteDataTransformation,
   GetAllDataTransformations,
   IndexDataTransformation,
-} from '@frontend-services/data-processor-services';
+} from '@frontend-services/data-processor/services';
 
 @Component({
   selector: 'frontend-services-data-transformations-page',
@@ -29,7 +29,8 @@ export class DataTransformationsPageComponent implements OnInit {
     private collector: GetAllDataTransformations,
     private indexer: IndexDataTransformation,
     private eraser: DeleteDataTransformation
-  ) {}
+  ) {
+  }
 
   openDialog(data: DataTransformationPair) {
     const dialogRef = this.dialog.open(DataTransformationDialogComponent, {

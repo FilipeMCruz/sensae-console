@@ -12,7 +12,7 @@ import {
   RecordEntry,
   RecordEntryType,
   SensorDataRecordLabel,
-} from '@frontend-services/device-records-model';
+} from '@frontend-services/device-records/model';
 
 @Component({
   selector: 'frontend-services-device-record',

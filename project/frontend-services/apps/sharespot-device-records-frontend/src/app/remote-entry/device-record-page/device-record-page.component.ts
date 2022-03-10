@@ -1,16 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DeviceRecordDialogComponent } from '../device-record-dialog/device-record-dialog.component';
-import {
-  DeviceRecord,
-  DeviceRecordPair,
-  DeviceViewType,
-} from '@frontend-services/device-records-model';
-import {
-  DeleteDeviceRecord,
-  GetAllDeviceRecords,
-  IndexDeviceRecord,
-} from '@frontend-services/device-records-services';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {DeviceRecordDialogComponent} from '../device-record-dialog/device-record-dialog.component';
+import {DeviceRecord, DeviceRecordPair, DeviceViewType,} from '@frontend-services/device-records/model';
+import {DeleteDeviceRecord, GetAllDeviceRecords, IndexDeviceRecord,} from '@frontend-services/device-records/services';
 
 @Component({
   selector: 'frontend-services-device-record-page',
@@ -27,7 +19,8 @@ export class DeviceRecordPageComponent implements OnInit {
     private recordsCollector: GetAllDeviceRecords,
     private indexer: IndexDeviceRecord,
     private eraser: DeleteDeviceRecord
-  ) {}
+  ) {
+  }
 
   openDialog(data: DeviceRecordPair) {
     const dialogRef = this.dialog.open(DeviceRecordDialogComponent, {

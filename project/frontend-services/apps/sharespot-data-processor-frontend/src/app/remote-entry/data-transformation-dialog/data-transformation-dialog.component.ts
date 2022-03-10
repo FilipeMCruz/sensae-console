@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   DataTransformationPair,
   DataTransformationViewType,
-} from '@frontend-services/data-processor-model';
+} from '@frontend-services/data-processor/model';
 
 @Component({
   selector: 'frontend-services-data-transformation-dialog',

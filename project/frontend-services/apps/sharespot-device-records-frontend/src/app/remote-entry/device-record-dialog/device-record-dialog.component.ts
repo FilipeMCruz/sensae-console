@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import {
   DeviceRecordPair,
   DeviceViewType,
-} from '@frontend-services/device-records-model';
+} from '@frontend-services/device-records/model';
 
 @Component({
   selector: 'frontend-services-device-record-dialog',

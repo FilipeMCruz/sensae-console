@@ -11,7 +11,7 @@ import {
   EntryViewType,
   PropertyName,
   PropertyTransformation,
-} from '@frontend-services/data-processor-model';
+} from '@frontend-services/data-processor/model';
 
 @Component({
   selector: 'frontend-services-data-transformation',

@@ -1,6 +1,10 @@
 {
   "version": 2,
   "projects": {
+    "data-processor-dto": "libs/data-processor-dto",
+    "data-processor-mapper": "libs/data-processor-mapper",
+    "data-processor-model": "libs/data-processor-model",
+    "data-processor-services": "libs/data-processor-services",
     "sharespot-data-processor-frontend": "apps/sharespot-data-processor-frontend",
     "sharespot-data-processor-frontend-e2e": "apps/sharespot-data-processor-frontend-e2e",
     "sharespot-device-records-frontend": "apps/sharespot-device-records-frontend",

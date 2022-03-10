@@ -15,6 +15,18 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@frontend-services/data-processor-dto": [
+        "libs/data-processor-dto/src/index.ts"
+      ],
+      "@frontend-services/data-processor-mapper": [
+        "libs/data-processor-mapper/src/index.ts"
+      ],
+      "@frontend-services/data-processor-model": [
+        "libs/data-processor-model/src/index.ts"
+      ],
+      "@frontend-services/data-processor-services": [
+        "libs/data-processor-services/src/index.ts"
+      ],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"
       ]

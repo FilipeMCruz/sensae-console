@@ -20,11 +20,11 @@ import {CommonModule} from "@angular/common";
 import {HttpClientModule} from "@angular/common/http";
 import {
   DataTransformationsPageComponent
-} from "./components/data-transformations-page/data-transformations-page.component";
-import {DataTransformationComponent} from "./components/data-transformation/data-transformation.component";
+} from "./data-transformations-page/data-transformations-page.component";
+import {DataTransformationComponent} from "./data-transformation/data-transformation.component";
 import {
   DataTransformationDialogComponent
-} from "./components/data-transformation-dialog/data-transformation-dialog.component";
+} from "./data-transformation-dialog/data-transformation-dialog.component";
 
 @NgModule({
   declarations: [

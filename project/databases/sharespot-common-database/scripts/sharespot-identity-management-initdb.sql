@@ -132,12 +132,12 @@ INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_i
 INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (3, 3, 1);
 INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (4, 4, 1);
 INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 5, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 6, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 7, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 8, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 9, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 10, 1);
-INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (5, 11, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (6, 6, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (7, 7, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (8, 8, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (9, 9, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (10, 10, 1);
+INSERT INTO public.domain_permission (persistence_id, type, domain_persistence_id) VALUES (11, 11, 1);
 
 INSERT INTO public.tenant (persistence_id, domains, email, name, oid) VALUES (1, '{d387f3c7-1c12-43bc-b955-0ebf38381ad6}', 'filipe.cruz@sensae.pt', 'Filipe Cruz', '3588dcd0-2a74-4e22-8ace-91f2e8fa87a9');
 

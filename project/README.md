@@ -476,6 +476,10 @@ File. `project/secrets/prod/sharespot-data-processor-master-backend.env`
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/transformations
 SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+
+SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
+SENSAE_AUTH_ISSUER=<website domain that generates jwt>
+SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```
 
 File. `project/secrets/prod/sharespot-data-processor-slave-backend.env`

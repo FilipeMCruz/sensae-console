@@ -87,9 +87,13 @@ export class LookupService {
         routePath: 'identity',
         ngModuleName: 'RemoteEntryModule',
         details: {
-          type: MicrofrontendType.SERVICE,
-          protected: false,
-          permissions: [],
+          type: MicrofrontendType.TOOL,
+          protected: true,
+          permissions: Array.of(
+            'identity_management:domains:read',
+            'identity_management:tenant:read',
+            'identity_management:device:read'
+          ),
         },
       },
     ] as Microfrontend[]);

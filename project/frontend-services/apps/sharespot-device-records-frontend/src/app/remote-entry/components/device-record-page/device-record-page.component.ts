@@ -1,11 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {GetAllDeviceRecords} from "../../services/GetAllDeviceRecords";
 import {DeviceRecord} from "../../model/DeviceRecord";
-import {DeviceRecordsQueryMapper} from "../../mappers/DeviceRecordsQueryMapper";
 import {IndexDeviceRecord} from "../../services/IndexDeviceRecord";
-import {DeviceRecordRegisterMapper} from "../../mappers/DeviceRecordRegisterMapper";
 import {DeleteDeviceRecord} from "../../services/DeleteDeviceRecord";
-import {DeviceMapper} from "../../mappers/DeviceMapper";
 import {MatDialog} from '@angular/material/dialog';
 import {DeviceRecordDialogComponent} from "../device-record-dialog/device-record-dialog.component";
 import {DeviceRecordPair} from "../../model/DeviceRecordPair";
@@ -47,10 +44,7 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   fetchAllDevices() {
-    this.recordsCollector.getData().subscribe(({data}) => {
-      if (data != null)
-        this.records = DeviceRecordsQueryMapper.dtoToModel(data);
-    });
+    this.recordsCollector.getData().subscribe((data: Array<DeviceRecord>) => this.records = data);
   }
 
   updateItem(event: DeviceRecord) {
@@ -67,21 +61,15 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   private saveItem(event: DeviceRecord) {
-    this.indexer.index(DeviceRecordRegisterMapper.modelToDto(event)).subscribe(({data}) => {
-      if (data != null) {
-        const deviceRecord = DeviceRecordRegisterMapper.dtoToModel(data);
-        this.records = this.records.filter(r => r.device.id != deviceRecord.device.id);
-        this.records.push(deviceRecord);
-      }
+    this.indexer.index(event).subscribe((deviceRecord) => {
+      this.records = this.records.filter(r => r.device.id != deviceRecord.device.id);
+      this.records.push(deviceRecord);
     });
   }
 
   deleteItem(event: DeviceRecord) {
-    this.eraser.delete(DeviceMapper.modelToDto(event.device)).subscribe(({data}) => {
-      if (data != null) {
-        const device = DeviceMapper.dtoToModel(data.delete);
-        this.records = this.records.filter(r => r.device.id != device.id);
-      }
+    this.eraser.delete(event).subscribe((device) => {
+      this.records = this.records.filter(r => r.device.id != device.id);
     });
   }
 }

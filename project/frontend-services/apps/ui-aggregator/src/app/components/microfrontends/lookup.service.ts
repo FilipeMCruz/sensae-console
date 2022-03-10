@@ -2,6 +2,12 @@ import {Injectable} from '@angular/core';
 import {Microfrontend, MicrofrontendType} from './microfrontend';
 import {environment} from '../../../environments/environment';
 
+const SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL = environment.production
+  ? 'https://' +
+  environment.domain +
+  '/micro-frontends/sharespot-identity-management-frontend/remoteEntry.js'
+  : 'http://localhost:4285/remoteEntry.js';
+
 const SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
@@ -17,12 +23,6 @@ const SHARESPOT_DATA_PROCESSOR_FRONTEND_URL = environment.production
   environment.domain +
   '/micro-frontends/sharespot-data-processor-frontend/remoteEntry.js'
   : 'http://localhost:4282/remoteEntry.js';
-
-const SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL = environment.production
-  ? 'https://' +
-  environment.domain +
-  '/micro-frontends/sharespot-identity-management-frontend/remoteEntry.js'
-  : 'http://localhost:4290/remoteEntry.js';
 
 @Injectable({providedIn: 'root'})
 export class LookupService {

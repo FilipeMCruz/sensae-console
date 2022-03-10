@@ -46,7 +46,7 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: {type: 'module'},
+      library: { type: 'module' },
       name: 'sharespotdevicerecordsfrontend',
       filename: 'remoteEntry.js',
       exposes: {
@@ -104,7 +104,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
+        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,

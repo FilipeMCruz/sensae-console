@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/identity-management/model",
+  "sourceRoot": "libs/identity-management/model/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/identity-management/model"],
+      "options": {
+        "jestConfig": "libs/identity-management/model/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/identity-management/model/src/**/*.ts",
+          "libs/identity-management/model/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

@@ -24,6 +24,8 @@ sharedMappings.register(
     '@frontend-services/simple-auth-lib',
     '@frontend-services/data-processor-model',
     '@frontend-services/data-processor-services',
+    '@frontend-services/device-records-model',
+    '@frontend-services/device-records-services',
   ],
   workspaceRootPath
 );

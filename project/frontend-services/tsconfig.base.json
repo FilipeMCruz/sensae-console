@@ -27,6 +27,18 @@
       "@frontend-services/data-processor-services": [
         "libs/data-processor-services/src/index.ts"
       ],
+      "@frontend-services/device-records-dto": [
+        "libs/device-records-dto/src/index.ts"
+      ],
+      "@frontend-services/device-records-mapper": [
+        "libs/device-records-mapper/src/index.ts"
+      ],
+      "@frontend-services/device-records-model": [
+        "libs/device-records-model/src/index.ts"
+      ],
+      "@frontend-services/device-records-services": [
+        "libs/device-records-services/src/index.ts"
+      ],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"
       ]

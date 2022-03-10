@@ -8,9 +8,8 @@ describe('NewDeviceRecordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataTransformationComponent ]
-    })
-    .compileComponents();
+      declarations: [DataTransformationComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

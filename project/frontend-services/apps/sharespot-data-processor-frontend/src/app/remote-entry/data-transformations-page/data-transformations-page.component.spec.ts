@@ -8,9 +8,8 @@ describe('SimpleAuthPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataTransformationsPageComponent ]
-    })
-    .compileComponents();
+      declarations: [DataTransformationsPageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

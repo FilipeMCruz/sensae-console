@@ -43,13 +43,11 @@ public class ViewDomainInfo {
         var domainResult = DomainResultMapper.toResult(top);
         var tenantResult = tenantRepo
                 .getTenantsInDomain(top.getOid())
-                .stream()
                 .map(TenantResultMapper::toResult)
                 .toList();
 
         var deviceResults = deviceRepo
                 .getDevicesInDomain(top.getOid())
-                .stream()
                 .map(DeviceResultMapper::toResult)
                 .toList();
 

@@ -7,7 +7,7 @@ import sharespot.services.identitymanagementslavebackend.domain.model.identity.d
 import sharespot.services.identitymanagementslavebackend.infrastructure.persistence.postgres.mapper.DomainMapper;
 import sharespot.services.identitymanagementslavebackend.infrastructure.persistence.postgres.repository.DomainRepositoryPostgres;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @Repository
 public class DomainRepositoryImpl implements DomainRepository {
@@ -26,10 +26,9 @@ public class DomainRepositoryImpl implements DomainRepository {
     }
 
     @Override
-    public List<Domain> findDomainsById(List<DomainId> ids) {
-        return repository.findAllByOidIn(ids.stream().map(d -> d.value().toString()).toList())
+    public Stream<Domain> findDomainsById(Stream<DomainId> ids) {
+        return repository.findAllByOidIn(ids.map(d -> d.value().toString()).toList())
                 .stream()
-                .map(DomainMapper::postgresToDomain)
-                .toList();
+                .map(DomainMapper::postgresToDomain);
     }
 }

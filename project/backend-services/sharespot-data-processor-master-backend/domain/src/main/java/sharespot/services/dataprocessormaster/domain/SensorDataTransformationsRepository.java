@@ -1,12 +1,12 @@
 package sharespot.services.dataprocessormaster.domain;
 
-import java.util.Set;
+import java.util.stream.Stream;
 
 public interface SensorDataTransformationsRepository {
 
     DataTransformation save(DataTransformation records);
 
-    Set<DataTransformation> findAll();
+    Stream<DataTransformation> findAll();
 
     SensorTypeId delete(SensorTypeId id);
 }

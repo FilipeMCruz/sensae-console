@@ -6,8 +6,7 @@ import sharespot.services.dataprocessormaster.application.auth.TokenExtractor;
 import sharespot.services.dataprocessormaster.application.auth.UnauthorizedException;
 import sharespot.services.dataprocessormaster.domainservices.DataTransformationCollector;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DataTransformationCollectorService {
@@ -26,14 +25,12 @@ public class DataTransformationCollectorService {
         this.authHandler = authHandler;
     }
 
-    public Set<DataTransformationDTO> transformations(AccessTokenDTO claims) {
+    public Stream<DataTransformationDTO> transformations(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("data_transformations:transformations:read"))
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect()
-                .stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toSet());
+                .map(mapper::domainToDto);
     }
 }

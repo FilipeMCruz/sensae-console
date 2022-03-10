@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
 
-import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class RecordCollector {
@@ -15,7 +15,7 @@ public class RecordCollector {
         this.repository = repository;
     }
 
-    public Set<DeviceRecords> collect() {
+    public Stream<DeviceRecords> collect() {
         return repository.findAll();
     }
 }

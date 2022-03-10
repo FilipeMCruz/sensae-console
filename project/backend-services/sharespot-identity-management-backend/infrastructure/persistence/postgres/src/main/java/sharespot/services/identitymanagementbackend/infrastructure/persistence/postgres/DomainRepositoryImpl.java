@@ -9,10 +9,9 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.DomainRepositoryPostgres;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.util.PostgresArrayMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class DomainRepositoryImpl implements DomainRepository {
@@ -44,31 +43,28 @@ public class DomainRepositoryImpl implements DomainRepository {
     }
 
     @Override
-    public List<Domain> getParentDomains(DomainId id) {
+    public Stream<Domain> getParentDomains(DomainId id) {
         var byOid = repository.findByOid(id.value().toString());
         if (byOid.isEmpty()) {
-            return new ArrayList<>();
+            return Stream.empty();
         }
         return repository.findDomainParents(PostgresArrayMapper.toArray(List.of(byOid.get().path)))
                 .stream()
-                .map(DomainMapper::postgresToDomain)
-                .toList();
+                .map(DomainMapper::postgresToDomain);
     }
 
     @Override
-    public List<Domain> getChildDomains(DomainId id) {
+    public Stream<Domain> getChildDomains(DomainId id) {
         LoggerFactory.getLogger(DomainRepositoryImpl.class).info(id.value().toString());
         return repository.findDomainChilds(PostgresArrayMapper.toArray(id.value().toString()))
                 .stream()
-                .map(DomainMapper::postgresToDomain)
-                .toList();
+                .map(DomainMapper::postgresToDomain);
     }
 
     @Override
-    public List<Domain> getDomains(List<DomainId> ids) {
-        return repository.findAllByOidIsIn(ids.stream().map(d -> d.value().toString()).collect(Collectors.toList())).stream()
-                .map(DomainMapper::postgresToDomain)
-                .toList();
+    public Stream<Domain> getDomains(Stream<DomainId> ids) {
+        return repository.findAllByOidIsIn(ids.map(d -> d.value().toString()).toList()).stream()
+                .map(DomainMapper::postgresToDomain);
     }
 
     @Override

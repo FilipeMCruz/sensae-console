@@ -7,7 +7,7 @@ import sharespot.services.devicerecordsbackend.application.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.RecordCollectorService;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
-import java.util.Set;
+import java.util.List;
 
 @DgsComponent
 public class RecordCollectorController {
@@ -19,7 +19,7 @@ public class RecordCollectorController {
     }
 
     @DgsQuery(field = "deviceRecords")
-    public Set<DeviceRecordDTO> collect(@RequestHeader("Authorization") String auth) {
-        return service.records(AuthMiddleware.buildAccessToken(auth));
+    public List<DeviceRecordDTO> collect(@RequestHeader("Authorization") String auth) {
+        return service.records(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

@@ -8,8 +8,7 @@ import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.mapper.DataTransformationMapper;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.repository.SensorDataTransformationsRepositoryPostgres;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Repository
@@ -41,10 +40,10 @@ public class SensorDataTransformationsRepositoryImpl implements SensorDataTransf
     }
 
     @Override
-    public Set<DataTransformation> findAll() {
+    public Stream<DataTransformation> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
                 .map(DataTransformationMapper::postgresToDomain)
-                .collect(Collectors.toSet());
+                .distinct();
     }
 
     @Override

@@ -6,8 +6,7 @@ import sharespot.services.devicerecordsbackend.application.auth.TokenExtractor;
 import sharespot.services.devicerecordsbackend.application.auth.UnauthorizedException;
 import sharespot.services.devicerecordsbackend.domainservices.RecordCollector;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RecordCollectorService {
@@ -24,13 +23,11 @@ public class RecordCollectorService {
         this.authHandler = authHandler;
     }
 
-    public Set<DeviceRecordDTO> records(AccessTokenDTO claims) {
+    public Stream<DeviceRecordDTO> records(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("device_records:records:read"))
             throw new UnauthorizedException("No Permissions");
-        return collector.collect()
-                .stream()
-                .map(mapper::domainToDto)
-                .collect(Collectors.toSet());
+
+        return collector.collect().map(mapper::domainToDto);
     }
 }

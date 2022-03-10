@@ -12,6 +12,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public class TenantRepositoryImpl implements TenantRepository {
@@ -49,10 +50,9 @@ public class TenantRepositoryImpl implements TenantRepository {
     }
 
     @Override
-    public List<Tenant> getTenantsInDomain(DomainId domain) {
+    public Stream<Tenant> getTenantsInDomain(DomainId domain) {
         return repository.findTenantsInDomain(domain.value().toString())
                 .stream()
-                .map(TenantMapper::postgresToDomain)
-                .toList();
+                .map(TenantMapper::postgresToDomain);
     }
 }

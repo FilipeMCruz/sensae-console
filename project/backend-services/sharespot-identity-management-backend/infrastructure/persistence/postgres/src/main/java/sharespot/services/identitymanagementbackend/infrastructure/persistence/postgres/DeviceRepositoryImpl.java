@@ -8,8 +8,8 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.mapper.DeviceMapper;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.DeviceRepositoryPostgres;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class DeviceRepositoryImpl implements DeviceRepository {
@@ -34,10 +34,9 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public List<Device> getDevicesInDomain(DomainId domain) {
+    public Stream<Device> getDevicesInDomain(DomainId domain) {
         return repository.findByDomainId(domain.value().toString())
                 .stream()
-                .map(DeviceMapper::postgresToDomain)
-                .toList();
+                .map(DeviceMapper::postgresToDomain);
     }
 }

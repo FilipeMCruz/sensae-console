@@ -8,7 +8,7 @@ import sharespot.services.identitymanagementbackend.application.model.tenant.Acc
 import sharespot.services.identitymanagementbackend.application.model.tenant.TenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.service.tenant.ViewTenantsInDomain;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ViewTenantsInDomainService {
@@ -25,11 +25,10 @@ public class ViewTenantsInDomainService {
         this.domainMapper = domainMapper;
     }
 
-    public List<TenantDTO> fetch(ViewDomainDTO dto, AccessTokenDTO claims) {
+    public Stream<TenantDTO> fetch(ViewDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var createDomainCommand = domainMapper.dtoToCommand(dto);
-        return service.fetch(createDomainCommand, identityCommand).stream()
-                .map(tenantMapper::resultToDto)
-                .toList();
+        return service.fetch(createDomainCommand, identityCommand)
+                .map(tenantMapper::resultToDto);
     }
 }

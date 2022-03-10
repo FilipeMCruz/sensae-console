@@ -22,6 +22,6 @@ public class DomainPresenterController {
 
     @DgsQuery(field = "viewDomain")
     public List<DomainDTO> fetch(@InputArgument(value = "top") ViewDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
-        return service.fetch(info, AuthMiddleware.buildAccessToken(auth));
+        return service.fetch(info, AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

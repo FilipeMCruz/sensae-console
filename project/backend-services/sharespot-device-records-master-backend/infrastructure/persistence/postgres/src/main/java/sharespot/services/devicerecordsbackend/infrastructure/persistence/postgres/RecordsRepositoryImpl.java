@@ -8,8 +8,7 @@ import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepos
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper.RecordMapper;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Repository
@@ -41,10 +40,9 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     }
 
     @Override
-    public Set<DeviceRecords> findAll() {
+    public Stream<DeviceRecords> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
-                .map(RecordMapper::postgresToDomain)
-                .collect(Collectors.toSet());
+                .map(RecordMapper::postgresToDomain);
     }
 
     @Override

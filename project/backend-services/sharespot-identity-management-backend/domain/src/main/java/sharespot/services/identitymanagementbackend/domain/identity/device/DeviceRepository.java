@@ -4,6 +4,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface DeviceRepository {
 
@@ -11,5 +12,5 @@ public interface DeviceRepository {
 
     Device relocateDevice(Device tenant);
 
-    List<Device> getDevicesInDomain(DomainId domain);
+    Stream<Device> getDevicesInDomain(DomainId domain);
 }

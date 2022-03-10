@@ -22,6 +22,6 @@ public class DomainTenantsPresenterController {
 
     @DgsQuery(field = "viewTenantsInDomain")
     public List<TenantDTO> fetch(@InputArgument(value = "domain") ViewDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
-        return service.fetch(info, AuthMiddleware.buildAccessToken(auth));
+        return service.fetch(info, AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

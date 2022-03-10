@@ -1,7 +1,7 @@
 package sharespot.services.identitymanagementbackend.domain.identity.domain;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface DomainRepository {
 
@@ -11,11 +11,11 @@ public interface DomainRepository {
 
     Optional<Domain> findDomainById(DomainId id);
 
-    List<Domain> getParentDomains(DomainId id);
+    Stream<Domain> getParentDomains(DomainId id);
 
-    List<Domain> getChildDomains(DomainId id);
+    Stream<Domain> getChildDomains(DomainId id);
 
-    List<Domain> getDomains(List<DomainId> ids);
+    Stream<Domain> getDomains(Stream<DomainId> ids);
 
     void moveDomain(DomainId toMove, DomainId newParent);
 

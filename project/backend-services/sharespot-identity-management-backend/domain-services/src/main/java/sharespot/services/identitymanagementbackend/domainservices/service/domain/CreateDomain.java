@@ -43,7 +43,7 @@ public class CreateDomain {
         domainPath.add(domainId);
         var domain = new Domain(domainId, domainName, DomainPath.of(domainPath), DomainPermissions.empty());
 
-        if (domainRepo.getChildDomains(parentDomainId).stream().anyMatch(domain::same)) {
+        if (domainRepo.getChildDomains(parentDomainId).anyMatch(domain::same)) {
             throw new NotValidException("Invalid Domain Name: Name Already used");
         }
 

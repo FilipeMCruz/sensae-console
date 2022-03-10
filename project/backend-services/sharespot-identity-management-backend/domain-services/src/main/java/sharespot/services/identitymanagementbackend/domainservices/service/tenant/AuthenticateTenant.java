@@ -10,9 +10,8 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AuthenticateTenant {
@@ -29,11 +28,9 @@ public class AuthenticateTenant {
     public TenantResult execute(IdentityQuery command) {
         var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
                 .orElseGet(() -> newTenant(command));
-        var permissions = domainRepo.getDomains(tenant.getDomains())
-                .stream()
+        var permissions = domainRepo.getDomains(tenant.getDomains().stream())
                 .map(d -> d.getPermissions().values())
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
+                .flatMap(Collection::stream);
         return toResult(tenant, permissions);
     }
 
@@ -46,13 +43,13 @@ public class AuthenticateTenant {
         return tenantRepo.registerNewTenant(tenant);
     }
 
-    private TenantResult toResult(Tenant tenant, Set<PermissionType> permissions) {
+    private TenantResult toResult(Tenant tenant, Stream<PermissionType> permissions) {
         var identityResult = new TenantResult();
         identityResult.email = tenant.getEmail().value();
         identityResult.name = tenant.getName().value();
         identityResult.oid = tenant.getOid().value();
         identityResult.domains = tenant.getDomains().stream().map(DomainId::value).toList();
-        identityResult.permissions = permissions.stream().map(p ->
+        identityResult.permissions = permissions.distinct().map(p ->
                 switch (p) {
                     case READ_DEVICE_RECORDS -> "device_records:records:read";
                     case WRITE_DEVICE_RECORDS -> "device_records:records:write";

@@ -47,7 +47,7 @@ public class DeviceDomainCache {
 
     private DeviceWithAllPermissions build(Device device) {
         //fetch all domains from repo
-        var domains = domainRepository.findDomainsById(device.getDomains().stream().map(DeviceDomainPermissions::domain).toList());
+        var domains = domainRepository.findDomainsById(device.getDomains().stream().map(DeviceDomainPermissions::domain)).toList();
 
         //get all device domain' ids with write permission
         var writeDomains = device.getDomains()

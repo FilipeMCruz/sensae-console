@@ -1,10 +1,10 @@
 package sharespot.services.identitymanagementslavebackend.domain.model.identity.domain;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public interface DomainRepository {
 
     Domain getRootDomain();
 
-    List<Domain> findDomainsById(List<DomainId> ids);
+    Stream<Domain> findDomainsById(Stream<DomainId> ids);
 }

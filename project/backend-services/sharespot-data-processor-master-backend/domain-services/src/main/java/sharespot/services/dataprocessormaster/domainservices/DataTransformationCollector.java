@@ -5,6 +5,7 @@ import sharespot.services.dataprocessormaster.domain.DataTransformation;
 import sharespot.services.dataprocessormaster.domain.SensorDataTransformationsRepository;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 public class DataTransformationCollector {
@@ -15,7 +16,7 @@ public class DataTransformationCollector {
         this.repository = repository;
     }
 
-    public Set<DataTransformation> collect() {
+    public Stream<DataTransformation> collect() {
         return repository.findAll();
     }
 }

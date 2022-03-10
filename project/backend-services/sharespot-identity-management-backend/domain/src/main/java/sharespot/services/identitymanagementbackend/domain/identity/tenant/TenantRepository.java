@@ -4,6 +4,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface TenantRepository {
 
@@ -15,5 +16,5 @@ public interface TenantRepository {
 
     Tenant registerNewTenant(Tenant tenant);
 
-    List<Tenant> getTenantsInDomain(DomainId domain);
+    Stream<Tenant> getTenantsInDomain(DomainId domain);
 }

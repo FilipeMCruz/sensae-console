@@ -13,6 +13,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ViewDomains {
@@ -23,7 +24,7 @@ public class ViewDomains {
         this.domainRepo = domainRepo;
     }
 
-    public List<DomainResult> fetch(ViewDomainQuery query, IdentityCommand identity) {
+    public Stream<DomainResult> fetch(ViewDomainQuery query, IdentityCommand identity) {
         var tenant = TenantResultMapper.toDomain(identity);
         var topId = DomainId.of(query.topDomainId);
         var top = domainRepo.findDomainById(topId)
@@ -32,8 +33,6 @@ public class ViewDomains {
         PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAINS));
 
         return domainRepo.getChildDomains(topId)
-                .stream()
-                .map(DomainResultMapper::toResult)
-                .toList();
+                .map(DomainResultMapper::toResult);
     }
 }

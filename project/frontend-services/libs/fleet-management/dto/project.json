@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/fleet-management/dto",
+  "sourceRoot": "libs/fleet-management/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fleet-management/dto"],
+      "options": {
+        "jestConfig": "libs/fleet-management/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/fleet-management/dto/src/**/*.ts",
+          "libs/fleet-management/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

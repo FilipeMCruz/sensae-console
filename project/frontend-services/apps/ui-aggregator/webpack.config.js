@@ -26,6 +26,8 @@ sharedMappings.register(
     '@frontend-services/data-processor-services',
     '@frontend-services/device-records-model',
     '@frontend-services/device-records-services',
+    '@frontend-services/fleet-management/model',
+    '@frontend-services/fleet-management/services',
   ],
   workspaceRootPath
 );

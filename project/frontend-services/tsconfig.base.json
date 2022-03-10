@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@frontend-services/core": ["libs/core/src/index.ts"],
       "@frontend-services/data-processor-dto": [
         "libs/data-processor-dto/src/index.ts"
       ],
@@ -38,6 +39,18 @@
       ],
       "@frontend-services/device-records-services": [
         "libs/device-records-services/src/index.ts"
+      ],
+      "@frontend-services/fleet-management/dto": [
+        "libs/fleet-management/dto/src/index.ts"
+      ],
+      "@frontend-services/fleet-management/mapper": [
+        "libs/fleet-management/mapper/src/index.ts"
+      ],
+      "@frontend-services/fleet-management/model": [
+        "libs/fleet-management/model/src/index.ts"
+      ],
+      "@frontend-services/fleet-management/services": [
+        "libs/fleet-management/services/src/index.ts"
       ],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"

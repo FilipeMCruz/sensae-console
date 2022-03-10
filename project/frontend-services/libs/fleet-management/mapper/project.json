@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/fleet-management/mapper",
+  "sourceRoot": "libs/fleet-management/mapper/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fleet-management/mapper"],
+      "options": {
+        "jestConfig": "libs/fleet-management/mapper/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/fleet-management/mapper/src/**/*.ts",
+          "libs/fleet-management/mapper/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

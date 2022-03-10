@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '@frontend-services/simple-auth-lib';
 import { HttpHeaders } from '@angular/common/http';
 import { filter, map } from 'rxjs/operators';
-import { extract, isNonNull } from './ObservableFunctions';
+import { extract, isNonNull } from "@frontend-services/core";
 import { DataTransformation } from '@frontend-services/data-processor-model';
 import { DataTransformationRegisterMapper } from '@frontend-services/data-processor-mapper';
 import { DataTransformationInput } from '@frontend-services/data-processor-dto';

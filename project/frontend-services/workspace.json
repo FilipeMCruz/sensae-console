@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "core": "libs/core",
     "data-processor-dto": "libs/data-processor-dto",
     "data-processor-mapper": "libs/data-processor-mapper",
     "data-processor-model": "libs/data-processor-model",
@@ -9,6 +10,10 @@
     "device-records-mapper": "libs/device-records-mapper",
     "device-records-model": "libs/device-records-model",
     "device-records-services": "libs/device-records-services",
+    "fleet-management-dto": "libs/fleet-management/dto",
+    "fleet-management-mapper": "libs/fleet-management/mapper",
+    "fleet-management-model": "libs/fleet-management/model",
+    "fleet-management-services": "libs/fleet-management/services",
     "sharespot-data-processor-frontend": "apps/sharespot-data-processor-frontend",
     "sharespot-data-processor-frontend-e2e": "apps/sharespot-data-processor-frontend-e2e",
     "sharespot-device-records-frontend": "apps/sharespot-device-records-frontend",

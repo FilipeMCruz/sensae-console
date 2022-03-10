@@ -1,19 +1,20 @@
-import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
-import { AuthService } from '@frontend-services/simple-auth-lib';
-import { filter, map } from 'rxjs/operators';
-import { extract, isNonNull } from './ObservableFunctions';
-import { DeviceRecord } from '@frontend-services/device-records-model';
-import { DeviceRecordQuery } from '@frontend-services/device-records-dto';
-import { DeviceRecordsQueryMapper } from '@frontend-services/device-records-mapper';
+import {Injectable} from '@angular/core';
+import {Apollo, gql} from 'apollo-angular';
+import {Observable} from 'rxjs';
+import {HttpHeaders} from '@angular/common/http';
+import {AuthService} from '@frontend-services/simple-auth-lib';
+import {filter, map} from 'rxjs/operators';
+import {extract, isNonNull} from "@frontend-services/core";
+import {DeviceRecord} from '@frontend-services/device-records-model';
+import {DeviceRecordQuery} from '@frontend-services/device-records-dto';
+import {DeviceRecordsQueryMapper} from '@frontend-services/device-records-mapper';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GetAllDeviceRecords {
-  constructor(private apollo: Apollo, private auth: AuthService) {}
+  constructor(private apollo: Apollo, private auth: AuthService) {
+  }
 
   getData(): Observable<Array<DeviceRecord>> {
     const query = gql`

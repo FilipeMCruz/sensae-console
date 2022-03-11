@@ -3,14 +3,15 @@ import {BehaviorSubject, forkJoin, merge, Observable} from 'rxjs';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
-import {DomainInfo} from '@frontend-services/identity-management/model';
+import {CreateDomain, GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
+import {Domain, DomainInfo} from '@frontend-services/identity-management/model';
 
 @Injectable({providedIn: 'root'})
 export class DynamicDatabase {
   constructor(
     private getChildDomainsInfo: GetChildDomainsInfo,
-    private getDomainInfo: GetDomainInfo
+    private getDomainInfo: GetDomainInfo,
+    private createDomain: CreateDomain
   ) {
   }
 
@@ -25,6 +26,10 @@ export class DynamicDatabase {
 
   getChildren(node: string): Observable<DomainInfo[]> {
     return this.getChildDomainsInfo.query(node);
+  }
+
+  createNewDomain(event: DomainInfo): Observable<Domain> {
+    return this.createDomain.mutate(event.domain.path[event.domain.path.length - 2], event.domain.name);
   }
 }
 
@@ -54,6 +59,15 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase
   ) {
+  }
+
+  //TODO: fix this logic
+  updateParent(node: DynamicFlatNode) {
+    const parent = this.dataChange.value.find(d => d.item.domain.id === node.item.domain.path[node.item.domain.path.length - 2]);
+    if (parent) {
+      this.toggleNode(parent, false);
+      this.toggleNode(parent, true);
+    }
   }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -107,7 +121,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         );
         if (node.item.canHaveNewChild()) {
           nodes.push(
-            new DynamicFlatNode(DomainInfo.empty(), node.level + 1, false)
+            new DynamicFlatNode(DomainInfo.empty([...node.item.domain.path, '']), node.level + 1, false)
           );
         }
         this.data.splice(index + 1, 0, ...nodes);

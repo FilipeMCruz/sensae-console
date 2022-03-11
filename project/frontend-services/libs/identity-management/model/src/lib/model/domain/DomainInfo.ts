@@ -10,8 +10,8 @@ export class DomainInfo {
   ) {
   }
 
-  static empty() {
-    return new DomainInfo(new Domain('', '', []), [], []);
+  static empty(path: string[]) {
+    return new DomainInfo(new Domain('', '', path), [], []);
   }
 
   public isNew() {

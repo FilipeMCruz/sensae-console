@@ -1,24 +1,18 @@
-import {
-  CollectionViewer,
-  DataSource,
-  SelectionChange,
-} from '@angular/cdk/collections';
-import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
-import {
-  GetChildDomainsInfo,
-  GetDomainInfo,
-} from '@frontend-services/identity-management/services';
-import { DomainInfo } from '@frontend-services/identity-management/model';
+import {CollectionViewer, DataSource, SelectionChange,} from '@angular/cdk/collections';
+import {BehaviorSubject, forkJoin, merge, Observable} from 'rxjs';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {map} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
+import {DomainInfo} from '@frontend-services/identity-management/model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DynamicDatabase {
   constructor(
     private getChildDomainsInfo: GetChildDomainsInfo,
     private getDomainInfo: GetDomainInfo
-  ) {}
+  ) {
+  }
 
   initialData(domains: string[]): Observable<DynamicFlatNode[]> {
     const domainObs: Observable<DynamicFlatNode>[] = domains.map((d) =>
@@ -40,7 +34,8 @@ export class DynamicFlatNode {
     public level = 1,
     public expandable = true,
     public isLoading = false
-  ) {}
+  ) {
+  }
 }
 
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
@@ -58,7 +53,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase
-  ) {}
+  ) {
+  }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe((change) => {
@@ -75,7 +71,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     );
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {}
+  disconnect(collectionViewer: CollectionViewer): void {
+  }
 
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
@@ -94,8 +91,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
    * Toggle the node, remove from display list
    */
   toggleNode(node: DynamicFlatNode, expand: boolean) {
-    node.isLoading = true;
-
     const children = this._database.getChildren(node.item.domain.id);
     const index = this.data.indexOf(node);
     if (!children || index < 0) {
@@ -104,6 +99,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     }
 
     if (expand) {
+      node.isLoading = true;
       children.subscribe((domains) => {
         const nodes = domains.map(
           (info: DomainInfo) =>
@@ -124,10 +120,10 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         let i = index + 1;
         i < this.data.length && this.data[i].level > node.level;
         i++, count++
-      ) {}
+      ) {
+      }
       this.data.splice(index + 1, count);
       this.dataChange.next(this.data);
-      node.isLoading = false;
     }
   }
 }

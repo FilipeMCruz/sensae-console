@@ -1,0 +1,30 @@
+<mat-card *ngIf="!entry.isNew()" class="item">
+  <mat-card-title
+  >Domain: {{ entry.domain.name }}</mat-card-title
+  >
+  <mat-card-content>
+    <mat-list>
+      <div mat-subheader>Tenants</div>
+      <mat-list-item *ngFor="let tenant of entry.tenants">
+        <mat-icon mat-list-icon>account_circle</mat-icon>
+        <div mat-line><strong>Name: </strong>{{tenant.name}}</div>
+        <div mat-line><strong>Email: </strong>{{tenant.email}} </div>
+      </mat-list-item>
+      <ng-container *ngIf="!entry.isUnallocated()">
+        <mat-divider></mat-divider>
+        <div mat-subheader>Devices</div>
+        <mat-list-item *ngFor="let device of entry.devices">
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          <div mat-line><strong>Id: </strong>{{device.id}}</div>
+          <div mat-line><strong>Domain Permission: </strong>{{getPermission(device)}} </div>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="entry.isNew()" class="item">
+  <mat-card-title *ngIf="entry.isNew()">New Domain</mat-card-title>
+  <mat-card-actions>
+    <button mat-button>Create</button>
+  </mat-card-actions>
+</mat-card>

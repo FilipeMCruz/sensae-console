@@ -9,15 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpLink } from 'apollo-angular/http';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { environment } from '../environments/environment';
+import { createLink } from '@frontend-services/mutual';
 
 export function createNamedApollo(
   httpLink: HttpLink
 ): Record<string, ApolloClientOptions<any>> {
   return {
     identity: {
-      link: httpLink.create({
-        uri: environment.backendURL.http,
-      }),
+      link: createLink(httpLink, environment.endpoints.identity.backend),
       cache: new InMemoryCache(),
     },
   };

@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/mutual",
+  "sourceRoot": "libs/mutual/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/mutual"],
+      "options": {
+        "jestConfig": "libs/mutual/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/mutual/src/**/*.ts",
+          "libs/mutual/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

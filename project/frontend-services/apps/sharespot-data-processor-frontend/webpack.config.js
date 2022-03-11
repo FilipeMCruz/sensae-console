@@ -22,6 +22,7 @@ sharedMappings.register(
   tsConfigPath,
   [
     '@frontend-services/simple-auth-lib',
+    '@frontend-services/mutual',
     '@frontend-services/data-processor-model',
     '@frontend-services/data-processor-services',
   ],

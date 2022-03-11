@@ -21,6 +21,7 @@ const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
   [
+    '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
     '@frontend-services/data-processor-model',
     '@frontend-services/data-processor-services',

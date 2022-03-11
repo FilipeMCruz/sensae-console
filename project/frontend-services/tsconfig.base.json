@@ -64,6 +64,7 @@
       "@frontend-services/identity-management/services": [
         "libs/identity-management/services/src/index.ts"
       ],
+      "@frontend-services/mutual": ["libs/mutual/src/index.ts"],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"
       ]

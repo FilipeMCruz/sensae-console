@@ -18,6 +18,7 @@
     "identity-management-mapper": "libs/identity-management/mapper",
     "identity-management-model": "libs/identity-management/model",
     "identity-management-services": "libs/identity-management/services",
+    "mutual": "libs/mutual",
     "sharespot-data-processor-frontend": "apps/sharespot-data-processor-frontend",
     "sharespot-data-processor-frontend-e2e": "apps/sharespot-data-processor-frontend-e2e",
     "sharespot-device-records-frontend": "apps/sharespot-device-records-frontend",

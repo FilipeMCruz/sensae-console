@@ -13,13 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { ROUTES } from './app.routes';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {APOLLO_NAMED_OPTIONS, ApolloModule} from 'apollo-angular';
+import { APOLLO_NAMED_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
-import { ApolloClientOptions, InMemoryCache, split } from '@apollo/client/core';
+import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { getMainDefinition } from '@apollo/client/utilities';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { AuthGuardService } from './services/AuthGuardService';
@@ -40,6 +38,7 @@ import {
   MsalService,
 } from '@azure/msal-angular';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { createLink } from '@frontend-services/mutual';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -59,66 +58,24 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
   };
 }
 
-export function createLinkWithWebsocket(
-  httpLink: HttpLink,
-  wsUrl: string,
-  httpUrl: string
-) {
-  const http = httpLink.create({
-    uri: httpUrl,
-  });
-
-  // Create a WebSocket link:
-  const ws = new WebSocketLink({
-    uri: wsUrl,
-    options: {
-      reconnect: true,
-      timeout: 30000,
-    },
-  });
-
-  // using the ability to split links, you can send data to each link
-  // depending on what kind of operation is being sent
-  return split(
-    // split based on operation type
-    ({ query }) => {
-      // @ts-ignore
-      const { kind, operation } = getMainDefinition(query);
-      return kind === 'OperationDefinition' && operation === 'subscription';
-    },
-    ws,
-    http
-  );
-}
-
 export function createNamedApollo(
   httpLink: HttpLink
 ): Record<string, ApolloClientOptions<any>> {
   return {
     deviceRecords: {
-      link: httpLink.create({
-        uri: environment.endpoints.deviceRecords.backendURL.http,
-      }),
+      link: createLink(httpLink, environment.endpoints.deviceRecords.backend),
       cache: new InMemoryCache(),
     },
     dataProcessor: {
-      link: httpLink.create({
-        uri: environment.endpoints.dataProcessor.backendURL.http,
-      }),
+      link: createLink(httpLink, environment.endpoints.dataProcessor.backend),
       cache: new InMemoryCache(),
     },
     identity: {
-      link: httpLink.create({
-        uri: environment.endpoints.identity.backendURL.http,
-      }),
+      link: createLink(httpLink, environment.endpoints.identity.backend),
       cache: new InMemoryCache(),
     },
     fleetManagement: {
-      link: createLinkWithWebsocket(
-        httpLink,
-        environment.endpoints.fleetManagement.backendURL.websocket,
-        environment.endpoints.fleetManagement.backendURL.http
-      ),
+      link: createLink(httpLink, environment.endpoints.fleetManagement.backend),
       cache: new InMemoryCache(),
     },
   };

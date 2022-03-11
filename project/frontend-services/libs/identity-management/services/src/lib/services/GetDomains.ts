@@ -13,7 +13,7 @@ import { QueryMapper } from '@frontend-services/identity-management/mapper';
 @Injectable({
   providedIn: 'root',
 })
-export class GetDomain {
+export class GetDomains {
   constructor(private apollo: Apollo, private auth: AuthService) {}
 
   query(domainId: string): Observable<Array<Domain>> {

@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {ValidateCredentials} from './services/ValidateCredentials';
-import {ReplaySubject} from 'rxjs';
-import jwt_decode, {JwtPayload} from 'jwt-decode';
-import {TenantIdentity} from './dto/CredentialsDTO';
+import { Injectable } from '@angular/core';
+import { ValidateCredentials } from './services/ValidateCredentials';
+import { ReplaySubject } from 'rxjs';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
+import { TenantIdentity } from './dto/CredentialsDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +12,7 @@ export class AuthService {
 
   private accessToken?: string;
 
-  constructor(private validator: ValidateCredentials) {
-  }
+  constructor(private validator: ValidateCredentials) {}
 
   private static toDto(payload: JwtPayload): TenantIdentity {
     // @ts-ignore
@@ -26,7 +25,7 @@ export class AuthService {
     const domains = payload['domains'];
     // @ts-ignore
     const permissions = payload['permissions'];
-    return {email, domains, name, permissions, oid};
+    return { email, domains, name, permissions, oid };
   }
 
   login(token: string) {
@@ -43,7 +42,6 @@ export class AuthService {
   }
 
   isAllowed(permissions: string[]) {
-    console.log(this.payload?.permissions)
     return !permissions.some((p) => {
       return !this.payload?.permissions.includes(p);
     });
@@ -53,8 +51,15 @@ export class AuthService {
     this.accessToken = undefined;
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.payload != null;
+  }
+
+  getDomains(): string[] {
+    if (this.payload) {
+      return this.payload.domains;
+    }
+    return [];
   }
 
   getToken(): string {

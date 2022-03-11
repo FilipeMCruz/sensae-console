@@ -6,6 +6,10 @@ export interface ViewDomainInfoResultDTO {
   viewDomainInfo: DomainInfoDTO;
 }
 
+export interface ViewChildDomainInfoResultDTO {
+  viewChildDomainsInfo: DomainInfoDTO[];
+}
+
 export interface ViewTenantsInDomainResultDTO {
   viewTenantsInDomain: TenantDTO[];
 }

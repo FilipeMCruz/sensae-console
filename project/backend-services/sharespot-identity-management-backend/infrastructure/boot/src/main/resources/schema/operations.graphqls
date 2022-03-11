@@ -2,6 +2,7 @@ type Query {
     authenticate: AccessToken
     viewDomain(domain: ViewDomain): [Domain]
     viewDomainInfo(domain: ViewDomain): DomainInfo
+    viewChildDomainsInfo(domain: ViewDomain): [DomainInfo]
     viewDevicesInDomain(domain: ViewDomain): [Device]
     viewTenantsInDomain(domain: ViewDomain): [Tenant]
 }

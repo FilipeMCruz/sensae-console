@@ -4,7 +4,7 @@ import {FlatTreeControl} from '@angular/cdk/tree';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {CreateDomain, GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
-import {Domain, DomainInfo} from '@frontend-services/identity-management/model';
+import {Domain, DomainInfo, TenantInfo} from '@frontend-services/identity-management/model';
 import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({providedIn: 'root'})
@@ -150,5 +150,13 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     }
     this.data.splice(index + 1, 0, node);
     this.dataChange.next(this.data);
+  }
+
+  updateDomainWithTenant(domain: DomainInfo, tenant: TenantInfo) {
+    const found = this.dataChange.value.find(d => d.item.domain.id === domain.domain.id);
+    if (!found) {
+      return;
+    }
+    found.item.tenants.push(tenant);
   }
 }

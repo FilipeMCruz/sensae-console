@@ -55,8 +55,7 @@ public class MoveTenant {
         tenantToPlace.getDomains().removeIf(d -> d.equals(domain.getOid()));
 
         if (tenantToPlace.getDomains().isEmpty()) {
-            var unallocatedRootDomain = domainRepo.getUnallocatedRootDomain();
-            tenantToPlace.getDomains().add(unallocatedRootDomain.getOid());
+            throw new NotValidException("Tenant has to belong to at least one Domain");
         }
 
         var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);

@@ -23,6 +23,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {DomainInfoComponent} from "./domain-info/domain-info.component";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [IdentityManagementPageComponent, DomainInfoComponent],
@@ -54,6 +55,7 @@ import {DomainInfoComponent} from "./domain-info/domain-info.component";
     ]),
     MatTreeModule,
     MatProgressBarModule,
+    MatMenuModule,
   ],
   providers: [],
 })

@@ -1,16 +1,31 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
-import {DeviceInfo, DevicePermissionType, DomainInfo} from "@frontend-services/identity-management/model";
+import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
+import {DeviceInfo, DevicePermissionType, DomainInfo, TenantInfo} from "@frontend-services/identity-management/model";
 import {DynamicFlatNode} from "../dinamic-data-source/dinamic-data-source";
+import {AddTenant, RemoveTenant} from "@frontend-services/identity-management/services";
 
 @Component({
   selector: 'frontend-services-domain-info',
   templateUrl: './domain-info.component.html',
   styleUrls: ['./domain-info.component.scss'],
 })
-export class DomainInfoComponent {
+export class DomainInfoComponent implements OnChanges {
+
+  @Input() domains: DomainInfo[] = []; //This will never happen
+
   @Input() entry: DynamicFlatNode = new DynamicFlatNode(DomainInfo.empty([''])); //This will never happen
 
-  @Output() newDomain = new EventEmitter<DynamicFlatNode>();
+  @Output() emmitNewDomain = new EventEmitter<DynamicFlatNode>();
+
+  @Output() emmitNewTenantInDomain = new EventEmitter<{ domain: DomainInfo, tenant: TenantInfo }>();
+
+  currentDomains: DomainInfo[] = [];
+
+  constructor(private removeTenantService: RemoveTenant, private addTenantService: AddTenant) {
+  }
+
+  ngOnChanges(): void {
+    this.currentDomains = this.domains.filter(d => d.domain.id != this.entry.item.domain.id);
+  }
 
   getPermission(device: DeviceInfo): DevicePermissionType {
     const deviceDomainPermission = device.domains.find(d => d.domainId == this.entry.item.domain.id);
@@ -21,13 +36,26 @@ export class DomainInfoComponent {
     }
   }
 
-  saveNewDomain() {
-    this.newDomain.emit(this.entry);
+  newDomain() {
+    this.emmitNewDomain.emit(this.entry);
     this.resetView();
   }
 
   private resetView() {
     const path = [...this.entry.item.domain.path];
     this.entry.item = DomainInfo.empty(path);
+  }
+
+  removeTenant(tenant: TenantInfo) {
+    this.removeTenantService.mutate(tenant.id, this.entry.item.domain.id)
+      .subscribe(next => {
+        const index = this.entry.item.tenants.findIndex(d => d.id === next.id); //find index in your array
+        this.entry.item.tenants.splice(index, 1);
+      });
+  }
+
+  addTenant(tenant: TenantInfo, domain: DomainInfo) {
+    this.addTenantService.mutate(tenant.id, domain.domain.id)
+      .subscribe(next => this.emmitNewTenantInDomain.emit({domain, tenant: next}))
   }
 }

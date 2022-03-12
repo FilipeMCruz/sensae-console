@@ -9,6 +9,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class TenantMapper {
 
@@ -25,7 +26,8 @@ public class TenantMapper {
         var name = TenantName.of(postgres.name);
         var oid = TenantId.of(UUID.fromString(postgres.oid));
         var email = TenantEmail.of(postgres.email);
-        var domains = Arrays.stream(postgres.domains).map(d -> DomainId.of(UUID.fromString(d))).toList();
+        var domains = Arrays.stream(postgres.domains).map(d -> DomainId.of(UUID.fromString(d)))
+                .collect(Collectors.toList());
         return new Tenant(oid, name, email, domains);
     }
 }

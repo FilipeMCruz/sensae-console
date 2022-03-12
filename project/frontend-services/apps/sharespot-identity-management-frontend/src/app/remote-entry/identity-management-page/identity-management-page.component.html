@@ -2,7 +2,9 @@
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <button mat-icon-button disabled></button>
-      <frontend-services-domain-info class="item" [entry]="node" (newDomain)="onNewDomain($event)">
+      <frontend-services-domain-info class="item" [entry]="node" [domains]="getDomains()"
+                                     (emmitNewDomain)="onNewDomain($event)"
+                                     (emmitNewTenantInDomain)="onNewTenantInDomain($event)">
       </frontend-services-domain-info>
     </mat-tree-node>
     <mat-tree-node
@@ -18,7 +20,9 @@
           {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
         </mat-icon>
       </button>
-      <frontend-services-domain-info class="item" [entry]="node">
+      <frontend-services-domain-info class="item" [entry]="node" [domains]="getDomains()"
+                                     (emmitNewDomain)="onNewDomain($event)"
+                                     (emmitNewTenantInDomain)="onNewTenantInDomain($event)">
       </frontend-services-domain-info>
     </mat-tree-node>
   </mat-tree>

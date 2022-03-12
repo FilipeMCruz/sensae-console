@@ -5,23 +5,29 @@ import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {CreateDomain, GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
 import {Domain, DomainInfo} from '@frontend-services/identity-management/model';
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({providedIn: 'root'})
 export class DynamicDatabase {
   constructor(
     private getChildDomainsInfo: GetChildDomainsInfo,
     private getDomainInfo: GetDomainInfo,
-    private createDomain: CreateDomain
+    private createDomain: CreateDomain,
+    private authService: AuthService
   ) {
   }
 
-  initialData(domains: string[]): Observable<DynamicFlatNode[]> {
-    const domainObs: Observable<DynamicFlatNode>[] = domains.map((d) =>
+  initialData(): Observable<DynamicFlatNode[]> {
+    const domainObs: Observable<DynamicFlatNode>[] = this.authService.getDomains().map((d) =>
       this.getDomainInfo
         .query(d)
         .pipe(map((next) => new DynamicFlatNode(next, 0, true)))
     );
     return forkJoin(domainObs);
+  }
+
+  userCanCreateDomains() {
+    return this.authService.isAllowed(['identity_management:domains:create']);
   }
 
   getChildren(node: string): Observable<DomainInfo[]> {
@@ -59,15 +65,6 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase
   ) {
-  }
-
-  //TODO: fix this logic
-  updateParent(node: DynamicFlatNode) {
-    const parent = this.dataChange.value.find(d => d.item.domain.id === node.item.domain.path[node.item.domain.path.length - 2]);
-    if (parent) {
-      this.toggleNode(parent, false);
-      this.toggleNode(parent, true);
-    }
   }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
@@ -119,7 +116,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
           (info: DomainInfo) =>
             new DynamicFlatNode(info, node.level + 1, info.canHaveNewChild())
         );
-        if (node.item.canHaveNewChild()) {
+        if (node.item.canHaveNewChild() && this._database.userCanCreateDomains()) {
           nodes.push(
             new DynamicFlatNode(DomainInfo.empty([...node.item.domain.path, '']), node.level + 1, false)
           );
@@ -139,5 +136,19 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       this.data.splice(index + 1, count);
       this.dataChange.next(this.data);
     }
+  }
+
+  updateNode(node: DynamicFlatNode) {
+    const parent = this.dataChange.value.find(d => d.item.domain.id === node.item.domain.path[node.item.domain.path.length - 2]);
+    if (!parent) {
+      return;
+    }
+    const index = this.data.indexOf(parent);
+    if (index < 0) {
+      // If no children, or cannot find the node, no op
+      return;
+    }
+    this.data.splice(index + 1, 0, node);
+    this.dataChange.next(this.data);
   }
 }

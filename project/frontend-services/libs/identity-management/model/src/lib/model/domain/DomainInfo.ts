@@ -14,6 +14,10 @@ export class DomainInfo {
     return new DomainInfo(new Domain('', '', path), [], []);
   }
 
+  static of(domain: Domain) {
+    return new DomainInfo(domain, [], []);
+  }
+
   public isNew() {
     return this.domain.id == '';
   }

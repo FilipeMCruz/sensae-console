@@ -18,9 +18,10 @@ export class DomainInfoComponent implements OnChanges {
 
   @Output() emmitNewTenantInDomain = new EventEmitter<{ domain: DomainInfo, tenant: TenantInfo }>();
 
-  @Output() emmitNewDeviceInDomain = new EventEmitter<{domain: DomainInfo, device: DeviceInfo}>();
+  @Output() emmitNewDeviceInDomain = new EventEmitter<{ domain: DomainInfo, device: DeviceInfo }>();
 
-  currentDomains: DomainInfo[] = [];
+  currentDomainsForTenants: DomainInfo[] = [];
+  currentDomainsForDevices: DomainInfo[] = [];
 
   constructor(private removeTenantService: RemoveTenant,
               private addTenantService: AddTenant,
@@ -29,7 +30,18 @@ export class DomainInfoComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.currentDomains = this.domains.filter(d => d.domain.id != this.entry.item.domain.id);
+    this.currentDomainsForTenants = this.domains.filter(d => d.domain.id != this.entry.item.domain.id);
+    this.currentDomainsForDevices = this.domains.filter(d => d.domain.id != this.entry.item.domain.id)
+      .filter(d => !d.isUnallocated());
+  }
+
+  getValidDomainsForDevice(device: DeviceInfo) {
+    const deviceDomains = device.domains.map(d => d.domainId);
+    return this.currentDomainsForDevices.filter(d => !deviceDomains.includes(d.domain.id))
+  }
+
+  getValidDomainsForTenant(tenant: TenantInfo) {
+    return this.currentDomainsForTenants.filter(d => !d.tenants.includes(tenant));
   }
 
   getPermission(device: DeviceInfo): DevicePermissionType {
@@ -72,8 +84,8 @@ export class DomainInfoComponent implements OnChanges {
       });
   }
 
-  addDevice(device: any, domain: DomainInfo, b: boolean) {
+  addDevice(device: DeviceInfo, domain: DomainInfo, b: boolean) {
     this.addDeviceService.mutate(device.id, domain.domain.id, b)
-      .subscribe(next => this.emmitNewDeviceInDomain.emit({domain, device: next));
+      .subscribe(next => this.emmitNewDeviceInDomain.emit({domain, device: next}));
   }
 }

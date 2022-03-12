@@ -9,6 +9,8 @@ import sharespot.services.identitymanagementbackend.application.model.device.Exp
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.application.service.device.PlaceDeviceInDomainService;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthMiddleware;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.device.ExpelDeviceFromDomainDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.device.PlaceDeviceInDomainDTOImpl;
 
 @DgsComponent
 public class DeviceTransporterController {
@@ -20,12 +22,12 @@ public class DeviceTransporterController {
     }
 
     @DgsMutation(field = "addDevice")
-    public DeviceDTO addDevice(@InputArgument(value = "instructions") PlaceDeviceInDomainDTO info, @RequestHeader("Authorization") String auth) {
+    public DeviceDTO addDevice(@InputArgument(value = "instructions") PlaceDeviceInDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
         return service.place(info, AuthMiddleware.buildAccessToken(auth));
     }
 
     @DgsMutation(field = "removeDevice")
-    public DeviceDTO removeDevice(@InputArgument(value = "instructions") ExpelDeviceFromDomainDTO info, @RequestHeader("Authorization") String auth) {
+    public DeviceDTO removeDevice(@InputArgument(value = "instructions") ExpelDeviceFromDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
         return service.expel(info, AuthMiddleware.buildAccessToken(auth));
     }
 }

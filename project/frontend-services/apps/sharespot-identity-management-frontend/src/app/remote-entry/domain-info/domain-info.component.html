@@ -18,7 +18,7 @@
       </mat-nav-list>
       <mat-menu #tenantMenu="matMenu">
         <ng-template matMenuContent let-tenant="tenant">
-          <ng-container *ngIf="currentDomains.length !== 0">
+          <ng-container *ngIf="getValidDomainsForTenant(tenant).length !== 0">
             <button mat-menu-item [matMenuTriggerFor]="domainMenu" [matMenuTriggerData]="{tenant: tenant}">Add to other
               Domain
             </button>
@@ -28,7 +28,7 @@
       </mat-menu>
       <mat-menu #domainMenu="matMenu">
         <ng-template matMenuContent let-tenant="tenant">
-          <button mat-menu-item *ngFor="let domain of currentDomains"
+          <button mat-menu-item *ngFor="let domain of getValidDomainsForTenant(tenant)"
                   (click)="addTenant(tenant, domain)">{{domain.domain.name}}</button>
         </ng-template>
       </mat-menu>
@@ -49,12 +49,12 @@
       </mat-nav-list>
       <mat-menu #deviceMenu="matMenu">
         <ng-template matMenuContent let-device="device">
-          <ng-container *ngIf="currentDomains.length !== 0">
-            <button mat-menu-item [matMenuTriggerFor]="domainDeviceReadMenu" [matMenuTriggerData]="{tenant: device}">Add
+          <ng-container *ngIf="getValidDomainsForDevice(device).length !== 0">
+            <button mat-menu-item [matMenuTriggerFor]="domainDeviceReadMenu" [matMenuTriggerData]="{device: device}">Add
               to other
               Domain w/ R
             </button>
-            <button mat-menu-item [matMenuTriggerFor]="domainDeviceWriteMenu" [matMenuTriggerData]="{tenant: device}">
+            <button mat-menu-item [matMenuTriggerFor]="domainDeviceWriteMenu" [matMenuTriggerData]="{device: device}">
               Add
               to other
               Domain w/ WR
@@ -65,13 +65,13 @@
       </mat-menu>
       <mat-menu #domainDeviceReadMenu="matMenu">
         <ng-template matMenuContent let-device="device">
-          <button mat-menu-item *ngFor="let domain of currentDomains"
+          <button mat-menu-item *ngFor="let domain of getValidDomainsForDevice(device)"
                   (click)="addDevice(device, domain, false)">{{domain.domain.name}}</button>
         </ng-template>
       </mat-menu>
       <mat-menu #domainDeviceWriteMenu="matMenu">
         <ng-template matMenuContent let-device="device">
-          <button mat-menu-item *ngFor="let domain of currentDomains"
+          <button mat-menu-item *ngFor="let domain of getValidDomainsForDevice(device)"
                   (click)="addDevice(device, domain, true)">{{domain.domain.name}}</button>
         </ng-template>
       </mat-menu>

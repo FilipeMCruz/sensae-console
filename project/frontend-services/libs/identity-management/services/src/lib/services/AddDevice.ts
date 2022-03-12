@@ -24,11 +24,13 @@ export class AddDevice {
     permission: boolean
   ): Observable<DeviceInfo> {
     const mutation = gql`
-      mutation addTenant($instructions: AddTenantToDomain) {
-        addTenant(instructions: $instructions) {
+      mutation addDevice($instructions: AddDeviceToDomain) {
+        addDevice(instructions: $instructions) {
           oid
-          email
-          name
+          domains {
+            oid
+            permission
+          }
         }
       }
     `;

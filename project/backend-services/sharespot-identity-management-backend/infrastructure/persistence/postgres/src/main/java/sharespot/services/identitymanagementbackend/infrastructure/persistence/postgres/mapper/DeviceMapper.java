@@ -37,7 +37,7 @@ public class DeviceMapper {
                         d.permission.type == 0 ?
                                 DevicePermissions.READ :
                                 DevicePermissions.READ_WRITE))
-                .toList();
+                .collect(Collectors.toList());
         return new Device(oid, domains);
     }
 }

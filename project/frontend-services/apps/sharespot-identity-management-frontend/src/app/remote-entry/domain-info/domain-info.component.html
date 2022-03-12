@@ -10,13 +10,13 @@
           <mat-icon mat-list-icon>account_circle</mat-icon>
           <div mat-line><strong>Name: </strong>{{tenant.name}}</div>
           <div mat-line><strong>Email: </strong>{{tenant.email}} </div>
-          <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu"
+          <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="tenantMenu"
                   [matMenuTriggerData]="{tenant: tenant}">
             <mat-icon>more_vert</mat-icon>
           </button>
         </mat-list-item>
       </mat-nav-list>
-      <mat-menu #menu="matMenu">
+      <mat-menu #tenantMenu="matMenu">
         <ng-template matMenuContent let-tenant="tenant">
           <ng-container *ngIf="currentDomains.length !== 0">
             <button mat-menu-item [matMenuTriggerFor]="domainMenu" [matMenuTriggerData]="{tenant: tenant}">Add to other
@@ -36,13 +36,45 @@
     <ng-container *ngIf="!entry.item.isUnallocated()">
       <mat-divider></mat-divider>
       <div mat-subheader>Devices</div>
-      <mat-list>
-        <mat-list-item *ngFor="let device of entry.item.devices">
+      <mat-nav-list>
+        <mat-list-item (click)="trigger.openMenu()" *ngFor="let device of entry.item.devices">
           <mat-icon mat-list-icon>sensors</mat-icon>
           <div mat-line><strong>Id: </strong>{{device.id}}</div>
           <div mat-line><strong>Domain Permission: </strong>{{getPermission(device)}} </div>
+          <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="deviceMenu"
+                  [matMenuTriggerData]="{device: device}">
+            <mat-icon>more_vert</mat-icon>
+          </button>
         </mat-list-item>
-      </mat-list>
+      </mat-nav-list>
+      <mat-menu #deviceMenu="matMenu">
+        <ng-template matMenuContent let-device="device">
+          <ng-container *ngIf="currentDomains.length !== 0">
+            <button mat-menu-item [matMenuTriggerFor]="domainDeviceReadMenu" [matMenuTriggerData]="{tenant: device}">Add
+              to other
+              Domain w/ R
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="domainDeviceWriteMenu" [matMenuTriggerData]="{tenant: device}">
+              Add
+              to other
+              Domain w/ WR
+            </button>
+          </ng-container>
+          <button mat-menu-item (click)="removeDevice(device)">Remove from this Domain</button>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #domainDeviceReadMenu="matMenu">
+        <ng-template matMenuContent let-device="device">
+          <button mat-menu-item *ngFor="let domain of currentDomains"
+                  (click)="addDevice(device, domain, false)">{{domain.domain.name}}</button>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #domainDeviceWriteMenu="matMenu">
+        <ng-template matMenuContent let-device="device">
+          <button mat-menu-item *ngFor="let domain of currentDomains"
+                  (click)="addDevice(device, domain, true)">{{domain.domain.name}}</button>
+        </ng-template>
+      </mat-menu>
     </ng-container>
   </mat-card-content>
 </mat-card>

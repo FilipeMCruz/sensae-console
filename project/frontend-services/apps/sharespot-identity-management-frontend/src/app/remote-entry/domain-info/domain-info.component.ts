@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
 import {DeviceInfo, DevicePermissionType, DomainInfo, TenantInfo} from "@frontend-services/identity-management/model";
 import {DynamicFlatNode} from "../dinamic-data-source/dinamic-data-source";
-import {AddTenant, RemoveTenant} from "@frontend-services/identity-management/services";
+import {AddDevice, AddTenant, RemoveDevice, RemoveTenant} from "@frontend-services/identity-management/services";
 
 @Component({
   selector: 'frontend-services-domain-info',
@@ -18,9 +18,14 @@ export class DomainInfoComponent implements OnChanges {
 
   @Output() emmitNewTenantInDomain = new EventEmitter<{ domain: DomainInfo, tenant: TenantInfo }>();
 
+  @Output() emmitNewDeviceInDomain = new EventEmitter<{domain: DomainInfo, device: DeviceInfo}>();
+
   currentDomains: DomainInfo[] = [];
 
-  constructor(private removeTenantService: RemoveTenant, private addTenantService: AddTenant) {
+  constructor(private removeTenantService: RemoveTenant,
+              private addTenantService: AddTenant,
+              private removeDeviceService: RemoveDevice,
+              private addDeviceService: AddDevice) {
   }
 
   ngOnChanges(): void {
@@ -57,5 +62,18 @@ export class DomainInfoComponent implements OnChanges {
   addTenant(tenant: TenantInfo, domain: DomainInfo) {
     this.addTenantService.mutate(tenant.id, domain.domain.id)
       .subscribe(next => this.emmitNewTenantInDomain.emit({domain, tenant: next}))
+  }
+
+  removeDevice(device: DeviceInfo) {
+    this.removeDeviceService.mutate(device.id, this.entry.item.domain.id)
+      .subscribe(next => {
+        const index = this.entry.item.devices.findIndex(d => d.id === next.id); //find index in your array
+        this.entry.item.devices.splice(index, 1);
+      });
+  }
+
+  addDevice(device: any, domain: DomainInfo, b: boolean) {
+    this.addDeviceService.mutate(device.id, domain.domain.id, b)
+      .subscribe(next => this.emmitNewDeviceInDomain.emit({domain, device: next));
   }
 }

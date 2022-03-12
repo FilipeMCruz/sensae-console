@@ -19,7 +19,7 @@ export class AddDevice {
   constructor(private apollo: Apollo, private auth: AuthService) {}
 
   mutate(
-    tenantId: string,
+    deviceId: string,
     domainId: string,
     permission: boolean
   ): Observable<DeviceInfo> {
@@ -42,7 +42,7 @@ export class AddDevice {
             'Bearer ' + this.auth.getToken()
           ),
         },
-        variables: QueryMapper.toAddDevice(tenantId, domainId, permission),
+        variables: QueryMapper.toAddDevice(deviceId, domainId, permission),
       })
       .pipe(
         map(extract),

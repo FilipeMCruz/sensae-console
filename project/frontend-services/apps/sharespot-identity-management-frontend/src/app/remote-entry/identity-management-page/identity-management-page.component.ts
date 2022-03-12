@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {DynamicDatabase, DynamicDataSource, DynamicFlatNode,} from '../dinamic-data-source/dinamic-data-source';
 import {FlatTreeControl} from '@angular/cdk/tree';
-import {DomainInfo, TenantInfo} from "@frontend-services/identity-management/model";
+import {DeviceInfo, DomainInfo, TenantInfo} from "@frontend-services/identity-management/model";
 
 @Component({
   selector: 'frontend-services-device-record-page',
@@ -17,7 +17,10 @@ export class IdentityManagementPageComponent {
     this.dataSource = new DynamicDataSource(this.treeControl, database);
 
     database.initialData()
-      .subscribe((value) => (this.dataSource.data = value));
+      .subscribe(value => {
+        const startLength = Math.min(...value.map(v => v.item.domain.path.length));
+        this.dataSource.data = value.filter(v => v.item.domain.path.length == startLength);
+      });
   }
 
   treeControl: FlatTreeControl<DynamicFlatNode>;
@@ -43,5 +46,9 @@ export class IdentityManagementPageComponent {
 
   onNewTenantInDomain(event: { domain: DomainInfo; tenant: TenantInfo }) {
     this.dataSource.updateDomainWithTenant(event.domain, event.tenant);
+  }
+
+  onNewDeviceInDomain(event: { domain: DomainInfo; device: DeviceInfo }) {
+    this.dataSource.updateDomainWithDevice(event.domain, event.device);
   }
 }

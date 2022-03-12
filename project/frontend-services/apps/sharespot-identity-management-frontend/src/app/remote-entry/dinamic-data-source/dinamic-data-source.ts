@@ -4,7 +4,7 @@ import {FlatTreeControl} from '@angular/cdk/tree';
 import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {CreateDomain, GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
-import {Domain, DomainInfo, TenantInfo} from '@frontend-services/identity-management/model';
+import {DeviceInfo, Domain, DomainInfo, TenantInfo} from '@frontend-services/identity-management/model';
 import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Injectable({providedIn: 'root'})
@@ -21,7 +21,7 @@ export class DynamicDatabase {
     const domainObs: Observable<DynamicFlatNode>[] = this.authService.getDomains().map((d) =>
       this.getDomainInfo
         .query(d)
-        .pipe(map((next) => new DynamicFlatNode(next, 0, true)))
+        .pipe(map((next) => new DynamicFlatNode(next, 0, next.canHaveNewChild())))
     );
     return forkJoin(domainObs);
   }
@@ -158,5 +158,13 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
       return;
     }
     found.item.tenants.push(tenant);
+  }
+
+  updateDomainWithDevice(domain: DomainInfo, device: DeviceInfo) {
+    const found = this.dataChange.value.find(d => d.item.domain.id === domain.domain.id);
+    if (!found) {
+      return;
+    }
+    found.item.devices.push(device);
   }
 }

@@ -1,4 +1,4 @@
-import {DomainPermissionType} from "./DomainPermissionType";
+import { DomainPermissionType } from './DomainPermissionType';
 
 export class Domain {
   constructor(
@@ -6,6 +6,5 @@ export class Domain {
     public name: string,
     public path: Array<string>,
     public permissions: Array<DomainPermissionType>
-  ) {
-  }
+  ) {}
 }

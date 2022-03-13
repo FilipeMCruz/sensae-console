@@ -1,28 +1,44 @@
-import {CollectionViewer, DataSource, SelectionChange,} from '@angular/cdk/collections';
-import {BehaviorSubject, forkJoin, merge, Observable} from 'rxjs';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {map} from 'rxjs/operators';
-import {Injectable} from '@angular/core';
-import {CreateDomain, GetChildDomainsInfo, GetDomainInfo,} from '@frontend-services/identity-management/services';
-import {DeviceInfo, Domain, DomainInfo, TenantInfo} from '@frontend-services/identity-management/model';
-import {AuthService} from "@frontend-services/simple-auth-lib";
+import {
+  CollectionViewer,
+  DataSource,
+  SelectionChange,
+} from '@angular/cdk/collections';
+import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import {
+  CreateDomain,
+  GetChildDomainsInfo,
+  GetDomainInfo,
+} from '@frontend-services/identity-management/services';
+import {
+  DeviceInfo,
+  Domain,
+  DomainInfo,
+  TenantInfo,
+} from '@frontend-services/identity-management/model';
+import { AuthService } from '@frontend-services/simple-auth-lib';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DynamicDatabase {
   constructor(
     private getChildDomainsInfo: GetChildDomainsInfo,
     private getDomainInfo: GetDomainInfo,
     private createDomain: CreateDomain,
     private authService: AuthService
-  ) {
-  }
+  ) {}
 
   initialData(): Observable<DynamicFlatNode[]> {
-    const domainObs: Observable<DynamicFlatNode>[] = this.authService.getDomains().map((d) =>
-      this.getDomainInfo
-        .query(d)
-        .pipe(map((next) => new DynamicFlatNode(next, 0, next.canHaveNewChild())))
-    );
+    const domainObs: Observable<DynamicFlatNode>[] = this.authService
+      .getDomains()
+      .map((d) =>
+        this.getDomainInfo
+          .query(d)
+          .pipe(
+            map((next) => new DynamicFlatNode(next, 0, next.canHaveNewChild()))
+          )
+      );
     return forkJoin(domainObs);
   }
 
@@ -35,7 +51,10 @@ export class DynamicDatabase {
   }
 
   createNewDomain(event: DomainInfo): Observable<Domain> {
-    return this.createDomain.mutate(event.domain.path[event.domain.path.length - 2], event.domain.name);
+    return this.createDomain.mutate(
+      event.domain.path[event.domain.path.length - 2],
+      event.domain.name
+    );
   }
 }
 
@@ -45,8 +64,7 @@ export class DynamicFlatNode {
     public level = 1,
     public expandable = true,
     public isLoading = false
-  ) {
-  }
+  ) {}
 }
 
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
@@ -64,8 +82,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase
-  ) {
-  }
+  ) {}
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe((change) => {
@@ -82,8 +99,7 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     );
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
-  }
+  disconnect(collectionViewer: CollectionViewer): void {}
 
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
@@ -116,9 +132,16 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
           (info: DomainInfo) =>
             new DynamicFlatNode(info, node.level + 1, info.canHaveNewChild())
         );
-        if (node.item.canHaveNewChild() && this._database.userCanCreateDomains()) {
+        if (
+          node.item.canHaveNewChild() &&
+          this._database.userCanCreateDomains()
+        ) {
           nodes.push(
-            new DynamicFlatNode(DomainInfo.empty([...node.item.domain.path, '']), node.level + 1, false)
+            new DynamicFlatNode(
+              DomainInfo.empty([...node.item.domain.path, '']),
+              node.level + 1,
+              false
+            )
           );
         }
         this.data.splice(index + 1, 0, ...nodes);
@@ -131,15 +154,18 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         let i = index + 1;
         i < this.data.length && this.data[i].level > node.level;
         i++, count++
-      ) {
-      }
+      ) {}
       this.data.splice(index + 1, count);
       this.dataChange.next(this.data);
     }
   }
 
   updateNode(node: DynamicFlatNode) {
-    const parent = this.dataChange.value.find(d => d.item.domain.id === node.item.domain.path[node.item.domain.path.length - 2]);
+    const parent = this.dataChange.value.find(
+      (d) =>
+        d.item.domain.id ===
+        node.item.domain.path[node.item.domain.path.length - 2]
+    );
     if (!parent) {
       return;
     }
@@ -153,7 +179,9 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   }
 
   updateDomainWithTenant(domain: DomainInfo, tenant: TenantInfo) {
-    const found = this.dataChange.value.find(d => d.item.domain.id === domain.domain.id);
+    const found = this.dataChange.value.find(
+      (d) => d.item.domain.id === domain.domain.id
+    );
     if (!found) {
       return;
     }
@@ -161,7 +189,9 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   }
 
   updateDomainWithDevice(domain: DomainInfo, device: DeviceInfo) {
-    const found = this.dataChange.value.find(d => d.item.domain.id === domain.domain.id);
+    const found = this.dataChange.value.find(
+      (d) => d.item.domain.id === domain.domain.id
+    );
     if (!found) {
       return;
     }

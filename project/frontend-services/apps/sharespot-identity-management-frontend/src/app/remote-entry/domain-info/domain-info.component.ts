@@ -1,7 +1,23 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from "@angular/core";
-import {DeviceInfo, DevicePermissionType, DomainInfo, TenantInfo} from "@frontend-services/identity-management/model";
-import {DynamicFlatNode} from "../dinamic-data-source/dinamic-data-source";
-import {AddDevice, AddTenant, RemoveDevice, RemoveTenant} from "@frontend-services/identity-management/services";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
+import {
+  DeviceInfo,
+  DevicePermissionType,
+  DomainInfo,
+  TenantInfo,
+} from '@frontend-services/identity-management/model';
+import { DynamicFlatNode } from '../dinamic-data-source/dinamic-data-source';
+import {
+  AddDevice,
+  AddTenant,
+  RemoveDevice,
+  RemoveTenant,
+} from '@frontend-services/identity-management/services';
 
 @Component({
   selector: 'frontend-services-domain-info',
@@ -9,43 +25,58 @@ import {AddDevice, AddTenant, RemoveDevice, RemoveTenant} from "@frontend-servic
   styleUrls: ['./domain-info.component.scss'],
 })
 export class DomainInfoComponent implements OnChanges {
-
   @Input() domains: DomainInfo[] = []; //This will never happen
 
   @Input() entry: DynamicFlatNode = new DynamicFlatNode(DomainInfo.empty([''])); //This will never happen
 
   @Output() emmitNewDomain = new EventEmitter<DynamicFlatNode>();
 
-  @Output() emmitNewTenantInDomain = new EventEmitter<{ domain: DomainInfo, tenant: TenantInfo }>();
+  @Output() emmitNewTenantInDomain = new EventEmitter<{
+    domain: DomainInfo;
+    tenant: TenantInfo;
+  }>();
 
-  @Output() emmitNewDeviceInDomain = new EventEmitter<{ domain: DomainInfo, device: DeviceInfo }>();
+  @Output() emmitNewDeviceInDomain = new EventEmitter<{
+    domain: DomainInfo;
+    device: DeviceInfo;
+  }>();
 
   currentDomainsForTenants: DomainInfo[] = [];
   currentDomainsForDevices: DomainInfo[] = [];
 
-  constructor(private removeTenantService: RemoveTenant,
-              private addTenantService: AddTenant,
-              private removeDeviceService: RemoveDevice,
-              private addDeviceService: AddDevice) {
-  }
+  constructor(
+    private removeTenantService: RemoveTenant,
+    private addTenantService: AddTenant,
+    private removeDeviceService: RemoveDevice,
+    private addDeviceService: AddDevice
+  ) {}
 
   ngOnChanges(): void {
-    this.currentDomainsForTenants = this.domains.filter(d => d.domain.id != this.entry.item.domain.id);
-    this.currentDomainsForDevices = this.domains.filter(d => d.domain.id != this.entry.item.domain.id)
-      .filter(d => !d.isUnallocated());
+    this.currentDomainsForTenants = this.domains.filter(
+      (d) => d.domain.id != this.entry.item.domain.id
+    );
+    this.currentDomainsForDevices = this.domains
+      .filter((d) => d.domain.id != this.entry.item.domain.id)
+      .filter((d) => !d.isUnallocated());
   }
 
   getValidDomainsForDevice(device: DeviceInfo) {
-    const deviceDomains = device.domains.map(d => d.domainId);
-    return this.currentDomainsForDevices.filter(d => !deviceDomains.includes(d.domain.id))
+    const deviceDomains = device.domains.map((d) => d.domainId);
+    return this.currentDomainsForDevices.filter(
+      (d) => !deviceDomains.includes(d.domain.id)
+    );
   }
 
   getValidDomainsForTenant(tenant: TenantInfo) {
-    return this.currentDomainsForTenants.filter(d => !d.tenants.includes(tenant));
+    return this.currentDomainsForTenants.filter(
+      (d) => !d.tenants.includes(tenant)
+    );
   }
 
   getPermission(device: DeviceInfo): DevicePermissionType {
-    const deviceDomainPermission = device.domains.find(d => d.domainId == this.entry.item.domain.id);
+    const deviceDomainPermission = device.domains.find(
+      (d) => d.domainId == this.entry.item.domain.id
+    );
     if (deviceDomainPermission) {
       return deviceDomainPermission.permission;
     } else {
@@ -64,28 +95,40 @@ export class DomainInfoComponent implements OnChanges {
   }
 
   removeTenant(tenant: TenantInfo) {
-    this.removeTenantService.mutate(tenant.id, this.entry.item.domain.id)
-      .subscribe(next => {
-        const index = this.entry.item.tenants.findIndex(d => d.id === next.id); //find index in your array
+    this.removeTenantService
+      .mutate(tenant.id, this.entry.item.domain.id)
+      .subscribe((next) => {
+        const index = this.entry.item.tenants.findIndex(
+          (d) => d.id === next.id
+        ); //find index in your array
         this.entry.item.tenants.splice(index, 1);
       });
   }
 
   addTenant(tenant: TenantInfo, domain: DomainInfo) {
-    this.addTenantService.mutate(tenant.id, domain.domain.id)
-      .subscribe(next => this.emmitNewTenantInDomain.emit({domain, tenant: next}))
+    this.addTenantService
+      .mutate(tenant.id, domain.domain.id)
+      .subscribe((next) =>
+        this.emmitNewTenantInDomain.emit({ domain, tenant: next })
+      );
   }
 
   removeDevice(device: DeviceInfo) {
-    this.removeDeviceService.mutate(device.id, this.entry.item.domain.id)
-      .subscribe(next => {
-        const index = this.entry.item.devices.findIndex(d => d.id === next.id); //find index in your array
+    this.removeDeviceService
+      .mutate(device.id, this.entry.item.domain.id)
+      .subscribe((next) => {
+        const index = this.entry.item.devices.findIndex(
+          (d) => d.id === next.id
+        ); //find index in your array
         this.entry.item.devices.splice(index, 1);
       });
   }
 
   addDevice(device: DeviceInfo, domain: DomainInfo, b: boolean) {
-    this.addDeviceService.mutate(device.id, domain.domain.id, b)
-      .subscribe(next => this.emmitNewDeviceInDomain.emit({domain, device: next}));
+    this.addDeviceService
+      .mutate(device.id, domain.domain.id, b)
+      .subscribe((next) =>
+        this.emmitNewDeviceInDomain.emit({ domain, device: next })
+      );
   }
 }

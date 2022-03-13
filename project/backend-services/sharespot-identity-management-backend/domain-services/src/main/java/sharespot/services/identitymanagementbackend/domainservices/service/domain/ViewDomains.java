@@ -30,7 +30,7 @@ public class ViewDomains {
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAIN));
 
         return domainRepo.getChildDomains(topId)
                 .map(DomainResultMapper::toResult);

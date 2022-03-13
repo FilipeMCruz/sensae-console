@@ -31,7 +31,7 @@ public class CreateDomain {
         var parentDomain = domainRepo.findDomainById(parentDomainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.WRITE_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.WRITE_DOMAIN));
 
         var domainName = DomainName.of(command.domainName);
         if (domainName.isUnallocated()) {

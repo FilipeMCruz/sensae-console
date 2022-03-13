@@ -34,6 +34,10 @@ export interface CreateDomainResultDTO {
   createDomain: DomainDTO;
 }
 
+export interface ChangeDomainResultDTO {
+  changeDomain: DomainDTO;
+}
+
 export interface CreateDomainDTO {
   parentDomainOid: string;
   newDomainName: string;
@@ -96,14 +100,11 @@ export interface RemoveTenantFromDomainDTO {
   domainOid: string;
 }
 
-export interface AccessTokenDTO {
-  token: string;
-}
-
 export interface DomainDTO {
   oid: string;
   name: string;
   path: string[];
+  permissions: string[];
 }
 
 export interface DomainInfoDTO {

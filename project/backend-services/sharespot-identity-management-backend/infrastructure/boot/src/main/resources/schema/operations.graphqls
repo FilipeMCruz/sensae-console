@@ -9,7 +9,7 @@ type Query {
 
 type Mutation {
     createDomain(domain: CreateDomain): Domain
-    changeDomain(domain: CreateDomain): Domain
+    changeDomain(domain: ChangeDomain): Domain
     addTenant(instructions: AddTenantToDomain): Tenant
     removeTenant(instructions: RemoveTenantFromDomain): Tenant
     addDevice(instructions: AddDeviceToDomain): Device

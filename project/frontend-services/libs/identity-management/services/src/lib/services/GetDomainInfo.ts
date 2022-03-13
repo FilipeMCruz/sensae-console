@@ -26,6 +26,7 @@ export class GetDomainInfo {
             oid
             name
             path
+            permissions
           }
           devices {
             oid

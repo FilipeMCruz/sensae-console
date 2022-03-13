@@ -35,7 +35,7 @@ public class ChangeDomain {
         var domain = repository.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DOMAIN));
 
         if (domain.isRoot()) {
             throw new NotValidException("Invalid Domain: Can't change root permissions");
@@ -44,7 +44,7 @@ public class ChangeDomain {
         var parentDomain = repository.findDomainById(domain.getPath().getParent())
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.WRITE_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.READ_DOMAIN));
 
         var domainName = DomainName.of(command.domainName);
         if (domainName.isUnallocated()) {
@@ -57,20 +57,20 @@ public class ChangeDomain {
                 .filter(availablePermissions::contains)
                 .collect(Collectors.toSet());
 
-        if (permissions.contains(PermissionType.WRITE_DEVICE_RECORDS)) {
-            permissions.add(PermissionType.READ_DEVICE_RECORDS);
+        if (permissions.contains(PermissionType.WRITE_DEVICE_RECORD)) {
+            permissions.add(PermissionType.READ_DEVICE_RECORD);
         }
 
-        if (permissions.contains(PermissionType.WRITE_DATA_TRANSFORMATIONS)) {
-            permissions.add(PermissionType.READ_DATA_TRANSFORMATIONS);
+        if (permissions.contains(PermissionType.WRITE_DATA_TRANSFORMATION)) {
+            permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
         }
 
         if (permissions.contains(PermissionType.WRITE_DEVICE)) {
             permissions.add(PermissionType.READ_DEVICE);
         }
 
-        if (permissions.contains(PermissionType.WRITE_DOMAINS)) {
-            permissions.add(PermissionType.READ_DOMAINS);
+        if (permissions.contains(PermissionType.WRITE_DOMAIN)) {
+            permissions.add(PermissionType.READ_DOMAIN);
         }
 
         if (permissions.contains(PermissionType.WRITE_TENANT)) {

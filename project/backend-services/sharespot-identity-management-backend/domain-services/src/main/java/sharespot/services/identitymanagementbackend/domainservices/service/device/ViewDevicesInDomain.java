@@ -6,11 +6,11 @@ import sharespot.services.identitymanagementbackend.domain.identity.device.Devic
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
-import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.mapper.DeviceResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class ViewDevicesInDomain {
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DEVICE));
 
         return deviceRepo.getDevicesInDomain(top.getOid())
                 .map(DeviceResultMapper::toResult);

@@ -26,6 +26,7 @@ export class GetChildDomainsInfo {
             oid
             name
             path
+            permissions
           }
           devices {
             oid

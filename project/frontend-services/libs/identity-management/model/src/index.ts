@@ -5,3 +5,4 @@ export * from './lib/model/device/DevicePermissionType';
 export * from './lib/model/tenant/TenantInfo';
 export * from './lib/model/domain/Domain';
 export * from './lib/model/domain/DomainInfo';
+export * from './lib/model/domain/DomainPermissionType'

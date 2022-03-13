@@ -25,6 +25,7 @@ export class CreateDomain {
           oid
           name
           path
+          permissions
         }
       }
     `;

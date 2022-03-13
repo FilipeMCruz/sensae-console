@@ -9,3 +9,4 @@ export * from './lib/services/GetTenantsInDomain';
 export * from './lib/services/RemoveDevice';
 export * from './lib/services/RemoveTenant';
 export * from './lib/services/GetChildDomainsInfo';
+export * from './lib/services/ChangeDomain';

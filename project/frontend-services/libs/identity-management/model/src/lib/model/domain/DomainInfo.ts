@@ -11,7 +11,7 @@ export class DomainInfo {
   }
 
   static empty(path: string[]) {
-    return new DomainInfo(new Domain('', '', path), [], []);
+    return new DomainInfo(new Domain('', '', path, []), [], []);
   }
 
   static of(domain: Domain) {

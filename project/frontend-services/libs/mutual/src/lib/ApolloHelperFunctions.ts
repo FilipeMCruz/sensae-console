@@ -6,7 +6,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 export interface backendUriDetails {
   domain: string;
   http: uriDetails;
-  ws?: uriDetails;
+  websocket?: uriDetails;
 }
 
 export interface uriDetails {
@@ -15,7 +15,7 @@ export interface uriDetails {
 }
 
 export function createLink(httpLink: HttpLink, details: backendUriDetails) {
-  if (details.ws) {
+  if (details.websocket) {
     return createLinkWithWebsocket(httpLink, details);
   } else {
     return createSimpleLink(httpLink, details);
@@ -64,5 +64,5 @@ function buildHttpBackendUri(details: backendUriDetails): string {
 }
 
 function buildWebSocketBackendUri(details: backendUriDetails): string {
-  return details.ws?.scheme + details.domain + details.ws?.path;
+  return details.websocket?.scheme + details.domain + details.websocket?.path;
 }

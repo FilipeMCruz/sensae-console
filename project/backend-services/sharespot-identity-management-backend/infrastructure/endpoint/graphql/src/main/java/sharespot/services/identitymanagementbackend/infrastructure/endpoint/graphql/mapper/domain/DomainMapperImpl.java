@@ -54,6 +54,7 @@ public class DomainMapperImpl implements DomainMapper {
         domainDTO.name = result.domainName;
         domainDTO.oid = result.domainId.toString();
         domainDTO.path = result.path;
+        domainDTO.permissions = result.permissions;
         return domainDTO;
     }
 }

@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/ui-aggregator",
         "index": "apps/ui-aggregator/src/index.html",
@@ -18,7 +20,9 @@
           "apps/ui-aggregator/src/favicon.ico",
           "apps/ui-aggregator/src/assets"
         ],
-        "styles": ["apps/ui-aggregator/src/styles.scss"],
+        "styles": [
+          "apps/ui-aggregator/src/styles.scss"
+        ],
         "scripts": [],
         "customWebpackConfig": {
           "path": "apps/ui-aggregator/webpack.config.js"
@@ -42,6 +46,10 @@
             {
               "replace": "apps/ui-aggregator/src/environments/environment.ts",
               "with": "apps/ui-aggregator/src/environments/environment.prod.ts"
+            },
+            {
+              "replace": "apps/ui-aggregator/src/main.ts",
+              "with": "apps/ui-aggregator/src/main.prod.ts"
             }
           ],
           "outputHashing": "all",
@@ -90,7 +98,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/ui-aggregator"],
+      "outputs": [
+        "coverage/apps/ui-aggregator"
+      ],
       "options": {
         "jestConfig": "apps/ui-aggregator/jest.config.js",
         "passWithNoTests": true

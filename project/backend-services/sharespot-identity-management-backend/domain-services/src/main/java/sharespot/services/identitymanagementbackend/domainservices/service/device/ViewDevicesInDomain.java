@@ -7,10 +7,10 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
-import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.DeviceResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;

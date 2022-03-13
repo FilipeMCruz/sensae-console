@@ -7,9 +7,9 @@ import sharespot.services.identitymanagementbackend.domain.identity.permissions.
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
-import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.DomainResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class CreateDomain {
 
         var newDomain = domainRepo.addDomain(domain);
         if (parentDomain.isRoot()) {
-            domainRepo.addDomain(Domain.unallocated(domain));
+            domainRepo.addDomain(Domain.unallocated(newDomain));
         }
 
         return DomainResultMapper.toResult(newDomain);

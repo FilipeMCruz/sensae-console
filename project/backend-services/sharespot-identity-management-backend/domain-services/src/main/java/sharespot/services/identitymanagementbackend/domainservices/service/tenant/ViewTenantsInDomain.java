@@ -9,7 +9,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenan
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;

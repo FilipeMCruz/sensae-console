@@ -1,23 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
-import {
-  DeviceInfo,
-  DevicePermissionType,
-  DomainInfo,
-  TenantInfo,
-} from '@frontend-services/identity-management/model';
-import { DynamicFlatNode } from '../dinamic-data-source/dinamic-data-source';
-import {
-  AddDevice,
-  AddTenant,
-  RemoveDevice,
-  RemoveTenant,
-} from '@frontend-services/identity-management/services';
+import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
+import {DeviceInfo, DevicePermissionType, DomainInfo, TenantInfo,} from '@frontend-services/identity-management/model';
+import {DynamicFlatNode} from '../dinamic-data-source/dinamic-data-source';
+import {AddDevice, AddTenant, RemoveDevice, RemoveTenant,} from '@frontend-services/identity-management/services';
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
   selector: 'frontend-services-domain-info',
@@ -48,8 +33,22 @@ export class DomainInfoComponent implements OnChanges {
     private removeTenantService: RemoveTenant,
     private addTenantService: AddTenant,
     private removeDeviceService: RemoveDevice,
-    private addDeviceService: AddDevice
-  ) {}
+    private addDeviceService: AddDevice,
+    private authService: AuthService
+  ) {
+  }
+
+  canChangeDomains() {
+    return this.authService.isAllowed(Array.of("identity_management:domains:create"))
+  }
+
+  canChangeDevices() {
+    return this.authService.isAllowed(Array.of("identity_management:device:write"))
+  }
+
+  canChangeTenants() {
+    return this.authService.isAllowed(Array.of("identity_management:tenant:write"))
+  }
 
   ngOnChanges(): void {
     this.currentDomainsForTenants = this.domains.filter(
@@ -109,7 +108,7 @@ export class DomainInfoComponent implements OnChanges {
     this.addTenantService
       .mutate(tenant.id, domain.domain.id)
       .subscribe((next) =>
-        this.emmitNewTenantInDomain.emit({ domain, tenant: next })
+        this.emmitNewTenantInDomain.emit({domain, tenant: next})
       );
   }
 
@@ -128,7 +127,7 @@ export class DomainInfoComponent implements OnChanges {
     this.addDeviceService
       .mutate(device.id, domain.domain.id, b)
       .subscribe((next) =>
-        this.emmitNewDeviceInDomain.emit({ domain, device: next })
+        this.emmitNewDeviceInDomain.emit({domain, device: next})
       );
   }
 }

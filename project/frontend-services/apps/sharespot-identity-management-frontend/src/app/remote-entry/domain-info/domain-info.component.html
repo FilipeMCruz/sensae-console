@@ -3,7 +3,7 @@
   <mat-card-content>
     <ng-container>
       <div mat-subheader>Tenants</div>
-      <mat-nav-list>
+      <mat-nav-list *ngIf="canChangeTenants()">
         <mat-list-item
           (click)="trigger.openMenu()"
           *ngFor="let tenant of entry.item.tenants"
@@ -19,6 +19,15 @@
           >
             <mat-icon>more_vert</mat-icon>
           </button>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-nav-list *ngIf="!canChangeTenants()">
+        <mat-list-item
+          *ngFor="let tenant of entry.item.tenants"
+        >
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <div mat-line><strong>Name: </strong>{{ tenant.name }}</div>
+          <div mat-line><strong>Email: </strong>{{ tenant.email }}</div>
         </mat-list-item>
       </mat-nav-list>
       <mat-menu #tenantMenu="matMenu">
@@ -52,7 +61,7 @@
     <ng-container *ngIf="!entry.item.isUnallocated()">
       <mat-divider></mat-divider>
       <div mat-subheader>Devices</div>
-      <mat-nav-list>
+      <mat-nav-list *ngIf="canChangeDevices()">>
         <mat-list-item
           (click)="trigger.openMenu()"
           *ngFor="let device of entry.item.devices"
@@ -70,6 +79,17 @@
           >
             <mat-icon>more_vert</mat-icon>
           </button>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-nav-list *ngIf="!canChangeDevices()">>
+        <mat-list-item
+          *ngFor="let device of entry.item.devices"
+        >
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          <div mat-line><strong>Id: </strong>{{ device.id }}</div>
+          <div mat-line>
+            <strong>Domain Permission: </strong>{{ getPermission(device) }}
+          </div>
         </mat-list-item>
       </mat-nav-list>
       <mat-menu #deviceMenu="matMenu">
@@ -125,7 +145,7 @@
   <mat-card-content>
     <mat-form-field class="big-input">
       <mat-label>Domain Name</mat-label>
-      <input matInput [(ngModel)]="entry.item.domain.name" />
+      <input matInput [(ngModel)]="entry.item.domain.name"/>
       <mat-icon matSuffix>dns</mat-icon>
       <mat-hint>cmm</mat-hint>
     </mat-form-field>

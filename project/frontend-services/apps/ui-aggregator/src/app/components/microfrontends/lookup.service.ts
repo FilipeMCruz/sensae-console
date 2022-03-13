@@ -40,7 +40,6 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.SERVICE,
-          protected: true,
           permissions: Array.of('fleet_management:read'),
         },
       },
@@ -56,7 +55,6 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          protected: true,
           permissions: Array.of('device_records:records:read'),
         },
       },
@@ -72,7 +70,6 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          protected: true,
           permissions: Array.of('data_transformations:transformations:read'),
         },
       },
@@ -88,7 +85,6 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          protected: true,
           permissions: Array.of(
             'identity_management:domains:read',
             'identity_management:tenant:read',

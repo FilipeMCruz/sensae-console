@@ -7,20 +7,12 @@ import {AuthGuardService} from "../../services/AuthGuardService";
 export function buildRoutes(options: Microfrontend[]): Routes {
 
   const lazyRoutes: Routes = options.map(o => {
-      if (o.details.protected) {
-        return {
-          path: o.routePath,
-          loadChildren: () => loadRemoteModule(o).then(m => m[o.ngModuleName]),
-          canActivate: [AuthGuardService]
-        }
-      } else {
-        return {
-          path: o.routePath,
-          loadChildren: () => loadRemoteModule(o).then(m => m[o.ngModuleName])
-        }
-      }
+    return {
+      path: o.routePath,
+      loadChildren: () => loadRemoteModule(o).then(m => m[o.ngModuleName]),
+      canActivate: [AuthGuardService]
     }
-  );
+  });
 
   return [...APP_ROUTES, ...lazyRoutes, ...OTHER_ROUTES];
 }

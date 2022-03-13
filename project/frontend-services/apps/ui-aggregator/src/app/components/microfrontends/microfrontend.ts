@@ -1,4 +1,4 @@
-import { LoadRemoteModuleOptions } from '@angular-architects/module-federation';
+import {LoadRemoteModuleOptions} from '@angular-architects/module-federation';
 
 export type Microfrontend = LoadRemoteModuleOptions & {
   displayName: string;
@@ -10,7 +10,6 @@ export type Microfrontend = LoadRemoteModuleOptions & {
 
 export type MicrofrontendDetails = {
   type: MicrofrontendType;
-  protected: boolean;
   permissions: string[];
 };
 

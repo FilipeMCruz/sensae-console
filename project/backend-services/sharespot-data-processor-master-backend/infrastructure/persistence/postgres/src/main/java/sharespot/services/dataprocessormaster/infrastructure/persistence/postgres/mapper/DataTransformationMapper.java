@@ -24,20 +24,6 @@ public class DataTransformationMapper {
         return new DataTransformation(device, transformations);
     }
 
-    private static PropertyName postgresToDomain(PropertyNamePostgres postgres) {
-        return switch (postgres.value) {
-            case 0 -> PropertyName.DATA_ID;
-            case 1 -> PropertyName.DEVICE_ID;
-            case 2 -> PropertyName.DEVICE_NAME;
-            case 4 -> PropertyName.REPORTED_AT;
-            case 5 -> PropertyName.LATITUDE;
-            case 6 -> PropertyName.LONGITUDE;
-            case 7 -> PropertyName.TEMPERATURE;
-            case 8 -> PropertyName.MOTION;
-            default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
-        };
-    }
-
     public static DataTransformationPostgres domainToPostgres(DataTransformation domain) {
         var dataTransformationPostgres = new DataTransformationPostgres();
         dataTransformationPostgres.deviceType = domain.getId().getValue();
@@ -49,6 +35,7 @@ public class DataTransformationMapper {
                         var propertyTransformationPostgres = new PropertyTransformationPostgres();
                         propertyTransformationPostgres.oldPath = kpt.oldPath();
                         propertyTransformationPostgres.name = domainToPostgres(kpt.newPathLiteral());
+                        propertyTransformationPostgres.transformation = dataTransformationPostgres;
                         return propertyTransformationPostgres;
                     } else {
                         throw new IllegalStateException("Unexpected value: " + pt);
@@ -72,6 +59,24 @@ public class DataTransformationMapper {
             case HUMIDITY -> PropertyNamePostgres.humidity();
             case PRESSURE -> PropertyNamePostgres.pressure();
             case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS -> throw new RuntimeException();
+        };
+    }
+
+    private static PropertyName postgresToDomain(PropertyNamePostgres postgres) {
+        return switch (postgres.value) {
+            case 0 -> PropertyName.DATA_ID;
+            case 1 -> PropertyName.DEVICE_ID;
+            case 2 -> PropertyName.DEVICE_NAME;
+            case 4 -> PropertyName.REPORTED_AT;
+            case 5 -> PropertyName.LATITUDE;
+            case 6 -> PropertyName.LONGITUDE;
+            case 7 -> PropertyName.TEMPERATURE;
+            case 8 -> PropertyName.MOTION;
+            case 9 -> PropertyName.VELOCITY;
+            case 10 -> PropertyName.AQI;
+            case 11 -> PropertyName.HUMIDITY;
+            case 12 -> PropertyName.PRESSURE;
+            default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }
 }

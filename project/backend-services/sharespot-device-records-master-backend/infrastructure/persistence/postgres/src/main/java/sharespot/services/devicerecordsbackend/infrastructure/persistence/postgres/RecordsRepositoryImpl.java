@@ -31,6 +31,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
             var old = byDeviceId.get();
             old.entries.clear();
             old.entries.addAll(deviceRecordsPostgres.entries);
+            old.entries.forEach(e -> e.records = old);
             old.name = deviceRecordsPostgres.name;
             repositoryPostgres.save(old);
         } else {

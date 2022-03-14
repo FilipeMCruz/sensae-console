@@ -3,6 +3,10 @@ export interface DataTransformationQuery {
 }
 
 export interface DataTransformationInput {
+  transformation: DataTransformationDTO;
+}
+
+export interface DataTransformationResult {
   index: DataTransformationDTO;
 }
 

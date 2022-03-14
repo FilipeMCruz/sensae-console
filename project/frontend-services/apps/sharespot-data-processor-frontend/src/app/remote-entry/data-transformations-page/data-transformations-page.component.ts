@@ -12,6 +12,7 @@ import {
   GetAllDataTransformations,
   IndexDataTransformation,
 } from '@frontend-services/data-processor/services';
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
   selector: 'frontend-services-data-transformations-page',
@@ -28,7 +29,8 @@ export class DataTransformationsPageComponent implements OnInit {
     public dialog: MatDialog,
     private collector: GetAllDataTransformations,
     private indexer: IndexDataTransformation,
-    private eraser: DeleteDataTransformation
+    private eraser: DeleteDataTransformation,
+    private authService: AuthService
   ) {
   }
 
@@ -92,5 +94,9 @@ export class DataTransformationsPageComponent implements OnInit {
         (r) => r.data.type != data.type
       );
     });
+  }
+
+  canEdit() {
+    return this.authService.isAllowed(Array.of("data_transformations:transformations:write"));
   }
 }

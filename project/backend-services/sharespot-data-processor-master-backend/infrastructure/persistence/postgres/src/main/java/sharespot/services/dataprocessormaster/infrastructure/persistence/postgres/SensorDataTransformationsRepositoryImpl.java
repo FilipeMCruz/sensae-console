@@ -23,14 +23,14 @@ public class SensorDataTransformationsRepositoryImpl implements SensorDataTransf
     @Override
     @Transactional
     public DataTransformation save(DataTransformation domain) {
-        var id = domain.getId();
         var transformationPostgres = DataTransformationMapper.domainToPostgres(domain);
 
-        var byDeviceType = repositoryPostgres.findByDeviceType(id.getValue());
+        var byDeviceType = repositoryPostgres.findByDeviceType(domain.getId().getValue());
         if (byDeviceType.isPresent()) {
             var old = byDeviceType.get();
             old.entries.clear();
             old.entries.addAll(transformationPostgres.entries);
+            old.entries.forEach(e -> e.transformation = old);
             repositoryPostgres.save(old);
         } else {
             repositoryPostgres.save(transformationPostgres);

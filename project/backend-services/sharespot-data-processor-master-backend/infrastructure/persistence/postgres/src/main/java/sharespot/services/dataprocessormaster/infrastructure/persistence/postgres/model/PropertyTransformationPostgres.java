@@ -11,6 +11,9 @@ public class PropertyTransformationPostgres {
 
     public String oldPath;
 
+    @ManyToOne
+    public DataTransformationPostgres transformation;
+
     @Embedded
     public PropertyNamePostgres name;
 }

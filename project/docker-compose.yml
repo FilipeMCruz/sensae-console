@@ -23,6 +23,7 @@ services:
       - sharespot-device-records-frontend
       - sharespot-data-processor-frontend
       - sharespot-fleet-management-frontend
+      - sharespot-identity-management-frontend
   sharespot-device-records-frontend:
     build:
       dockerfile: docker/sharespot-device-records-frontend/Dockerfile
@@ -65,6 +66,20 @@ services:
       - 443
     depends_on:
       - sharespot-fleet-management-backend
+  sharespot-identity-management-frontend:
+    build:
+      dockerfile: docker/sharespot-identity-management-frontend/Dockerfile
+      context: frontend-services
+    image: sharespot-identity-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sharespot-network
+    ports:
+      - 443
+    depends_on:
+      - sharespot-identity-management-backend
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
@@ -203,7 +218,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 5432
+      - 5432:5432
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:

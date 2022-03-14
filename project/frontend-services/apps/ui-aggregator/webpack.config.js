@@ -21,6 +21,7 @@ const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
   [
+    '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
     '@frontend-services/data-processor-model',
     '@frontend-services/data-processor-services',
@@ -28,6 +29,8 @@ sharedMappings.register(
     '@frontend-services/device-records-services',
     '@frontend-services/fleet-management/model',
     '@frontend-services/fleet-management/services',
+    '@frontend-services/identity-management/model',
+    '@frontend-services/identity-management/services',
   ],
   workspaceRootPath
 );

@@ -7,7 +7,7 @@ import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from "@frontend-services/core";
 import {DataTransformation} from '@frontend-services/data-processor/model';
 import {DataTransformationRegisterMapper} from '@frontend-services/data-processor/mapper';
-import {DataTransformationInput} from '@frontend-services/data-processor/dto';
+import {DataTransformationResult} from '@frontend-services/data-processor/dto';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,7 @@ export class IndexDataTransformation {
     `;
     return this.apollo
       .use('dataProcessor')
-      .mutate<DataTransformationInput>({
+      .mutate<DataTransformationResult>({
         mutation,
         context: {
           headers: new HttpHeaders().set(
@@ -40,14 +40,12 @@ export class IndexDataTransformation {
             'Bearer ' + this.auth.getToken()
           ),
         },
-        variables: {
-          transformation: DataTransformationRegisterMapper.modelToDto(event),
-        },
+        variables: DataTransformationRegisterMapper.modelToDto(event),
       })
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: DataTransformationInput) =>
+        map((data: DataTransformationResult) =>
           DataTransformationRegisterMapper.dtoToModel(data)
         )
       );

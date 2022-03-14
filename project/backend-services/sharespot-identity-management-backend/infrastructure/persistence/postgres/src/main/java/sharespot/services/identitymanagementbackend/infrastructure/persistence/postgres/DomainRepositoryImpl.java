@@ -1,6 +1,5 @@
 package sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.Domain;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
@@ -55,7 +54,6 @@ public class DomainRepositoryImpl implements DomainRepository {
 
     @Override
     public Stream<Domain> getChildDomains(DomainId id) {
-        LoggerFactory.getLogger(DomainRepositoryImpl.class).info(id.value().toString());
         return repository.findDomainChilds(PostgresArrayMapper.toArray(id.value().toString()))
                 .stream()
                 .map(DomainMapper::postgresToDomain);
@@ -81,6 +79,19 @@ public class DomainRepositoryImpl implements DomainRepository {
         var domainPostgres = DomainMapper.domainToPostgres(domain);
         var saved = repository.save(domainPostgres);
         return DomainMapper.postgresToDomain(saved);
+    }
+
+    @Override
+    public Domain changeDomain(Domain domain) {
+        var domainPostgres = DomainMapper.domainToPostgres(domain);
+        repository.findByOid(domainPostgres.oid).ifPresent(d -> {
+            d.name = domainPostgres.name;
+            d.permissions.clear();
+            d.permissions.addAll(domainPostgres.permissions);
+            d.permissions.forEach(p -> p.domain = d);
+            repository.save(d);
+        });
+        return domain;
     }
 
     @Override

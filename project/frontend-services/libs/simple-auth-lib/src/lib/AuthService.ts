@@ -51,8 +51,15 @@ export class AuthService {
     this.accessToken = undefined;
   }
 
-  isAuthenticated() {
+  isAuthenticated(): boolean {
     return this.payload != null;
+  }
+
+  getDomains(): string[] {
+    if (this.payload) {
+      return this.payload.domains;
+    }
+    return [];
   }
 
   getToken(): string {

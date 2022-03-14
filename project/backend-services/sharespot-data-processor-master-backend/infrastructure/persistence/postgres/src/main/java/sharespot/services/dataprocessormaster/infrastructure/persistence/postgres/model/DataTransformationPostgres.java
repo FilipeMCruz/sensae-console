@@ -13,6 +13,6 @@ public class DataTransformationPostgres {
     @Column(unique = true)
     public String deviceType;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transformation", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<PropertyTransformationPostgres> entries;
 }

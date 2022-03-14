@@ -21,6 +21,7 @@ const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
   [
+    '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
     '@frontend-services/fleet-management/model',
     '@frontend-services/fleet-management/services',
@@ -35,11 +36,9 @@ module.exports = {
   output: {
     uniqueName: 'sharespotfleetmanagementfrontend',
     publicPath: 'auto',
-    clean: true,
   },
   optimization: {
     runtimeChunk: false,
-    minimize: false,
   },
   resolve: {
     alias: {

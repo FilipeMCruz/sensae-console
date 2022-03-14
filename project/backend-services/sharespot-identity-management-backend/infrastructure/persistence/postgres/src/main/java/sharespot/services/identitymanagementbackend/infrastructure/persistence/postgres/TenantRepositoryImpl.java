@@ -10,7 +10,6 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.TenantRepositoryPostgres;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -38,9 +37,12 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Override
     @Transactional
     public Tenant relocateTenant(Tenant tenant) {
-        repository.deleteByOid(tenant.getOid().value().toString());
-        var tenantPostgres = TenantMapper.domainToPostgres(tenant);
-        return TenantMapper.postgresToDomain(repository.save(tenantPostgres));
+        var newDomains = TenantMapper.domainToPostgres(tenant).domains;
+        repository.findByOid(tenant.getOid().value().toString()).ifPresent(tenantPostgres -> {
+            tenantPostgres.domains = newDomains;
+            repository.save(tenantPostgres);
+        });
+        return tenant;
     }
 
     @Override

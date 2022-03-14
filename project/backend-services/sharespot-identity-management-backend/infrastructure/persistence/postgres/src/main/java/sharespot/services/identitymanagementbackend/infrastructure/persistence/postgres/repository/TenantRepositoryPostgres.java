@@ -18,6 +18,6 @@ public interface TenantRepositoryPostgres extends CrudRepository<TenantPostgres,
 
     void deleteByOid(String tenantId);
 
-    @Query(value = "SELECT t FROM tenant t WHERE :domainId in t.domains")
+    @Query(value = "SELECT * FROM tenant WHERE :domainId = ANY (domains)", nativeQuery = true)
     List<TenantPostgres> findTenantsInDomain(@Param("domainId") String domainId);
 }

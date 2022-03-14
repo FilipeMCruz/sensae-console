@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/identity-management/mapper",
+  "sourceRoot": "libs/identity-management/mapper/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/identity-management/mapper"],
+      "options": {
+        "jestConfig": "libs/identity-management/mapper/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/identity-management/mapper/src/**/*.ts",
+          "libs/identity-management/mapper/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

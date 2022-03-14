@@ -7,4 +7,5 @@ public class DomainResult {
     public UUID domainId;
     public String domainName;
     public List<String> path;
+    public List<String> permissions;
 }

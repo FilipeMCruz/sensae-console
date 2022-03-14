@@ -8,6 +8,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.mapper.DeviceMapper;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.repository.DeviceRepositoryPostgres;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -27,10 +28,16 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public Device relocateDevice(Device tenant) {
-        repository.deleteByOid(tenant.getOid().value().toString());
-        var tenantPostgres = DeviceMapper.domainToPostgres(tenant);
-        return DeviceMapper.postgresToDomain(repository.save(tenantPostgres));
+    @Transactional
+    public Device relocateDevice(Device device) {
+        var domains = DeviceMapper.domainToPostgres(device).devicePermissions;
+        repository.findByOid(device.getOid().value().toString()).ifPresent(devicePostgres -> {
+            devicePostgres.devicePermissions.clear();
+            devicePostgres.devicePermissions.addAll(domains);
+            devicePostgres.devicePermissions.forEach(d -> d.device = devicePostgres);
+            repository.save(devicePostgres);
+        });
+        return device;
     }
 
     @Override

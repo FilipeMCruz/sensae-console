@@ -21,5 +21,7 @@ public interface DomainRepository {
 
     Domain addDomain(Domain domain);
 
+    Domain changeDomain(Domain domain);
+    
     void deleteDomainAndChildren(DomainId id);
 }

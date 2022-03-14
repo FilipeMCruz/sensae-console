@@ -1,6 +1,7 @@
-package sharespot.services.identitymanagementbackend.domainservices.model.domain;
+package sharespot.services.identitymanagementbackend.domainservices.mapper;
 
 import sharespot.services.identitymanagementbackend.domain.identity.domain.Domain;
+import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 
 public class DomainResultMapper {
 
@@ -13,6 +14,7 @@ public class DomainResultMapper {
                 .stream()
                 .map(d -> d.value().toString())
                 .toList();
+        domainResult.permissions = PermissionsMapper.toResult(domain.getPermissions().values().stream()).toList();
         return domainResult;
     }
 }

@@ -17,17 +17,19 @@
         <frontend-services-data-transformation
           [entry]="transformation"
           [dataTransformationViewEntry]="dataTransformationViewType.Edit"
+          [canEdit]="canEdit()"
           (newDataTransformationEvent)="updateItem($event)"
           (deleteDataTransformationEvent)="deleteItem($event)"
         ></frontend-services-data-transformation>
       </mat-card-content>
     </mat-card>
-    <mat-card class="item">
+    <mat-card *ngIf="canEdit()" class="item">
       <mat-card-title>New Data Transformation</mat-card-title>
       <mat-card-content>
         <frontend-services-data-transformation
           (newDataTransformationEvent)="addItem($event)"
           [dataTransformationViewEntry]="dataTransformationViewType.New"
+          [canEdit]="canEdit()"
         ></frontend-services-data-transformation>
       </mat-card-content>
     </mat-card>

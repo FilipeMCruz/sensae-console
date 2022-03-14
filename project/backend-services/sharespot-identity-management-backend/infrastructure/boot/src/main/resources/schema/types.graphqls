@@ -1,7 +1,12 @@
 input CreateDomain {
     parentDomainOid: String
-    newDomainOid: String
     newDomainName: String
+}
+
+input ChangeDomain {
+    domainId: String
+    domainName: String
+    permissions: [String]
 }
 
 input ViewDomain {
@@ -9,23 +14,23 @@ input ViewDomain {
 }
 
 input AddDeviceToDomain {
-    deviceOid : String
+    deviceOid: String
     domainOid: String
     writePermission: Boolean
 }
 
 input RemoveDeviceFromDomain {
-    deviceOid : String
+    deviceOid: String
     domainOid: String
 }
 
 input AddTenantToDomain {
-    tenantOid : String
+    tenantOid: String
     domainOid: String
 }
 
 input RemoveTenantFromDomain {
-    tenantOid : String
+    tenantOid: String
     domainOid: String
 }
 
@@ -36,7 +41,8 @@ type AccessToken {
 type Domain {
     oid: String,
     name: String,
-    path: [String]
+    path: [String],
+    permissions: [String]
 }
 
 type DomainInfo {

@@ -2,28 +2,28 @@
   <mat-form-field class="medium-input">
     <mat-label>Device Name</mat-label>
     <input
-      [disabled]="deviceView == deviceViewType.Compare"
+      [disabled]="deviceView === deviceViewType.Compare || !canEdit"
       [(ngModel)]="record.device.name"
       matInput
     />
     <mat-hint>e.g. GPS Sensor A1</mat-hint>
   </mat-form-field>
-  <ng-container *ngIf="deviceView == deviceViewType.Edit">
+  <ng-container *ngIf="deviceView === deviceViewType.Edit && canEdit">
     <button class="to-right" mat-stroked-button (click)="deleteDevice()">
       Delete
     </button>
   </ng-container>
-  <br />
-  <mat-form-field class="big-input">
+  <br/>
+  <mat-form-field class="medium-input">
     <mat-label>Device Id</mat-label>
     <input
-      [disabled]="deviceView != deviceViewType.New"
+      [disabled]="deviceView !== deviceViewType.New"
       [(ngModel)]="record.device.id"
       matInput
     />
     <mat-hint>e.g. 8af821e5-3e0b-4469-88b0-fd07bee3b09d</mat-hint>
   </mat-form-field>
-  <ng-container *ngIf="deviceView == deviceViewType.New">
+  <ng-container *ngIf="deviceView === deviceViewType.New && canEdit">
     <button
       [disabled]="!record.isValid()"
       class="to-right"
@@ -33,7 +33,7 @@
       Save
     </button>
   </ng-container>
-  <ng-container *ngIf="deviceView == deviceViewType.Edit">
+  <ng-container *ngIf="deviceView === deviceViewType.Edit && canEdit">
     <button
       [disabled]="!record.isValid()"
       class="to-right"
@@ -46,7 +46,7 @@
 </p>
 <div>
   Record Entries:
-  <div *ngIf="entryView == entryViewType.List">
+  <div *ngIf="entryView === entryViewType.List">
     <mat-list>
       <mat-list-item
         class="item-list"
@@ -54,11 +54,11 @@
       >
         <mat-icon (click)="editEntry(i)" mat-list-icon>{{
           getEntryType(entry)
-        }}</mat-icon>
+          }}</mat-icon>
         <div mat-line>{{ entry.label }}</div>
         <div mat-line>{{ entry.content }}</div>
         <button
-          *ngIf="deviceView != deviceViewType.Compare"
+          *ngIf="deviceView !== deviceViewType.Compare && canEdit"
           mat-icon-button
           (click)="removeEntry($event, i)"
         >
@@ -66,17 +66,17 @@
         </button>
       </mat-list-item>
     </mat-list>
-    <br />
+    <br/>
     <button
-      *ngIf="deviceView != deviceViewType.Compare"
+      *ngIf="deviceView !== deviceViewType.Compare && canEdit"
       mat-stroked-button
       (click)="entryView = entryViewType.New"
     >
       New Entry
     </button>
   </div>
-  <div *ngIf="entryView != entryViewType.List">
-    <br />
+  <div *ngIf="entryView !== entryViewType.List">
+    <br/>
     Entry Type:
     <mat-radio-group class="radio-button" [(ngModel)]="currentEntry.type">
       <mat-radio-button
@@ -87,15 +87,15 @@
         {{ currentType }}
       </mat-radio-button>
     </mat-radio-group>
-    <div *ngIf="currentEntry.type == typeType.BASIC">
+    <div *ngIf="currentEntry.type === typeType.BASIC">
       <mat-form-field class="medium-input">
         <mat-label>Label</mat-label>
-        <input matInput type="text" [(ngModel)]="currentEntry.label" />
+        <input matInput type="text" [(ngModel)]="currentEntry.label"/>
         <mat-icon matSuffix>label</mat-icon>
         <mat-hint>e.g. license plate</mat-hint>
       </mat-form-field>
     </div>
-    <div *ngIf="currentEntry.type == typeType.SENSOR_DATA">
+    <div *ngIf="currentEntry.type === typeType.SENSOR_DATA">
       <mat-form-field class="medium-input">
         <mat-label>Sensor Data</mat-label>
         <mat-icon matSuffix>label</mat-icon>
@@ -109,14 +109,14 @@
     </div>
     <mat-form-field class="big-input">
       <mat-label>Content</mat-label>
-      <input matInput [(ngModel)]="currentEntry.content" />
+      <input matInput [(ngModel)]="currentEntry.content"/>
       <mat-icon matSuffix>info</mat-icon>
       <mat-hint>e.g. 00-AA-00</mat-hint>
     </mat-form-field>
-    <br />
-    <br />
+    <br/>
+    <br/>
     <button
-      *ngIf="entryView == entryViewType.New"
+      *ngIf="entryView === entryViewType.New && canEdit"
       mat-stroked-button
       color="primary"
       (click)="addEntry()"
@@ -124,7 +124,7 @@
       Add Record Entry
     </button>
     <button
-      *ngIf="entryView == entryViewType.Edit"
+      *ngIf="entryView === entryViewType.Edit && canEdit"
       mat-stroked-button
       color="primary"
       (click)="saveEntryEdit()"

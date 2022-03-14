@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
 import {
   DataTransformation,
   DataTransformationViewType,
@@ -21,6 +15,7 @@ import {
 export class DataTransformationComponent implements OnChanges {
   @Input() entry!: DataTransformation;
   @Input() dataTransformationViewEntry!: DataTransformationViewType;
+  @Input() canEdit = false;
 
   @Output() newDataTransformationEvent = new EventEmitter<DataTransformation>();
   @Output() deleteDataTransformationEvent =

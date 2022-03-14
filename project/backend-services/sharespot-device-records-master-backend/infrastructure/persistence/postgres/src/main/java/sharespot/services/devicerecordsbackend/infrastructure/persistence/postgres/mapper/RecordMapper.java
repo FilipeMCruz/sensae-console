@@ -1,6 +1,5 @@
 package sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper;
 
-import sharespot.services.devicerecordsbackend.domain.model.records.Device;
 import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.model.DeviceRecordEntryPostgres;
@@ -26,6 +25,7 @@ public class RecordMapper {
             }
             entry.content = e.getContent();
             entry.label = e.getLabel();
+            entry.records = postgres;
             return entry;
         }).collect(Collectors.toSet());
         return postgres;

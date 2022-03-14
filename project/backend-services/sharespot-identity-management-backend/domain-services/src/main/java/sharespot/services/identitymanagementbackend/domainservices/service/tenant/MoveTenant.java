@@ -7,6 +7,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
@@ -55,8 +56,7 @@ public class MoveTenant {
         tenantToPlace.getDomains().removeIf(d -> d.equals(domain.getOid()));
 
         if (tenantToPlace.getDomains().isEmpty()) {
-            var unallocatedRootDomain = domainRepo.getUnallocatedRootDomain();
-            tenantToPlace.getDomains().add(unallocatedRootDomain.getOid());
+            throw new NotValidException("Tenant has to belong to at least one Domain");
         }
 
         var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);

@@ -14,17 +14,19 @@
         <frontend-services-device-record
           [entry]="record"
           [deviceViewEntry]="deviceViewType.Edit"
+          [canEdit]="canEdit()"
           (newDeviceEvent)="updateItem($event)"
           (deleteDeviceEvent)="deleteItem($event)"
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>
-    <mat-card class="item">
+    <mat-card *ngIf="canEdit()" class="item">
       <mat-card-title>New Device Record</mat-card-title>
       <mat-card-content>
         <frontend-services-device-record
           (newDeviceEvent)="addItem($event)"
           [deviceViewEntry]="deviceViewType.New"
+          [canEdit]="canEdit()"
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>

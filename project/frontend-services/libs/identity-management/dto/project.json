@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/identity-management/dto",
+  "sourceRoot": "libs/identity-management/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/identity-management/dto"],
+      "options": {
+        "jestConfig": "libs/identity-management/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/identity-management/dto/src/**/*.ts",
+          "libs/identity-management/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

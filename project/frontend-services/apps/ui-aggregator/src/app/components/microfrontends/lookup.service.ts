@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { Microfrontend, MicrofrontendType } from './microfrontend';
 import { environment } from '../../../environments/environment';
 
+const SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL = environment.production
+  ? 'https://' +
+    environment.domain +
+    '/micro-frontends/sharespot-identity-management-frontend/remoteEntry.js'
+  : 'http://localhost:4285/remoteEntry.js';
+
 const SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
     environment.domain +
@@ -25,7 +31,6 @@ export class LookupService {
       {
         // For Loading
         remoteEntry: SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL,
-        // remoteName: 'sharespotfleetmanagementfrontend',
         exposedModule: './Module',
         type: 'module',
 
@@ -35,14 +40,12 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.SERVICE,
-          protected: true,
           permissions: Array.of('fleet_management:read'),
         },
       },
       {
         // For Loading
         remoteEntry: SHARESPOT_DEVICE_RECORDS_FRONTEND_URL,
-        // remoteName: 'sharespotdevicerecordsfrontend',
         exposedModule: './Module',
         type: 'module',
 
@@ -52,14 +55,12 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          protected: true,
           permissions: Array.of('device_records:records:read'),
         },
       },
       {
         // For Loading
         remoteEntry: SHARESPOT_DATA_PROCESSOR_FRONTEND_URL,
-        // remoteName: 'sharespotdataprocessorfrontend',
         exposedModule: './Module',
         type: 'module',
 
@@ -69,8 +70,26 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          protected: true,
           permissions: Array.of('data_transformations:transformations:read'),
+        },
+      },
+      {
+        // For Loading
+        remoteEntry: SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL,
+        exposedModule: './Module',
+        type: 'module',
+
+        // For Routing
+        displayName: 'Identity Management',
+        routePath: 'identity',
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.TOOL,
+          permissions: Array.of(
+            'identity_management:domains:read',
+            'identity_management:tenant:read',
+            'identity_management:device:read'
+          ),
         },
       },
     ] as Microfrontend[]);

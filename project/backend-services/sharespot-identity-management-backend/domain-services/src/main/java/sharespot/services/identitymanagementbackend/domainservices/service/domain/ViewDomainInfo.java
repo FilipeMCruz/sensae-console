@@ -7,12 +7,12 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.TenantRepository;
-import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.DeviceResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.DomainResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainInfoResult;
-import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
-import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
@@ -38,7 +38,10 @@ public class ViewDomainInfo {
         var top = domainRepo.findDomainById(topId)
                 .orElseThrow(NotValidException.withMessage("Invalid Parent Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DOMAINS));
+        PermissionsValidator.verifyPermissions(tenant, top,
+                List.of(PermissionType.READ_DOMAIN,
+                        PermissionType.READ_DEVICE,
+                        PermissionType.READ_TENANT));
 
         var domainResult = DomainResultMapper.toResult(top);
         var tenantResult = tenantRepo

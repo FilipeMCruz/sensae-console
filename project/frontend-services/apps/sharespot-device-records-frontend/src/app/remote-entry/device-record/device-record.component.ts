@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
 import {
   DeviceRecord,
   DeviceViewType,
@@ -22,6 +16,7 @@ import {
 export class DeviceRecordComponent implements OnChanges {
   @Input() entry!: DeviceRecord;
   @Input() deviceViewEntry!: DeviceViewType;
+  @Input() canEdit = false;
 
   @Output() newDeviceEvent = new EventEmitter<DeviceRecord>();
   @Output() deleteDeviceEvent = new EventEmitter<DeviceRecord>();

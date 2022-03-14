@@ -5,7 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { AuthService } from '@frontend-services/simple-auth-lib';
 import { filter, map } from 'rxjs/operators';
 import { extract, isNonNull } from '@frontend-services/core';
-import { Domain } from '@frontend-services/identity-management/model';
+import {Domain, DomainPermissionType} from '@frontend-services/identity-management/model';
 import {
   DomainMapper,
   QueryMapper,
@@ -21,10 +21,10 @@ export class ChangeDomain {
   mutate(
     domainId: string,
     name: string,
-    permissions: string[]
+    permissions: DomainPermissionType[]
   ): Observable<Domain> {
     const mutation = gql`
-      mutation changeDomain($domain: CreateDomain) {
+      mutation changeDomain($domain: ChangeDomain) {
         changeDomain(domain: $domain) {
           oid
           name

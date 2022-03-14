@@ -15,17 +15,18 @@ import java.util.stream.Collectors;
 public class DeviceMapper {
 
     public static DevicePostgres domainToPostgres(Device device) {
-        var domainPostgres = new DevicePostgres();
-        domainPostgres.oid = device.getOid().value().toString();
-        domainPostgres.devicePermissions = device.getDomains().stream().map(p -> {
+        var devicePostgres = new DevicePostgres();
+        devicePostgres.oid = device.getOid().value().toString();
+        devicePostgres.devicePermissions = device.getDomains().stream().map(p -> {
             var deviceDomainPermissionsPostgres = new DeviceDomainPermissionsPostgres();
             deviceDomainPermissionsPostgres.domainOid = p.domain().value().toString();
             deviceDomainPermissionsPostgres.permission = p.permissions().equals(DevicePermissions.READ) ?
                     DevicePermissionsPostgres.read() :
                     DevicePermissionsPostgres.writeRead();
+            deviceDomainPermissionsPostgres.device = devicePostgres;
             return deviceDomainPermissionsPostgres;
         }).collect(Collectors.toSet());
-        return domainPostgres;
+        return devicePostgres;
     }
 
     public static Device postgresToDomain(DevicePostgres postgres) {

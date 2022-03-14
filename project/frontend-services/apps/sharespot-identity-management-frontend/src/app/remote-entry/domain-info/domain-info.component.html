@@ -18,7 +18,7 @@
     </mat-expansion-panel-header>
     <ng-container>
       <div mat-subheader>Tenants</div>
-      <mat-nav-list *ngIf="canChangeTenants()">
+      <mat-nav-list *ngIf="canChangeTenants()" dense>
         <mat-list-item
           (click)="trigger.openMenu()"
           *ngFor="let tenant of entry.item.tenants"
@@ -36,7 +36,7 @@
           </button>
         </mat-list-item>
       </mat-nav-list>
-      <mat-nav-list *ngIf="!canChangeTenants()">
+      <mat-nav-list *ngIf="!canChangeTenants()" dense>
         <mat-list-item
           *ngFor="let tenant of entry.item.tenants"
         >
@@ -76,7 +76,7 @@
     <ng-container *ngIf="!entry.item.isUnallocated()">
       <mat-divider></mat-divider>
       <div mat-subheader>Devices</div>
-      <mat-nav-list *ngIf="canChangeDevices()">
+      <mat-nav-list *ngIf="canChangeDevices()" dense>
         <mat-list-item
           (click)="trigger.openMenu()"
           *ngFor="let device of entry.item.devices"
@@ -96,7 +96,7 @@
           </button>
         </mat-list-item>
       </mat-nav-list>
-      <mat-nav-list *ngIf="!canChangeDevices()">
+      <mat-nav-list *ngIf="!canChangeDevices()" dense>
         <mat-list-item
           *ngFor="let device of entry.item.devices"
         >
@@ -152,6 +152,22 @@
           </button>
         </ng-template>
       </mat-menu>
+    </ng-container>
+    <ng-container *ngIf="!entry.item.isUnallocated()">
+      <mat-divider></mat-divider>
+      <div mat-subheader>Permissions</div>
+      <mat-nav-list *ngIf="!canChangeDomains() || entry.item.isRoot()" dense>
+        <mat-list-item *ngFor="let perm of currentPermissions">
+          <mat-icon mat-list-icon>checked</mat-icon>
+          <div mat-line>{{perm.perm}}</div>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-selection-list *ngIf="canChangeDomains() && !entry.item.isRoot()" dense>
+        <mat-list-option [checkboxPosition]="'before'" [(selected)]="perm.checked" (click)="saveDomainChanges()"
+                         *ngFor="let perm of currentPermissions">
+          {{perm.perm}}
+        </mat-list-option>
+      </mat-selection-list>
     </ng-container>
   </mat-expansion-panel>
 </mat-accordion>

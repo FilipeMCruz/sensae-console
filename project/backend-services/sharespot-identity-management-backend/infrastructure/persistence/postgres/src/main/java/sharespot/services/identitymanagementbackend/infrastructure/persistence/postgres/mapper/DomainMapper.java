@@ -5,6 +5,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainName;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainPath;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.DomainPermissions;
+import sharespot.services.identitymanagementbackend.domain.identity.permissions.PermissionType;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.model.domain.DomainPermissionPostgres;
 import sharespot.services.identitymanagementbackend.infrastructure.persistence.postgres.model.domain.DomainPostgres;
 
@@ -28,6 +29,9 @@ public class DomainMapper {
         var oid = DomainId.of(UUID.fromString(postgres.oid));
         var domains = DomainPath.of(Arrays.stream(postgres.path).map(d -> DomainId.of(UUID.fromString(d))).toList());
         var permissions = DomainPermissions.of(postgres.permissions.stream().map(DomainPermissionPostgres::from).collect(Collectors.toSet()));
+        if (domains.path().size() == 1) {
+            permissions = DomainPermissions.of(Arrays.stream(PermissionType.values()).collect(Collectors.toSet()));
+        }
         return new Domain(oid, name, domains, permissions);
     }
 }

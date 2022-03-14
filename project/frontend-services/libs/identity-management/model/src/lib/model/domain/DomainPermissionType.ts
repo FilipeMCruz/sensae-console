@@ -14,6 +14,6 @@ export enum DomainPermissionType {
   READ_DEVICE = 'Access Identity Management Devices',
 
   WRITE_TENANT = 'Change Identity Management Tenants',
-  READ_TENANT = 'Access Identity Management Domains',
+  READ_TENANT = 'Access Identity Management Tenants',
   ERROR = 'Error',
 }

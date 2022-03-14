@@ -6,28 +6,30 @@ import {
   RemoveTenantQueryDTO,
   ViewDomainQueryDTO,
 } from '@frontend-services/identity-management/dto';
+import {DomainPermissionType} from "@frontend-services/identity-management/model";
+import {PermissionsMapper} from "./PermissionsMapper";
 
 export class QueryMapper {
   static toViewDomain(domainId: string): ViewDomainQueryDTO {
-    return { domain: { oid: domainId } };
+    return {domain: {oid: domainId}};
   }
 
   static toCreateDomain(
     parentId: string,
     domainName: string
   ): CreateDomainQueryDTO {
-    return { domain: { parentDomainOid: parentId, newDomainName: domainName } };
+    return {domain: {parentDomainOid: parentId, newDomainName: domainName}};
   }
 
   static toAddTenant(tenantId: string, domainId: string): AddTenantQueryDTO {
-    return { instructions: { tenantOid: tenantId, domainOid: domainId } };
+    return {instructions: {tenantOid: tenantId, domainOid: domainId}};
   }
 
   static toRemoveTenant(
     tenantId: string,
     domainId: string
   ): RemoveTenantQueryDTO {
-    return { instructions: { tenantOid: tenantId, domainOid: domainId } };
+    return {instructions: {tenantOid: tenantId, domainOid: domainId}};
   }
 
   static toAddDevice(
@@ -48,15 +50,15 @@ export class QueryMapper {
     deviceId: string,
     domainId: string
   ): RemoveDeviceQueryDTO {
-    return { instructions: { deviceOid: deviceId, domainOid: domainId } };
+    return {instructions: {deviceOid: deviceId, domainOid: domainId}};
   }
 
-  static toChangeDomain(oid: string, name: string, permissions: string[]) {
+  static toChangeDomain(oid: string, name: string, permissions: DomainPermissionType[]) {
     return {
       domain: {
         domainId: oid,
         domainName: name,
-        permissions,
+        permissions: permissions.map(p => PermissionsMapper.modelToDto(p)),
       },
     };
   }

@@ -1,7 +1,19 @@
-import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
-import {DeviceInfo, DevicePermissionType, DomainInfo, TenantInfo,} from '@frontend-services/identity-management/model';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output,} from '@angular/core';
+import {
+  DeviceInfo,
+  DevicePermissionType,
+  DomainInfo,
+  DomainPermissionType,
+  TenantInfo,
+} from '@frontend-services/identity-management/model';
 import {DynamicFlatNode} from '../dinamic-data-source/dinamic-data-source';
-import {AddDevice, AddTenant, RemoveDevice, RemoveTenant,} from '@frontend-services/identity-management/services';
+import {
+  AddDevice,
+  AddTenant,
+  ChangeDomain,
+  RemoveDevice,
+  RemoveTenant,
+} from '@frontend-services/identity-management/services';
 import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
@@ -9,7 +21,7 @@ import {AuthService} from "@frontend-services/simple-auth-lib";
   templateUrl: './domain-info.component.html',
   styleUrls: ['./domain-info.component.scss'],
 })
-export class DomainInfoComponent implements OnChanges {
+export class DomainInfoComponent implements OnChanges, OnInit {
   @Input() domains: DomainInfo[] = []; //This will never happen
 
   @Input() entry: DynamicFlatNode = new DynamicFlatNode(DomainInfo.empty([''])); //This will never happen
@@ -29,14 +41,20 @@ export class DomainInfoComponent implements OnChanges {
   currentDomainsForTenants: DomainInfo[] = [];
   currentDomainsForDevices: DomainInfo[] = [];
   panelOpenState = false;
+  currentPermissions: { perm: DomainPermissionType, checked: boolean }[] = [];
 
   constructor(
     private removeTenantService: RemoveTenant,
     private addTenantService: AddTenant,
     private removeDeviceService: RemoveDevice,
     private addDeviceService: AddDevice,
-    private authService: AuthService
+    private authService: AuthService,
+    private changeDomainService: ChangeDomain
   ) {
+  }
+
+  ngOnInit(): void {
+    this.currentPermissions = this.computePermissions();
   }
 
   canChangeDomains() {
@@ -84,6 +102,27 @@ export class DomainInfoComponent implements OnChanges {
     }
   }
 
+  computePermissions() {
+    const hasParent = this.entry.item.domain.path.length > 1;
+    if (hasParent) {
+      const parentId = this.entry.item.domain.path[this.entry.item.domain.path.length - 2];
+      const domainInfo = this.domains.find(d => d.domain.id === parentId);
+      if (domainInfo) {
+        return domainInfo.domain.permissions.map(p => {
+          if (this.entry.item.domain.permissions.includes(p)) {
+            return {perm: p, checked: true}
+          } else {
+            return {perm: p, checked: false}
+          }
+        });
+      }
+    }
+    return this.entry.item.domain.permissions.map(p => {
+      return {perm: p, checked: true}
+    });
+  }
+
+
   newDomain() {
     this.emmitNewDomain.emit(this.entry);
     this.resetView();
@@ -130,5 +169,20 @@ export class DomainInfoComponent implements OnChanges {
       .subscribe((next) =>
         this.emmitNewDeviceInDomain.emit({domain, device: next})
       );
+  }
+
+  saveDomainChanges() {
+    const permissionTypes = this.currentPermissions.filter(p => p.checked).map(p => p.perm);
+    this.changeDomainService
+      .mutate(this.entry.item.domain.id, this.entry.item.domain.name, permissionTypes)
+      .subscribe(next => {
+        this.entry.item.domain.permissions = next.permissions;
+        this.currentPermissions.forEach(p => {
+          const found = next.permissions.find(perm => perm === p.perm);
+          p.checked = !!found;
+        })
+        //TODO: array of entries not recalculated
+        // this.currentPermissions = this.computePermissions();
+      })
   }
 }

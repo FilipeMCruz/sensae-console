@@ -181,8 +181,6 @@ export class DomainInfoComponent implements OnChanges, OnInit {
           const found = next.permissions.find(perm => perm === p.perm);
           p.checked = !!found;
         })
-        //TODO: array of entries not recalculated
-        // this.currentPermissions = this.computePermissions();
       })
   }
 }

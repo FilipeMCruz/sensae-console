@@ -34,6 +34,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         repository.findByOid(device.getOid().value().toString()).ifPresent(devicePostgres -> {
             devicePostgres.devicePermissions.clear();
             devicePostgres.devicePermissions.addAll(domains);
+            domains.forEach(d -> d.device = devicePostgres);
             repository.save(devicePostgres);
         });
         return device;

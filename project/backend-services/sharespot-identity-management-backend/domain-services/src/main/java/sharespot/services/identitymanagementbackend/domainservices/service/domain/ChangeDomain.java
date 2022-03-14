@@ -17,7 +17,9 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ChangeDomain {
@@ -37,8 +39,8 @@ public class ChangeDomain {
 
         PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DOMAIN));
 
-        if (domain.isRoot()) {
-            throw new NotValidException("Invalid Domain: Can't change root permissions");
+        if (domain.isRoot() || domain.isUnallocated()) {
+            throw new NotValidException("Invalid Domain: Can't change root or unallocated domain's permissions");
         }
 
         var parentDomain = repository.findDomainById(domain.getPath().getParent())
@@ -77,9 +79,27 @@ public class ChangeDomain {
             permissions.add(PermissionType.READ_TENANT);
         }
 
-        var updated = new Domain(domainId, domainName, domain.getPath(), DomainPermissions.of(permissions));
+        var permissionsSet = DomainPermissions.of(permissions);
+
+        var updated = new Domain(domainId, domainName, domain.getPath(), permissionsSet);
 
         var changedDomain = repository.changeDomain(updated);
+
+        updateChildPermissions(repository.getChildDomains(domainId), permissions);
+
         return DomainResultMapper.toResult(changedDomain);
+    }
+
+    private void updateChildPermissions(Stream<Domain> children, Set<PermissionType> availablePermissions) {
+        children.forEach(d -> {
+            var newPermissions = d.getPermissions()
+                    .values()
+                    .stream()
+                    .filter(availablePermissions::contains)
+                    .collect(Collectors.toSet());
+            if (newPermissions.size() != d.getPermissions().values().size()) {
+                repository.changeDomain(new Domain(d.getOid(), d.getName(), d.getPath(), DomainPermissions.of(newPermissions)));
+            }
+        });
     }
 }

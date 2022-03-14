@@ -68,7 +68,7 @@ export class DomainInfoComponent implements OnChanges {
 
   getValidDomainsForTenant(tenant: TenantInfo) {
     return this.currentDomainsForTenants.filter(
-      (d) => !d.tenants.includes(tenant)
+      (d) => !d.tenants.map(t => t.id).includes(tenant.id)
     );
   }
 

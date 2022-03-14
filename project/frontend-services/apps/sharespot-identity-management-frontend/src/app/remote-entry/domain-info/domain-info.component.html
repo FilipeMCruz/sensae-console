@@ -61,7 +61,7 @@
     <ng-container *ngIf="!entry.item.isUnallocated()">
       <mat-divider></mat-divider>
       <div mat-subheader>Devices</div>
-      <mat-nav-list *ngIf="canChangeDevices()">>
+      <mat-nav-list *ngIf="canChangeDevices()">
         <mat-list-item
           (click)="trigger.openMenu()"
           *ngFor="let device of entry.item.devices"
@@ -81,7 +81,7 @@
           </button>
         </mat-list-item>
       </mat-nav-list>
-      <mat-nav-list *ngIf="!canChangeDevices()">>
+      <mat-nav-list *ngIf="!canChangeDevices()">
         <mat-list-item
           *ngFor="let device of entry.item.devices"
         >

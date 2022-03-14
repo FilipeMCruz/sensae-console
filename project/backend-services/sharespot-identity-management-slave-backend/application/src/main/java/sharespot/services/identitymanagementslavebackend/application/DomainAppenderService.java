@@ -19,7 +19,7 @@ public class DomainAppenderService {
     }
 
     public ProcessedSensorDataDTO append(ProcessedSensorDataDTO dto) {
-        var domains = cache.findByDeviceId(DeviceId.of(dto.dataId));
+        var domains = cache.findByDeviceId(DeviceId.of(dto.device.id));
         var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTO();
         deviceDomainPermissionsDTO.readWrite = domains.getReadWriteDomains().stream().map(DomainId::value).collect(Collectors.toSet());
         deviceDomainPermissionsDTO.read = domains.getReadDomains().stream().map(DomainId::value).collect(Collectors.toSet());

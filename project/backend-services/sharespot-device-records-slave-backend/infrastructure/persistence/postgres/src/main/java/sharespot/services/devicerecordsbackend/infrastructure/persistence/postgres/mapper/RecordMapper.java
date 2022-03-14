@@ -12,6 +12,25 @@ import java.util.stream.Collectors;
 
 public class RecordMapper {
 
+    public static DeviceRecordsPostgres domainToPostgres(DeviceRecords records) {
+        var postgres = new DeviceRecordsPostgres();
+        postgres.deviceId = records.device().id().value().toString();
+        postgres.name = records.device().name().value();
+        postgres.entries = records.records().entries().stream().map(e -> {
+            var entry = new DeviceRecordEntryPostgres();
+            if (e instanceof BasicRecordEntry) {
+                entry.type = DeviceRecordEntryTypePostgres.basic();
+            } else {
+                entry.type = DeviceRecordEntryTypePostgres.sensorData();
+            }
+            entry.content = e.getContent();
+            entry.label = e.getLabel();
+            entry.records = postgres;
+            return entry;
+        }).collect(Collectors.toSet());
+        return postgres;
+    }
+
     public static DeviceRecords postgresToDomain(DeviceRecordsPostgres records) {
         List<RecordEntry> collect = records.entries.stream().map(e -> {
             if (e.type.equals(DeviceRecordEntryTypePostgres.sensorData())) {
@@ -26,23 +45,5 @@ public class RecordMapper {
         var deviceName = new DeviceName(records.name);
 
         return new DeviceRecords(new Device(deviceId, deviceName), new Records(collect));
-    }
-
-    public static DeviceRecordsPostgres domainToPostgres(DeviceRecords domain) {
-        var deviceRecordsPostgres = new DeviceRecordsPostgres();
-        deviceRecordsPostgres.name = domain.device().name().value();
-        deviceRecordsPostgres.deviceId = domain.device().id().value().toString();
-        deviceRecordsPostgres.entries = domain.records().entries().stream().map(e -> {
-            var entry = new DeviceRecordEntryPostgres();
-            if (e instanceof BasicRecordEntry) {
-                entry.type = DeviceRecordEntryTypePostgres.basic();
-            } else {
-                entry.type = DeviceRecordEntryTypePostgres.sensorData();
-            }
-            entry.content = e.getContent();
-            entry.label = e.getLabel();
-            return entry;
-        }).collect(Collectors.toSet());
-        return deviceRecordsPostgres;
     }
 }

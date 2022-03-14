@@ -28,6 +28,7 @@ export class DomainInfoComponent implements OnChanges {
 
   currentDomainsForTenants: DomainInfo[] = [];
   currentDomainsForDevices: DomainInfo[] = [];
+  panelOpenState = false;
 
   constructor(
     private removeTenantService: RemoveTenant,

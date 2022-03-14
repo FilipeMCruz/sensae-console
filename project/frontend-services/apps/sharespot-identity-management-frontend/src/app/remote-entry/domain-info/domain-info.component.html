@@ -1,6 +1,21 @@
-<mat-card *ngIf="!entry.item.isNew()" class="item">
-  <mat-card-title>Domain: {{ entry.item.domain.name }}</mat-card-title>
-  <mat-card-content>
+<mat-accordion *ngIf="!entry.item.isNew()" class="item">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Domain: <strong class="with-margin">{{ entry.item.domain.name }}</strong>
+      </mat-panel-title>
+      <mat-panel-description *ngIf="panelOpenState === false">
+        <div class="with-margin">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          {{entry.item.tenants.length}}
+        </div>
+        <div class="with-margin" *ngIf="!entry.item.isUnallocated()">
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          {{entry.item.devices.length}}
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <ng-container>
       <div mat-subheader>Tenants</div>
       <mat-nav-list *ngIf="canChangeTenants()">
@@ -138,19 +153,22 @@
         </ng-template>
       </mat-menu>
     </ng-container>
-  </mat-card-content>
-</mat-card>
-<mat-card *ngIf="entry.item.isNew()" class="item">
-  <mat-card-title *ngIf="entry.item.isNew()">New Domain</mat-card-title>
-  <mat-card-content>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion *ngIf="entry.item.isNew()" class="item">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        New Domain
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <mat-form-field class="big-input">
       <mat-label>Domain Name</mat-label>
       <input matInput [(ngModel)]="entry.item.domain.name"/>
       <mat-icon matSuffix>dns</mat-icon>
       <mat-hint>cmm</mat-hint>
     </mat-form-field>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button (click)="newDomain()">Create</button>
-  </mat-card-actions>
-</mat-card>
+    <button class="to-right" mat-stroked-button (click)="newDomain()">Create</button>
+  </mat-expansion-panel>
+</mat-accordion>

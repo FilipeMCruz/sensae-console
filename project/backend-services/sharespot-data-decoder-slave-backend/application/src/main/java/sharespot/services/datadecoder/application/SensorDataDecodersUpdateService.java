@@ -1,19 +1,26 @@
 package sharespot.services.datadecoder.application;
 
 import org.springframework.stereotype.Service;
+import sharespot.services.datadecoder.domain.SensorDataDecodersRepository;
 import sharespot.services.datadecoder.domain.SensorTypeId;
-import sharespot.services.datadecoder.domainservices.DataDecoderCache;
 
 @Service
 public class SensorDataDecodersUpdateService {
 
-    private final DataDecoderCache cache;
+    private final SensorDataDecodersRepository repository;
 
-    public SensorDataDecodersUpdateService(DataDecoderCache cache) {
-        this.cache = cache;
+    private final DataDecoderExecutor executor;
+
+    public SensorDataDecodersUpdateService(SensorDataDecodersRepository repository, DataDecoderExecutor executor) {
+        this.repository = repository;
+        this.executor = executor;
     }
 
     public void update(SensorTypeId id) {
-        cache.update(id);
+        var byDeviceType = repository.findByDeviceType(id);
+        if (byDeviceType.isEmpty()) {
+            return;
+        }
+        executor.addScript(id, byDeviceType.get().getScript());
     }
 }

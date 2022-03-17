@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>sharespot.services</groupId>
-            <artifactId>postgres</artifactId>
+            <artifactId>filesystem</artifactId>
             <version>0.5.0</version>
         </dependency>
     </dependencies>

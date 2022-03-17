@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class SensorDataHandlerService {
 
-    private final SensorDataMapper mapper;
+    private final DataDecoderExecutor mapper;
 
     private FluxSink<MessageSupplied<SensorDataDTO>> dataStream;
 
@@ -26,7 +26,7 @@ public class SensorDataHandlerService {
 
     private final RoutingKeysProvider provider;
 
-    public SensorDataHandlerService(SensorDataMapper mapper, RoutingKeysProvider provider) {
+    public SensorDataHandlerService(DataDecoderExecutor mapper, RoutingKeysProvider provider) {
         this.mapper = mapper;
         this.provider = provider;
     }
@@ -48,7 +48,7 @@ public class SensorDataHandlerService {
     }
 
     private Optional<SensorDataDTO> inToOutData(ObjectNode node, RoutingKeys keys) {
-        return mapper.inToOut(node, SensorTypeId.of(keys.sensorTypeId));
+        return mapper.decodeData(node, SensorTypeId.of(keys.sensorTypeId));
     }
 
     private Optional<RoutingKeys> inToOutKeys(SensorDataDTO data, RoutingKeys keys) {

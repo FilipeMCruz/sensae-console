@@ -12,7 +12,7 @@
     <artifactId>persistence</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>filesystem</module>
+        <module>postgres</module>
     </modules>
 
     <properties>

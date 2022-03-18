@@ -4,14 +4,14 @@ public class DataDecoder {
 
     private final SensorTypeId id;
 
-    private final String script;
+    private final SensorTypeScript script;
 
-    public DataDecoder(SensorTypeId id, String transform) {
+    public DataDecoder(SensorTypeId id, SensorTypeScript script) {
         this.id = id;
-        this.script = transform;
+        this.script = script;
     }
 
-    public String getScript() {
+    public SensorTypeScript getScript() {
         return script;
     }
 }

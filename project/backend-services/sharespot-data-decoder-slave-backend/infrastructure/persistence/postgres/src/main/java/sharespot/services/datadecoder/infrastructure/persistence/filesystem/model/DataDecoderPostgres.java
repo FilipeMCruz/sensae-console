@@ -12,6 +12,6 @@ public class DataDecoderPostgres {
     @Column(unique = true)
     public String deviceType;
 
-    @Lob
+    @Column(columnDefinition="TEXT")
     public String script;
 }

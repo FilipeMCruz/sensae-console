@@ -134,6 +134,15 @@ services:
       - ./secrets/prod/sharespot-device-records-slave-backend.env
     networks:
       - sharespot-network
+  sharespot-data-decoder-slave-backend:
+    build: backend-services/sharespot-data-decoder-slave-backend
+    image: sharespot-data-decoder-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-decoder-slave-backend.env
+    networks:
+      - sharespot-network
   sharespot-device-records-master-backend:
     build: backend-services/sharespot-device-records-master-backend
     image: sharespot-device-records-master-backend

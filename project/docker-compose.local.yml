@@ -112,6 +112,17 @@ services:
       - sharespot-network
     ports:
       - 8080
+  sharespot-data-decoder-slave-backend:
+    build: backend-services/sharespot-data-decoder-slave-backend
+    image: sharespot-data-decoder-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-decoder-slave-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
   sharespot-data-processor-master-backend:
     build: backend-services/sharespot-data-processor-master-backend
     image: sharespot-data-processor-master-backend

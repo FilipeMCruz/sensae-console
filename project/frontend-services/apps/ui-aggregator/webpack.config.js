@@ -25,6 +25,8 @@ sharedMappings.register(
     '@frontend-services/simple-auth-lib',
     '@frontend-services/data-processor-model',
     '@frontend-services/data-processor-services',
+    '@frontend-services/data-decoder-model',
+    '@frontend-services/data-decoder-services',
     '@frontend-services/device-records-model',
     '@frontend-services/device-records-services',
     '@frontend-services/fleet-management/model',

@@ -20,7 +20,7 @@ export function createNamedApollo(
   httpLink: HttpLink
 ): Record<string, ApolloClientOptions<any>> {
   return {
-    dataProcessor: {
+    dataDecoder: {
       link: createLink(httpLink, environment.endpoints.dataDecoder.backend),
       cache: new InMemoryCache(),
     },

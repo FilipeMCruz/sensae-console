@@ -1,33 +1,29 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router';
-import { HomeComponent } from './components/home/home.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { ROUTES } from './app.routes';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { APOLLO_NAMED_OPTIONS, ApolloModule } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
-import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
-import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatMenuModule } from '@angular/material/menu';
-import { AuthGuardService } from './services/AuthGuardService';
-import { AuthService } from '@frontend-services/simple-auth-lib';
-import { msalConfig } from './auth-config';
-import {
-  InteractionType,
-  IPublicClientApplication,
-  PublicClientApplication,
-} from '@azure/msal-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {AppComponent} from './app.component';
+import {RouterModule} from '@angular/router';
+import {HomeComponent} from './components/home/home.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {LayoutModule} from '@angular/cdk/layout';
+import {MatButtonModule} from '@angular/material/button';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
+import {ROUTES} from './app.routes';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {APOLLO_NAMED_OPTIONS, ApolloModule} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';
+import {environment} from '../environments/environment';
+import {HttpClientModule} from '@angular/common/http';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatMenuModule} from '@angular/material/menu';
+import {AuthGuardService} from './services/AuthGuardService';
+import {AuthService} from '@frontend-services/simple-auth-lib';
+import {msalConfig} from './auth-config';
+import {InteractionType, IPublicClientApplication, PublicClientApplication,} from '@azure/msal-browser';
 import {
   MSAL_GUARD_CONFIG,
   MSAL_INSTANCE,
@@ -37,8 +33,8 @@ import {
   MsalRedirectComponent,
   MsalService,
 } from '@azure/msal-angular';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { createLink } from '@frontend-services/mutual';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {createLink} from '@frontend-services/mutual';
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -78,6 +74,10 @@ export function createNamedApollo(
       link: createLink(httpLink, environment.endpoints.fleetManagement.backend),
       cache: new InMemoryCache(),
     },
+    dataDecoder: {
+      link: createLink(httpLink, environment.endpoints.dataDecoder.backend),
+      cache: new InMemoryCache(),
+    },
   };
 }
 
@@ -102,7 +102,7 @@ export function createNamedApollo(
     MatListModule,
     HttpClientModule,
     ApolloModule,
-    RouterModule.forRoot(ROUTES, { initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(ROUTES, {initialNavigation: 'enabledBlocking'}),
   ],
   providers: [
     {
@@ -126,4 +126,5 @@ export function createNamedApollo(
   ],
   bootstrap: [AppComponent, MsalRedirectComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

@@ -1,0 +1,37 @@
+<div class="container">
+  <button
+    class="bottom"
+    mat-stroked-button
+    color="primary"
+    (click)="fetchAllDataDecoders()"
+  >
+    Reload Data Decoder
+  </button>
+  <div class="list">
+    <mat-card
+      *ngFor="let decoder of this.dataDecoders"
+      class="item"
+    >
+      <mat-card-title>Data Decoder</mat-card-title>
+      <mat-card-content>
+        <frontend-services-data-decoder
+          [entry]="decoder"
+          [dataDecoderViewEntry]="dataDecoderViewType.Edit"
+          [canEdit]="canEdit()"
+          (newDataDecoderEvent)="updateItem($event)"
+          (deleteDataDecoderEvent)="deleteItem($event)"
+        ></frontend-services-data-decoder>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="canEdit()" class="item">
+      <mat-card-title>New Data Decoder</mat-card-title>
+      <mat-card-content>
+        <frontend-services-data-decoder
+          (newDataDecoderEvent)="addItem($event)"
+          [dataDecoderViewEntry]="dataDecoderViewType.New"
+          [canEdit]="canEdit()"
+        ></frontend-services-data-decoder>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

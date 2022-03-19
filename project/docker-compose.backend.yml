@@ -73,7 +73,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8093:8080
+      - 8095:8080
   sharespot-device-records-master-backend:
     build: backend-services/sharespot-device-records-master-backend
     image: sharespot-device-records-master-backend

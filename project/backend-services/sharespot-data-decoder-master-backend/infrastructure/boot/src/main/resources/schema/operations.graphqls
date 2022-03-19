@@ -1,0 +1,8 @@
+type Query {
+    decoder: [DataDecoder]
+}
+
+type Mutation {
+    index(decoder : DataDecoderInput): DataDecoder
+    delete(type: DataTypeInput): DataType
+}

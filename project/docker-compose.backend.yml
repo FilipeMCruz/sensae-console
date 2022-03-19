@@ -113,17 +113,6 @@ services:
       - sharespot-network
     ports:
       - 8090:8080
-  sharespot-data-decoder-slave-backend:
-    build: backend-services/sharespot-data-decoder-slave-backend
-    image: sharespot-data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-data-decoder-slave-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8093:8080
   sharespot-identity-management-slave-backend:
     build: backend-services/sharespot-identity-management-slave-backend
     image: sharespot-identity-management-slave-backend
@@ -135,6 +124,30 @@ services:
       - sharespot-network
     ports:
       - 8091:8080
+  sharespot-data-decoder-master-backend:
+    build: backend-services/sharespot-data-decoder-master-backend
+    image: sharespot-data-decoder-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-decoder-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8092:8080
+  sharespot-data-decoder-slave-backend:
+    build: backend-services/sharespot-data-decoder-slave-backend
+    image: sharespot-data-decoder-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-decoder-slave-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8093:8080
   sharespot-data-store:
     build: backend-services/sharespot-data-store
     image: sharespot-data-store

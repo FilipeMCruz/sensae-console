@@ -1,0 +1,17 @@
+type DataDecoder {
+    data : DataType
+    script : String
+}
+
+type DataType {
+    type: String
+}
+
+input DataDecoderInput {
+    data : DataTypeInput
+    script : String
+}
+
+input DataTypeInput {
+    type: String
+}

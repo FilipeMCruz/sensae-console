@@ -1,27 +1,27 @@
 {
   "projectType": "application",
-  "root": "apps/ui-aggregator",
-  "sourceRoot": "apps/ui-aggregator/src",
+  "root": "apps/sharespot-data-decoder-frontend",
+  "sourceRoot": "apps/sharespot-data-decoder-frontend/src",
   "prefix": "frontend-services",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/ui-aggregator",
-        "index": "apps/ui-aggregator/src/index.html",
-        "main": "apps/ui-aggregator/src/main.ts",
-        "polyfills": "apps/ui-aggregator/src/polyfills.ts",
-        "tsConfig": "apps/ui-aggregator/tsconfig.app.json",
+        "outputPath": "dist/apps/sharespot-data-decoder-frontend",
+        "index": "apps/sharespot-data-decoder-frontend/src/index.html",
+        "main": "apps/sharespot-data-decoder-frontend/src/main.ts",
+        "polyfills": "apps/sharespot-data-decoder-frontend/src/polyfills.ts",
+        "tsConfig": "apps/sharespot-data-decoder-frontend/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/ui-aggregator/src/favicon.ico",
-          "apps/ui-aggregator/src/assets"
+          "apps/sharespot-data-decoder-frontend/src/favicon.ico",
+          "apps/sharespot-data-decoder-frontend/src/assets"
         ],
-        "styles": ["apps/ui-aggregator/src/styles.scss"],
+        "styles": ["apps/sharespot-data-decoder-frontend/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
-          "path": "apps/ui-aggregator/webpack.config.js"
+          "path": "apps/sharespot-data-decoder-frontend/webpack.config.js"
         }
       },
       "configurations": {
@@ -40,13 +40,13 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/ui-aggregator/src/environments/environment.ts",
-              "with": "apps/ui-aggregator/src/environments/environment.prod.ts"
+              "replace": "apps/sharespot-data-decoder-frontend/src/environments/environment.ts",
+              "with": "apps/sharespot-data-decoder-frontend/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all",
           "customWebpackConfig": {
-            "path": "apps/ui-aggregator/webpack.prod.config.js"
+            "path": "apps/sharespot-data-decoder-frontend/webpack.prod.config.js"
           }
         },
         "development": {
@@ -64,49 +64,39 @@
       "executor": "@nrwl/angular:webpack-server",
       "configurations": {
         "production": {
-          "browserTarget": "ui-aggregator:build:production"
+          "browserTarget": "sharespot-data-decoder-frontend:build:production"
         },
         "development": {
-          "browserTarget": "ui-aggregator:build:development"
+          "browserTarget": "sharespot-data-decoder-frontend:build:development"
         }
       },
       "defaultConfiguration": "development",
-      "options": {}
+      "options": {
+        "port": 4286,
+        "publicHost": "http://localhost:4286"
+      }
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "ui-aggregator:build"
+        "browserTarget": "sharespot-data-decoder-frontend:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/ui-aggregator/src/**/*.ts",
-          "apps/ui-aggregator/src/**/*.html"
+          "apps/sharespot-data-decoder-frontend/src/**/*.ts",
+          "apps/sharespot-data-decoder-frontend/src/**/*.html"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/ui-aggregator"],
+      "outputs": ["coverage/apps/sharespot-data-decoder-frontend"],
       "options": {
-        "jestConfig": "apps/ui-aggregator/jest.config.js",
+        "jestConfig": "apps/sharespot-data-decoder-frontend/jest.config.js",
         "passWithNoTests": true
-      }
-    },
-    "serve-mfe": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": [
-          "nx serve sharespot-data-decoder-frontend",
-          "nx serve sharespot-identity-management-frontend",
-          "nx serve sharespot-data-processor-frontend",
-          "nx serve sharespot-fleet-management-frontend",
-          "nx serve sharespot-device-records-frontend",
-          "nx serve ui-aggregator"
-        ]
       }
     }
   },

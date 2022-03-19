@@ -1,14 +1,14 @@
 {
   "projectType": "library",
-  "root": "libs/data-processor-dto",
-  "sourceRoot": "libs/data-processor-dto/src",
+  "root": "libs/data-processor/dto",
+  "sourceRoot": "libs/data-processor/dto/src",
   "prefix": "frontend-services",
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/data-processor-dto"],
+      "outputs": ["coverage/libs/data-processor/dto"],
       "options": {
-        "jestConfig": "libs/data-processor-dto/jest.config.js",
+        "jestConfig": "libs/data-processor/dto/jest.config.js",
         "passWithNoTests": true
       }
     },
@@ -16,8 +16,8 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "libs/data-processor-dto/src/**/*.ts",
-          "libs/data-processor-dto/src/**/*.html"
+          "libs/data-processor/dto/src/**/*.ts",
+          "libs/data-processor/dto/src/**/*.html"
         ]
       }
     }

@@ -1,14 +1,14 @@
 {
   "projectType": "library",
-  "root": "libs/device-records-model",
-  "sourceRoot": "libs/device-records-model/src",
+  "root": "libs/device-records/model",
+  "sourceRoot": "libs/device-records/model/src",
   "prefix": "frontend-services",
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/device-records-model"],
+      "outputs": ["coverage/libs/device-records/model"],
       "options": {
-        "jestConfig": "libs/device-records-model/jest.config.js",
+        "jestConfig": "libs/device-records/model/jest.config.js",
         "passWithNoTests": true
       }
     },
@@ -16,8 +16,8 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "libs/device-records-model/src/**/*.ts",
-          "libs/device-records-model/src/**/*.html"
+          "libs/device-records/model/src/**/*.ts",
+          "libs/device-records/model/src/**/*.html"
         ]
       }
     }

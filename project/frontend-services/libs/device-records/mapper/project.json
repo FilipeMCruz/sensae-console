@@ -1,14 +1,14 @@
 {
   "projectType": "library",
-  "root": "libs/device-records-mapper",
-  "sourceRoot": "libs/device-records-mapper/src",
+  "root": "libs/device-records/mapper",
+  "sourceRoot": "libs/device-records/mapper/src",
   "prefix": "frontend-services",
   "targets": {
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/device-records-mapper"],
+      "outputs": ["coverage/libs/device-records/mapper"],
       "options": {
-        "jestConfig": "libs/device-records-mapper/jest.config.js",
+        "jestConfig": "libs/device-records/mapper/jest.config.js",
         "passWithNoTests": true
       }
     },
@@ -16,8 +16,8 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "libs/device-records-mapper/src/**/*.ts",
-          "libs/device-records-mapper/src/**/*.html"
+          "libs/device-records/mapper/src/**/*.ts",
+          "libs/device-records/mapper/src/**/*.html"
         ]
       }
     }

@@ -23,22 +23,22 @@ sharedMappings.register(
   [
     '@frontend-services/simple-auth-lib',
     '@frontend-services/mutual',
-    '@frontend-services/data-processor-model',
-    '@frontend-services/data-processor-services',
+    '@frontend-services/data-decoder-model',
+    '@frontend-services/data-decoder-services',
   ],
   workspaceRootPath
 );
 
 module.exports = {
-  experiments: {
-    outputModule: true,
-  },
   output: {
-    uniqueName: 'sharespotdataprocessorfrontend',
+    uniqueName: 'sharespotdatadecoderfrontend',
     publicPath: 'auto',
   },
   optimization: {
     runtimeChunk: false,
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     alias: {
@@ -47,12 +47,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: {type: 'module'},
-      name: 'sharespotdataprocessorfrontend',
+      name: 'sharespotdatadecoderfrontend',
       filename: 'remoteEntry.js',
       exposes: {
         './Module':
-          'apps/sharespot-data-processor-frontend/src/app/remote-entry/entry.module.ts',
+          'apps/sharespot-data-decoder-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {
@@ -133,6 +132,9 @@ module.exports = {
         },
         ...sharedMappings.getDescriptors(),
       }),
+      library: {
+        type: 'module',
+      },
     }),
     sharedMappings.getPlugin(),
   ],

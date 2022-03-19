@@ -56,7 +56,10 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
       library: { type: 'module' },
-      remotes: {},
+      remotes: {
+        'sharespot-data-decoder-frontend':
+          'http://localhost:4286/remoteEntry.js',
+      },
       shared: share({
         '@angular/animations': {
           singleton: true,

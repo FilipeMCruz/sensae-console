@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/data-decoder/dto",
+  "sourceRoot": "libs/data-decoder/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/data-decoder/dto"],
+      "options": {
+        "jestConfig": "libs/data-decoder/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/data-decoder/dto/src/**/*.ts",
+          "libs/data-decoder/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

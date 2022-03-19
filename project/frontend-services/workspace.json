@@ -2,6 +2,10 @@
   "version": 2,
   "projects": {
     "core": "libs/core",
+    "data-decoder-dto": "libs/data-decoder/dto",
+    "data-decoder-mapper": "libs/data-decoder/mapper",
+    "data-decoder-model": "libs/data-decoder/model",
+    "data-decoder-services": "libs/data-decoder/services",
     "data-processor-dto": "libs/data-processor/dto",
     "data-processor-mapper": "libs/data-processor/mapper",
     "data-processor-model": "libs/data-processor/model",

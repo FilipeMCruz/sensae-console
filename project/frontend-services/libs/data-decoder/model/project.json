@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/data-decoder/model",
+  "sourceRoot": "libs/data-decoder/model/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/data-decoder/model"],
+      "options": {
+        "jestConfig": "libs/data-decoder/model/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/data-decoder/model/src/**/*.ts",
+          "libs/data-decoder/model/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

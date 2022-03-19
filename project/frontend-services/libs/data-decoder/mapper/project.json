@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/data-decoder/mapper",
+  "sourceRoot": "libs/data-decoder/mapper/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/data-decoder/mapper"],
+      "options": {
+        "jestConfig": "libs/data-decoder/mapper/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/data-decoder/mapper/src/**/*.ts",
+          "libs/data-decoder/mapper/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

@@ -16,6 +16,18 @@
     "baseUrl": ".",
     "paths": {
       "@frontend-services/core": ["libs/core/src/index.ts"],
+      "@frontend-services/data-decoder/dto": [
+        "libs/data-decoder/dto/src/index.ts"
+      ],
+      "@frontend-services/data-decoder/mapper": [
+        "libs/data-decoder/mapper/src/index.ts"
+      ],
+      "@frontend-services/data-decoder/model": [
+        "libs/data-decoder/model/src/index.ts"
+      ],
+      "@frontend-services/data-decoder/services": [
+        "libs/data-decoder/services/src/index.ts"
+      ],
       "@frontend-services/data-processor/dto": [
         "libs/data-processor/dto/src/index.ts"
       ],

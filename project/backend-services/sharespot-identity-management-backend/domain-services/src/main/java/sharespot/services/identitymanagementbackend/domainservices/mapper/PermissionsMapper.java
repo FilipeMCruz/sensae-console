@@ -13,6 +13,8 @@ public class PermissionsMapper {
                     case WRITE_DEVICE_RECORD -> "device_records:records:write";
                     case READ_DATA_TRANSFORMATION -> "data_transformations:transformations:read";
                     case WRITE_DATA_TRANSFORMATION -> "data_transformations:transformations:write";
+                    case READ_DATA_DECODER -> "data_decoders:decoders:read";
+                    case WRITE_DATA_DECODER -> "data_decoders:decoders:write";
                     case READ_FLEET_MANAGEMENT -> "fleet_management:read";
                     case WRITE_DOMAIN -> "identity_management:domains:create";
                     case READ_DOMAIN -> "identity_management:domains:read";
@@ -30,6 +32,8 @@ public class PermissionsMapper {
                     case "device_records:records:write" -> PermissionType.WRITE_DEVICE_RECORD;
                     case "data_transformations:transformations:read" -> PermissionType.READ_DATA_TRANSFORMATION;
                     case "data_transformations:transformations:write" -> PermissionType.WRITE_DATA_TRANSFORMATION;
+                    case "data_decoders:decoders:read" -> PermissionType.READ_DATA_DECODER;
+                    case "data_decoders:decoders:write" -> PermissionType.WRITE_DATA_DECODER;
                     case "fleet_management:read" -> PermissionType.READ_FLEET_MANAGEMENT;
                     case "identity_management:domains:create" -> PermissionType.WRITE_DOMAIN;
                     case "identity_management:domains:read" -> PermissionType.READ_DOMAIN;

@@ -27,7 +27,7 @@ public class DataDecoderCollectorService {
 
     public Stream<DataDecoderDTO> transformations(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("data_transformations:transformations:read"))
+        if (!extract.permissions.contains("data_decoders:decoders::read"))
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect()

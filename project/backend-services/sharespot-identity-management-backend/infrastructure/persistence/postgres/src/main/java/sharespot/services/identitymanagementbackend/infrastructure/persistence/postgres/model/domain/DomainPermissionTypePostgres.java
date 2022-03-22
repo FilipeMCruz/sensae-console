@@ -9,11 +9,19 @@ public class DomainPermissionTypePostgres {
     /**
      * Postgres does not support enums, so to address this i've made my "enum"
      * <p>
-     * READ_DEVICE_RECORDS -> 0
-     * WRITE_DEVICE_RECORDS -> 1
-     * READ_DATA_TRANSFORMATIONS -> 2
-     * WRITE_DATA_TRANSFORMATIONS -> 3
-     * ACCESS_FLEET_MANAGEMENT -> 4
+     * READ_DEVICE_RECORD -> 1;
+     * WRITE_DEVICE_RECORD -> 2;
+     * READ_DATA_TRANSFORMATION -> 3;
+     * WRITE_DATA_TRANSFORMATION -> 4;
+     * READ_DATA_DECODER -> 12;
+     * WRITE_DATA_DECODER -> 13;
+     * READ_FLEET_MANAGEMENT -> 5;
+     * WRITE_DOMAIN -> 6;
+     * READ_DOMAIN -> 7;
+     * WRITE_DEVICE -> 8;
+     * READ_DEVICE -> 9;
+     * WRITE_TENANT -> 10;
+     * READ_TENANT -> 11;
      */
     public int type;
 
@@ -31,6 +39,8 @@ public class DomainPermissionTypePostgres {
             case WRITE_DEVICE_RECORD -> new DomainPermissionTypePostgres(2);
             case READ_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(3);
             case WRITE_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(4);
+            case READ_DATA_DECODER -> new DomainPermissionTypePostgres(12);
+            case WRITE_DATA_DECODER -> new DomainPermissionTypePostgres(13);
             case READ_FLEET_MANAGEMENT -> new DomainPermissionTypePostgres(5);
             case WRITE_DOMAIN -> new DomainPermissionTypePostgres(6);
             case READ_DOMAIN -> new DomainPermissionTypePostgres(7);
@@ -47,6 +57,8 @@ public class DomainPermissionTypePostgres {
             case 2 -> PermissionType.WRITE_DEVICE_RECORD;
             case 3 -> PermissionType.READ_DATA_TRANSFORMATION;
             case 4 -> PermissionType.WRITE_DATA_TRANSFORMATION;
+            case 12 -> PermissionType.READ_DATA_DECODER;
+            case 13 -> PermissionType.WRITE_DATA_DECODER;
             case 5 -> PermissionType.READ_FLEET_MANAGEMENT;
             case 6 -> PermissionType.WRITE_DOMAIN;
             case 7 -> PermissionType.READ_DOMAIN;

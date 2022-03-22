@@ -29,7 +29,7 @@ public class DataDecoderEraserService {
 
     public SensorTypeIdDTO erase(SensorTypeIdDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("data_transformations:transformations:write"))
+        if (!extract.permissions.contains("data_decoders:decoders:write"))
             throw new UnauthorizedException("No Permissions");
 
         var deviceId = mapper.dtoToDomain(dto);

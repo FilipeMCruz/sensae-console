@@ -8,6 +8,9 @@ public enum PermissionType {
     READ_DATA_TRANSFORMATION,
     WRITE_DATA_TRANSFORMATION,
 
+    READ_DATA_DECODER,
+    WRITE_DATA_DECODER,
+
     READ_FLEET_MANAGEMENT,
 
     WRITE_DOMAIN,
@@ -15,7 +18,7 @@ public enum PermissionType {
 
     WRITE_DEVICE,
     READ_DEVICE,
-    
+
     WRITE_TENANT,
     READ_TENANT
 }

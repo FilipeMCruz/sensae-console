@@ -1,8 +1,9 @@
 package sharespot.services.datadecodermaster.application;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import sharespot.services.datadecodermaster.application.auth.TokenExtractor;
 import sharespot.services.datadecodermaster.application.auth.AccessTokenDTO;
+import sharespot.services.datadecodermaster.application.auth.TokenExtractor;
 import sharespot.services.datadecodermaster.application.auth.UnauthorizedException;
 import sharespot.services.datadecodermaster.domainservices.DataDecoderCollector;
 
@@ -27,7 +28,7 @@ public class DataDecoderCollectorService {
 
     public Stream<DataDecoderDTO> transformations(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("data_transformations:transformations:read"))
+        if (!extract.permissions.contains("data_decoders:decoders:read"))
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect()

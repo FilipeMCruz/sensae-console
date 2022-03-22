@@ -1,4 +1,4 @@
-import { DomainPermissionType } from '@frontend-services/identity-management/model';
+import {DomainPermissionType} from '@frontend-services/identity-management/model';
 
 export class PermissionsMapper {
   static dtoToModel(dto: string): DomainPermissionType {
@@ -7,6 +7,10 @@ export class PermissionsMapper {
         return DomainPermissionType.READ_DEVICE_RECORDS;
       case 'device_records:records:write':
         return DomainPermissionType.WRITE_DEVICE_RECORDS;
+      case 'data_decoders:decoders:read':
+        return DomainPermissionType.READ_DATA_DECODERS;
+      case 'data_decoders:decoders:write':
+        return DomainPermissionType.WRITE_DATA_DECODERS;
       case 'data_transformations:transformations:read':
         return DomainPermissionType.READ_DATA_TRANSFORMATIONS;
       case 'data_transformations:transformations:write':
@@ -36,6 +40,10 @@ export class PermissionsMapper {
         return 'device_records:records:read';
       case DomainPermissionType.WRITE_DEVICE_RECORDS:
         return 'device_records:records:write';
+      case DomainPermissionType.READ_DATA_DECODERS:
+        return 'data_decoders:decoders:read';
+      case DomainPermissionType.WRITE_DATA_DECODERS:
+        return 'data_decoders:decoders:write';
       case DomainPermissionType.READ_DATA_TRANSFORMATIONS:
         return 'data_transformations:transformations:read';
       case DomainPermissionType.WRITE_DATA_TRANSFORMATIONS:

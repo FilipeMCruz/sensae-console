@@ -5,6 +5,9 @@ export enum DomainPermissionType {
   READ_DATA_TRANSFORMATIONS = 'Access Data Transformations',
   WRITE_DATA_TRANSFORMATIONS = 'Change Data Transformations',
 
+  READ_DATA_DECODERS = 'Access Data Decoders',
+  WRITE_DATA_DECODERS = 'Change Data Decoders',
+
   READ_FLEET_MANAGEMENT = 'Access Fleet Management',
 
   WRITE_DOMAINS = 'Change Identity Management Domains',

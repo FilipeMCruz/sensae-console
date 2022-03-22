@@ -67,6 +67,10 @@ public class ChangeDomain {
             permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
         }
 
+        if (permissions.contains(PermissionType.WRITE_DATA_DECODER)) {
+            permissions.add(PermissionType.READ_DATA_DECODER);
+        }
+
         if (permissions.contains(PermissionType.WRITE_DEVICE)) {
             permissions.add(PermissionType.READ_DEVICE);
         }

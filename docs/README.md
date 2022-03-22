@@ -3,10 +3,6 @@
 This document aggregates all important info and documentation about this environment.
 It's intended mostly for developers and stakeholders.
 
-## Know Problems
-
-- [Auth](auth/README.md)
-
 ## Functional Requirements
 
 This section defines the functionalities and operations that the system supports.
@@ -604,3 +600,8 @@ This is the resource that verifies the user credentials.
 On a Higher level sensor data flows in the system as represented in here:
 
 ![data-flow](diagrams/data-flow.svg)
+
+## Other Topics
+
+- [Internal Data Model](model/README.md)
+- [Know Problems](problems/README.md)

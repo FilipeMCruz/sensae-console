@@ -1,0 +1,59 @@
+@startuml a3-UC01
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+autonumber 1
+
+actor User
+box "Ui Aggregator"
+participant "Ui Aggregator Shell" as AGGRE
+participant "X Frontend" as XFRONT
+participant "Auth Lib" as AUTHLIB
+end box
+participant "External\nAuthorization Server" as AUTHSERVER
+participant "X Backend" as XBACK
+participant "Identity Management\nBackend" as ROLESBACK
+
+activate AGGRE
+activate User
+
+User -> AGGRE: Accesses the website
+AGGRE --> User: Presents a login section
+User -> AGGRE: Picks the login option
+AGGRE --> User: Redirects to external auth service
+User -> AUTHSERVER: Accesses external auth service
+activate AUTHSERVER
+AUTHSERVER --> User: Presents sign in/sign up page
+User -> AUTHSERVER: Performs sign ip/sign up
+AUTHSERVER -> AUTHSERVER: Authenticates\nuser via OIDC
+AUTHSERVER -> User: Redirect to registered callback with access token
+deactivate AUTHSERVER
+User -> AGGRE: Accesses registered callback
+AGGRE -> AUTHLIB: Stores the access token
+activate AUTHLIB
+AUTHLIB -> AGGRE: Notifies that a new access token is present
+deactivate AUTHLIB
+AGGRE -> AGGRE: Checks what Frontends\nthe access token\ngives access to
+AGGRE --> User: Presents the Auth Frontend\nand X Frontend
+User -> XFRONT: Accessses the service window
+activate XFRONT
+XFRONT --> User: Presents X interaction with the service
+User -> XFRONT: Picks X interaction
+XFRONT -> AUTHLIB: Requests the\naccess token
+activate AUTHLIB
+AUTHLIB -> AUTHLIB: Verifies if the\naccess token\nis still valid
+AUTHLIB --> XFRONT: Provides the\naccess token
+deactivate AUTHLIB
+XFRONT -> XBACK: Requests infromation with access token
+activate XBACK
+XBACK -> XBACK: Verifies if the\ntoken is valid
+XBACK -> ROLESBACK: Requests\nuser permissions
+activate ROLESBACK
+ROLESBACK -> XBACK: Provides the\nuser permissions
+deactivate ROLESBACK
+XBACK -> XBACK: Verifies if the\nuser has the\nneeded permissions
+XBACK --> XFRONT: Provides the information
+deactivate XBACK
+XFRONT --> User: Provides the information
+@enduml

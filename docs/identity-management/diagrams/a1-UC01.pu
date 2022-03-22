@@ -1,0 +1,61 @@
+@startuml a1-UC01
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+autonumber 1
+
+actor User
+box "Ui Aggregator"
+participant "Ui Aggregator Shell" as AGGRE
+participant "Auth Frontend" as AUTHFRONT
+participant "X Frontend" as XFRONT
+participant "Auth Lib" as AUTHLIB
+end box
+participant "Internal\nAuthorization Server" as AUTHSERVER
+participant "X Backend" as XBACK
+
+activate AGGRE
+activate User
+
+User -> AGGRE: Accesses the website
+AGGRE --> User: Presents the Auth Frontend\n(as the only option)
+User -> AUTHFRONT: Accesses the service window
+activate AUTHFRONT
+AUTHFRONT --> User: Presents a Sign In/Sign up section
+User -> AUTHFRONT: Picks the Sign up option
+AUTHFRONT --> User: Requests user infromation
+User -> AUTHFRONT: Provides information
+AUTHFRONT -> AUTHLIB: Provides information\nabout new User
+activate AUTHLIB
+AUTHLIB -> AUTHSERVER: Provides information\nabout new User
+activate AUTHSERVER
+AUTHSERVER -> AUTHSERVER: Verifies Information
+AUTHSERVER -> AUTHSERVER: Checks if user is\nalready registered
+AUTHSERVER -> AUTHSERVER: Hashes password
+AUTHSERVER -> AUTHSERVER: Stores information\n
+AUTHSERVER -> AUTHSERVER: Generates\naccess token
+AUTHSERVER --> AUTHLIB: Provides the access token
+deactivate AUTHSERVER
+AUTHLIB -> AGGRE: Notifies that a new access token is present
+deactivate AUTHLIB
+AGGRE -> AGGRE: Checks what Frontends\nthe access token\ngives access to
+AGGRE --> User: Presents the Auth Frontend\nand X Frontend
+User -> XFRONT: Accessses the service window
+deactivate AUTHFRONT
+activate XFRONT
+XFRONT --> User: Presents X interaction with the service
+User -> XFRONT: Picks X interaction
+XFRONT -> AUTHLIB: Requests the\naccess token
+activate AUTHLIB
+AUTHLIB -> AUTHLIB: Verifies if the\naccess token\nis still valid
+AUTHLIB --> XFRONT: Provides the\naccess token
+deactivate AUTHLIB
+XFRONT -> XBACK: Requests infromation with access token
+activate XBACK
+XBACK -> XBACK: Verifies if the\ntoken is valid
+XBACK -> XBACK: Verifies if the\ntoken has the\nneeded permissions
+XBACK --> XFRONT: Provides the information
+deactivate XBACK
+XFRONT --> User: Provides the information
+@enduml

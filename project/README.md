@@ -212,7 +212,7 @@ File: `project/secrets/dev/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-records, identity-management and data-processor master backend>
+POSTGRES_PASSWORD=<key to exchange with device-records, identity-management, data-processor and data-decoder backends>
 ```
 
 File: `project/secrets/dev/sharespot-data-store-database.env`
@@ -706,7 +706,7 @@ File. `project/secrets/prod/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-records, identity-management and data-processor master backend>
+POSTGRES_PASSWORD=<key to exchange with device-records, identity-management, data-processor and data-decoder backends>
 ```
 
 File. `project/secrets/prod/sharespot-data-decoder-master-backend.env`

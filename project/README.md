@@ -49,15 +49,27 @@ File: `project/frontend-services/apps/sharespot-fleet-management-frontend/src/en
 ```ts
 export const environment = {
   production: false,
-  backendURL: {
-    websocket: "ws://localhost:8086/subscriptions",
-    http: "http://localhost:8086/graphql"
+  endpoints: {
+    fleetManagement: {
+      backend: {
+        domain: "localhost:8086",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        },
+        websocket: {
+          scheme: "ws://",
+          path: "/subscriptions"
+        }
+      }
+    }
   },
   mapbox: {
     accessToken: "<private key used to access mapbox api>",
     style: "mapbox://styles/mapbox/light-v10"
   }
-};
+}
+
 ```
 
 File: `project/frontend-services/apps/sharespot-device-records-frontend/src/environments/environment.ts`
@@ -65,8 +77,16 @@ File: `project/frontend-services/apps/sharespot-device-records-frontend/src/envi
 ```ts
 export const environment = {
   production: false,
-  backendURL: {
-    http: 'http://localhost:8085/graphql'
+  endpoints: {
+    deviceRecords: {
+      backend: {
+        domain: "localhost:8085",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        }
+      }
+    }
   }
 };
 ```
@@ -76,8 +96,54 @@ File: `project/frontend-services/apps/sharespot-data-processor-frontend/src/envi
 ```ts
 export const environment = {
   production: false,
-  backendURL: {
-    http: 'http://localhost:8083/graphql'
+  endpoints: {
+    dataProcessor: {
+      backend: {
+        domain: "localhost:8083",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
+File: `project/frontend-services/apps/sharespot-data-decoder-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  endpoints: {
+    dataDecoder: {
+      backend: {
+        domain: "localhost:8092",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
+File: `project/frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  endpoints: {
+    identity: {
+      backend: {
+        domain: "localhost:8090",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        }
+      }
+    }
   }
 };
 ```
@@ -89,24 +155,52 @@ export const environment = {
   production: false,
   endpoints: {
     deviceRecords: {
-      backendURL: {
-        http: 'http://localhost:8085/graphql'
+      backend: {
+        domain: "localhost:8085",
+        http: {
+          scheme: 'http://',
+          path: "/graphql"
+        }
       }
     },
     dataProcessor: {
-      backendURL: {
-        http: 'http://localhost:8083/graphql'
+      backend: {
+        domain: "localhost:8083",
+        http: {
+          scheme: 'http://',
+          path: "/graphql"
+        }
+      }
+    },
+    dataDecoder: {
+      backend: {
+        domain: "localhost:8092",
+        http: {
+          scheme: 'http://',
+          path: "/graphql"
+        }
       }
     },
     fleetManagement: {
-      backendURL: {
-        websocket: "ws://localhost:8086/subscriptions",
-        http: "http://localhost:8086/graphql"
-      },
+      backend: {
+        domain: "localhost:8086",
+        http: {
+          scheme: 'http://',
+          path: "/graphql"
+        },
+        websocket: {
+          scheme: 'ws://',
+          path: "/subscriptions"
+        }
+      }
     },
     identity: {
-      backendURL: {
-        http: 'http://localhost:8090/graphql'
+      backend: {
+        domain: "localhost:8090",
+        http: {
+          scheme: 'http://',
+          path: "/graphql"
+        }
       }
     }
   },
@@ -189,6 +283,57 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
+File: `project/backend-services/sharespot-data-decoder-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8088
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+logging.level.com.netflix.graphql.dgs=TRACE
+
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/decoder
+spring.datasource.username=user
+spring.datasource.password=<key to exchange with sharespot-common-database>
+spring.jpa.show-sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+dgs.graphql.graphiql.enabled=true
+dgs.graphql.graphiql.path=/graphiql
+
+sensae.auth.pub.key.path=<path to X509 public key>
+sensae.auth.issuer=<website domain that generates jwt>
+sensae.auth.audience=<website domain that consumes jwt>
+```
+
+File: `project/backend-services/sharespot-data-decoder-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8089
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/decoder
+spring.datasource.username=user
+spring.datasource.password=<key to exchange with sharespot-common-database>
+
+spring.jpa.show-sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+```
+
 File: `project/backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
@@ -243,7 +388,7 @@ sensae.auth.audience=<website domain that consumes jwt>
 File: `project/backend-services/sharespot-device-records-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8085
+server.port=8086
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -388,9 +533,20 @@ File: `project/frontend-services/apps/sharespot-fleet-management-frontend/src/en
 ``` ts
 export const environment = {
   production: true,
-  backendURL: {
-    websocket: "wss://localhost/location-tracking/subscriptions",
-    http: "https://localhost/location-tracking/graphql"
+  endpoints: {
+    fleetManagement: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/fleet-management/graphql"
+        },
+        websocket: {
+          scheme: "wss://",
+          path: "/fleet-management/subscriptions"
+        }
+      }
+    }
   },
   mapbox: {
     accessToken: "<private key used to access mapbox api>",
@@ -404,10 +560,19 @@ File: `project/frontend-services/apps/sharespot-device-records-frontend/src/envi
 ```ts
 export const environment = {
   production: true,
-  backendURL: {
-    http: "https://localhost/device-records/graphql"
+  endpoints: {
+    deviceRecords: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/device-records/graphql"
+        }
+      }
+    }
   }
 };
+
 ```
 
 File: `project/frontend-services/apps/sharespot-data-processor-frontend/src/environments/environment.prod.ts`
@@ -415,8 +580,54 @@ File: `project/frontend-services/apps/sharespot-data-processor-frontend/src/envi
 ```ts
 export const environment = {
   production: true,
-  backendURL: {
-    http: "https://localhost/data-processor/graphql"
+  endpoints: {
+    dataProcessor: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/data-processor/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
+File: `project/frontend-services/apps/sharespot-data-decoder-frontend/src/environments/environment.prod.ts`
+
+```ts
+export const environment = {
+  production: true,
+  endpoints: {
+    dataDecoder: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/data-decoder/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
+File: `project/frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.prod.ts`
+
+```ts
+export const environment = {
+  production: true,
+  endpoints: {
+    identity: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/identity-management/graphql"
+        }
+      }
+    }
   }
 };
 ```
@@ -428,24 +639,52 @@ export const environment = {
   production: true,
   endpoints: {
     deviceRecords: {
-      backendURL: {
-        http: 'https://<public domain>/device-records/graphql',
-      },
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: 'https://',
+          path: "/device-records/graphql"
+        }
+      }
     },
     dataProcessor: {
-      backendURL: {
-        http: 'https://<public domain>/data-processor/graphql'
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: 'https://',
+          path: "/data-processor/graphql"
+        }
+      }
+    },
+    dataDecoder: {
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: 'https://',
+          path: "/data-decoder/graphql"
+        }
       }
     },
     fleetManagement: {
-      backendURL: {
-        websocket: 'wss://<public domain>/fleet-management/subscriptions',
-        http: 'https://<public domain>/fleet-management/graphql',
-      },
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: 'https://',
+          path: "/fleet-management/graphql"
+        },
+        websocket: {
+          scheme: 'wss://',
+          path: "/fleet-management/subscriptions"
+        }
+      }
     },
     identity: {
-      backendURL: {
-        http: 'https://<public domain>/identity-management/graphql'
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: 'https://',
+          path: "/identity-management/graphql"
+        }
       }
     }
   },
@@ -468,6 +707,26 @@ File. `project/secrets/prod/sharespot-common-database.env`
 ``` conf
 POSTGRES_USER=user
 POSTGRES_PASSWORD=<key to exchange with device-records, identity-management and data-processor master backend>
+```
+
+File. `project/secrets/prod/sharespot-data-decoder-master-backend.env`
+
+``` conf
+SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/decoder
+SPRING_DATASOURCE_USERNAME=user
+SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+
+SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
+SENSAE_AUTH_ISSUER=<website domain that generates jwt>
+SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
+```
+
+File. `project/secrets/prod/sharespot-data-decoder-slave-backend.env`
+
+``` conf
+SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/decoder
+SPRING_DATASOURCE_USERNAME=user
+SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
 ```
 
 File. `project/secrets/prod/sharespot-data-processor-master-backend.env`

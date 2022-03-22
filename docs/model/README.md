@@ -138,7 +138,7 @@ The units used to measure the given values are:
 
 Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
 
-## Improvement
+## Improvements
 
 - add optional property `altitude` to `data.gps`;
 - change `value` from `data.velocity` to something that can be understood, like `kmperh`

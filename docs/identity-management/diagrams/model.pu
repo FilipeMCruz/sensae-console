@@ -1,0 +1,39 @@
+@startuml model
+
+skinparam Monochrome true
+hide empty members
+left to right direction
+
+class Domain
+
+class Tenant
+
+class Device
+
+enum OwnershipType {
+    READ
+    READ_WRITE
+}
+
+enum PermissionType {
+    READ_DEVICE_RECORD
+    WRITE_DEVICE_RECORD
+    READ_DATA_TRANSFORMATION
+    WRITE_DATA_TRANSFORMATION
+    READ_FLEET_MANAGEMENT
+    WRITE_DOMAIN
+    READ_DOMAIN
+    WRITE_DEVICE
+    READ_DEVICE
+    WRITE_TENANT
+    READ_TENANT
+}
+
+Domain "*" -- "1" Tenant: is registered in <
+Device "*" -- "1" Domain: belongs to >
+Domain "1" -- "*" PermissionType: has >
+Domain "1" -- "0..1" Domain: parent >
+
+(Domain, Device) .. OwnershipType
+
+@enduml

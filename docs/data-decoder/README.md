@@ -14,6 +14,8 @@ This action is performed by a `Data Decoder Slave` container when IoT Data is se
 
 To register a new decoder one needs to go to the `Data Decoder` tag in the system's UI, define the `<sensor-type>`, write the script and submit the new decoder.
 
+## Rules
+
 There are certain rules when creating the script:
 
 - It has to be written in vanilla javascript;

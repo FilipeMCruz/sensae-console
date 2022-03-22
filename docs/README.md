@@ -605,4 +605,5 @@ On a Higher level sensor data flows in the system as represented in here:
 
 - [Internal Data Model](model/README.md)
 - [Data Decoder](data-decoder/README.md)
+- [Identity Management](identity-management/README.md)
 - [Know Problems](problems/README.md)

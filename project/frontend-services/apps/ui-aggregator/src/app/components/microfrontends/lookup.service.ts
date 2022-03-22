@@ -93,7 +93,7 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          permissions: Array.of('data_transformations:transformations:read'),
+          permissions: Array.of('data_decoders:decoders:read'),
         },
       },
       {

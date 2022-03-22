@@ -2,6 +2,11 @@
 
 This document describes the latest version of the data model used in the system.
 
+Current version:
+
+- `iot-core` : `0.1.11`
+- `system` : `0.6.0`
+
 ## Introduction
 
 This model comes into play once the IoT data is processed, either by a `Data Processor Slave` or by a `Data Decoder Slave` container.
@@ -12,7 +17,7 @@ This model is described by the [iot-core](https://github.com/ShareSpotPT/iot-cor
 
 ## Data Model
 
-Current version: `0.1.11`
+The current data model is represented here as a Json Schema.
 
 ``` json
 {

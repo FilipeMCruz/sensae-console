@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
 import sharespot.services.datavalidator.application.RoutingKeysProvider;
@@ -45,14 +44,13 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var decoded = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .missingAsAny();
-        if (decoded.isPresent()) {
-            return BindingBuilder.bind(queue).to(topic).with(decoded.get().toString());
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

@@ -1,0 +1,61 @@
+@startuml process-view-level2-uc01
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Data\nGateway" as SDDG
+participant "Data Processor Slave\nBackend" as DPSB
+participant "Data Validator\nBackend" as DVB
+participant "Identity Management Slave\nBackend" as IMB
+participant "Device Records Slave\nBackend" as DRSB
+participant "Message Broker" as MB
+participant "Fleet Management\nBackend" as LTB
+participant "Fleet Management\nFrontend" as LTF
+
+activate MB
+activate LTF
+
+-> SDDG : new X type\nsensor data
+activate SDDG
+
+SDDG -> MB : publish event of new\nX type sensor data
+
+<-- SDDG : OK
+deactivate SDDG
+
+MB -> DPSB : send event of new\nX sensor data
+activate DPSB
+
+DPSB -> MB : publish event of new\nprocessed sensor data
+deactivate DPSB
+
+MB -> DVB : send event of new\nprocessed sensor data
+activate DVB
+
+DVB -> MB : publish event of new\nvalidated processed sensor data
+deactivate DVB
+
+MB -> IMB : send event of new\nvalidated processed sensor data
+activate IMB
+
+IMB -> MB : publish event of new validated processed sensor\ndata with domain ownership details
+deactivate IMB
+
+MB -> DRSB : send event of new validated\nprocessed sensor data with\ndomain ownership details
+activate DRSB
+
+DRSB -> MB : new validated processed\nsensor data with domain\n ownership details and device records
+deactivate DRSB
+
+MB -> LTB : send event of new validated gps\nsensor data with device \nrecords and domain ownership
+activate LTB
+
+LTB -> LTF : new gps sensor data\nwith device records
+deactivate LTB
+LTF -> LTF : present new gps sensor\ndata with device records
+
+@enduml

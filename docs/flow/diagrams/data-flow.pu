@@ -1,0 +1,70 @@
+@startuml data-flow
+
+skinparam Monochrome true
+
+note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' so that data can be accessed. Then, once\nthe work is done the message is 'sealed', routing\nkeys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
+
+note "This diagram describe in a higher level the data\n flow in the system, it does not account for invalid\ndata or possible errors durring the process" as N2
+
+state "Data Relayer" as DataRelayer
+state "Data Gateway" as DataGateway
+state decoded_or_encoded <<choice>>
+state "Data Processor Slave" as Processor
+state "Data Decoder Slave" as Decoder
+state is_processed <<choice>>
+state "Identity Management Slave" as Identity
+state is_valid <<choice>>
+state "Data Validator" as Validator
+state "Device Records Slave" as Records
+state has_gps <<choice>>
+state "Fleet Management" as Fleet
+
+DataRelayer : Any data can be received
+DataRelayer : as the body of an HTTP POST
+
+DataGateway : Data is wraped in a
+DataGateway : Environment Message with
+DataGateway : specific routing keys
+
+Processor : Data is transformed according
+Processor : to the defined mapper for the
+Processor : type of device that sent the data
+
+Decoder : Data is transformed according
+Decoder : to the defined script for the
+Decoder : type of device that sent the data
+
+Identity : Domain ownership details are
+Identity : added to the data
+
+Validator : Data is examined to determine
+Validator : if it is valid or not
+
+Records : Device information details
+Records : are added to the data
+
+Fleet : GPS Data is stored
+Fleet : and sent to Frontend
+
+[*] --> DataRelayer
+DataRelayer -> DataGateway
+DataGateway -> decoded_or_encoded
+decoded_or_encoded --> Processor : decoded data
+decoded_or_encoded --> Decoder : encoded data
+Decoder --> is_processed
+Processor --> is_processed
+
+is_processed -> Validator : data is processed
+
+Validator --> is_valid
+note top of Validator : As of version 0.6.0 validator can\nonly check for GPS Data
+
+is_valid -> Identity : data is valid
+
+Identity --> Records
+
+Records -> has_gps
+
+has_gps -> Fleet : data has gps details
+
+@enduml

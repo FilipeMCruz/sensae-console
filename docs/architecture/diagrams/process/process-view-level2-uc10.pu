@@ -1,0 +1,48 @@
+@startuml process-view-level2-uc10
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Data Decoder\nFrontend" as DRF
+participant "Data Decoder Master\nBackend" as DRMB
+participant "Data Decoder\nDatabase" as DRDB
+participant "Data Decoder Slave\nBackend" as DRSB
+participant "Message Broker" as MB
+
+activate MB
+activate DRF
+
+-> DRF: erase data decoding\nscript
+
+DRF -> DRMB: erase data decoding\nscript
+activate DRMB
+
+DRMB -> DRDB: erase data decoding\nscript
+activate DRDB
+
+DRDB --> DRMB: success
+deactivate DRDB
+
+DRMB -> MB: update to X  data\ntype script
+
+MB -> DRSB: update to X  data\ntype script
+activate DRSB
+
+DRSB -> DRDB: fetch X  data\ntype script
+activate DRDB
+
+DRDB -> DRSB: X  data\ntype script
+deactivate DRDB
+
+deactivate DRSB
+DRMB --> DRF: success
+
+deactivate DRMB
+
+<-- DRF: success
+
+@enduml

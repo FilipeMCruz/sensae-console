@@ -1,0 +1,115 @@
+@startuml logical-view-level2
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam Shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+interface "UI" as UI
+
+interface "Helium Console\nRest API" as IN_ENDPOINT
+
+interface "Azure Active Directory API" as AUTH_ENDPOINT
+
+component "Environment" <<System>> {
+    component "UI Aggregator" as UIAG <<Container>> {
+        component "Fleet Management Frontend" as LTF <<Container>>
+        component "Device Records Frontend" as DRF <<Container>>
+        component "Data Processor Frontend" as DPF <<Container>>
+        component "Data Decoder Frontend" as DDF <<Container>>
+        component "Identity Management Frontend" as IAMF <<Container>>
+    }
+    component "Fleet Management Backend" as LTB <<Container>>
+    component "Message Broker" as MB <<Container>>
+    component "Device Records Master Backend" as DRB <<Container>>
+    component "Device Records Slave Backend" as DRSB <<Container>>
+    component "Data Gateway" as DDG <<Container>>
+    component "Data Relayer" as DR <<Container>>
+    component "Data Processor Slave Backend" as DPSB <<Container>>
+    component "Data Processor Master Backend" as DPB <<Container>>
+    component "Data Decoder Slave Backend" as DDSB <<Container>>
+    component "Data Decoder Master Backend" as DDB <<Container>>
+    component "Data Validator Backend" as DVB <<Container>>
+    component "Device Records Database" as DRDB <<Container>>
+    component "Data Processor Database" as DPDB <<Container>>
+    component "Data Decoder Database" as DDDB <<Container>>
+    component "Identity Management Database" as IAMDB <<Container>>
+    component "Data Store" as DS <<Container>>
+    component "Fleet Managemnt Database" as QUESTDB <<Container>>
+    component "Data Store Database" as MONGODB <<Container>>
+    component "Identity Management Backend" as IAMB <<Container>>
+    component "Identity Management Slave Backend" as IAMSB <<Container>>
+
+    interface "Message Broker\nAPI" as MB_API
+    interface "Fleet Management Backend\nAPI" as LTB_API
+    interface "Device Records Master Backend\nAPI" as DRB_API
+    interface "Data Processor Master Backend\nAPI" as DPB_API
+    interface "Data Decoder Master Backend\nAPI" as DDMB_API
+    interface "Device Records\nDatabase API" as DRDB_API
+    interface "Data Processor\nDatabase API" as DPDB_API
+    interface "Data Decoder\nDatabase API" as DDDB_API
+    interface "Identity Management\nDatabase API" as IAMDB_API
+    interface "Fleet Managemnt\nDatabase API" as QUESTDB_API
+    interface "Data Store\nDatabase API" as MONGODB_API
+    interface "Data Gateway\nAPI" as DDG_API
+    interface "Identity Management Backend\nAPI" as IAMB_API
+
+    LTB --( QUESTDB_API
+    DS --( MONGODB_API
+    DDG -- DDG_API
+    DPB_API -- DPB
+    DDMB_API -- DDB
+    DRB_API -- DRB
+    MB -- MB_API
+    DRDB_API - DRDB
+    DPDB_API - DPDB
+    DDDB_API - DDDB
+    IAMDB_API - IAMDB
+    LTB_API -- LTB
+    IAMB_API -- IAMB
+    UI -- UIAG
+    MONGODB_API -- MONGODB
+    QUESTDB_API - QUESTDB
+    DRB --( DRDB_API
+    DRDB_API )-- DRSB
+    DPB --( DPDB_API
+    DDB --( DDDB_API
+    DPDB_API )-- DPSB
+    DDDB_API )-- DDSB
+    IAMB --( IAMDB_API
+    IAMDB_API )-- IAMSB
+    LTF --( LTB_API
+    DPF --( DPB_API
+    DDF --( DDMB_API
+    DRF --( DRB_API
+    IAMF --( IAMB_API
+
+    LTB --( MB_API
+    DRB --( MB_API
+    DPB --( MB_API
+    DDB --( MB_API
+    IAMB --( MB_API
+    MB_API )-- DS
+    MB_API )-- DDG
+    MB_API )-- DVB
+    MB_API )-- DRSB
+    MB_API )-- DPSB
+    MB_API )-- DDSB
+    MB_API )-- IAMSB
+
+    DR -- IN_ENDPOINT
+    DDG_API )-- DR
+
+    IAMF -- AUTH_ENDPOINT
+    AUTH_ENDPOINT -- IAMB
+
+    IAMB --[hidden]- IAMSB
+    DRB --[hidden]- DRSB
+    DDB --[hidden]- DDSB
+    DPB --[hidden]- DPSB
+    IAMB --[hidden]- IAMSB
+
+}
+
+@enduml

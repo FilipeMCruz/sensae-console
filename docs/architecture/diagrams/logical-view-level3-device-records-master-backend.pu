@@ -1,8 +1,8 @@
-@startuml logical-view-level3-data-processor-master-backend
+@startuml logical-view-level3-device-records-master-backend
 
 skinparam Monochrome true
 
-component "Data Processor Master Backend" {
+component "Device Records Master Backend" {
     component "Application" as APP
     component "Domain" as DOM
     component "Domain Services" as DOM_SERV
@@ -34,7 +34,9 @@ component "Data Processor Master Backend" {
     APP_API -- APP
     BOOT_API -- BOOT
 
-    ENDPOINT --( APP_API
+    AMQP --( APP_API
+    POSTG --( DOM_API
+    GRAPH --( APP_API
     APP --( DOM_SERV_API
     DOM_SERV --( DOM_API
     BOOT --( GRAPH_API

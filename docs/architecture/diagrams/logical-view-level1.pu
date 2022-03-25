@@ -9,17 +9,23 @@ skinparam packageStyle rectangle
 
 [System] as S
 [Helium Console] as HC
+[Azure Active Directory] as AAD
 
 () "UI" as UI
-() "Rest API" as IN_ENDPOINT
+() "Helium Console\nRest API" as IN_ENDPOINT
 note bottom: Console integratoin endpoint
+
+() "AAD API" as AUTH_ENDPOINT
+
 actor "Data Admin" as Client
 
 Client --( UI
 
 UI -- S
 IN_ENDPOINT - S
+S - AUTH_ENDPOINT
 
 HC -( IN_ENDPOINT
+AUTH_ENDPOINT )- AAD
 
 @enduml

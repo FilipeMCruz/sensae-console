@@ -9,13 +9,14 @@ autonumber 1.1
 
 participant "Data Gateway" as DG
 participant "Data Store" as DS
-participant "Chrono Data Store" as CDS
 participant "Data Processor Slave\nBackend" as SDP
+participant "Data Decoder Slave\nBackend" as SDD
+participant "Identity Management Slave\nBackend" as SIM
 participant "Message Broker" as MB
-participant "Fleet Management\nBackend" as LTB
-participant "Device Records Slave\nBackend" as DRSB
-participant "Fleet Management\nFrontend" as LTF
 participant "Data Validator\nBackend" as DVB
+participant "Device Records Slave\nBackend" as DRSB
+participant "Fleet Management\nBackend" as LTB
+participant "Fleet Management\nFrontend" as LTF
 
 activate MB
 activate LTF
@@ -23,13 +24,17 @@ activate LTB
 
 == Initialization ==
 DS -> MB :   subscribe to X data
-CDS -> MB :  subscribe to new\ngps sensor data with records
-SDP -> MB :  subscribe to new\nX sensor data
+SDP -> MB :  subscribe to new\nX decoded sensor data
 SDP -> MB :  subscribe to changes\n in transformations
-LTB -> MB :  subscribe to new\nvalidated gps sensor data with records
+SDD -> MB :  subscribe to new\nX encoded sensor data
+SDD -> MB :  subscribe to changes\n in decoders
+DVB -> MB :  subscribe to new\nprocessed sensor data
+SIM -> MB :  subscribe to new\nprocessed and validated sensor data
+SIM -> MB :  subscribe to changes\n in devices identity
 DRSB -> MB : subscribe to new\ngps sensor data validated
 DRSB -> MB : subscribe to changes\n in device records
-DVB -> MB :  subscribe to new\nprocessed sensor data
+LTB -> MB :  subscribe to new\nvalidated gps sensor data with records
+
 ...
 == UC01 Initialization ==
 autonumber inc A

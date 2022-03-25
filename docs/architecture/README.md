@@ -6,13 +6,13 @@ This section represents the architecture from different views and levels of abst
 
 Logical View of the system and it's interactions with external systems and actors.
 
-![logical-view-level1](diagrams/logical-view-level1.svg)
+![logical-view-level1](diagrams/logical/logical-view-level1.svg)
 
 ## Logical View - Container Level
 
 Logical View of the containers that constitute the system and it's interactions.
 
-![logical-view-level2](diagrams/logical-view-level2.svg)
+![logical-view-level2](diagrams/logical/logical-view-level2.svg)
 
 The system is composed by the following containers:
 
@@ -49,63 +49,39 @@ Process view of several UCs to display the system flow.
 
 ### System Communication Process View - Container Level
 
-**Description**: Once the environment is started containers subscribe to events in other containers. Some times containers may subscribe to new events or unsubscribe from old ones.
+**Description**: Once the environment is started containers subscribe to events. Some times containers may subscribe to new events or unsubscribe from old ones.
 
-![process-view-level2-uc00](diagrams/process-view-level2-uc00.svg)
+![process-view-level2-uc00](diagrams/process/process-view-level2-uc00.svg)
 
 ### UC01 Process View - Container Level
 
-**Description**: As the data admin I want to see the live information for all device.
+**Description**: As a tenant I want to see the live information for all my devices.
 
 Information updated from the received event:
 
-![process-view-level2-uc01](diagrams/process-view-level2-uc01.svg)
-
-### UC02 Process View - Container Level
-
-**Description**: As the data admin I want to see the live information for a specific device.
-
-Information updated from the received event:
-
-![process-view-level2-uc02](diagrams/process-view-level2-uc02.svg)
-
-This flow is almost the same as the UC01, the only difference is that in this one a filter is applied to send only the requested data.
-
-### UC03 Process View - Container Level
-
-**Description**: As the data admin I want to define how to process data of a certain device type.
-
-![process-view-level2-uc03](diagrams/process-view-level2-uc03.svg)
-
-### UC04 Process View - Container Level
-
-**Description**: As the data admin I want to see the transformations registered for all device types.
-
-![process-view-level2-uc04](diagrams/process-view-level2-uc04.svg)
-
-### UC05 Process View - Container Level
-
-**Description**: As the data admin I want to delete a transformation i've added for a specific device type.
-
-![process-view-level2-uc05](diagrams/process-view-level2-uc05.svg)
-
-### UC06 Process View - Container Level
-
-**Description**: As the data admin I want to enhance the information provided by a device.
-
-![process-view-level2-uc06](diagrams/process-view-level2-uc06.svg)
-
-### UC07 Process View - Container Level
-
-**Description**: As the data admin I want to see the information i've added to each device.
-
-![process-view-level2-uc07](diagrams/process-view-level2-uc07.svg)
+![process-view-level2-uc01](diagrams/process/process-view-level2-uc01.svg)
 
 ### UC08 Process View - Container Level
 
-**Description**: As the data admin I want to delete information i've added about a specific device.
+**Description**: As a tenant I want to define how to decode data of a certain device type
 
-![process-view-level2-uc08](diagrams/process-view-level2-uc08.svg)
+Information updated from the received event:
+
+![process-view-level2-uc08](diagrams/process/process-view-level2-uc08.svg)
+
+This flow is almost the same as the UC01, the only difference is that in this one a filter is applied to send only the requested data.
+
+### UC10 Process View - Container Level
+
+**Description**: As a tenant I want to delete a script i've added for a specific device type.
+
+![process-view-level2-uc10](diagrams/process/process-view-level2-uc10.svg)
+
+### UC13 Process View - Container Level
+
+**Description**: As a manager I want to see the information i've added to each device.
+
+![process-view-level2-uc13](diagrams/process/process-view-level2-uc13.svg)
 
 ## Logical View - Component Level
 
@@ -116,100 +92,100 @@ Currently the adopted architecture for most container has, as reference architec
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-fleet-management-frontend](diagrams/logical-view-level3-fleet-management-frontend.svg)
+![logical-view-level3-fleet-management-frontend](diagrams/logical/logical-view-level3-fleet-management-frontend.svg)
 
 ### Fleet Management Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-fleet-management-backend](diagrams/logical-view-level3-fleet-management-backend.svg)
+![logical-view-level3-fleet-management-backend](diagrams/logical/logical-view-level3-fleet-management-backend.svg)
 
 ### Device Records Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-frontend](diagrams/logical-view-level3-device-records-frontend.svg)
+![logical-view-level3-device-records-frontend](diagrams/logical/logical-view-level3-device-records-frontend.svg)
 
 ### Device Records Master Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-master-backend](diagrams/logical-view-level3-device-records-master-backend.svg)
+![logical-view-level3-device-records-master-backend](diagrams/logical/logical-view-level3-device-records-master-backend.svg)
 
 ### Device Records Slave Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-slave-backend](diagrams/logical-view-level3-device-records-slave-backend.svg)
+![logical-view-level3-device-records-slave-backend](diagrams/logical/logical-view-level3-device-records-slave-backend.svg)
 
 ### Data Processor Slave Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-processor-slave-backend](diagrams/logical-view-level3-data-processor-slave-backend.svg)
+![logical-view-level3-data-processor-slave-backend](diagrams/logical/logical-view-level3-data-processor-slave-backend.svg)
 
 ### Data Processor Master Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-processor-master-backend](diagrams/logical-view-level3-data-processor-master-backend.svg)
+![logical-view-level3-data-processor-master-backend](diagrams/logical/logical-view-level3-data-processor-master-backend.svg)
 
 ### Data Processor Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-processor-frontend](diagrams/logical-view-level3-data-processor-frontend.svg)
+![logical-view-level3-data-processor-frontend](diagrams/logical/logical-view-level3-data-processor-frontend.svg)
 
 ### Data Decoder Slave Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-decoder-slave-backend](diagrams/logical-view-level3-data-decoder-slave-backend.svg)
+![logical-view-level3-data-decoder-slave-backend](diagrams/logical/logical-view-level3-data-decoder-slave-backend.svg)
 
 ### Data Decoder Master Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-decoder-master-backend](diagrams/logical-view-level3-data-decoder-master-backend.svg)
+![logical-view-level3-data-decoder-master-backend](diagrams/logical/logical-view-level3-data-decoder-master-backend.svg)
 
 ### Data Decoder Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-decoder-frontend](diagrams/logical-view-level3-data-decoder-frontend.svg)
+![logical-view-level3-data-decoder-frontend](diagrams/logical/logical-view-level3-data-decoder-frontend.svg)
 
 ### Identity Management Slave Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-identity-management-slave-backend](diagrams/logical-view-level3-identity-management-slave-backend.svg)
+![logical-view-level3-identity-management-slave-backend](diagrams/logical/logical-view-level3-identity-management-slave-backend.svg)
 
 ### Identity Management Master Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-identity-management-master-backend](diagrams/logical-view-level3-identity-management-master-backend.svg)
+![logical-view-level3-identity-management-master-backend](diagrams/logical/logical-view-level3-identity-management-master-backend.svg)
 
 ### Identity Management Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-identity-management-frontend](diagrams/logical-view-level3-identity-management-frontend.svg)
+![logical-view-level3-identity-management-frontend](diagrams/logical/logical-view-level3-identity-management-frontend.svg)
 
 ### Data Gateway
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-gateway](diagrams/logical-view-level3-data-gateway.svg)
+![logical-view-level3-data-gateway](diagrams/logical/logical-view-level3-data-gateway.svg)
 
 ### Data Store
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-store](diagrams/logical-view-level3-data-store.svg)
+![logical-view-level3-data-store](diagrams/logical/logical-view-level3-data-store.svg)
 
 ### Data Validator
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-data-validator](diagrams/logical-view-level3-data-validator.svg)
+![logical-view-level3-data-validator](diagrams/logical/logical-view-level3-data-validator.svg)

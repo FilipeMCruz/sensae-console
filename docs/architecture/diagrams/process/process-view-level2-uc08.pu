@@ -1,4 +1,4 @@
-@startuml process-view-level2-uc05
+@startuml process-view-level2-uc08
 
 skinparam Monochrome true
 skinparam sequenceMessageAlign center
@@ -16,29 +16,30 @@ participant "Message Broker" as MB
 activate MB
 activate DRF
 
--> DRF: erase data\ntransformation
+-> DRF: new/edited data\ntransformation
 
-DRF -> DRMB: erase data\ntransformation
+DRF -> DRMB: new/edited data\ntransformation
 activate DRMB
 
-DRMB -> DRDB: erase data\ntransformation
+DRMB -> DRDB: new/edited data\ntransformation
 activate DRDB
 
 DRDB --> DRMB: sucess
 deactivate DRDB
 
-DRMB -> MB: update to X  data\ntype transformation
+DRMB -> MB: update to X data\ntype transformation
 
-MB -> DRSB: update to X  data\ntype transformation
+MB -> DRSB: update to X data\ntype transformation
 activate DRSB
 
-DRSB -> DRDB: fetch X  data\ntype transformation
+DRSB -> DRDB: fetch X data\ntype transformation
 activate DRDB
 
-DRDB -> DRSB: X  data\ntype transformation
+DRDB -> DRSB: X data type\ntransformation
 deactivate DRDB
 
 deactivate DRSB
+
 DRMB --> DRF: sucess
 
 deactivate DRMB

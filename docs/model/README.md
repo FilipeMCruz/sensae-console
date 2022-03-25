@@ -146,6 +146,7 @@ Due to lack a of discussion and tests some data is missing a well-defined unit o
 - change `value` from `data.humidity` to something that can be understood, like `percentage` or `gramspercubicmeter`
 - change `value` from `data.pressure` to something that can be understood, like `hPa`
 - add `data.moisture.percentage` to represent soil moisture
+- add `data.illuminance.lux` to represent luminosity
 
 ## Further Discussion
 

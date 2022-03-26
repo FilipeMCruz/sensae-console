@@ -25,7 +25,6 @@ public class DataTransformationMapper {
             case 0 -> PropertyName.DATA_ID;
             case 1 -> PropertyName.DEVICE_ID;
             case 2 -> PropertyName.DEVICE_NAME;
-            case 3 -> PropertyName.DEVICE_RECORDS;
             case 4 -> PropertyName.REPORTED_AT;
             case 5 -> PropertyName.LATITUDE;
             case 6 -> PropertyName.LONGITUDE;

@@ -20,6 +20,11 @@ public class PropertyNamePostgres {
      * AQI -> 10
      * HUMIDITY -> 11
      * PRESSURE -> 12
+     * SOIL_MOISTURE -> 13
+     * ILLUMINANCE -> 14
+     * ALTITUDE -> 15
+     * BATTERY_PERCENTAGE -> 16
+     * BATTERY_VOLTS -> 17
      */
     public int value;
 
@@ -92,6 +97,36 @@ public class PropertyNamePostgres {
     public static PropertyNamePostgres pressure() {
         var propertyName = new PropertyNamePostgres();
         propertyName.value = 12;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres soilMoisture() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 13;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres illuminance() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 14;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres altitude() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 15;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres batteryPercentage() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 16;
+        return propertyName;
+    }
+
+    public static PropertyNamePostgres batteryVolts() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 17;
         return propertyName;
     }
 }

@@ -189,3 +189,7 @@ The following diagram describes it from a logical view.
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-validator](diagrams/logical/logical-view-level3-data-validator.svg)
+
+## Further Discussion
+
+As always, changes/improvements to this page and the system architecture is expected.

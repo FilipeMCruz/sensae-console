@@ -1,7 +1,6 @@
 package sharespot.services.datavalidator.application;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeys;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
@@ -41,13 +40,22 @@ public class DataValidatorService {
     public Optional<RoutingKeys> decide(ProcessedSensorDataDTO data, RoutingKeys keys) {
         var legitimacy = DataLegitimacyOptions.UNDETERMINED;
 
-        if (data.hasProperty(PropertyName.LATITUDE) && data.hasProperty(PropertyName.LONGITUDE)) {
+        //TODO: check all other properties
+
+        if (data.hasAllProperties(PropertyName.LATITUDE, PropertyName.LONGITUDE)) {
             if (inside(data.data.gps, boxes)) {
                 legitimacy = DataLegitimacyOptions.CORRECT;
             } else {
                 legitimacy = DataLegitimacyOptions.INCORRECT;
             }
         }
+
+        if (data.hasProperty(PropertyName.ALTITUDE)) {
+            if (data.data.gps.altitude > 5000 || data.data.gps.altitude < -50) {
+                legitimacy = DataLegitimacyOptions.INCORRECT;
+            }
+        }
+
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .withLegitimacyType(legitimacy)

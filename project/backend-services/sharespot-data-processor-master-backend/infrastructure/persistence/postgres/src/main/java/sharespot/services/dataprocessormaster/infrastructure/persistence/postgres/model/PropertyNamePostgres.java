@@ -129,4 +129,10 @@ public class PropertyNamePostgres {
         propertyName.value = 17;
         return propertyName;
     }
+
+    public static PropertyNamePostgres alarm() {
+        var propertyName = new PropertyNamePostgres();
+        propertyName.value = 18;
+        return propertyName;
+    }
 }

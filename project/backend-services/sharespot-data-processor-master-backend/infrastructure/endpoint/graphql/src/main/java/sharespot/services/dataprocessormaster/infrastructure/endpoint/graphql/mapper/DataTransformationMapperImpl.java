@@ -44,6 +44,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case ALTITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.ALTITUDE);
             case BATTERY_VOLTS -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_VOLTS);
             case BATTERY_PERCENTAGE -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_PERCENTAGE);
+            case ALARM -> PropertyTransformation.create(e.oldPath, PropertyName.ALARM);
         }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
@@ -96,6 +97,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case ALTITUDE -> PropertyNameDTOImpl.ALTITUDE;
             case BATTERY_VOLTS -> PropertyNameDTOImpl.BATTERY_VOLTS;
             case BATTERY_PERCENTAGE -> PropertyNameDTOImpl.BATTERY_PERCENTAGE;
+            case ALARM -> PropertyNameDTOImpl.ALARM;
             default -> throw new RuntimeException("Invalid Property");
         };
         entry.oldPath = kt.oldPath();

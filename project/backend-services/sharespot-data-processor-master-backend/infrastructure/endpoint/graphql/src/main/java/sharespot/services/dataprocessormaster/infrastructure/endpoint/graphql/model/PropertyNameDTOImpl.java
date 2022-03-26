@@ -17,5 +17,6 @@ public enum PropertyNameDTOImpl {
     ILLUMINANCE,
     ALTITUDE,
     BATTERY_PERCENTAGE,
-    BATTERY_VOLTS
+    BATTERY_VOLTS,
+    ALARM
 }

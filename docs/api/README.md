@@ -2,6 +2,8 @@
 
 This section will present the API that each backend service exposes.
 
+As explained in identity-management [docs](../identity-management/README.md) all APIs, except `Data Gateway API` require a JWT token for authentication/authorization.
+
 ## Data Gateway API
 
 This section will present every endpoint available in this service.
@@ -9,14 +11,14 @@ This information can be consulted [here](http://localhost:8080/swagger-ui/index.
 The **endpoint** to register new sensor data is `/sensor-data/{infoType}/{sensorType}`.
 In production this endpoint can't be accessed, instead requests must be made to **Data Relayer**.
 
-## Insert new sensor data
+### Register new sensor data
 
 **Endpoint**: POST to `/sensor-data/{infoType}/{sensorType}`
 
 **Path Variables**:
 
 - **infoType**: `decoded` or `encoded`
-- **sensorType**: any string that represents a sensor type (this will later be correlated with the sensor type configured with the data processor)
+- **sensorType**: any string that represents a sensor type (this will later be correlated with the sensor type configured with the data processor and decoder)
 
 **Data Example**:
 
@@ -97,10 +99,12 @@ In production this endpoint can't be accessed, instead requests must be made to 
 
 This is the resource to point to, as an `http integration`, in helium console for sensor data.
 
+If a secret key was defined to prevent malicious use, an HTTP Authorization Header has to be sent with the secret key.
+
 ## Data Processor Master Backend API
 
 This section will present every endpoint available in this service.
-Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
+Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
 
 ### Index a Data Transformation (new or updated transformation)
 
@@ -118,7 +122,7 @@ mutation index($transformation: DataTransformationInput){
 }
 ```
 
-This is the resource used to index a new or edited data transformation to the database and cache.
+This is the resource used to index a new or edited data transformation to the database and the slave cache.
 
 ### Consult all Data Transformations
 
@@ -148,12 +152,59 @@ mutation delete($type: DataTypeInput){
 }
 ```
 
-This is the resource used to remove a data transformation from the cache and database.
+This is the resource used to remove a data transformation from the database and slave cache.
+
+## Data Decoder Master Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
+
+### Index a Data Decoder (new or updated decoder)
+
+``` graphql
+mutation index($decoder: DataDecoderInput) {
+  index(decoder: $decoder) {
+    data {
+      type
+    }
+    script
+  }
+}
+```
+
+This is the resource used to index a new or edited data decoder to the database and the slave cache.
+
+### Consult all Data Decoder
+
+``` graphql
+query decoder {
+  decoder {
+    data {
+      type
+    }
+    script
+  }
+}
+```
+
+This is the resource used to query all data decoders in the database.
+
+### Erase a Data Decoder
+
+``` graphql
+mutation delete($type: DataTypeInput) {
+  delete(type: $type) {
+    type
+  }
+}
+```
+
+This is the resource used to remove a data transformation from the database and slave cache.
 
 ## Device Records Master Backend API
 
 This section will present every endpoint available in this service.
-Since the communication is made using GraphQL, and there is no `subscriptions` the only endpoint is `/graphql`.
+Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
 
 ### Index a Device Record (new or updated record)
 
@@ -213,6 +264,9 @@ This is the resource used to remove a device record from the cache and database.
 This section will present every endpoint available in this service.
 Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.
 
+As pointed in the current [problems](../problems/README.md) the JWT token has to be sent as a GraphQL Input parameter, Authorization, and not as an usual HTTP Header.
+The value of `Authorization` has to be 'Bearer <Token>'.
+
 ### Consult All GPS sensors live Data
 
 **Endpoint**: `/graphql`
@@ -220,24 +274,24 @@ Since the communication is made using GraphQL the only two endpoints are `/graph
 **Query**:
 
 ``` graphql
-subscription locations{
-  locations{
+subscription locations($Authorization: String) {
+  locations(Authorization: $Authorization) {
     dataId
-    device{
+    device {
       id
       name
-      records{
+      records {
         label
         content
       }
     }
     reportedAt
-    data{
-      gps{
+    data {
+      gps {
         longitude
         latitude
       }
-      status{
+      status {
         motion
       }
     }
@@ -254,24 +308,24 @@ This is the resource used to subscribe to changes in the gps location of all sen
 **Query**:
 
 ``` graphql
-subscription location("a","b": String){
-  location(devices: "a","b"){
+subscription location($devices: [String], $Authorization: String) {
+  location(devices: $devices, Authorization: $Authorization) {
     dataId
-    device{
+    device {
       id
       name
-      records{
+      records {
         label
         content
       }
     }
     reportedAt
-    data{
-      gps{
+    data {
+      gps {
         longitude
         latitude
       }
-      status{
+      status {
         motion
       }
     }
@@ -279,29 +333,31 @@ subscription location("a","b": String){
 }
 ```
 
+The `$devices` variable expects a list of device ids.
+
 This is the resource used to subscribe to changes in the gps location of an array of sensors registered in the network.
 
 ### Consult GPS Sensors that match the content sent
 
 ``` graphql
-subscription locationByContent(XXX: String){
-  locationByContent(content: XXX){
+subscription locationByContent($content: String, $Authorization: String) {
+  locationByContent(content: $content, Authorization: $Authorization) {
     dataId
-    device{
+    device {
       id
       name
-      records{
+      records {
         label
         content
       }
     }
     reportedAt
-    data{
-      gps{
+    data {
+      gps {
         longitude
         latitude
       }
-      status{
+      status {
         motion
       }
     }
@@ -314,16 +370,25 @@ This is the resource used to subscribe to changes in the gps location of any sen
 ### Consult GPS Sensors History
 
 ```graphql
-query history($filters: GPSSensorDataQuery){
-  history(filters: $filters){
+query history($filters: GPSSensorDataQuery) {
+  history(filters: $filters) {
     deviceId
     deviceName
     startTime
     endTime
     distance
-    data{
-      longitude
-      latitude
+    segments {
+      type
+      steps {
+        status {
+          motion
+        }
+        reportedAt
+        gps {
+          longitude
+          latitude
+        }
+      }
     }
   }
 }
@@ -339,29 +404,33 @@ export interface GPSSensorDataQuery {
 }
 ```
 
+The `device` variable expects a list of device ids.
+The `startTime` variable expects an unix timestamp in seconds.
+The `endTime` variable expects an unix timestamp in seconds.
+
 This is the resource used to fetch all history according to history.
 
-### Consult Last entry of Each Sensor
+### Consult Last entry of all Sensors
 
 ```graphql
-query latest{
-  latest{
+query latest {
+  latest {
     dataId
-    device{
+    device {
       id
       name
-      records{
+      records {
         label
         content
       }
     }
     reportedAt
-    data{
-      gps{
+    data {
+      gps {
         longitude
         latitude
       }
-      status{
+      status {
         motion
       }
     }
@@ -369,21 +438,322 @@ query latest{
 }
 ```
 
-This is the resource used to fetch the last location of each sensor.
+This is the resource used to fetch the last location of all sensors.
 
-## Simple Auth Backend API
-
-This section will present every endpoint available in this service.
-Since the communication is made using GraphQL the only two endpoints are `/graphql`.
+### Consult Last entry of Specific Sensors
 
 ```graphql
-query credentials($user: UserCredentials){
-  credentials(user: $user){
-    valid
+query latestByDevice($devices: [String]) {
+  latestByDevice(devices: $devices) {
+    dataId
+    device {
+      id
+      name
+      records {
+        label
+        content
+      }
+    }
+    reportedAt
+    data {
+      gps {
+        longitude
+        latitude
+      }
+      status {
+        motion
+      }
+    }
   }
 }
 ```
 
-This is the resource that verifies the user credentials.
+The `$devices` variable expects a list of device ids.
 
-# Other Topics
+This is the resource used to fetch the last location of each sensor.
+
+## Identity Management Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
+
+### Add a Device to a Domain
+
+```graphql
+mutation addDevice($instructions: AddDeviceToDomain) {
+  addDevice(instructions: $instructions) {
+    oid
+    domains {
+      oid
+      permission
+    }
+  }
+}
+```
+
+This is the resource used to add a device to a domain with `read` or `read and write` permissions.
+
+The `instructions` data has the following format:
+
+```ts
+export interface AddDeviceToDomainDTO {
+  deviceOid: string;
+  domainOid: string;
+  writePermission: boolean;
+}
+```
+
+The `deviceOid` variable expects a device id.
+The `domainOid` variable expects a domain id.
+the `writePermission` variable expects a boolean value, `false` -> `read`, `true` -> `read and write`.
+
+### Add a Tenant to a Domain
+
+```graphql
+mutation addTenant($instructions: AddTenantToDomain) {
+  addTenant(instructions: $instructions) {
+    oid
+    email
+    name
+  }
+}
+```
+
+This is the resource used to add a tenant to a domain.
+
+The `instructions` data has the following format:
+
+```ts
+export interface AddTenantToDomainDTO {
+  tenantOid: string;
+  domainOid: string;
+}
+```
+
+The `tenantOid` variable expects a tenant id.
+The `domainOid` variable expects a domain id.
+
+### Change Domain Permissions
+
+```graphql
+mutation changeDomain($domain: ChangeDomain) {
+  changeDomain(domain: $domain) {
+    oid
+    name
+    path
+    permissions
+  }
+}
+```
+
+This is the resource used to change the domain permissions.
+
+The `domain` data has the following format:
+
+```ts
+export interface DomainDTO {
+  oid: string;
+  name: string;
+  path: string[];
+  permissions: string[];
+}
+```
+
+### Create a Domain as a Child of another
+
+```graphql
+mutation createDomain($domain: CreateDomain) {
+  createDomain(domain: $domain) {
+    oid
+    name
+    path
+    permissions
+  }
+}
+```
+
+This is the resource used to create a sub-domain.
+
+The `domain` data has the following format:
+
+```ts
+export interface CreateDomainDTO {
+  parentDomainOid: string;
+  newDomainName: string;
+}
+```
+
+### Consult Child Domains Info
+
+```graphql
+query viewChildDomainsInfo($domain: ViewDomain) {
+  viewChildDomainsInfo(domain: $domain) {
+    domain {
+      oid
+      name
+      path
+      permissions
+    }
+    devices {
+      oid
+      domains {
+        oid
+        permission
+      }
+    }
+    tenants {
+      oid
+      email
+      name
+    }
+  }
+}
+```
+
+This is the resource used to check all information about child domains (only one level below).
+
+The `domain` data has the following format:
+
+```ts
+export interface ViewDomainDTO {
+  oid: string;
+}
+```
+
+### Consult Devices in Domain
+
+```graphql
+query viewDevicesInDomain($domain: ViewDomain) {
+  viewDevicesInDomain(domain: $domain) {
+    oid
+    domains {
+      oid
+      permission
+    }
+  }
+}
+```
+
+This is the resource used to check all information about devices in the domain.
+
+### Consult Domain Info
+
+```graphql
+query viewDomainInfo($domain: ViewDomain) {
+  viewDomainInfo(domain: $domain) {
+    domain {
+      oid
+      name
+      path
+      permissions
+    }
+    devices {
+      oid
+      domains {
+        oid
+        permission
+      }
+    }
+    tenants {
+      oid
+      email
+      name
+    }
+  }
+}
+```
+
+This is the resource used to check all information about the domain.
+
+### Consult Child Domains
+
+```graphql
+query viewDomain($domain: ViewDomain) {
+  viewDomain(domain: $domain) {
+    oid
+    name
+    path
+    permissions
+  }
+}
+```
+
+This is the resource used to check basic information about all child domains.
+
+### Consult Tenants in Domain
+
+```graphql
+query viewTenantsInDomain($domain: ViewDomain) {
+  viewTenantsInDomain(domain: $domain) {
+    oid
+    email
+    name
+  }
+}
+```
+
+This is the resource used to check all information about tenants in the domain.
+
+### Remove a Device from a Domain
+
+```graphql
+mutation removeDevice($instructions: RemoveDeviceFromDomain) {
+  removeDevice(instructions: $instructions) {
+    oid
+    domains {
+      oid
+      permission
+    }
+  }
+}
+```
+
+This is the resource used to remove a device from a domain.
+
+The `instructions` data has the following format:
+
+```ts
+export interface RemoveDeviceFromDomainDTO {
+  deviceOid: string;
+  domainOid: string;
+}
+```
+
+### Remove a Tenant from a Domain
+
+```graphql
+mutation removeTenant($instructions: RemoveTenantFromDomain) {
+  removeTenant(instructions: $instructions) {
+    oid
+    email
+    name
+  }
+}
+```
+
+This is the resource used to remove a tenant from a domain.
+
+The `instructions` data has the following format:
+
+```ts
+export interface RemoveTenantFromDomainDTO {
+  tenantOid: string;
+  domainOid: string;
+}
+```
+
+### Authenticate User
+
+```graphql
+query authenticate {
+  authenticate {
+    token
+  }
+}
+```
+
+This is the resource used to exchange an `id token` from microsoft for an `access token` from `sensae` as explained in identity-management [docs](../identity-management/README.md).
+
+## Further Discussion
+
+As always, changes/improvements to this page and all APIs of the system are expected.

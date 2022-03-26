@@ -37,3 +37,7 @@ This are the currently implemented use cases.
 | **UC18**  | As a tenant I want to add/remove a device to/from a domain i own                     | Identity Management |
 | **UC19**  | As a tenant I want to change the permissions of a domain i own                       | Identity Management |
 | **UC20**  | As a tenant I want to see the tenants, devices and permissions of a domain i own     | Identity Management |
+
+## Further Discussion
+
+As always, changes/improvements to this page and the system goals are expected.

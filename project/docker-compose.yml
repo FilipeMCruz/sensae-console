@@ -235,17 +235,17 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-data-store:
-    build: backend-services/sharespot-data-store
-    image: sharespot-data-store
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/sharespot-data-store-backend.env
-    networks:
-      - sharespot-network
-    ports:
-      - 8080
+  # sharespot-data-store:
+  #   build: backend-services/sharespot-data-store
+  #   image: sharespot-data-store
+  #   environment:
+  #     spring_profiles_active: prod
+  #   env_file:
+  #     - ./secrets/prod/sharespot-data-store-backend.env
+  #   networks:
+  #     - sharespot-network
+  #   ports:
+  #     - 8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -269,17 +269,17 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
-  sharespot-data-store-database:
-    image: mongo:latest
-    container_name: sharespot-data-store-database
-    env_file:
-      - ./secrets/prod/sharespot-data-store-database.env
-    networks:
-      - sharespot-network
-    ports:
-      - 27017
-    volumes:
-      - ./databases-data/prod/sharespot-data-store-database:/data/db
-      - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  # sharespot-data-store-database:
+  #   image: mongo:latest
+  #   container_name: sharespot-data-store-database
+  #   env_file:
+  #     - ./secrets/prod/sharespot-data-store-database.env
+  #   networks:
+  #     - sharespot-network
+  #   ports:
+  #     - 27017
+  #   volumes:
+  #     - ./databases-data/prod/sharespot-data-store-database:/data/db
+  #     - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
   sharespot-network:

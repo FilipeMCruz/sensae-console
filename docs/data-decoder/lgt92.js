@@ -55,7 +55,7 @@ function decoder(bytes, port) {
     ((bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8) | bytes[7]) /
     1000000;
 
-  const alarm = bytes[8] & 0x40 ? "TRUE" : "FALSE";
+  const alarm = bytes[8] & 0x40 ? true : false;
 
   const batV = (((bytes[8] & 0x3f) << 8) | bytes[9]) / 1000;
 
@@ -89,15 +89,19 @@ function decoder(bytes, port) {
       longitude: longitude,
       altitude: altitude.toFixed(0),
     },
-    roll: roll,
-    pitch: pitch,
-    battery: batV,
-    ALARM_status: alarm,
-    MD: motion_mode,
-    LON: led_updown,
-    FW: Firmware,
-    HDOP: hdop,
-    accuracy: 3,
+    alarm: {
+      value: alarm,
+    },
+    battery: {
+      volts: batV
+    },
+    roll: roll, // this values are ignored since the model does not expect them
+    pitch: pitch, // this values are ignored since the model does not expect them
+    MD: motion_mode, // this values are ignored since the model does not expect them
+    LON: led_updown, // this values are ignored since the model does not expect them
+    FW: Firmware, // this values are ignored since the model does not expect them
+    HDOP: hdop, // this values are ignored since the model does not expect them
+    accuracy: 3, // this values are ignored since the model does not expect them
   };
 }
 

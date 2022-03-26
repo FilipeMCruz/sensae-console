@@ -7,6 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pt.sharespot.iot.core.routing.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.datastore.application.RoutingKeysProvider;
 
@@ -42,7 +43,7 @@ public class AmqpConfiguration {
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContainerType("datagateway")
+                .withContainerType(ContainerTypeOptions.DATA_GATEWAY)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

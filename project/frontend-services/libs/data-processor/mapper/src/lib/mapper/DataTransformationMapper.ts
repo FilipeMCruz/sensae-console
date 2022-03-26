@@ -45,6 +45,18 @@ export class DataTransformationMapper {
         return PropertyName.TEMPERATURE;
       case PropertyNameDTO.AQI:
         return PropertyName.AQI;
+      case PropertyNameDTO.SOIL_MOISTURE:
+        return PropertyName.SOIL_MOISTURE;
+      case PropertyNameDTO.ILLUMINANCE:
+        return PropertyName.ILLUMINANCE;
+      case PropertyNameDTO.ALTITUDE:
+        return PropertyName.ALTITUDE;
+      case PropertyNameDTO.BATTERY_PERCENTAGE:
+        return PropertyName.BATTERY_PERCENTAGE;
+      case PropertyNameDTO.BATTERY_VOLTS:
+        return PropertyName.BATTERY_VOLTS;
+      case PropertyNameDTO.ALARM:
+        return PropertyName.ALARM;
       case PropertyNameDTO.INVALID:
         return PropertyName.INVALID;
     }
@@ -84,6 +96,18 @@ export class DataTransformationMapper {
         return PropertyNameDTO.TEMPERATURE;
       case PropertyName.AQI:
         return PropertyNameDTO.AQI;
+      case PropertyName.SOIL_MOISTURE:
+        return PropertyNameDTO.SOIL_MOISTURE;
+      case PropertyName.ILLUMINANCE:
+        return PropertyNameDTO.ILLUMINANCE;
+      case PropertyName.ALTITUDE:
+        return PropertyNameDTO.ALTITUDE;
+      case PropertyName.BATTERY_PERCENTAGE:
+        return PropertyNameDTO.BATTERY_PERCENTAGE;
+      case PropertyName.BATTERY_VOLTS:
+        return PropertyNameDTO.BATTERY_VOLTS;
+      case PropertyName.ALARM:
+        return PropertyNameDTO.ALARM;
       case PropertyName.INVALID:
         return PropertyNameDTO.INVALID;
     }

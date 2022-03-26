@@ -12,5 +12,11 @@ public enum PropertyNameDTOImpl {
     VELOCITY,
     AQI,
     HUMIDITY,
-    PRESSURE
+    PRESSURE,
+    SOIL_MOISTURE,
+    ILLUMINANCE,
+    ALTITUDE,
+    BATTERY_PERCENTAGE,
+    BATTERY_VOLTS,
+    ALARM
 }

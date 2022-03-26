@@ -104,6 +104,18 @@ export class DataTransformationComponent implements OnChanges {
         return 'thermostat';
       case PropertyName.AQI:
         return 'air';
+      case PropertyName.ALTITUDE:
+        return 'terrain';
+      case PropertyName.SOIL_MOISTURE:
+        return 'grass';
+      case PropertyName.ILLUMINANCE:
+        return 'wb_sunny';
+      case PropertyName.BATTERY_PERCENTAGE:
+        return 'battery_3_bar';
+      case PropertyName.BATTERY_VOLTS:
+        return 'battery_charging_full';
+      case PropertyName.ALARM:
+        return 'warning';
       case PropertyName.INVALID:
         return 'error';
     }

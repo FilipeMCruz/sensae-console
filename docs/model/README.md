@@ -148,7 +148,7 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
 The units used to measure the given values are:
 
 - `reported_at`: unix time stamps in milliseconds;
-- `data.gps`: geographic coordinate system, with latitude longitude and optionally altitude;
+- `data.gps`: geographic coordinate system, with latitude, longitude and optionally altitude;
 - `data.gps.latitude`: value between -90 and 90;
 - `data.gps.longitude`: value between -180 and 180;
 - `data.gps.altitude`: value im meters, 0m equals the sea level;

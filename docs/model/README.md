@@ -4,7 +4,7 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.12`
+- `iot-core` : `0.1.13`
 - `system` : `0.6.0`
 
 ## Introduction
@@ -76,6 +76,9 @@ The current data model is represented here as a Json Schema.
         },
         "illuminance": {
             "lux": [double]
+        },
+        "alarm": {
+            "value": [boolean]
         }
     }
 }
@@ -140,6 +143,9 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
         },
         "illuminance": {
             "lux": [optional]
+        },
+        "alarm": {
+            "value": [optional]
         }
     }
 }
@@ -162,6 +168,7 @@ The units used to measure the given values are:
 - `data.battery.percentage`: value representing the percentage of battery still available;
 - `data.moisture.percentage`: value representing the percentage of water in the soil;
 - `data.illuminance.lux`: value representing luminous flux per unit area;
+- `data.alarm.value`: true or false / on or off;
 
 Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
 

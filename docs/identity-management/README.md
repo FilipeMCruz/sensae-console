@@ -38,7 +38,6 @@ Rules:
 
 Authentication is ensured by an external identity provider, microsoft.
 For a user to preform any action in the system he needs to log in the `AAD`.
-Only users with a `@sensae.pt` email can access the platform.
 An `access token` is generated and requested in each endpoint to ensure that the user is authenticated.
 
 ## Authorization

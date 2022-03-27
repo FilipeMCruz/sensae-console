@@ -40,9 +40,6 @@ public class AuthTokenConfig implements AuthTokenHandler {
     @Value("${sensae.auth.audience}")
     public String AUDIENCE;
 
-    @Value("${sensae.auth.external.issuer}")
-    public String EXTERNAL_ISSUER;
-
     @Value("${sensae.auth.external.audience}")
     public String EXTERNAL_AUDIENCE;
 
@@ -97,7 +94,6 @@ public class AuthTokenConfig implements AuthTokenHandler {
                     .setSigningKeyResolver(keyResolver)
                     .setAllowedClockSkewSeconds(60)
                     .requireAudience(EXTERNAL_AUDIENCE)
-                    .requireIssuer(EXTERNAL_ISSUER)
                     .build()
                     .parseClaimsJws(dto.token).getBody();
         } catch (Exception ex) {

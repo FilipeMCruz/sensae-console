@@ -1,8 +1,12 @@
 # API
 
-This section will present the API that each backend service exposes.
+This section will present the API that each backend service exposes according to the latest version of the system.
 
 As explained in identity-management [docs](../identity-management/README.md) all APIs, except `Data Gateway API` require a JWT token for authentication/authorization.
+
+Current version:
+
+- `system` : `0.6.0`
 
 ## Data Gateway API
 

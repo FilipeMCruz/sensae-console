@@ -116,12 +116,6 @@ This approach would require the system to create (and possibly refresh) `access 
 
 Contrary to the alternative 3 it would not create excessive pressure in some container.
 
-## Improvements
-
-Devices are identified only with it's `uuid` since no other information can be extrapolated by the data received. As an improvement we could provide a link to each `Device Record`s details.
-
-The `Device Record`s tool can't understand what devices belong to the current user domains. As such it is advised to give no permissions related to `device records` to any domain other than the `root`. As an improvement, the `device record master` could query the `identity management master` for all the devices a user can write or read. With this change the `Ownership Type` would start to be useful, for now it has no impact.
-
 ## Further Discussion
 
 As always, changes/improvements to this page and `identity management`s behavior are expected.

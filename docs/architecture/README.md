@@ -1,6 +1,10 @@
 # Architecture
 
-This section represents the architecture from different views and levels of abstraction (following the c4 and 4+1 models).
+This section represents the system architecture from different views and levels of abstraction (following the c4 and 4+1 models) according to the latest version of the system.
+
+Current version:
+
+- `system` : `0.6.0`
 
 ## Logical View - System Level
 

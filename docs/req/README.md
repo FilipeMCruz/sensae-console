@@ -1,6 +1,10 @@
 # Functional Requirements
 
-This section defines the functionalities and operations that the system supports.
+This section defines the functionalities and operations that the system supports as of the current version.
+
+Current version:
+
+- `system` : `0.6.0`
 
 ## Actors
 

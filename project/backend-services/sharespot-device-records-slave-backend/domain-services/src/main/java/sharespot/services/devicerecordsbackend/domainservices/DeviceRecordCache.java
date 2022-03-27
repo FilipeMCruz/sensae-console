@@ -28,6 +28,15 @@ public class DeviceRecordCache {
         return Objects.requireNonNullElseGet(cache.getIfPresent(id), () -> update(id, name));
     }
 
+    public void update(DeviceId id) {
+        var deviceById = repository.findByDeviceId(id);
+        if (deviceById.isPresent()) {
+            cache.put(id, deviceById.get());
+        } else {
+            cache.invalidate(id);
+        }
+    }
+
     public DeviceRecords update(DeviceId id, DeviceName name) {
         var deviceById = repository.findByDeviceId(id);
         var device = deviceById.isEmpty() ? this.create(id, name) : deviceById.get();

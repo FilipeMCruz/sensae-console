@@ -10,7 +10,9 @@ public class TemperatureDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.TEMPERATURE)) {
-            return DataLegitimacyOptions.UNDETERMINED;
+            if (data.data.temperature.celsius < -10 || data.data.temperature.celsius > 60) {
+                return DataLegitimacyOptions.INCORRECT;
+            }
         }
 
         return DataLegitimacyOptions.CORRECT;

@@ -10,7 +10,9 @@ public class MoistureDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.SOIL_MOISTURE)) {
-            return DataLegitimacyOptions.UNDETERMINED;
+            if (data.data.moisture.percentage < 0 || data.data.moisture.percentage > 100) {
+                return DataLegitimacyOptions.INCORRECT;
+            }
         }
 
         return DataLegitimacyOptions.CORRECT;

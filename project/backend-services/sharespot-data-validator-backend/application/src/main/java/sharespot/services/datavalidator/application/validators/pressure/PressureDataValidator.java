@@ -10,7 +10,9 @@ public class PressureDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.PRESSURE)) {
-            return DataLegitimacyOptions.UNDETERMINED;
+            if (data.data.pressure.hPa < 950 || data.data.pressure.hPa > 1050) {
+                return DataLegitimacyOptions.INCORRECT;
+            }
         }
 
         return DataLegitimacyOptions.CORRECT;

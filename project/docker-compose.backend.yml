@@ -195,4 +195,4 @@ services:
   #     - ./databases-data/prod/sharespot-data-store-database:/data/db
   #     - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
-  sharespot-network: {}
+  sharespot-network:

@@ -87,7 +87,7 @@ function decoder(bytes, port) {
     gps: {
       latitude: latitude,
       longitude: longitude,
-      altitude: altitude.toFixed(0),
+      altitude: altitude,
     },
     alarm: {
       value: alarm,

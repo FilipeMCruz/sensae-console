@@ -174,8 +174,8 @@ Due to lack a of discussion and tests some data is missing a well-defined unit o
 
 ## Improvements
 
-- Added `data.humidity.relative`
-- Added `data.battery.maxVolts`
+- Add `data.humidity.relative`
+- Add `data.battery.maxVolts`
 
 ## Further Discussion
 

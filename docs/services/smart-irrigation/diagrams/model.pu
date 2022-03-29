@@ -1,0 +1,51 @@
+@startuml model
+
+skinparam Monochrome true
+skinparam Shadowing false
+hide empty members
+
+class Domain
+
+class Sensor
+
+class Valve
+
+class Garden
+
+class Area
+
+class Point
+
+class Details
+
+class StartDate
+
+class EndDate
+
+class Content
+
+class Name
+
+class Id
+
+class GPSPoint
+
+class Records
+
+Domain "1" - "*" Garden: owns >
+Area "1" -- "*" Point: has boundaries >
+Garden "1" -- "1" Area: defined by >
+Garden "1" -- "1..*" Sensor: has >
+Garden "1" -- "*" Valve: has >
+Valve "1" -- "*" Details: has info >
+Sensor "1" -- "*" Details: has info >
+Details "1" -- "1" StartDate: has >
+Details "1" -- "0..1" EndDate: has >
+Details "1" -- "1" Content: refer to >
+Content "1" -- "1" Records: has >
+Content "1" -- "*" Domain: is owned by >
+Content "1" -- "1" Name: has >
+Content "1" -- "1" Id: has >
+Content "1" -- "1" GPSPoint: has >
+
+@enduml

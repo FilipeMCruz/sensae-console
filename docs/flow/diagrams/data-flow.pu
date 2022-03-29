@@ -4,8 +4,6 @@ skinparam Monochrome true
 
 note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' so that data can be accessed. Then, once\nthe work is done the message is 'sealed', routing\nkeys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
 
-note "This diagram describe in a higher level the data\n flow in the system, it does not account for invalid\ndata or possible errors durring the process" as N2
-
 state "Data Relayer" as DataRelayer
 state "Data Gateway" as DataGateway
 state decoded_or_encoded <<choice>>
@@ -57,7 +55,6 @@ Processor --> is_processed
 is_processed -> Validator : data is processed
 
 Validator --> is_valid
-note top of Validator : As of version 0.6.0 validator can\nonly check for GPS Data
 
 is_valid -> Identity : data is valid
 

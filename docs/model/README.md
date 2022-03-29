@@ -172,6 +172,11 @@ The units used to measure the given values are:
 
 Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
 
+## Improvements
+
+- Add `data.humidity.relative`
+- Add `data.battery.maxVolts`
+
 ## Further Discussion
 
 As always, changes/improvements to this data model are expected.

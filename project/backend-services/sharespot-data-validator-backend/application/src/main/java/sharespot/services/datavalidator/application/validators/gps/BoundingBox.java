@@ -1,4 +1,4 @@
-package sharespot.services.datavalidator.application;
+package sharespot.services.datavalidator.application.validators.gps;
 
 public class BoundingBox {
     

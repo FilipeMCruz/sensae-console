@@ -3,10 +3,12 @@ package sharespot.services.dataprocessor.infrastructure.endpoint.amqpegress.cont
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.sensor.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.dataprocessor.application.SensorDataHandlerService;
 
 @Component
@@ -20,11 +22,13 @@ public class SensorDataSupplier {
         service.getSinglePublisher()
                 .subscribe(outData -> {
                     logSuppliedMessage(outData);
-                    template.convertAndSend(TOPIC_EXCHANGE, outData.routingKeys.toString(), outData);
+                    template.send(TOPIC_EXCHANGE,
+                            outData.routingKeys.toString(),
+                            new Message(MessageMapper.toBuf(outData).toByteArray()));
                 });
     }
 
-    private void logSuppliedMessage(MessageSupplied<SensorDataDTO> in) {
+    private void logSuppliedMessage(MessageSupplied<ProcessedSensorDataDTO> in) {
         logger.info("Data Id Supplied: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

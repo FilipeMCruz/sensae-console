@@ -25,7 +25,6 @@ public class DataTransformationMapper {
             case 0 -> PropertyName.DATA_ID;
             case 1 -> PropertyName.DEVICE_ID;
             case 2 -> PropertyName.DEVICE_NAME;
-            case 3 -> PropertyName.DEVICE_RECORDS;
             case 4 -> PropertyName.REPORTED_AT;
             case 5 -> PropertyName.LATITUDE;
             case 6 -> PropertyName.LONGITUDE;
@@ -35,6 +34,12 @@ public class DataTransformationMapper {
             case 10 -> PropertyName.AQI;
             case 11 -> PropertyName.HUMIDITY;
             case 12 -> PropertyName.PRESSURE;
+            case 13 -> PropertyName.SOIL_MOISTURE;
+            case 14 -> PropertyName.ILLUMINANCE;
+            case 15 -> PropertyName.ALTITUDE;
+            case 16 -> PropertyName.BATTERY_PERCENTAGE;
+            case 17 -> PropertyName.BATTERY_VOLTS;
+            case 18 -> PropertyName.ALARM;
             default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }

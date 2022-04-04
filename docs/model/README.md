@@ -4,7 +4,7 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.11`
+- `iot-core` : `0.1.13`
 - `system` : `0.6.0`
 
 ## Introduction
@@ -46,7 +46,8 @@ The current data model is represented here as a Json Schema.
     "data": {
         "gps": {
             "latitude": [double],
-            "longitude": [double]
+            "longitude": [double],
+            "altitude": [double]
         },
         "temperature": {
             "celsius": [double]
@@ -55,16 +56,29 @@ The current data model is represented here as a Json Schema.
             "value": [enum]
         },
         "velocity": {
-            "value": [double]
+            "kmperh": [double]
         },
         "aqi": {
-            "value": [double]
+            "eaqi": [double]
         },
         "humidity": {
-            "value": [double]
+            "gramspercubicmeter": [double]
         },
         "pressure": {
-            "value": [double]
+            "hPa": [double]
+        },
+        "battery": {
+            "volts": [double],
+            "percentage": [double],
+        },
+        "moisture": {
+            "percentage": [double]
+        },
+        "illuminance": {
+            "lux": [double]
+        },
+        "alarm": {
+            "value": [boolean]
         }
     }
 }
@@ -99,7 +113,8 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
     "data": {
         "gps": {
             "latitude": [optional],
-            "longitude": [optional]
+            "longitude": [optional],
+            "altitude": [Optional]
         },
         "temperature": {
             "celsius": [optional]
@@ -108,15 +123,28 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
             "value": [optional]
         },
         "velocity": {
-            "value": [optional]
+            "kmperh": [optional]
         },
         "aqi": {
-            "value": [optional]
+            "eaqi": [optional]
         },
         "humidity": {
-            "value": [optional]
+            "gramspercubicmeter": [optional]
         },
         "pressure": {
+            "hPa": [optional]
+        },
+        "battery": {
+            "volts": [optional],
+            "percentage": [optional],
+        },
+        "moisture": {
+            "percentage": [optional]
+        },
+        "illuminance": {
+            "lux": [optional]
+        },
+        "alarm": {
             "value": [optional]
         }
     }
@@ -125,27 +153,29 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
 
 The units used to measure the given values are:
 
-- `reported_at`: unix time stamps in milliseconds,
-- `data.gps`: geographic coordinate system, with latitude and longitude,
-- `data.gps.latitude`: value between -90 and 90
-- `data.gps.longitude`: value between -180 and 180
-- `data.motion.value`: `ACTIVE`, `INACTIVE` or `UNKNOWN`
-- `data.velocity.value`: value in km/h
-- `data.temperature.celsius`: value in celsius
-- `data.aqi.value`: value in EAQI
-- `data.pressure.value`: value in hPa
-- `data.humidity.value`: percentage value
+- `reported_at`: unix time stamps in milliseconds;
+- `data.gps`: geographic coordinate system, with latitude, longitude and optionally altitude;
+- `data.gps.latitude`: value between -90 and 90;
+- `data.gps.longitude`: value between -180 and 180;
+- `data.gps.altitude`: value im meters, 0m equals the sea level;
+- `data.motion.value`: `ACTIVE`, `INACTIVE` or `UNKNOWN`;
+- `data.velocity.kmperh`: value in km/h;
+- `data.temperature.celsius`: value in celsius;
+- `data.aqi.eaqi`: value in EAQI [ref](https://airindex.eea.europa.eu/Map/AQI/Viewer/);
+- `data.humidity.gramspercubicmeter`: value with grams of water per cubic meter;
+- `data.pressure.hPa`: value in hPa;
+- `data.battery.volts`: value in volts;
+- `data.battery.percentage`: value representing the percentage of battery still available;
+- `data.moisture.percentage`: value representing the percentage of water in the soil;
+- `data.illuminance.lux`: value representing luminous flux per unit area;
+- `data.alarm.value`: true or false / on or off;
 
 Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
 
 ## Improvements
 
-- add optional property `altitude` to `data.gps`;
-- change `value` from `data.velocity` to something that can be understood, like `kmperh`
-- change `value` from `data.aqi` to something that can be understood, since there are various scales of `aqi` we must choose one and stick with it, it is suggested that we us, `eaqi` [ref](https://airindex.eea.europa.eu/Map/AQI/Viewer/)
-- change `value` from `data.humidity` to something that can be understood, like `percentage` or `gramspercubicmeter`
-- change `value` from `data.pressure` to something that can be understood, like `hPa`
-- add `data.moisture.percentage` to represent soil moisture
+- Add `data.humidity.relative`
+- Add `data.battery.maxVolts`
 
 ## Further Discussion
 

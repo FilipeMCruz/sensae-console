@@ -58,6 +58,12 @@ public class DataTransformationMapper {
             case AQI -> PropertyNamePostgres.aqi();
             case HUMIDITY -> PropertyNamePostgres.humidity();
             case PRESSURE -> PropertyNamePostgres.pressure();
+            case ILLUMINANCE -> PropertyNamePostgres.illuminance();
+            case ALTITUDE -> PropertyNamePostgres.altitude();
+            case SOIL_MOISTURE -> PropertyNamePostgres.soilMoisture();
+            case BATTERY_PERCENTAGE -> PropertyNamePostgres.batteryPercentage();
+            case BATTERY_VOLTS -> PropertyNamePostgres.batteryVolts();
+            case ALARM -> PropertyNamePostgres.alarm();
             case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS -> throw new RuntimeException();
         };
     }
@@ -76,6 +82,12 @@ public class DataTransformationMapper {
             case 10 -> PropertyName.AQI;
             case 11 -> PropertyName.HUMIDITY;
             case 12 -> PropertyName.PRESSURE;
+            case 13 -> PropertyName.SOIL_MOISTURE;
+            case 14 -> PropertyName.ILLUMINANCE;
+            case 15 -> PropertyName.ALTITUDE;
+            case 16 -> PropertyName.BATTERY_PERCENTAGE;
+            case 17 -> PropertyName.BATTERY_VOLTS;
+            case 18 -> PropertyName.ALARM;
             default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }

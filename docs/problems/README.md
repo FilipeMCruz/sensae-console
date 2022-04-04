@@ -1,5 +1,9 @@
 # Problems
 
+Current version:
+
+- `system` : `0.6.0`
+
 ## Auth
 
 The graphql subscription spec, and the used libraries, don't easily handle headers.
@@ -17,4 +21,4 @@ This engine is currently the state of the art of javascript engines running insi
 
 It integrates natively with GraalVM, a new JDK. GraalVM + Spring Boot is still an experimental project and as such its adoption was abandoned. The current application is using stock java to run the app and therefore has lower performance. Still, this performance hit wasn't noticeable in the performed tests.
 
-In the future one could try Quarkus as the backend framework to tackle this performance issue, since it works with GraalVM, and benefit from native images provided by GraalVM.
+In the future one could try Quarkus, Micronaut or Spring Native as the backend framework to tackle this performance issue, since they work with GraalVM, and benefit from native images provided by GraalVM.

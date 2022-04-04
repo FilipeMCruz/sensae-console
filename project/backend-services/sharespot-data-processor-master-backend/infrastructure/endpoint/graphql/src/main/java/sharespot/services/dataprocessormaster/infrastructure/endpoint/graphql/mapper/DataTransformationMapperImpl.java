@@ -39,6 +39,12 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case AQI -> PropertyTransformation.create(e.oldPath, PropertyName.AQI);
             case HUMIDITY -> PropertyTransformation.create(e.oldPath, PropertyName.HUMIDITY);
             case PRESSURE -> PropertyTransformation.create(e.oldPath, PropertyName.PRESSURE);
+            case SOIL_MOISTURE -> PropertyTransformation.create(e.oldPath, PropertyName.SOIL_MOISTURE);
+            case ILLUMINANCE -> PropertyTransformation.create(e.oldPath, PropertyName.ILLUMINANCE);
+            case ALTITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.ALTITUDE);
+            case BATTERY_VOLTS -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_VOLTS);
+            case BATTERY_PERCENTAGE -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_PERCENTAGE);
+            case ALARM -> PropertyTransformation.create(e.oldPath, PropertyName.ALARM);
         }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
@@ -86,6 +92,12 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case AQI -> PropertyNameDTOImpl.AQI;
             case HUMIDITY -> PropertyNameDTOImpl.HUMIDITY;
             case PRESSURE -> PropertyNameDTOImpl.PRESSURE;
+            case SOIL_MOISTURE -> PropertyNameDTOImpl.SOIL_MOISTURE;
+            case ILLUMINANCE -> PropertyNameDTOImpl.ILLUMINANCE;
+            case ALTITUDE -> PropertyNameDTOImpl.ALTITUDE;
+            case BATTERY_VOLTS -> PropertyNameDTOImpl.BATTERY_VOLTS;
+            case BATTERY_PERCENTAGE -> PropertyNameDTOImpl.BATTERY_PERCENTAGE;
+            case ALARM -> PropertyNameDTOImpl.ALARM;
             default -> throw new RuntimeException("Invalid Property");
         };
         entry.oldPath = kt.oldPath();

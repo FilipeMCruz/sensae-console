@@ -1,0 +1,49 @@
+@startuml process-view-level2-uc08
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam style strictuml
+hide unlinked
+
+autonumber 1
+
+participant "Data Processor\nFrontend" as DRF
+participant "Data Processor Master\nBackend" as DRMB
+participant "Data Processor\nDatabase" as DRDB
+participant "Data Processor Slave\nBackend" as DRSB
+participant "Message Broker" as MB
+
+activate MB
+activate DRF
+
+-> DRF: new/edited data\ntransformation
+
+DRF -> DRMB: new/edited data\ntransformation
+activate DRMB
+
+DRMB -> DRDB: new/edited data\ntransformation
+activate DRDB
+
+DRDB --> DRMB: sucess
+deactivate DRDB
+
+DRMB -> MB: update to X data\ntype transformation
+
+MB -> DRSB: update to X data\ntype transformation
+activate DRSB
+
+DRSB -> DRDB: fetch X data\ntype transformation
+activate DRDB
+
+DRDB -> DRSB: X data type\ntransformation
+deactivate DRDB
+
+deactivate DRSB
+
+DRMB --> DRF: sucess
+
+deactivate DRMB
+
+<-- DRF: sucess
+
+@enduml

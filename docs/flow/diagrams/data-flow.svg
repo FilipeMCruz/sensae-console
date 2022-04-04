@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="850px" preserveAspectRatio="none" style="width:1354px;height:850px;background:#FFFFFF;" version="1.1" viewBox="0 0 1354 850" width="1354px" zoomAndPan="magnify"><defs><filter height="300%" id="fn8wude4956er" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><path d="M142.5,6 L142.5,122.2361 L462.5,122.2361 L462.5,16 L452.5,6 L142.5,6 " fill="#EBEBEB" filter="url(#fn8wude4956er)" style="stroke:#383838;stroke-width:1.0;"/><path d="M452.5,6 L452.5,16 L462.5,16 L452.5,6 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="299" x="148.5" y="24.897">Data after going though Data Gateway is wrapped</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="286" x="151.5" y="42.603">inside an Environment Message, this message is</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="281" x="148.5" y="60.309">'open' so that data can be accessed. Then, once</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="288" x="148.5" y="78.0151">the work is done the message is 'sealed', routing</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="253" x="148.5" y="95.7211">keys are changed and the message is sent.</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="299" x="148.5" y="113.4271">For brevity this process is not detailed everywhere</text><g id="DataRelayer"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="71.7561" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="181" x="7" y="191"/><line style="stroke:#383838;stroke-width:1.5;" x1="7" x2="188" y1="220.0679" y2="220.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="55" y="210.9659">Data Relayer</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="140" x="12" y="237.896">Any data can be received</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="161" x="12" y="254.2401">as the body of an HTTP POST</text></g><g id="DataGateway"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="88.1003" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="171" x="223" y="183"/><line style="stroke:#383838;stroke-width:1.5;" x1="223" x2="394" y1="212.0679" y2="212.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="262.5" y="202.9659">Data Gateway</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="107" x="228" y="229.896">Data is wraped in a</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="151" x="228" y="246.2401">Environment Message with</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="113" x="228" y="262.5842">specific routing keys</text></g><polygon fill="#F8F8F8" filter="url(#fn8wude4956er)" points="441.5,215,453.5,227,441.5,239,429.5,227,441.5,215" style="stroke:#383838;stroke-width:1.5;"/><g id="Processor"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="88.1003" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="198" x="213.5" y="350"/><line style="stroke:#383838;stroke-width:1.5;" x1="213.5" x2="411.5" y1="379.0679" y2="379.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="139" x="243" y="369.9659">Data Processor Slave</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="170" x="218.5" y="396.896">Data is transformed according</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="164" x="218.5" y="413.2401">to the defined mapper for the</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="178" x="218.5" y="429.5842">type of device that sent the data</text></g><g id="Decoder"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="88.1003" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="198" x="446.5" y="350"/><line style="stroke:#383838;stroke-width:1.5;" x1="446.5" x2="644.5" y1="379.0679" y2="379.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="130" x="480.5" y="369.9659">Data Decoder Slave</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="170" x="451.5" y="396.896">Data is transformed according</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="151" x="451.5" y="413.2401">to the defined script for the</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="178" x="451.5" y="429.5842">type of device that sent the data</text></g><polygon fill="#F8F8F8" filter="url(#fn8wude4956er)" points="428.5,523,440.5,535,428.5,547,416.5,535,428.5,523" style="stroke:#383838;stroke-width:1.5;"/><g id="Identity"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="71.7561" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="205" x="795" y="632"/><line style="stroke:#383838;stroke-width:1.5;" x1="795" x2="1000" y1="661.0679" y2="661.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="185" x="805" y="651.9659">Identity Management Slave</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="167" x="800" y="678.896">Domain ownership details are</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="98" x="800" y="695.2401">added to the data</text></g><polygon fill="#F8F8F8" filter="url(#fn8wude4956er)" points="676.5,656,688.5,668,676.5,680,664.5,668,676.5,656" style="stroke:#383838;stroke-width:1.5;"/><g id="Validator"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="71.7561" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="192" x="580.5" y="499"/><line style="stroke:#383838;stroke-width:1.5;" x1="580.5" x2="772.5" y1="528.0679" y2="528.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95" x="629" y="518.9659">Data Validator</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="172" x="585.5" y="545.896">Data is examined to determine</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="94" x="585.5" y="562.2401">if it is valid or not</text></g><g id="Records"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="71.7561" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="166" x="814.5" y="765"/><line style="stroke:#383838;stroke-width:1.5;" x1="814.5" x2="980.5" y1="794.0679" y2="794.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141" x="827" y="784.9659">Device Records Slave</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="146" x="819.5" y="811.896">Device information details</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="120" x="819.5" y="828.2401">are added to the data</text></g><polygon fill="#F8F8F8" filter="url(#fn8wude4956er)" points="1027.5,789,1039.5,801,1027.5,813,1015.5,801,1027.5,789" style="stroke:#383838;stroke-width:1.5;"/><g id="Fleet"><rect fill="#F8F8F8" filter="url(#fn8wude4956er)" height="71.7561" rx="12.5" ry="12.5" style="stroke:#383838;stroke-width:1.5;" width="146" x="1194.5" y="765"/><line style="stroke:#383838;stroke-width:1.5;" x1="1194.5" x2="1340.5" y1="794.0679" y2="794.0679"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="1204.5" y="784.9659">Fleet Management</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="104" x="1199.5" y="811.896">GPS Data is stored</text><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacing" textLength="115" x="1199.5" y="828.2401">and sent to Frontend</text></g><ellipse cx="97.5" cy="64" fill="#000000" filter="url(#fn8wude4956er)" rx="10" ry="10" style="stroke:none;stroke-width:1.0;"/><!--MD5=[a0178e5e24e024d219a1e7cb3b47531f]
+link *start to DataRelayer--><path d="M97.5,74.12 C97.5,95.1 97.5,147.89 97.5,185.33 " fill="none" id="*start-to-DataRelayer" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="97.5,190.73,101.5,181.73,97.5,185.73,93.5,181.73,97.5,190.73" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[e1630b80edfd2c93eafeb4e847606ce3]
+link DataRelayer to DataGateway--><path d="M188.16,227 C198.04,227 207.91,227 217.79,227 " fill="none" id="DataRelayer-to-DataGateway" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="222.95,227,213.95,223,217.95,227,213.95,231,222.95,227" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[68b8774cebcc3d6e6b7465b21a78ccfb]
+link DataGateway to decoded_or_encoded--><path d="M394.22,227 C404.18,227 414.14,227 424.1,227 " fill="none" id="DataGateway-to-decoded_or_encoded" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="429.31,227,420.31,223,424.31,227,420.31,231,429.31,227" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[22e08d9b35ceb90cb3450d5235db0222]
+link decoded_or_encoded to Processor--><path d="M436.97,234.81 C431.22,243.38 420.92,258.49 411.5,271 C392.58,296.13 370.61,323.37 352.19,345.73 " fill="none" id="decoded_or_encoded-to-Processor" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="348.79,349.85,357.6054,345.458,351.974,345.9949,351.4372,340.3636,348.79,349.85" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="82" x="389.5" y="315.897">decoded data</text><!--MD5=[a85dd681901aa81ed2fc6730caa183cc]
+link decoded_or_encoded to Decoder--><path d="M445.97,235.09 C457.82,253.9 490.85,306.3 515.64,345.62 " fill="none" id="decoded_or_encoded-to-Decoder" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="518.31,349.86,516.8996,340.1127,515.6459,345.6288,510.1297,344.3752,518.31,349.86" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="82" x="498.5" y="315.897">encoded data</text><!--MD5=[bb92e24ce4a2bfe465ff3d577da6e84a]
+link Decoder to is_processed--><path d="M509.12,438.22 C483.89,468.19 452.22,505.82 437.19,523.68 " fill="none" id="Decoder-to-is_processed" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="433.74,527.77,442.5998,523.4684,436.9633,523.9477,436.4841,518.3111,433.74,527.77" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[97e6fa534dda77034f901ff4437e932e]
+link Processor to is_processed--><path d="M348.57,438.22 C373.58,468.19 404.98,505.82 419.88,523.68 " fill="none" id="Processor-to-is_processed" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="423.3,527.77,420.5766,518.3052,420.085,523.9406,414.4496,523.4491,423.3,527.77" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[1b5df3300675c9010c826085abe06109]
+link is_processed to Validator--><path d="M440.8,535 C465.51,535 523.3,535 575.46,535 " fill="none" id="is_processed-to-Validator" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="580.49,535,571.49,531,575.49,535,571.49,539,580.49,535" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="103" x="459" y="527.897">data is processed</text><!--MD5=[4bd87a3fcbbe7f20132153ff5b6b8d59]
+link Validator to is_valid--><path d="M676.5,571.11 C676.5,596.88 676.5,630.71 676.5,650.53 " fill="none" id="Validator-to-is_valid" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="676.5,655.74,680.5,646.74,676.5,650.74,672.5,646.74,676.5,655.74" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[e2cfcbdc35d0e0c77a0c0ea4d529b628]
+link is_valid to Identity--><path d="M688.7,668 C708.4,668 749.1,668 789.38,668 " fill="none" id="is_valid-to-Identity" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="794.8,668,785.8,664,789.8,668,785.8,672,794.8,668" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="70" x="706.75" y="660.897">data is valid</text><!--MD5=[98f1829da0ede8e1cd949e44f7a1c811]
+link Identity to Records--><path d="M897.5,704.11 C897.5,721.14 897.5,741.7 897.5,759.4 " fill="none" id="Identity-to-Records" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="897.5,764.8,901.5,755.8,897.5,759.8,893.5,755.8,897.5,764.8" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[363ddcf5f10e38c739e2a3457fb64276]
+link Records to has_gps--><path d="M980.53,801 C990.42,801 1000.32,801 1010.21,801 " fill="none" id="Records-to-has_gps" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="1015.39,801,1006.39,797,1010.39,801,1006.39,805,1015.39,801" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[b75f4a23d6e50a5908fb2864c6f74bec]
+link has_gps to Fleet--><path d="M1039.73,801 C1066.98,801 1134.59,801 1189.11,801 " fill="none" id="has_gps-to-Fleet" style="stroke:#383838;stroke-width:1.0;"/><polygon fill="#383838" points="1194.34,801,1185.34,797,1189.34,801,1185.34,805,1194.34,801" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="118" x="1058" y="793.897">data has gps details</text><!--MD5=[db6ad705b1ff11b1842f54a654af5a11]
+@startuml data-flow
+
+skinparam Monochrome true
+
+note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' so that data can be accessed. Then, once\nthe work is done the message is 'sealed', routing\nkeys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
+
+state "Data Relayer" as DataRelayer
+state "Data Gateway" as DataGateway
+state decoded_or_encoded <<choice>>
+state "Data Processor Slave" as Processor
+state "Data Decoder Slave" as Decoder
+state is_processed <<choice>>
+state "Identity Management Slave" as Identity
+state is_valid <<choice>>
+state "Data Validator" as Validator
+state "Device Records Slave" as Records
+state has_gps <<choice>>
+state "Fleet Management" as Fleet
+
+DataRelayer : Any data can be received
+DataRelayer : as the body of an HTTP POST
+
+DataGateway : Data is wraped in a
+DataGateway : Environment Message with
+DataGateway : specific routing keys
+
+Processor : Data is transformed according
+Processor : to the defined mapper for the
+Processor : type of device that sent the data
+
+Decoder : Data is transformed according
+Decoder : to the defined script for the
+Decoder : type of device that sent the data
+
+Identity : Domain ownership details are
+Identity : added to the data
+
+Validator : Data is examined to determine
+Validator : if it is valid or not
+
+Records : Device information details
+Records : are added to the data
+
+Fleet : GPS Data is stored
+Fleet : and sent to Frontend
+
+[*] - -> DataRelayer
+DataRelayer -> DataGateway
+DataGateway -> decoded_or_encoded
+decoded_or_encoded - -> Processor : decoded data
+decoded_or_encoded - -> Decoder : encoded data
+Decoder - -> is_processed
+Processor - -> is_processed
+
+is_processed -> Validator : data is processed
+
+Validator - -> is_valid
+
+is_valid -> Identity : data is valid
+
+Identity - -> Records
+
+Records -> has_gps
+
+has_gps -> Fleet : data has gps details
+
+@enduml
+
+PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

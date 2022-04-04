@@ -24,7 +24,7 @@ public class DataValidatorServiceTest {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
 
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("dataprocessorslave.dataprocessorslave.0.1.11.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.#");
+                .from("proce.0.1.13.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {
@@ -40,7 +40,7 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(45.756, 14.432);
         var decide = service.decide(randomWithGPSData(gps), externalKeys);
         assertTrue(decide.isPresent());
-        assertEquals("c", decide.get().legitimacy);
+        assertEquals("c", decide.get().legitimacy.value());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(38.750244, -9.229148);
         var decide = service.decide(randomWithGPSData(gps), externalKeys);
         assertTrue(decide.isPresent());
-        assertEquals("c", decide.get().legitimacy);
+        assertEquals("c", decide.get().legitimacy.value());
     }
 
     @Test
@@ -60,7 +60,27 @@ public class DataValidatorServiceTest {
         var gps = GPSDataDTO.ofLatLong(-138.123422352, 2.23426624);
         var decide = service.decide(randomWithGPSData(gps), externalKeys);
         assertTrue(decide.isPresent());
-        assertEquals("i", decide.get().legitimacy);
+        assertEquals("i", decide.get().legitimacy.value());
+    }
+
+    @Test
+    void ensureWrongDataIsClassifiedAsIncorrectWithWrongAltitude() {
+        DataValidatorService service = new DataValidatorService(internal);
+
+        var gps = GPSDataDTO.ofLatLongAlt(38.750244, -9.229148, -3000.0);
+        var decide = service.decide(randomWithGPSData(gps), externalKeys);
+        assertTrue(decide.isPresent());
+        assertEquals("i", decide.get().legitimacy.value());
+    }
+
+    @Test
+    void ensureWrongDataIsClassifiedAsIncorrectWithWrongAltitude2() {
+        DataValidatorService service = new DataValidatorService(internal);
+
+        var gps = GPSDataDTO.ofLatLongAlt(38.750244, -9.229148, 100000.0);
+        var decide = service.decide(randomWithGPSData(gps), externalKeys);
+        assertTrue(decide.isPresent());
+        assertEquals("i", decide.get().legitimacy.value());
     }
 
     private ProcessedSensorDataDTO randomWithGPSData(GPSDataDTO gps) {

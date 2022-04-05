@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.domain.model.device;
+package pt.sensae.services.smart.irrigation.backend.domain.model.business.device;
 
 import java.util.UUID;
 

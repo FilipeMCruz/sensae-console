@@ -1,6 +1,5 @@
-package pt.sensae.services.smart.irrigation.backend.domainservices;
+package pt.sensae.services.smart.irrigation.backend.domainservices.data;
 
-import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Payload;
@@ -10,10 +9,9 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.Soi
 import pt.sensae.services.smart.irrigation.backend.domain.model.device.DeviceId;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
-@Service
 public class DataMapper {
 
-    public Data dtoToModel(ProcessedSensorDataDTO dto) {
+    public static Data dtoToModel(ProcessedSensorDataDTO dto) {
         var id = DataId.of(dto.dataId);
         var deviceId = DeviceId.of(dto.dataId);
         var reportedAt = ReportTime.of(dto.reportedAt);

@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.domain.model.content;
+package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content;
 
 public record DeviceName(String value) {
 

@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.domainservices;
+package pt.sensae.services.smart.irrigation.backend.domainservices.data;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
@@ -9,15 +9,12 @@ public class DataArchiver {
 
     private final DataRepository repository;
 
-    private final DataMapper mapper;
-
-    public DataArchiver(DataRepository repository, DataMapper mapper) {
+    public DataArchiver(DataRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     public void save(ProcessedSensorDataDTO data) {
-        var model = mapper.dtoToModel(data);
+        var model = DataMapper.dtoToModel(data);
         repository.store(model);
     }
 }

@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.domain.model.garden;
+package pt.sensae.services.smart.irrigation.backend.domain.model.business.garden;
 
 public record GardenName(String value) {
 

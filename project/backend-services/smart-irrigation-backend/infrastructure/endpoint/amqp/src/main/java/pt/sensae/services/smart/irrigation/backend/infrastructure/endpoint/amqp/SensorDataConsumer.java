@@ -1,30 +1,30 @@
-package sharespot.services.fleetmanagementbackend.infrastructure.endpoint.amqp.listener;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import pt.sensae.services.smart.irrigation.backend.application.DataHandlerService;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import sharespot.services.fleetmanagementbackend.application.GPSDataArchiver;
 
 @Component
 public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Fleet Management Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Smart Irrigation Queue";
 
-    private final GPSDataArchiver handler;
+    private final DataHandlerService handler;
 
-    public SensorDataConsumer(GPSDataArchiver handler) {
+    public SensorDataConsumer(DataHandlerService handler) {
         this.handler = handler;
     }
 
     @RabbitListener(queues = INGRESS_QUEUE)
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTO> in) {
         logConsumedMessage(in);
-        handler.save(in.data);
+        handler.handle(in.data);
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {

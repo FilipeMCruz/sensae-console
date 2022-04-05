@@ -6,7 +6,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.Payload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.ReportTime;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.Illuminance;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.SoilMoisture;
-import pt.sensae.services.smart.irrigation.backend.domain.model.device.DeviceId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
 public class DataMapper {

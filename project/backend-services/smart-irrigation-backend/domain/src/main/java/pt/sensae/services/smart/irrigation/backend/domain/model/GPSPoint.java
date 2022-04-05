@@ -1,27 +1,18 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model;
 
-public class GPSPoint {
+import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
 
-    private Float latitude;
-    private Float longitude;
-    private Float altitude;
+public record GPSPoint(Float latitude, Float longitude, Float altitude) {
 
-    private GPSPoint() {
-
+    public static GPSPoint from(GPSDataDTO data) {
+        return new GPSPoint(data.latitude.floatValue(), data.longitude.floatValue(), data.altitude.floatValue());
     }
 
     public static GPSPoint ofLatLong(Float latitude, Float longitude) {
-        var gpsDataDTO = new GPSPoint();
-        gpsDataDTO.latitude = latitude;
-        gpsDataDTO.longitude = longitude;
-        return gpsDataDTO;
+        return new GPSPoint(latitude, longitude, null);
     }
 
     public static GPSPoint ofLatLongAlt(Float latitude, Float longitude, Float altitude) {
-        var gpsDataDTO = new GPSPoint();
-        gpsDataDTO.latitude = latitude;
-        gpsDataDTO.longitude = longitude;
-        gpsDataDTO.altitude = altitude;
-        return gpsDataDTO;
+        return new GPSPoint(latitude, longitude, altitude);
     }
 }

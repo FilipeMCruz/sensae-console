@@ -1,7 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.data;
 
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.query.DataQuery;
-import pt.sensae.services.smart.irrigation.backend.domain.model.device.DeviceId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 
 import java.util.stream.Stream;
 

@@ -9,9 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
 import pt.sharespot.iot.core.routing.keys.*;
-import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
-import pt.sharespot.iot.core.routing.keys.data.IlluminanceDataOptions;
-import pt.sharespot.iot.core.routing.keys.data.SoilMoistureDataOptions;
+import pt.sharespot.iot.core.routing.keys.data.*;
 
 import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -19,7 +17,9 @@ import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.co
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String INGRESS_QUEUE = "Sharespot Smart Irrigation Queue";
+    public static final String PARK_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (park)";
+
+    public static final String STOVE_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (stove)";
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
@@ -30,8 +30,16 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public Queue queue() {
-        return QueueBuilder.durable(INGRESS_QUEUE)
+    public Queue parkQueue() {
+        return QueueBuilder.durable(PARK_INGRESS_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    public Queue stoveQueue() {
+        return QueueBuilder.durable(STOVE_INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -43,7 +51,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding binding(Queue queue, TopicExchange topic) {
+    Binding gardenBinding(Queue parkQueue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
@@ -55,7 +63,25 @@ public class AmqpConfiguration {
                 .missingAsAny();
 
         if (keys.isPresent()) {
-            return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
+            return BindingBuilder.bind(parkQueue).to(topic).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    Binding stoveBinding(Queue stoveQueue, TopicExchange topic) {
+        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.PROCESSED)
+                .withRecords(RecordsOptions.WITH_RECORDS)
+                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+                .withGps(GPSDataOptions.WITH_GPS_DATA)
+                .withHumidity(HumidityDataOptions.WITH_HUMIDITY_DATA)
+                .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
+                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .missingAsAny();
+
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(stoveQueue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

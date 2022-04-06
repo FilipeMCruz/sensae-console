@@ -9,15 +9,15 @@ import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
 @Component
-public class SensorDataConsumer {
+public class GardenSensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
+    Logger logger = LoggerFactory.getLogger(GardenSensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Smart Irrigation Queue";
+    public static final String INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (park)";
 
     private final DataHandlerService handler;
 
-    public SensorDataConsumer(DataHandlerService handler) {
+    public GardenSensorDataConsumer(DataHandlerService handler) {
         this.handler = handler;
     }
 

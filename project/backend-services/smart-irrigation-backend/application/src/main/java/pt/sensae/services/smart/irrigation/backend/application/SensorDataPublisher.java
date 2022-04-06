@@ -48,7 +48,7 @@ public class SensorDataPublisher {
 
     public Flux<SensorDataDTO> getGardenFilteredPublisher(Stream<String> gardenIds, AccessTokenDTO claims) {
         return dataPublisher.filter(getDeviceDomainFilter(claims))
-                .filter(insideGardens(gardenIds))
+                .filter(insideGardeningArea(gardenIds))
                 .map(mapper::toDto);
     }
 
@@ -68,7 +68,7 @@ public class SensorDataPublisher {
         dataStream.next(data);
     }
 
-    private Predicate<ProcessedSensorDataDTO> insideGardens(Stream<String> gardenIds) {
+    private Predicate<ProcessedSensorDataDTO> insideGardeningArea(Stream<String> gardenIds) {
         return data -> this.gardenCache.fetchByIds(gardenIds.map(GardenId::of))
                 .anyMatch(g -> g.area().contains(GPSPoint.from(data.data.gps)));
     }

@@ -5,10 +5,10 @@ import java.util.stream.Stream;
 
 public interface GardenRepository {
 
-    Optional<Garden> fetchById(GardenId id);
+    Optional<GardeningArea> fetchById(GardenId id);
 
-    Stream<Garden> fetchMultiple(Stream<GardenId> id);
+    Stream<GardeningArea> fetchMultiple(Stream<GardenId> id);
 
-    Garden save(Garden garden);
+    GardeningArea save(GardeningArea garden);
 
 }

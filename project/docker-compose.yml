@@ -125,8 +125,6 @@ services:
       - ./secrets/prod/sharespot-data-processor-slave-backend.env
     networks:
       - sharespot-network
-    ports:
-      - 8080
   sharespot-data-processor-master-backend:
     build: backend-services/sharespot-data-processor-master-backend
     image: sharespot-data-processor-master-backend
@@ -139,7 +137,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8080  
+      - 8080
   sharespot-data-decoder-master-backend:
     build: backend-services/sharespot-data-decoder-master-backend
     image: sharespot-data-decoder-master-backend
@@ -193,8 +191,6 @@ services:
       - ./secrets/prod/sharespot-data-validator-backend.env
     networks:
       - sharespot-network
-    ports:
-      - 8080
   sharespot-fleet-management-backend:
     build: backend-services/sharespot-fleet-management-backend
     container_name: sharespot-fleet-management-backend
@@ -205,6 +201,20 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/sharespot-fleet-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  smart-irrigation-backend:
+    build: backend-services/smart-irrigation-backend
+    container_name: smart-irrigation-backend
+    image: smart-irrigation-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/smart-irrigation-backend.env
     networks:
       - sharespot-network
     ports:
@@ -222,7 +232,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8080:8080
+      - 8080
   sharespot-identity-management-slave-backend:
     build: backend-services/sharespot-identity-management-slave-backend
     container_name: sharespot-identity-management-slave-backend
@@ -233,19 +243,6 @@ services:
       - ./secrets/prod/sharespot-identity-management-slave-backend.env
     networks:
       - sharespot-network
-    ports:
-      - 8080
-  # sharespot-data-store:
-  #   build: backend-services/sharespot-data-store
-  #   image: sharespot-data-store
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/prod/sharespot-data-store-backend.env
-  #   networks:
-  #     - sharespot-network
-  #   ports:
-  #     - 8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -269,6 +266,28 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
+  irrigation-database:
+    image: questdb/questdb:6.2
+    container_name: irrigation-database
+    networks:
+      - sharespot-network
+    ports:
+      - 8812
+      - 9000
+      - 9003
+    volumes:
+      - ./databases-data/prod/irrigation-database:/root/.questdb/
+  # sharespot-data-store:
+  #   build: backend-services/sharespot-data-store
+  #   image: sharespot-data-store
+  #   environment:
+  #     spring_profiles_active: prod
+  #   env_file:
+  #     - ./secrets/prod/sharespot-data-store-backend.env
+  #   networks:
+  #     - sharespot-network
+  #   ports:
+  #     - 8080
   # sharespot-data-store-database:
   #   image: mongo:latest
   #   container_name: sharespot-data-store-database

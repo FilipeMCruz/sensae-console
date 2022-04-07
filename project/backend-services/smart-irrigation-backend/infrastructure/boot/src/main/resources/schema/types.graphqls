@@ -1,0 +1,55 @@
+type SensorData {
+    dataId : String
+    device : Device
+    reportedAt : String
+    data : SensorDataDetails
+}
+
+type Device {
+    id: String
+    name: String
+    records : [RecordEntry]
+}
+
+type RecordEntry {
+    label: String
+    content: String
+}
+
+interface SensorDataDetails {
+    gps : GPSDataDetails
+}
+
+type ParkSensorDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    soilMoisture : SoilMoistureDataDetails
+    illuminance : IlluminanceDataDetails
+}
+
+type StoveSensorDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    temperature : TemperatureDataDetails
+    humidity : HumidityDataDetails
+}
+
+type TemperatureDataDetails {
+    celsius: Float
+}
+
+type HumidityDataDetails {
+    gramsPerCubicMeter : Float
+}
+
+type SoilMoistureDataDetails {
+    percentage : Float
+}
+
+type IlluminanceDataDetails {
+    lux : Float
+}
+
+type GPSDataDetails {
+    longitude : Float
+    latitude : Float
+    altitude : Float
+}

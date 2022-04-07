@@ -46,6 +46,15 @@ public class SensorDataPublisher {
         dataPublisher.connect();
     }
 
+    public Flux<SensorDataDTO> getGeneralPublisher(AccessTokenDTO claims) {
+        return dataPublisher.filter(getDeviceDomainFilter(claims))
+                .map(mapper::toDto);
+    }
+
+    public Flux<SensorDataDTO> getPublisher() {
+        return dataPublisher.map(mapper::toDto);
+    }
+
     public Flux<SensorDataDTO> getGardenFilteredPublisher(Stream<String> gardenIds, AccessTokenDTO claims) {
         return dataPublisher.filter(getDeviceDomainFilter(claims))
                 .filter(insideGardeningArea(gardenIds))

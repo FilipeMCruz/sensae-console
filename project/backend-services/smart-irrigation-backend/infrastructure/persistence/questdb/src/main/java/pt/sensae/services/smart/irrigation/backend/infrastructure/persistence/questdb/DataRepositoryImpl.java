@@ -20,10 +20,16 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Data store(Data data) {
+    public void store(Data data) {
         var dataQuestDB = DataMapperImpl.toDao(data);
-        var save = this.repository.save(dataQuestDB);
-        return DataMapperImpl.toModel(save);
+        this.repository.insert(dataQuestDB.dataId,
+                dataQuestDB.deviceId,
+                dataQuestDB.deviceType,
+                dataQuestDB.reportedAt,
+                dataQuestDB.temperature,
+                dataQuestDB.humidity,
+                dataQuestDB.soilMoisture,
+                dataQuestDB.illuminance);
     }
 
     @Override

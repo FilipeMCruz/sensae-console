@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.mapper;
 
+import org.slf4j.LoggerFactory;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
@@ -9,6 +10,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.*;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
 
 import java.sql.Timestamp;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -33,7 +35,10 @@ public class DataMapperImpl {
         var dataQuestDB = new DataQuestDB();
         dataQuestDB.dataId = model.id().value().toString();
         dataQuestDB.deviceId = model.deviceId().value().toString();
-        dataQuestDB.reportedAt = Timestamp.from(model.reportedAt().value().plusNanos(1));
+        dataQuestDB.reportedAt = Timestamp.from(model.reportedAt().value().plus(1, ChronoUnit.MICROS));
+
+        LoggerFactory.getLogger("a").info(dataQuestDB.reportedAt.toLocalDateTime().toString());
+
         if (model.payload() instanceof ParkPayload parkPayload) {
             dataQuestDB.soilMoisture = parkPayload.soilMoisture().percentage();
             dataQuestDB.illuminance = parkPayload.soilMoisture().percentage();

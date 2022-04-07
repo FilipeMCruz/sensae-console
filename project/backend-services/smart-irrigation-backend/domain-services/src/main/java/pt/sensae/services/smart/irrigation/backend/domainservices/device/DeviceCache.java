@@ -5,20 +5,17 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RecordEntry;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.Device;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceType;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.CloseDate;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.DeviceLedger;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntry;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.OpenDate;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RecordEntry;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -68,9 +65,14 @@ public class DeviceCache {
 
         var name = DeviceName.of(data.device.name);
 
-        var gpsPoint = GPSPoint.ofLatLongAlt(data.data.gps.latitude.floatValue(),
-                data.data.gps.longitude.floatValue(),
-                data.data.gps.altitude.floatValue());
+        var gpsPoint = GPSPoint.ofLatLong(data.data.gps.latitude.floatValue(),
+                data.data.gps.longitude.floatValue());
+
+        if (data.hasProperty(PropertyName.ALTITUDE)) {
+            gpsPoint = GPSPoint.ofLatLongAlt(data.data.gps.latitude.floatValue(),
+                    data.data.gps.longitude.floatValue(),
+                    data.data.gps.altitude.floatValue());
+        }
 
         var records = new DeviceRecords(data.device.records.entry.stream().map(e -> RecordEntry.of(e.label, e.content)).collect(Collectors.toSet()));
 

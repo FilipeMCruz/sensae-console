@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public interface DataRepository {
 
-    Data store(Data data);
+    void store(Data data);
 
     Stream<Data> fetch(Stream<DataQuery> query);
 

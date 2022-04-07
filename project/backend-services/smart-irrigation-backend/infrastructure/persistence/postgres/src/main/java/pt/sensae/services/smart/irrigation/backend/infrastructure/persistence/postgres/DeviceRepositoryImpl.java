@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
@@ -12,11 +13,13 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.DeviceMapper;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.LedgerMapper;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.RecordsMapper;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.LedgerEntryPostgres;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.DeviceRepositoryPostgres;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.LedgerRepositoryPostgres;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
 
 import java.sql.Timestamp;
+import java.util.AbstractMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -68,16 +71,39 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         saveLedger(entry, idS);
     }
 
-    //TODO
     @Override
     public Stream<Device> fetchLatest(Ownership ownership) {
-        return Stream.empty();
+        var collect = buildQuery(ownership);
+        var latestWithOwnership = ledgerRepository.findLatestWithOwnership(collect);
+        return doWorkOnFoundLedgerEntries(latestWithOwnership);
     }
 
-    //TODO
     @Override
     public Stream<Device> fetch(DeviceQuery query) {
-        return Stream.empty();
+        var ownership = buildQuery(query.ownership());
+        var latestWithOwnership = ledgerRepository.findOldWithOwnership(ownership, Timestamp.from(query.open().value()), Timestamp.from(query.close().value()));
+        return doWorkOnFoundLedgerEntries(latestWithOwnership);
+    }
+
+    @NotNull
+    private String buildQuery(Ownership ownership) {
+        return ownership.value().stream().map(d -> d.value().toString()).collect(Collectors.joining(",", "{", "}"));
+    }
+
+    @NotNull
+    private Stream<Device> doWorkOnFoundLedgerEntries(Stream<LedgerEntryPostgres> latestWithOwnership) {
+        var collect = latestWithOwnership.collect(Collectors.toSet());
+
+        var records = recordsRepository.getAllByEntryPersistenceIdIsIn(collect.stream().map(e -> e.persistenceId).toList())
+                .collect(Collectors.groupingBy(name -> name.entryPersistenceId));
+
+        var activeLedgerEntries = collect.stream().map(e -> {
+            var deviceRecords = RecordsMapper.daoToModel(records.get(e.persistenceId).stream());
+            return new AbstractMap.SimpleEntry<>(e.deviceId, LedgerMapper.daoToModel(e, deviceRecords));
+        }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+
+        return deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).toList())
+                .map(d -> DeviceMapper.daoToModel(d, activeLedgerEntries.get(d.deviceId)));
     }
 
     private void saveLedger(LedgerEntry entry, String idS) {

@@ -14,12 +14,17 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RecordEntry;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.query.DeviceQuery;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DeviceCache {

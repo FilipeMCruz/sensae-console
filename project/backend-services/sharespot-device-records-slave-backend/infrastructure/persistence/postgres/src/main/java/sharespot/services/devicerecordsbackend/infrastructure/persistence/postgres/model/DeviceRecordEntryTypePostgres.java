@@ -24,4 +24,16 @@ public class DeviceRecordEntryTypePostgres {
         type.type = 1;
         return type;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DeviceRecordEntryTypePostgres that)) return false;
+        return type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return type;
+    }
 }

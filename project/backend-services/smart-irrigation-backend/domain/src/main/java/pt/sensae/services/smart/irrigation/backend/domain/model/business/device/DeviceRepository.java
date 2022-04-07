@@ -16,8 +16,6 @@ public interface DeviceRepository {
 
     void openDeviceLedgerEntry(DeviceId id, LedgerEntry entry);
 
-    void closeDeviceLedgerEntry(DeviceId id, CloseDate closeDate);
-
     Stream<Device> fetchLatest(Ownership ownership);
 
     Stream<Device> fetch(DeviceQuery query);

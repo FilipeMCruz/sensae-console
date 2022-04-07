@@ -54,7 +54,6 @@ public class DeviceCache {
     }
 
     private void update(DeviceId id, LedgerEntry newEntry) {
-        repository.closeDeviceLedgerEntry(id, newEntry.openAt().toClose());
         repository.openDeviceLedgerEntry(id, newEntry);
         cache.put(id, newEntry);
     }

@@ -51,10 +51,6 @@ public class SensorDataPublisher {
                 .map(mapper::toDto);
     }
 
-    public Flux<SensorDataDTO> getPublisher() {
-        return dataPublisher.map(mapper::toDto);
-    }
-
     public Flux<SensorDataDTO> getGardenFilteredPublisher(Stream<String> gardenIds, AccessTokenDTO claims) {
         return dataPublisher.filter(getDeviceDomainFilter(claims))
                 .filter(insideGardeningArea(gardenIds))
@@ -67,7 +63,7 @@ public class SensorDataPublisher {
                 .map(mapper::toDto);
     }
 
-    public Flux<SensorDataDTO> getSinglePublisher(Stream<String> ids, AccessTokenDTO claims) {
+    public Flux<SensorDataDTO> getDeviceFilteredPublisher(Stream<String> ids, AccessTokenDTO claims) {
         return dataPublisher.filter(getDeviceDomainFilter(claims))
                 .filter(withDeviceId(ids))
                 .map(mapper::toDto);

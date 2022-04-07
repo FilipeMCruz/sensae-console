@@ -9,16 +9,16 @@ import pt.sensae.services.smart.irrigation.backend.application.SensorDataPublish
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
 @DgsComponent
-public class AllSensorDataSubscription {
+public class ContentFilteredSensorDataSubscription {
 
     private final SensorDataPublisher publisher;
 
-    public AllSensorDataSubscription(SensorDataPublisher publisher) {
+    public ContentFilteredSensorDataSubscription(SensorDataPublisher publisher) {
         this.publisher = publisher;
     }
 
     @DgsSubscription
-    public Publisher<SensorDataDTO> data(@InputArgument("Authorization") String auth) {
-        return publisher.getGeneralPublisher(AuthMiddleware.buildAccessToken(auth));
+    public Publisher<SensorDataDTO> dataByContent(@InputArgument("content") String content, @InputArgument("Authorization") String auth) {
+        return publisher.getContentFilteredPublisher(content, AuthMiddleware.buildAccessToken(auth));
     }
 }

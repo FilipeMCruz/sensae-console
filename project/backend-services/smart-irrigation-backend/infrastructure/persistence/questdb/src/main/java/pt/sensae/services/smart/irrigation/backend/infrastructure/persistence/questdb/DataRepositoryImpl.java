@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb;
 
+import org.springframework.stereotype.Repository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
@@ -9,6 +10,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.qu
 
 import java.util.stream.Stream;
 
+@Repository
 public class DataRepositoryImpl implements DataRepository {
 
     private final DataRepositoryQuestDB repository;

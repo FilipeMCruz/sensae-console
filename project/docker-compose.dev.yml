@@ -26,8 +26,6 @@ services:
   irrigation-database:
     image: questdb/questdb:6.2
     container_name: irrigation-database
-    networks:
-      - sharespot-network
     ports:
       - 8898:8812
       - 9098:9000

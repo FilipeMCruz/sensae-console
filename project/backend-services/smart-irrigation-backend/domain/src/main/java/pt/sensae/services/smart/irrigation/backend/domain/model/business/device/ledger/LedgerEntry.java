@@ -1,11 +1,14 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger;
 
+import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
 
 public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate closeAt, Ownership ownership) {
 
     public LedgerEntry {
-        openAt.isBefore(closeAt);
+        if (openAt.isBefore(closeAt)) {
+            throw new NotValidException("Open Time can't happen after close time");
+        }
     }
 
     public boolean sameAs(LedgerEntry newLedgerEntry) {

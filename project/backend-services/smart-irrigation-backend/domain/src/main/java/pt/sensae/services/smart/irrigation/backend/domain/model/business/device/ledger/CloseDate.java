@@ -10,4 +10,8 @@ public record CloseDate(Instant value) {
     public static CloseDate empty() {
         return new CloseDate(null);
     }
+
+    public static CloseDate of(long millis) {
+        return new CloseDate(Instant.ofEpochMilli(millis));
+    }
 }

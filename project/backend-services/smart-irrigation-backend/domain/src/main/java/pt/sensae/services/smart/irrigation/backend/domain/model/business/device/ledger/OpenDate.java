@@ -1,14 +1,11 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger;
 
-import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
-
 import java.time.Instant;
 
 public record OpenDate(Instant value) {
 
-    public void isBefore(CloseDate close) {
-        if (close.value() != null && value.isAfter(close.value()))
-            throw new NotValidException("Open Time can't happen after close time");
+    public boolean isBefore(CloseDate close) {
+        return close.value() != null && value.isAfter(close.value());
     }
 
     public CloseDate toClose() {

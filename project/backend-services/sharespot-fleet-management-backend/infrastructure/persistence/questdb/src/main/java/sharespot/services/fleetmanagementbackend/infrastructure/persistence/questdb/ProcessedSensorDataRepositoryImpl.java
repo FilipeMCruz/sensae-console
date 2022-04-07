@@ -34,7 +34,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //TODO change this to a bulk insert
+    //TODO change this to a bulk insert with batchUpdate https://www.baeldung.com/spring-jdbc-jdbctemplate
     @Override
     public void insert(ProcessedSensorDataDTO dao) {
         mapper.dtoToDao(dao).forEach(data ->

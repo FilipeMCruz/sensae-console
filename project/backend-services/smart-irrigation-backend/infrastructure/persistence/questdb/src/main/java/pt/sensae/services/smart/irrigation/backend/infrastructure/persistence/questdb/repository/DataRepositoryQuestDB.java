@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
 
 import java.sql.Timestamp;
+import java.util.stream.Stream;
 
 @Repository
 public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long> {
+
     @Modifying
     @Query(value = "INSERT INTO smart_irrigation_data (data_id, device_id, device_type, reported_at, payload_temperature, payload_humidity, payload_soil_moisture, payload_illuminance) VALUES ( :dataId, :deviceId, :deviceType, :reportedAt, :temperature, :humidity, :soilMoisture, :illuminance);")
     void insert(@Param("dataId") String dataId,
@@ -22,4 +24,10 @@ public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long>
                 @Param("soilMoisture") Float soilMoisture,
                 @Param("illuminance") Float illuminance);
 
+
+    @Query(value = "SELECT * FROM smart_irrigation_data WHERE device_id IN :deviceIdArray AND reportedAt BETWEEN ':start' AND ':end'")
+    Stream<DataQuestDB> fetch(@Param("deviceIds") String deviceIdArray, @Param("start") String start, @Param("end") String end);
+
+    @Query(value = "SELECT * FROM smart_irrigation_data LATEST BY device_id WHERE device_id IN :deviceIdArray")
+    Stream<DataQuestDB> fetchLatest(@Param("deviceIds") String deviceIdArray);
 }

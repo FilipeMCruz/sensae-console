@@ -8,6 +8,8 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.query.DataQ
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.mapper.DataMapperImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.repository.DataRepositoryQuestDB;
 
+import java.sql.Timestamp;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository
@@ -33,12 +35,22 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Stream<Data> fetch(Stream<DataQuery> query) {
-        return Stream.empty();
+    public Stream<Data> fetch(DataQuery query) {
+        var devices = inConcat(query.deviceId().map(d -> d.value().toString()));
+        var open = Timestamp.from(query.open().value()).toString();
+        var close = Timestamp.from(query.close().value()).toString();
+        return repository.fetch(devices, open, close)
+                .map(DataMapperImpl::toModel);
     }
 
     @Override
     public Stream<Data> fetchLatest(Stream<DeviceId> deviceIds) {
-        return Stream.empty();
+        var devices = inConcat(deviceIds.map(d -> d.value().toString()));
+        return repository.fetchLatest(devices).map(DataMapperImpl::toModel);
+    }
+
+    private String inConcat(Stream<String> values) {
+        return values.map(value -> "'" + value + "'")
+                .collect(Collectors.joining(",", "(", ")"));
     }
 }

@@ -3,7 +3,6 @@ package pt.sensae.services.smart.irrigation.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
-import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.CloseDate;
@@ -42,8 +41,9 @@ public class DeviceHistoryDataCollectorService {
 
     private Stream<DomainId> getDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("smart_irrigation:read"))
-            throw new UnauthorizedException("No Permissions");
+        //TODO: Add new permissions
+//        if (!extract.permissions.contains("smart_irrigation:read"))
+//            throw new UnauthorizedException("No Permissions");
 
         return extract.domains.stream().map(UUID::fromString).map(DomainId::new);
     }

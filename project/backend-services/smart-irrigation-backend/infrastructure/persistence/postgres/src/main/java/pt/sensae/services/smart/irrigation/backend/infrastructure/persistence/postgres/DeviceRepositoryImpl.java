@@ -19,8 +19,10 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.po
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
 
 import java.sql.Timestamp;
-import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -97,13 +99,15 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         var records = recordsRepository.getAllByEntryPersistenceIdIsIn(collect.stream().map(e -> e.persistenceId).toList())
                 .collect(Collectors.groupingBy(name -> name.entryPersistenceId));
 
-        var activeLedgerEntries = collect.stream().map(e -> {
+        var map = new HashMap<String, Set<LedgerEntry>>();
+        collect.forEach(e -> {
             var deviceRecords = RecordsMapper.daoToModel(records.get(e.persistenceId).stream());
-            return new AbstractMap.SimpleEntry<>(e.deviceId, LedgerMapper.daoToModel(e, deviceRecords));
-        }).collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+            var ledger = LedgerMapper.daoToModel(e, deviceRecords);
+            map.computeIfAbsent(e.deviceId, k -> new HashSet<>()).add(ledger);
+        });
 
         return deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).toList())
-                .map(d -> DeviceMapper.daoToModel(d, activeLedgerEntries.get(d.deviceId)));
+                .map(d -> DeviceMapper.daoToModel(d, map.get(d.deviceId)));
     }
 
     private void saveLedger(LedgerEntry entry, String idS) {

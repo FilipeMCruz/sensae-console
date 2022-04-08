@@ -69,7 +69,7 @@ type DeviceLedgerHistoryEntry {
     name : String
     gps : GPSDataDetails
     records : [RecordEntry]
-    data : [SensorDataDetails]
+    data : [SensorDataHistoryDetails]
 }
 
 interface SensorDataHistoryDetails {

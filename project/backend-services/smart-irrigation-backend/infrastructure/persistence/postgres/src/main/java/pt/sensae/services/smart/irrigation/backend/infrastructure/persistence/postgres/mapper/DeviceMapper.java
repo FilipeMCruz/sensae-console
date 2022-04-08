@@ -17,8 +17,8 @@ public class DeviceMapper {
         return new DevicePostgres(model.id().value().toString(), model.type().equals(DeviceType.SENSOR) ? "sensor" : "valve");
     }
 
-    public static Device daoToModel(DevicePostgres dao, LedgerEntry entry) {
+    public static Device daoToModel(DevicePostgres dao, Set<LedgerEntry> entry) {
         var deviceType = Objects.equals(dao.deviceType, "sensor") ? DeviceType.SENSOR : DeviceType.VALVE;
-        return new Device(DeviceId.of(UUID.fromString(dao.deviceId)), deviceType, new DeviceLedger(Set.of(entry)));
+        return new Device(DeviceId.of(UUID.fromString(dao.deviceId)), deviceType, new DeviceLedger(entry));
     }
 }

@@ -10,9 +10,9 @@ public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate clos
                           Ownership ownership) {
 
     public LedgerEntry {
-        if (openAt.isBefore(closeAt)) {
-            throw new NotValidException("Open Time can't happen after close time");
-        }
+//        if (openAt.isBefore(closeAt)) {
+//            throw new NotValidException("Open Time can't happen after Close Time: Open Time - " + openAt.value().toString() + " , Close Time - " + closeAt.value().toString());
+//        }
     }
 
     public boolean sameAs(LedgerEntry newLedgerEntry) {

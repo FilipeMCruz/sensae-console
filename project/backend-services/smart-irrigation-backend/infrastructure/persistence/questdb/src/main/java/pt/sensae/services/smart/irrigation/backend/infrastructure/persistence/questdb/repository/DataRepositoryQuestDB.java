@@ -25,9 +25,9 @@ public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long>
                 @Param("illuminance") Float illuminance);
 
 
-    @Query(value = "SELECT * FROM smart_irrigation_data WHERE device_id IN :deviceIdArray AND reportedAt BETWEEN ':start' AND ':end'")
+    @Query(value = "SELECT * FROM smart_irrigation_data WHERE device_id IN :deviceIds AND reported_at BETWEEN ':start' AND ':end'")
     Stream<DataQuestDB> fetch(@Param("deviceIds") String deviceIdArray, @Param("start") String start, @Param("end") String end);
 
-    @Query(value = "SELECT * FROM smart_irrigation_data LATEST BY device_id WHERE device_id IN :deviceIdArray")
+    @Query(value = "SELECT * FROM smart_irrigation_data LATEST BY device_id WHERE device_id IN :deviceIds")
     Stream<DataQuestDB> fetchLatest(@Param("deviceIds") String deviceIdArray);
 }

@@ -2,8 +2,12 @@ package pt.sensae.services.smart.irrigation.backend.domain.model.business.device
 
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
+import pt.sensae.services.smart.irrigation.backend.domain.model.data.ReportTime;
 
-public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate closeAt, Ownership ownership) {
+import java.util.HashSet;
+
+public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate closeAt,
+                          Ownership ownership) {
 
     public LedgerEntry {
         if (openAt.isBefore(closeAt)) {
@@ -18,5 +22,14 @@ public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate clos
 
     public LedgerEntry close(CloseDate closeAt) {
         return new LedgerEntry(this.content, this.openAt, closeAt, this.ownership);
+    }
+
+    public boolean isIn(ReportTime time) {
+        return time.value().isAfter(openAt.value()) &&
+                (closeAt.value() == null || time.value().isBefore(closeAt.value()));
+    }
+
+    public LedgerEntryWithData toHistory() {
+        return new LedgerEntryWithData(content, openAt, closeAt, new HashSet<>());
     }
 }

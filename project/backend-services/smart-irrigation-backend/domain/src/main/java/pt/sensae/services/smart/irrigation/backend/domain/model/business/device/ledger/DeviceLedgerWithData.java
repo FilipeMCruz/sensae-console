@@ -7,10 +7,6 @@ import java.util.Set;
 
 public record DeviceLedgerWithData(Set<LedgerEntryWithData> entries) {
 
-    public boolean isIn(Data data) {
-        return entries.stream().anyMatch(entry -> entry.isIn(data.reportedAt()));
-    }
-
     public Optional<LedgerEntryWithData> getEntryIn(Data data) {
         return entries.stream().filter(entry -> entry.isIn(data.reportedAt())).findFirst();
     }

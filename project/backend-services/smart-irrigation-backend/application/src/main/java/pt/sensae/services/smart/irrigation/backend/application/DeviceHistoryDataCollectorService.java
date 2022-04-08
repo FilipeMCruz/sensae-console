@@ -33,7 +33,9 @@ public class DeviceHistoryDataCollectorService {
     public Stream<SensorDataHistoryDTO> fetch(Stream<String> deviceIds, Instant openDate, Instant closeDate, AccessTokenDTO claims) {
         var domainFilter = getDomainFilter(claims);
 
-        var historyQuery = new HistoryQuery(deviceIds.map(UUID::fromString).map(DeviceId::new), domainFilter, new OpenDate(openDate), new CloseDate(closeDate));
+        var deviceFilter = deviceIds.map(UUID::fromString).map(DeviceId::new);
+
+        var historyQuery = new HistoryQuery(deviceFilter, domainFilter, new OpenDate(openDate), new CloseDate(closeDate));
 
         return collector.fetch(historyQuery).map(mapper::toDto);
     }

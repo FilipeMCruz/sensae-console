@@ -4,3 +4,7 @@ type Subscription {
     dataByDevices(devices: [String], Authorization: String) : SensorData
     dataByGardens(gardens: [String], Authorization: String) : SensorData
 }
+
+type Query {
+    history(filters: HistoryQueryFilters) : [SensorDataHistory]
+}

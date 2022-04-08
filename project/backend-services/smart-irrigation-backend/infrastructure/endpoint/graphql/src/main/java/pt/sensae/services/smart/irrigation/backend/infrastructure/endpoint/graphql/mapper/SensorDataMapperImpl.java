@@ -17,7 +17,9 @@ public class SensorDataMapperImpl implements SensorDataMapper {
         var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
         var device = new Device(dto.device.name, dto.device.id, entries);
 
-        var gps = new GPSDataDetails(dto.data.gps.latitude.floatValue(), dto.data.gps.longitude.floatValue(), dto.data.gps.altitude.floatValue());
+        var alt = dto.data.gps.altitude != null ? dto.data.gps.altitude.floatValue() : null;
+
+        var gps = new GPSDataDetails(dto.data.gps.latitude.floatValue(), dto.data.gps.longitude.floatValue(), alt);
         SensorDataDetails payload;
         if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
             var temperature = new TemperatureDataDetails(dto.data.temperature.celsius.floatValue());

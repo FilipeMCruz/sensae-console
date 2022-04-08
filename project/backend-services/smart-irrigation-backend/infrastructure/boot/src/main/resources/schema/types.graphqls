@@ -6,14 +6,14 @@ type SensorData {
 }
 
 type Device {
-    id: String
-    name: String
+    id : String
+    name : String
     records : [RecordEntry]
 }
 
 type RecordEntry {
-    label: String
-    content: String
+    label : String
+    content : String
 }
 
 interface SensorDataDetails {
@@ -33,7 +33,7 @@ type StoveSensorDataDetails implements SensorDataDetails {
 }
 
 type TemperatureDataDetails {
-    celsius: Float
+    celsius : Float
 }
 
 type HumidityDataDetails {
@@ -52,4 +52,41 @@ type GPSDataDetails {
     longitude : Float
     latitude : Float
     altitude : Float
+}
+
+input HistoryQueryFilters {
+    devices : [String]
+    startTime : String
+    endTime : String
+}
+
+type SensorDataHistory {
+    id : String
+    ledger : [DeviceLedgerHistoryEntry]
+}
+
+type DeviceLedgerHistoryEntry {
+    name : String
+    gps : GPSDataDetails
+    records : [RecordEntry]
+    data : [SensorDataDetails]
+}
+
+interface SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+}
+
+type ParkSensorDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    soilMoisture : SoilMoistureDataDetails
+    illuminance : IlluminanceDataDetails
+}
+
+type StoveSensorDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    temperature : TemperatureDataDetails
+    humidity : HumidityDataDetails
 }

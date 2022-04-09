@@ -273,7 +273,7 @@ services:
       - sharespot-network
     ports:
       - 8898:8812
-      - 9000
+      - 9098:9000
       - 9003
     volumes:
       - ./databases-data/prod/irrigation-database:/root/.questdb/

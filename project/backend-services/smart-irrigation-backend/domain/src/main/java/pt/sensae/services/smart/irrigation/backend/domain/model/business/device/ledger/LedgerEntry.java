@@ -1,6 +1,5 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger;
 
-import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.ReportTime;
 
@@ -8,12 +7,6 @@ import java.util.HashSet;
 
 public record LedgerEntry(DeviceContent content, OpenDate openAt, CloseDate closeAt,
                           Ownership ownership) {
-
-    public LedgerEntry {
-//        if (openAt.isBefore(closeAt)) {
-//            throw new NotValidException("Open Time can't happen after Close Time: Open Time - " + openAt.value().toString() + " , Close Time - " + closeAt.value().toString());
-//        }
-    }
 
     public boolean sameAs(LedgerEntry newLedgerEntry) {
         return this.ownership().equals(newLedgerEntry.ownership()) &&

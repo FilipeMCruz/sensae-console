@@ -8,6 +8,8 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.ReportTime;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.*;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -25,7 +27,7 @@ public class DataMapperImpl {
             throw new NotValidException("Data Type for " + dao.deviceType + " not supported");
         }
         var id = DataId.of(UUID.fromString(dao.dataId));
-        var deviceId = DeviceId.of(UUID.fromString(dao.deviceType));
+        var deviceId = DeviceId.of(UUID.fromString(dao.deviceId));
         var reportedAt = ReportTime.of(dao.reportedAt.toInstant().toEpochMilli());
         return new Data(id, deviceId, reportedAt, payload);
     }
@@ -38,12 +40,30 @@ public class DataMapperImpl {
 
         if (model.payload() instanceof ParkPayload parkPayload) {
             dataQuestDB.soilMoisture = parkPayload.soilMoisture().percentage();
-            dataQuestDB.illuminance = parkPayload.soilMoisture().percentage();
+            dataQuestDB.illuminance = parkPayload.illuminance().lux();
             dataQuestDB.deviceType = "park";
         } else if (model.payload() instanceof StovePayload stovePayload) {
             dataQuestDB.humidity = stovePayload.humidity().gramsPerCubicMeter();
             dataQuestDB.temperature = stovePayload.temperature().celsius();
             dataQuestDB.deviceType = "stove";
+        }
+        return dataQuestDB;
+    }
+
+    public static DataQuestDB toSensorData(ResultSet resultSet) throws SQLException {
+        var dataQuestDB = new DataQuestDB();
+        dataQuestDB.dataId = resultSet.getString("data_id");
+        dataQuestDB.deviceId = resultSet.getString("device_id");
+        dataQuestDB.reportedAt = resultSet.getTimestamp("reported_at");
+
+        dataQuestDB.deviceType = resultSet.getString("device_type");
+
+        if ("park".equals(dataQuestDB.deviceType)) {
+            dataQuestDB.soilMoisture = resultSet.getFloat("payload_soil_moisture");
+            dataQuestDB.illuminance = resultSet.getFloat("payload_illuminance");
+        } else if ("stove".equals(dataQuestDB.deviceType)) {
+            dataQuestDB.humidity = resultSet.getFloat("payload_humidity");
+            dataQuestDB.temperature = resultSet.getFloat("payload_temperature");
         }
         return dataQuestDB;
     }

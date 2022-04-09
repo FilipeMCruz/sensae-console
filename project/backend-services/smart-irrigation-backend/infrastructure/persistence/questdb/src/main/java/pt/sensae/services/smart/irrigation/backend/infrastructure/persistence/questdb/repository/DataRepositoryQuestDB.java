@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
 
 import java.sql.Timestamp;
-import java.util.stream.Stream;
 
 @Repository
 public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long> {
@@ -23,11 +22,4 @@ public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long>
                 @Param("humidity") Float humidity,
                 @Param("soilMoisture") Float soilMoisture,
                 @Param("illuminance") Float illuminance);
-
-
-    @Query(value = "SELECT * FROM smart_irrigation_data WHERE device_id IN :deviceIds AND reported_at BETWEEN ':start' AND ':end'")
-    Stream<DataQuestDB> fetch(@Param("deviceIds") String deviceIdArray, @Param("start") String start, @Param("end") String end);
-
-    @Query(value = "SELECT * FROM smart_irrigation_data LATEST BY device_id WHERE device_id IN :deviceIds")
-    Stream<DataQuestDB> fetchLatest(@Param("deviceIds") String deviceIdArray);
 }

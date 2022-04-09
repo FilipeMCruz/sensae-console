@@ -16,6 +16,7 @@ import org.springframework.data.jdbc.core.mapping.JdbcMappingContext;
 import org.springframework.data.jdbc.repository.config.DialectResolver;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.relational.core.dialect.Dialect;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -85,5 +86,12 @@ public class QuestDBDataSourceConfiguration {
         Dialect dialect = DialectResolver.getDialect(operations.getJdbcOperations());
         return new BasicJdbcConverter(mappingContext, relationResolver, conversions, jdbcTypeFactory,
                 dialect.getIdentifierProcessing());
+    }
+
+    @Bean
+    @Qualifier("questdb")
+    public JdbcTemplate JdbcTemplate(
+            @Qualifier("questdb") final DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 }

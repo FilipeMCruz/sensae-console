@@ -106,7 +106,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
             map.computeIfAbsent(e.deviceId, k -> new HashSet<>()).add(ledger);
         });
 
-        return deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).toList())
+        return deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).distinct().toList())
                 .map(d -> DeviceMapper.daoToModel(d, map.get(d.deviceId)));
     }
 

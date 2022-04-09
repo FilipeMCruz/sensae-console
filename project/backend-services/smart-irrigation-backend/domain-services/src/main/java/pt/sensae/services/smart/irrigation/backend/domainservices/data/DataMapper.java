@@ -12,7 +12,7 @@ public class DataMapper {
 
     public static Data dtoToModel(ProcessedSensorDataDTO dto) {
         var id = DataId.of(dto.dataId);
-        var deviceId = DeviceId.of(dto.dataId);
+        var deviceId = DeviceId.of(dto.device.id);
         var reportedAt = ReportTime.of(dto.reportedAt);
 
         if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {

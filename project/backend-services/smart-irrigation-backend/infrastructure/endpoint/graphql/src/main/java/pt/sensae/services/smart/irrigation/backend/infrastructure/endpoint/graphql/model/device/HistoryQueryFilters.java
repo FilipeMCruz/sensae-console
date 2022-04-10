@@ -5,6 +5,10 @@ import java.util.List;
 public class HistoryQueryFilters {
 
     public List<String> devices;
+
+    public List<String> gardens;
+
     public String startTime;
+
     public String endTime;
 }

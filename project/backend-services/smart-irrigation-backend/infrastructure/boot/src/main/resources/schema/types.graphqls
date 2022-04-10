@@ -56,12 +56,14 @@ type GPSDataDetails {
 
 input HistoryQueryFilters {
     devices : [String]
+    gardens : [String]
     startTime : String
     endTime : String
 }
 
 input LatestDataQueryFilters {
     devices : [String]
+    gardens : [String]
 }
 
 type SensorDataHistory {

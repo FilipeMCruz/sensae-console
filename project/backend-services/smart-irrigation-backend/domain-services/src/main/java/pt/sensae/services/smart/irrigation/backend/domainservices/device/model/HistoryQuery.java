@@ -6,10 +6,14 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.OpenDate;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.query.DeviceQuery;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 
 import java.util.Set;
 
-public record HistoryQuery(Set<DeviceId> deviceIds, Set<DomainId> domains, OpenDate openDate,
+public record HistoryQuery(Set<GardeningAreaId> gardens,
+                           Set<DeviceId> deviceIds,
+                           Set<DomainId> domains,
+                           OpenDate openDate,
                            CloseDate closeDate) {
     public DeviceQuery toDeviceQuery() {
         return new DeviceQuery(openDate, closeDate, Ownership.of(domains.stream()));

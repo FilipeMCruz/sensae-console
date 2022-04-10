@@ -9,6 +9,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.CloseDate;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.OpenDate;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.DeviceHistoryDataCollector;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.HistoryQuery;
 
@@ -32,12 +33,13 @@ public class DeviceHistoryDataCollectorService {
         this.mapper = mapper;
     }
 
-    public Stream<SensorDataHistoryDTO> fetch(Stream<String> deviceIds, Instant openDate, Instant closeDate, AccessTokenDTO claims) {
+    public Stream<SensorDataHistoryDTO> fetch(Stream<String> gardenIds, Stream<String> deviceIds, Instant openDate, Instant closeDate, AccessTokenDTO claims) {
         var domainFilter = getDomainFilter(claims).collect(Collectors.toSet());
 
         var deviceFilter = deviceIds.map(UUID::fromString).map(DeviceId::new).collect(Collectors.toSet());
+        var gardenFilter = gardenIds.map(UUID::fromString).map(GardeningAreaId::new).collect(Collectors.toSet());
 
-        var historyQuery = new HistoryQuery(deviceFilter, domainFilter, new OpenDate(openDate), new CloseDate(closeDate));
+        var historyQuery = new HistoryQuery(gardenFilter, deviceFilter, domainFilter, new OpenDate(openDate), new CloseDate(closeDate));
 
         return collector.fetch(historyQuery).map(mapper::toDto);
     }

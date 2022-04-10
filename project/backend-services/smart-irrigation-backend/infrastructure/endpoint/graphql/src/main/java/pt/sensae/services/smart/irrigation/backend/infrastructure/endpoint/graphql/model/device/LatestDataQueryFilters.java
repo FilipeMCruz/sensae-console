@@ -5,4 +5,6 @@ import java.util.List;
 public class LatestDataQueryFilters {
 
     public List<String> devices;
+
+    public List<String> gardens;
 }

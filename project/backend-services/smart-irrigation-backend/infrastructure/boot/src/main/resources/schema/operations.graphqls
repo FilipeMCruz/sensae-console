@@ -7,6 +7,7 @@ type Subscription {
 
 type Query {
     history(filters: HistoryQueryFilters) : [SensorDataHistory]
+    fetchGardens(filters: GardeningAreaFilters) : [GardeningArea]
 }
 
 type Mutation {

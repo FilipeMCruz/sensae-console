@@ -12,6 +12,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.po
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Repository
 public class GardenRepositoryImpl implements GardenRepository {
@@ -42,6 +43,15 @@ public class GardenRepositoryImpl implements GardenRepository {
                 .collect(Collectors.groupingBy(o -> o.areaId));
 
         return gardeningAreaRepository.findByAreaIdIn(ids)
+                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream())));
+    }
+
+    @Override
+    public Stream<GardeningArea> fetchAll() {
+        var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
+                .collect(Collectors.groupingBy(o -> o.areaId));
+
+        return StreamSupport.stream(gardeningAreaRepository.findAll().spliterator(), false)
                 .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream())));
     }
 

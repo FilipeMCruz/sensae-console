@@ -32,9 +32,9 @@ public class CreateGardeningAreaService {
     }
 
     public GardeningAreaDTO create(CreateGardeningAreaCommandDTO dto, AccessTokenDTO claims) {
-        var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("smart_irrigation:garden:create"))
-            throw new UnauthorizedException("No Permissions");
+//        var extract = authHandler.extract(claims);
+//        if (!extract.permissions.contains("smart_irrigation:garden:create"))
+//            throw new UnauthorizedException("No Permissions");
 
         var gardeningArea = service.create(commandMapper.toCommand(dto));
         return mapper.toDto(gardeningArea);

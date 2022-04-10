@@ -3,9 +3,9 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.garden;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 
 import java.time.Duration;
 import java.util.stream.Collectors;
@@ -24,6 +24,10 @@ public class GardeningAreaCache {
                 .expireAfterAccess(Duration.ofHours(12))
                 .maximumSize(50)
                 .build();
+    }
+
+    public Stream<GardeningArea> fetchAll() {
+        return repository.fetchAll();
     }
 
     public Stream<GardeningArea> fetchByIds(Stream<GardeningAreaId> ids) {

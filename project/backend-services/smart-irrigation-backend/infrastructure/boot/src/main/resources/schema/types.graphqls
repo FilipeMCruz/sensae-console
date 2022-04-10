@@ -132,3 +132,7 @@ input AreaBoundaryCommandDetails {
     latitude : Float
     altitude : Float
 }
+
+input GardeningAreaFilters {
+    type : GardeningAreaTypeDTO
+}

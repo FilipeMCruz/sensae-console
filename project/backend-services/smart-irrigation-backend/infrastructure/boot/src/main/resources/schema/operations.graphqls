@@ -8,3 +8,8 @@ type Subscription {
 type Query {
     history(filters: HistoryQueryFilters) : [SensorDataHistory]
 }
+
+type Mutation {
+    createGarden(instructions: CreateGardeningAreaCommand) : GardeningArea
+    updateGarden(instructions: UpdateGardeningAreaCommand) : GardeningArea
+}

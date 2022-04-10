@@ -90,3 +90,45 @@ type StoveSensorDataHistoryDetails implements SensorDataHistoryDetails {
     temperature : TemperatureDataDetails
     humidity : HumidityDataDetails
 }
+
+type GardeningArea {
+    id : String
+    name : String
+    type : GardeningAreaTypeDTO
+    valves : [String]
+    area : [AreaBoundary]
+}
+
+type AreaBoundary {
+    position : Int
+    longitude : Float
+    latitude : Float
+    altitude : Float
+}
+
+enum GardeningAreaTypeDTO {
+    PARK,
+    STOVE
+}
+
+input CreateGardeningAreaCommand {
+    name : String
+    type : GardeningAreaTypeDTO
+    valves : [String]
+    area : [AreaBoundaryCommandDetails]
+}
+
+input UpdateGardeningAreaCommand {
+    id : String
+    name : String
+    type : GardeningAreaTypeDTO
+    valves : [String]
+    area : [AreaBoundaryCommandDetails]
+}
+
+input AreaBoundaryCommandDetails {
+    position : Int
+    longitude : Float
+    latitude : Float
+    altitude : Float
+}

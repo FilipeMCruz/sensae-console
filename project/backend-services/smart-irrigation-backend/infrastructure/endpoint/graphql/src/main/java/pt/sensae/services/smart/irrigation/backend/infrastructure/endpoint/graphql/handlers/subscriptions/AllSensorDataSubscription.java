@@ -4,7 +4,7 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
-import pt.sensae.services.smart.irrigation.backend.application.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.application.SensorDataPublisher;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 

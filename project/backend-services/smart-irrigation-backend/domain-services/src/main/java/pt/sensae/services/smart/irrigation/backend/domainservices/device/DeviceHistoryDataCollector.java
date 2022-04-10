@@ -5,7 +5,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
-import pt.sensae.services.smart.irrigation.backend.domain.model.data.query.DataQuery;
+import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.HistoryQuery;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,13 +24,13 @@ public class DeviceHistoryDataCollector {
     }
 
     public Stream<DeviceWithData> fetch(HistoryQuery query) {
-        var collect = query.deviceIds().collect(Collectors.toSet());
+        var collect = query.deviceIds();
 
         var deviceMap = deviceRepository.fetch(query.toDeviceQuery()).filter(d -> collect.contains(d.id()))
                 .map(Device::toHistory)
                 .collect(Collectors.toMap(DeviceWithData::id, Function.identity()));
 
-        dataRepository.fetch(new DataQuery(collect.stream(), query.openDate(), query.closeDate()))
+        dataRepository.fetch(query.toDataQuery())
                 .forEach(data -> deviceMap.get(data.deviceId())
                         .ledger()
                         .getEntryIn(data)

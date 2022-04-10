@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.domainservices.data;
+package pt.sensae.services.smart.irrigation.backend.domainservices.data.mapper;
 
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;

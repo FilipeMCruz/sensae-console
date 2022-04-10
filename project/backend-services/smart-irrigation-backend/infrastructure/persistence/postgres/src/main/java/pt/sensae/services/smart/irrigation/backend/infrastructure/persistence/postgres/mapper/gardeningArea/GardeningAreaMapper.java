@@ -23,7 +23,7 @@ public class GardeningAreaMapper {
         var collect = Arrays.stream(dao.irrigationSystem.substring(1, dao.irrigationSystem.length() - 2).split(",")).map(UUID::fromString).map(DeviceId::of);
         var valves = new IrrigationSystem(collect.collect(Collectors.toSet()));
 
-        var id = GardeningAreaId.of(dao.areaId);
+        var id = GardeningAreaId.of(UUID.fromString(dao.areaId));
         var name = GardenName.of(dao.areaName);
         var type = GardeningAreaType.STOVE;
         if (dao.areaType.equals(GardeningAreaType.PARK.name())) {

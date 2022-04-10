@@ -12,13 +12,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class GardenCache {
+public class GardeningAreaCache {
 
     private final Cache<GardeningAreaId, GardeningArea> cache;
 
     private final GardenRepository repository;
 
-    public GardenCache(GardenRepository repository) {
+    public GardeningAreaCache(GardenRepository repository) {
         this.repository = repository;
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))

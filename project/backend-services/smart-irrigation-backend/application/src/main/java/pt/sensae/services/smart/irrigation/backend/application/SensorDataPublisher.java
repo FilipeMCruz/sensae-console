@@ -3,10 +3,11 @@ package pt.sensae.services.smart.irrigation.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
-import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
-import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardenCache;
+import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -30,9 +31,9 @@ public class SensorDataPublisher {
 
     private final SensorDataMapper mapper;
 
-    private final GardenCache gardenCache;
+    private final GardeningAreaCache gardenCache;
 
-    public SensorDataPublisher(TokenExtractor authHandler, SensorDataMapper mapper, GardenCache gardenCache) {
+    public SensorDataPublisher(TokenExtractor authHandler, SensorDataMapper mapper, GardeningAreaCache gardenCache) {
         this.authHandler = authHandler;
         this.mapper = mapper;
         this.gardenCache = gardenCache;
@@ -74,7 +75,7 @@ public class SensorDataPublisher {
     }
 
     private Predicate<ProcessedSensorDataDTO> insideGardeningArea(Stream<String> gardenIds) {
-        return data -> this.gardenCache.fetchByIds(gardenIds.map(GardeningAreaId::of))
+        return data -> this.gardenCache.fetchByIds(gardenIds.map(UUID::fromString).map(GardeningAreaId::of))
                 .anyMatch(g -> g.area().contains(GPSPoint.from(data.data.gps)));
     }
 
@@ -90,8 +91,9 @@ public class SensorDataPublisher {
 
     private Predicate<? super ProcessedSensorDataDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("smart_irrigation:read"))
-            throw new UnauthorizedException("No Permissions");
+        //TODO: Add new permissions
+//        if (!extract.permissions.contains("smart_irrigation:live_data:read"))
+//            throw new UnauthorizedException("No Permissions");
 
         return withDomain(extract.domains.stream().map(UUID::fromString).toList());
     }

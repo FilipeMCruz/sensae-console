@@ -3,14 +3,18 @@ package pt.sensae.services.smart.irrigation.backend.domain.model.business.garden
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public record Area(Set<BoundaryPoint> boundaries) {
 
     public Area {
-        //TODO: ensure that positions start at 0 an none is skipped
         if (boundaries.size() < 3) {
             throw new NotValidException("An Area needs at least 3 vertex");
+        }
+        if (positionsAreValid(boundaries.stream().map(BoundaryPoint::position).collect(Collectors.toList()))) {
+            throw new NotValidException("Given Boundaries are missing some points");
         }
     }
 
@@ -57,5 +61,22 @@ public record Area(Set<BoundaryPoint> boundaries) {
         double red = (pointLong - vertexA.longitude()) / (pointLat - vertexA.latitude());
         double blue = (vertexB.longitude() - vertexA.longitude()) / (vertexB.latitude() - vertexA.latitude());
         return red >= blue;
+    }
+
+    private boolean positionsAreValid(List<Integer> arrA) {
+        int range = arrA.size();
+        for (int i = 0; i < range; i++) {
+            if (arrA.get(i) >= 0 && arrA.get(i) <= range) {
+                int z = arrA.get(i);
+                if (arrA.get(z) > 0) {
+                    arrA.set(z, arrA.get(z) * -1);
+                }
+            }
+        }
+        for (var integer : arrA) {
+            if (integer > 0)
+                return false;
+        }
+        return true;
     }
 }

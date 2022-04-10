@@ -1,8 +1,8 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.smart.irrigation.backend.application.SensorDataDTO;
-import pt.sensae.services.smart.irrigation.backend.application.SensorDataMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataMapper;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.*;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;

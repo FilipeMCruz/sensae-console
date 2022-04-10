@@ -42,7 +42,7 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public Stream<Data> fetch(DataQuery query) {
-        var devices = inConcat(query.deviceId().map(d -> d.value().toString()));
+        var devices = inConcat(query.deviceId().stream().map(d -> d.value().toString()));
         var open = Timestamp.from(query.open().value()).toString();
         var close = Timestamp.from(query.close().value()).toString();
         return fetch(devices, open, close)

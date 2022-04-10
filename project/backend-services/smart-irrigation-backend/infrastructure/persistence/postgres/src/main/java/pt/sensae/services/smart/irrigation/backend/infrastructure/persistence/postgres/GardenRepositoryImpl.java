@@ -35,6 +35,9 @@ public class GardenRepositoryImpl implements GardenRepository {
     @Override
     public Stream<GardeningArea> fetchMultiple(Stream<GardeningAreaId> id) {
         var ids = id.map(i -> i.value().toString()).toList();
+        if (ids.isEmpty()) {
+            return Stream.empty();
+        }
         var boundaries = areaRepository.findAllByAreaIdIn(ids)
                 .collect(Collectors.groupingBy(o -> o.areaId));
 

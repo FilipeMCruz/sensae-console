@@ -4,7 +4,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.CloseDate;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.OpenDate;
 
-import java.util.stream.Stream;
+import java.util.Set;
 
-public record DataQuery(Stream<DeviceId> deviceId, OpenDate open, CloseDate close) {
+public record DataQuery(Set<DeviceId> deviceId, OpenDate open, CloseDate close) {
 }

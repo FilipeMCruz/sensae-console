@@ -1,6 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model;
 
-import pt.sensae.services.smart.irrigation.backend.application.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 
 import java.util.UUID;
 

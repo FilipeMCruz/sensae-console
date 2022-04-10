@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device;
 
 import java.util.Set;
 import java.util.UUID;

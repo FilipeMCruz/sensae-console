@@ -31,6 +31,7 @@ public class UpdateGardeningAreaService {
     }
 
     public GardeningAreaDTO update(UpdateGardeningAreaCommandDTO dto, AccessTokenDTO claims) {
+        //TODO: Add new permissions
 //        var extract = authHandler.extract(claims);
 //        if (!extract.permissions.contains("smart_irrigation:garden:update"))
 //            throw new UnauthorizedException("No Permissions");

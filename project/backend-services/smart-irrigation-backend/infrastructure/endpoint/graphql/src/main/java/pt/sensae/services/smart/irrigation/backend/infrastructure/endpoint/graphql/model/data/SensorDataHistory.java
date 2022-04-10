@@ -1,6 +1,7 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data;
 
 import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataHistoryDTO;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceLedgerHistoryEntry;
 
 import java.util.Set;
 import java.util.UUID;

@@ -30,6 +30,7 @@ public class FetchGardeningAreasService {
     }
 
     public Stream<GardeningAreaDTO> fetchAll(GardeningAreaFiltersDTO filters, AccessTokenDTO claims) {
+        //TODO: Add new permissions
 //        var extract = authHandler.extract(claims);
 //        if (!extract.permissions.contains("smart_irrigation:garden:read"))
 //            throw new UnauthorizedException("No Permissions");

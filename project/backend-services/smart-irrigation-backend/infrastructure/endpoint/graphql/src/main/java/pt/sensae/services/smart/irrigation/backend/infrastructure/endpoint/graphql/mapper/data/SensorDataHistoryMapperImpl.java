@@ -6,7 +6,9 @@ import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorData
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ParkPayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.*;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.*;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceLedgerHistoryEntry;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntry;
 
 import java.util.stream.Collectors;
 

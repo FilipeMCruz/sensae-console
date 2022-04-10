@@ -4,29 +4,27 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
-import pt.sensae.services.smart.irrigation.backend.application.DeviceHistoryDataCollectorService;
+import pt.sensae.services.smart.irrigation.backend.application.DeviceLatestDataCollectorService;
+import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataHistoryDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.HistoryQueryFilters;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.LatestDataQueryFilters;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @DgsComponent
-public class DeviceHistoryCollectorQuery {
+public class DeviceLatestDataCollectorQuery {
 
-    private final DeviceHistoryDataCollectorService service;
+    private final DeviceLatestDataCollectorService service;
 
-    public DeviceHistoryCollectorQuery(DeviceHistoryDataCollectorService service) {
+    public DeviceLatestDataCollectorQuery(DeviceLatestDataCollectorService service) {
         this.service = service;
     }
 
     @DgsQuery
-    public List<SensorDataHistoryDTO> history(@InputArgument("filters") HistoryQueryFilters filters, @RequestHeader("Authorization") String auth) {
+    public List<SensorDataDTO> history(@InputArgument("filters") LatestDataQueryFilters filters, @RequestHeader("Authorization") String auth) {
         return service.fetch(filters.devices.stream(),
-                        Instant.ofEpochSecond(Long.parseLong(filters.startTime)),
-                        Instant.ofEpochSecond(Long.parseLong(filters.endTime)),
                         AuthMiddleware.buildAccessToken(auth))
                 .collect(Collectors.toList());
     }

@@ -60,6 +60,10 @@ input HistoryQueryFilters {
     endTime : String
 }
 
+input LatestDataQueryFilters {
+    devices : [String]
+}
+
 type SensorDataHistory {
     id : String
     ledger : [DeviceLedgerHistoryEntry]

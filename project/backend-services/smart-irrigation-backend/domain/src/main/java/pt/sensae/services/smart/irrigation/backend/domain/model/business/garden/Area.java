@@ -8,7 +8,8 @@ import java.util.Set;
 public record Area(Set<BoundaryPoint> boundaries) {
 
     public Area {
-        if(boundaries.size() < 3) {
+        //TODO: ensure that positions start at 0 an none is skipped
+        if (boundaries.size() < 3) {
             throw new NotValidException("An Area needs at least 3 vertex");
         }
     }

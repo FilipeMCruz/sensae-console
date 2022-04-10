@@ -1,10 +1,10 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.device;
 
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.LedgerEntryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device.LedgerEntryPostgres;
 
 import java.sql.Timestamp;
 import java.util.Optional;

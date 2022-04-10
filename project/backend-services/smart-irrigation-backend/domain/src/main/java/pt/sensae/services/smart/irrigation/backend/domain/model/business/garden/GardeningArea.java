@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.garden;
 
-public record GardeningArea(GardenId id, GardenName name, GardeningAreaType type, Area area) {
+public record GardeningArea(GardeningAreaId id, GardenName name, GardeningAreaType type, Area area,
+                            IrrigationSystem valves) {
 
 }

@@ -4,7 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 
 import java.time.Duration;
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @Service
 public class GardenCache {
 
-    private final Cache<GardenId, GardeningArea> cache;
+    private final Cache<GardeningAreaId, GardeningArea> cache;
 
     private final GardenRepository repository;
 
@@ -26,7 +26,7 @@ public class GardenCache {
                 .build();
     }
 
-    public Stream<GardeningArea> fetchByIds(Stream<GardenId> ids) {
+    public Stream<GardeningArea> fetchByIds(Stream<GardeningAreaId> ids) {
         var allPresent = this.cache.getAllPresent(ids.toList());
         var toFetch = ids.filter(id -> !allPresent.containsKey(id));
         var gardens = repository.fetchMultiple(toFetch).collect(Collectors.toSet());

@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device;
 
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
@@ -9,7 +9,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.LedgerEntryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device.LedgerEntryPostgres;
 
 import java.sql.Timestamp;
 import java.util.Arrays;

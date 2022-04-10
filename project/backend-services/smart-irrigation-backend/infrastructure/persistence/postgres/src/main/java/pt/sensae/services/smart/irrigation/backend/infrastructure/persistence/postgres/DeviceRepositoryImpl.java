@@ -10,13 +10,13 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntry;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.query.DeviceQuery;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.DeviceMapper;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.LedgerMapper;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.RecordsMapper;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.LedgerEntryPostgres;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.DeviceRepositoryPostgres;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.LedgerRepositoryPostgres;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device.DeviceMapper;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device.LedgerMapper;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device.RecordsMapper;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device.LedgerEntryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.device.DeviceRepositoryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.device.LedgerRepositoryPostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.repository.device.RecordsRepositoryPostgres;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

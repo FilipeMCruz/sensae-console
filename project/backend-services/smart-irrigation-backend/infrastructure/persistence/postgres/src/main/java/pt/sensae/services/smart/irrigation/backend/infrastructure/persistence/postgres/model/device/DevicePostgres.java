@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;

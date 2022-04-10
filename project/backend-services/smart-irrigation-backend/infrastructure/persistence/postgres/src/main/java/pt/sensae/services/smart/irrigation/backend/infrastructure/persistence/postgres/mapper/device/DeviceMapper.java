@@ -1,11 +1,11 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device;
 
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.Device;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceType;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.DeviceLedger;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntry;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.DevicePostgres;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device.DevicePostgres;
 
 import java.util.Objects;
 import java.util.Set;

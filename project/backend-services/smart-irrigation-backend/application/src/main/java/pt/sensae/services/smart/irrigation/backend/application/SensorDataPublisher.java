@@ -5,7 +5,7 @@ import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenD
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
 import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardenCache;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
@@ -74,7 +74,7 @@ public class SensorDataPublisher {
     }
 
     private Predicate<ProcessedSensorDataDTO> insideGardeningArea(Stream<String> gardenIds) {
-        return data -> this.gardenCache.fetchByIds(gardenIds.map(GardenId::of))
+        return data -> this.gardenCache.fetchByIds(gardenIds.map(GardeningAreaId::of))
                 .anyMatch(g -> g.area().contains(GPSPoint.from(data.data.gps)));
     }
 

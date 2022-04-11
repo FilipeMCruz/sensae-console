@@ -12,6 +12,4 @@ public class UpdateGardeningAreaCommand {
     public String type;
 
     public List<BoundaryCommandDetails> area;
-
-    public List<UUID> valvesIds;
 }

@@ -24,7 +24,6 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         var com = new UpdateGardeningAreaCommand();
         com.id = UUID.fromString(dtoCom.id);
         com.name = dtoCom.name;
-        com.valvesIds = dtoCom.valves.stream().map(UUID::fromString).toList();
         com.area = extracted(dtoCom.area);
         return com;
     }
@@ -34,7 +33,6 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         var dtoCom = (CreateGardeningAreaCommandDTOImpl) dto;
         var com = new CreateGardeningAreaCommand();
         com.name = dtoCom.name;
-        com.valvesIds = dtoCom.valves.stream().map(UUID::fromString).toList();
         com.area = extracted(dtoCom.area);
         return com;
     }

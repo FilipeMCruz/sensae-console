@@ -15,7 +15,6 @@ public class GardeningAreaDTOMapperImpl implements GardeningAreaDTOMapper {
         var dto = new GardeningAreaDTOImpl();
         dto.id = model.id().value().toString();
         dto.name = model.name().value();
-        dto.valves = model.valves().devices().stream().map(d -> d.value().toString()).toList();
         dto.area = model.area().boundaries().stream().map(b -> {
             var out = new AreaBoundaryDTO();
             out.altitude = b.point().altitude();

@@ -15,7 +15,4 @@ public class GardeningAreaPostgres {
 
     @Column("name")
     public String areaName;
-
-    @Column("irrigation_system")
-    public String irrigationSystem;
 }

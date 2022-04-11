@@ -120,7 +120,6 @@ type ValveDataHistoryDetails implements SensorDataHistoryDetails {
 type GardeningArea {
     id : String
     name : String
-    valves : [String]
     area : [AreaBoundary]
 }
 
@@ -133,14 +132,12 @@ type AreaBoundary {
 
 input CreateGardeningAreaCommand {
     name : String
-    valves : [String]
     area : [AreaBoundaryCommandDetails]
 }
 
 input UpdateGardeningAreaCommand {
     id : String
     name : String
-    valves : [String]
     area : [AreaBoundaryCommandDetails]
 }
 

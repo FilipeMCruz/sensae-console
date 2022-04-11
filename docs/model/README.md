@@ -174,21 +174,21 @@ Due to lack a of discussion and tests some data is missing a well-defined unit o
 
 ## Improvements
 
-- Add `data.airHumidity.relativePercentage` as percentage
-- Add `data.waterPressure.bar` for water pipes
-- Add `data.battery.maxVolts`
-- Add `data.battery.minVolts`
+- Add `data.air_humidity.relative_percentage` as percentage
+- Add `data.water_pressure.bar` for water pipes
+- Add `data.battery.max_volts`
+- Add `data.battery.min_volts`
 - Add `data.ph`
 - Add `data.distance.millimeters`
-- Add `data.distance.maxMillimeters`
-- Add `data.distance.minMillimeters`
+- Add `data.distance.max_millimeters`
+- Add `data.distance.min_millimeters`
 - Add `data.occupation.percentage`
-- Add `data.soilConductivity.microSiemensPerCm`
-- Change `data.moisture.percentage` to `data.soilMoisture.relativePercentage`
+- Add `data.soil_conductivity.micro_siemens_per_cm`
+- Change `data.moisture.percentage` to `data.soil_moisture.relative_percentage`
 - Add `data.co2.ppm`
-- Change `data.pressure.hPa` to `data.airPressure.hPa` air pressure
-- Change `data.airHumidity.gramspercubicmeter` to `data.airHumidity.gramsPerCubicMeter`
-- Change `data.velocity.kmperh` to `data.velocity.kilometerPerHour`
+- Change `data.pressure.hPa` to `data.air_pressure.hecto_pascal` air pressure
+- Change `data.airHumidity.gramspercubicmeter` to `data.air_humidity.grams_per_cubic_meter`
+- Change `data.velocity.kmperh` to `data.velocity.kilometer_per_hour`
 - Change `data.alarm.value` to `data.alert.value`
 
 ## Further Discussion

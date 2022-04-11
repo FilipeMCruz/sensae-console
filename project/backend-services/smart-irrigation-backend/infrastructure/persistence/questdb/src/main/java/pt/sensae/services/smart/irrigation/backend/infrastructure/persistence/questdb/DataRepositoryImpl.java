@@ -37,7 +37,8 @@ public class DataRepositoryImpl implements DataRepository {
                 dataQuestDB.temperature,
                 dataQuestDB.humidity,
                 dataQuestDB.soilMoisture,
-                dataQuestDB.illuminance);
+                dataQuestDB.illuminance, 
+                dataQuestDB.valveStatus);
     }
 
     @Override

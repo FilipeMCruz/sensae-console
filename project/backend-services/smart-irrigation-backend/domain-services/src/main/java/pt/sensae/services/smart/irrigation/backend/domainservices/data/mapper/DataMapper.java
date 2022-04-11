@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.domainservices.data.mapper;
 
+import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataId;
@@ -25,9 +26,13 @@ public class DataMapper {
             var moisture = SoilMoisture.of(dto.data.moisture.percentage.floatValue());
             var payload = new ParkPayload(lux, moisture);
             return new Data(id, deviceId, reportedAt, payload);
+        } else if (dto.hasProperty(PropertyName.ALARM)) {
+            var alertStatus = dto.data.alarm.value ? ValveStatusType.OPEN : ValveStatusType.CLOSE;
+            var valve = new ValveStatus(alertStatus);
+            var payload = new ValvePayload(valve);
+            return new Data(id, deviceId, reportedAt, payload);
         } else {
-            
-            var alertStatus = ValveStatusType.CLOSE
+            throw new NotValidException("No Valid data packet found");
         }
     }
 }

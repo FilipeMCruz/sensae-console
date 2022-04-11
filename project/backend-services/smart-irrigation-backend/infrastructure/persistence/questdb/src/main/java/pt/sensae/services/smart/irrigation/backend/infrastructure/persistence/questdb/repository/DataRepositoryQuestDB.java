@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long> {
 
     @Modifying
-    @Query(value = "INSERT INTO smart_irrigation_data (data_id, device_id, device_type, reported_at, payload_temperature, payload_humidity, payload_soil_moisture, payload_illuminance) VALUES ( :dataId, :deviceId, :deviceType, :reportedAt, :temperature, :humidity, :soilMoisture, :illuminance);")
+    @Query(value = "INSERT INTO smart_irrigation_data (data_id, device_id, device_type, reported_at, payload_temperature, payload_humidity, payload_soil_moisture, payload_illuminance, payload_valve_status) VALUES ( :dataId, :deviceId, :deviceType, :reportedAt, :temperature, :humidity, :soilMoisture, :illuminance, :valveStatus);")
     void insert(@Param("dataId") String dataId,
                 @Param("deviceId") String deviceId,
                 @Param("deviceType") String deviceType,
@@ -21,5 +21,6 @@ public interface DataRepositoryQuestDB extends CrudRepository<DataQuestDB, Long>
                 @Param("temperature") Float temperature,
                 @Param("humidity") Float humidity,
                 @Param("soilMoisture") Float soilMoisture,
-                @Param("illuminance") Float illuminance);
+                @Param("illuminance") Float illuminance,
+                @Param("valveStatus") Boolean valveStatus);
 }

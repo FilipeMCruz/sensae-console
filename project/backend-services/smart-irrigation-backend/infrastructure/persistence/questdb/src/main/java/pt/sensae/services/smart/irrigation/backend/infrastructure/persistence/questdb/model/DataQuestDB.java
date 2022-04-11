@@ -33,4 +33,7 @@ public class DataQuestDB {
 
     @Column("payload_illuminance")
     public Float illuminance;
+
+    @Column("payload_valve_status")
+    public Boolean valveStatus;
 }

@@ -19,10 +19,12 @@ public class DataMapperImpl {
 
     public static Data toModel(DataQuestDB dao) {
         Payload payload;
-        if (Objects.equals(dao.deviceType, "park")) {
+        if (Objects.equals(dao.deviceType, "park_sensor")) {
             payload = new ParkPayload(Illuminance.of(dao.illuminance), SoilMoisture.of(dao.soilMoisture));
-        } else if (Objects.equals(dao.deviceType, "stove")) {
+        } else if (Objects.equals(dao.deviceType, "stove_sensor")) {
             payload = new StovePayload(Temperature.of(dao.temperature), Humidity.of(dao.humidity));
+        } else if (Objects.equals(dao.deviceType, "valve")) {
+            payload = new ValvePayload(new ValveStatus(dao.valveStatus ? ValveStatusType.OPEN : ValveStatusType.CLOSE));
         } else {
             throw new NotValidException("Data Type for " + dao.deviceType + " not supported");
         }
@@ -41,11 +43,14 @@ public class DataMapperImpl {
         if (model.payload() instanceof ParkPayload parkPayload) {
             dataQuestDB.soilMoisture = parkPayload.soilMoisture().percentage();
             dataQuestDB.illuminance = parkPayload.illuminance().lux();
-            dataQuestDB.deviceType = "park";
+            dataQuestDB.deviceType = "park_sensor";
         } else if (model.payload() instanceof StovePayload stovePayload) {
             dataQuestDB.humidity = stovePayload.humidity().gramsPerCubicMeter();
             dataQuestDB.temperature = stovePayload.temperature().celsius();
-            dataQuestDB.deviceType = "stove";
+            dataQuestDB.deviceType = "stove_sensor";
+        } else if (model.payload() instanceof ValvePayload valvePayload) {
+            dataQuestDB.valveStatus = valvePayload.status().value().equals(ValveStatusType.OPEN);
+            dataQuestDB.deviceType = "valve";
         }
         return dataQuestDB;
     }
@@ -55,15 +60,16 @@ public class DataMapperImpl {
         dataQuestDB.dataId = resultSet.getString("data_id");
         dataQuestDB.deviceId = resultSet.getString("device_id");
         dataQuestDB.reportedAt = resultSet.getTimestamp("reported_at");
-
         dataQuestDB.deviceType = resultSet.getString("device_type");
 
-        if ("park".equals(dataQuestDB.deviceType)) {
+        if ("park_sensor".equals(dataQuestDB.deviceType)) {
             dataQuestDB.soilMoisture = resultSet.getFloat("payload_soil_moisture");
             dataQuestDB.illuminance = resultSet.getFloat("payload_illuminance");
-        } else if ("stove".equals(dataQuestDB.deviceType)) {
+        } else if ("stove_sensor".equals(dataQuestDB.deviceType)) {
             dataQuestDB.humidity = resultSet.getFloat("payload_humidity");
             dataQuestDB.temperature = resultSet.getFloat("payload_temperature");
+        } else if ("valve".equals(dataQuestDB.deviceType)) {
+            dataQuestDB.valveStatus = resultSet.getBoolean("payload_valve_status");
         }
         return dataQuestDB;
     }

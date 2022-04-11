@@ -32,8 +32,22 @@ type StoveSensorDataDetails implements SensorDataDetails {
     humidity : HumidityDataDetails
 }
 
+type ValveDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    valve : ValveStatusDataDetails
+}
+
 type TemperatureDataDetails {
     celsius : Float
+}
+
+type ValveStatusDataDetails {
+    status : ValveStatusDataDetailsType
+}
+
+enum ValveStatusDataDetailsType {
+    OPEN
+    CLOSE
 }
 
 type HumidityDataDetails {
@@ -95,6 +109,12 @@ type StoveSensorDataHistoryDetails implements SensorDataHistoryDetails {
     reportedAt : String
     temperature : TemperatureDataDetails
     humidity : HumidityDataDetails
+}
+
+type ValveDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    valve : ValveStatusDataDetails
 }
 
 type GardeningArea {

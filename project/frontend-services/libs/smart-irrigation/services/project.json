@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/smart-irrigation/services",
+  "sourceRoot": "libs/smart-irrigation/services/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/smart-irrigation/services"],
+      "options": {
+        "jestConfig": "libs/smart-irrigation/services/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/smart-irrigation/services/src/**/*.ts",
+          "libs/smart-irrigation/services/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

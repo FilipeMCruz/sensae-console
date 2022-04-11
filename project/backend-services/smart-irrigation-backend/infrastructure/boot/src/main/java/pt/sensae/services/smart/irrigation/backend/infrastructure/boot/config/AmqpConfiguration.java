@@ -21,6 +21,8 @@ public class AmqpConfiguration {
 
     public static final String STOVE_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (stove)";
 
+    public static final String VALVE_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (valve)";
+
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     private final RoutingKeysProvider provider;
@@ -40,6 +42,14 @@ public class AmqpConfiguration {
     @Bean
     public Queue stoveQueue() {
         return QueueBuilder.durable(STOVE_INGRESS_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    public Queue valveQueue() {
+        return QueueBuilder.durable(VALVE_INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -82,6 +92,23 @@ public class AmqpConfiguration {
 
         if (keys.isPresent()) {
             return BindingBuilder.bind(stoveQueue).to(topic).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    Binding valveBinding(Queue valveQueue, TopicExchange topic) {
+        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.PROCESSED)
+                .withRecords(RecordsOptions.WITH_RECORDS)
+                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+                .withGps(GPSDataOptions.WITH_GPS_DATA)
+                .withAlarm(AlarmDataOptions.WITH_ALARM_DATA)
+                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .missingAsAny();
+
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(valveQueue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

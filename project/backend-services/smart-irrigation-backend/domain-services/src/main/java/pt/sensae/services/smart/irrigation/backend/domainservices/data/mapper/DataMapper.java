@@ -20,11 +20,14 @@ public class DataMapper {
             var humidity = Humidity.of(dto.data.humidity.gramspercubicmeter.floatValue());
             var payload = new StovePayload(temperature, humidity);
             return new Data(id, deviceId, reportedAt, payload);
-        } else {
+        } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
             var lux = Illuminance.of(dto.data.illuminance.lux.floatValue());
             var moisture = SoilMoisture.of(dto.data.moisture.percentage.floatValue());
             var payload = new ParkPayload(lux, moisture);
             return new Data(id, deviceId, reportedAt, payload);
+        } else {
+            
+            var alertStatus = ValveStatusType.CLOSE
         }
     }
 }

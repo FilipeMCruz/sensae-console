@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/smart-irrigation/dto",
+  "sourceRoot": "libs/smart-irrigation/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/smart-irrigation/dto"],
+      "options": {
+        "jestConfig": "libs/smart-irrigation/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/smart-irrigation/dto/src/**/*.ts",
+          "libs/smart-irrigation/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

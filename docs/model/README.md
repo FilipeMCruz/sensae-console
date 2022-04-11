@@ -185,7 +185,18 @@ Due to lack a of discussion and tests some data is missing a well-defined unit o
 - Add `data.occupation.percentage`
 - Add `data.soil_conductivity.micro_siemens_per_cm`
 - Change `data.moisture.percentage` to `data.soil_moisture.relative_percentage`
-- Add `data.co2.ppm`
+- Add `data.aqi.co2.ppm`
+- Add `data.aqi.co2.micro_grams_per_cubic_meter`
+- Add `data.aqi.co.ppm`
+- Add `data.aqi.co.micro_grams_per_cubic_meter`
+- Add `data.aqi.no2.ppm`
+- Add `data.aqi.no2.micro_grams_per_cubic_meter`
+- Add `data.aqi.nh3.ppm`
+- Add `data.aqi.nh3.micro_grams_per_cubic_meter`
+- Add `data.aqi.o3.ppm`
+- Add `data.aqi.o3.micro_grams_per_cubic_meter`
+- Add `data.aqi.pm2_5.micro_grams_per_cubic_meter`
+- Add `data.aqi.pm10.micro_grams_per_cubic_meter`
 - Change `data.pressure.hPa` to `data.air_pressure.hecto_pascal` air pressure
 - Change `data.airHumidity.gramspercubicmeter` to `data.air_humidity.grams_per_cubic_meter`
 - Change `data.velocity.kmperh` to `data.velocity.kilometer_per_hour`

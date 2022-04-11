@@ -8,6 +8,7 @@ type SensorData {
 type Device {
     id : String
     name : String
+    type: DeviceType
     records : [RecordEntry]
 }
 
@@ -82,6 +83,7 @@ input LatestDataQueryFilters {
 
 type SensorDataHistory {
     id : String
+    type : DeviceType
     ledger : [DeviceLedgerHistoryEntry]
 }
 
@@ -146,4 +148,10 @@ input AreaBoundaryCommandDetails {
     longitude : Float
     latitude : Float
     altitude : Float
+}
+
+enum DeviceType {
+    PARK_SENSOR,
+    STOVE_SENSOR,
+    VALVE
 }

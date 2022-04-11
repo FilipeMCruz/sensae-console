@@ -82,6 +82,7 @@ export interface SensorData {
 
 export interface Device {
   id: string
+  type: DeviceType
   name: string
   records: RecordEntry[]
 }
@@ -157,6 +158,7 @@ export interface LatestDataQueryFilters {
 
 export interface SensorDataHistory {
   id: string
+  type: DeviceType
   ledger: [DeviceLedgerHistoryEntry]
 }
 
@@ -222,4 +224,10 @@ export interface AreaBoundaryCommandDetails {
   longitude: number
   latitude: number
   altitude: number
+}
+
+enum DeviceType {
+  PARK_SENSOR,
+  STOVE_SENSOR,
+  VALVE
 }

@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.device;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.Device;
@@ -41,7 +42,16 @@ public class DeviceCache {
         var newEntry = toLedgerEntry(dto);
         var oldEntry = get(deviceId);
         if (oldEntry.isEmpty()) {
-            var type = dto.hasProperty(PropertyName.ALARM) ? DeviceType.VALVE : DeviceType.SENSOR;
+            DeviceType type;
+            if (dto.hasProperty(PropertyName.ALARM)) {
+                type = DeviceType.VALVE;
+            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
+                type = DeviceType.STOVE_SENSOR;
+            } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
+                type = DeviceType.PARK_SENSOR;
+            } else {
+                throw new NotValidException("No Valid data packet found");
+            }
             repository.add(new Device(deviceId, type, DeviceLedger.start(newEntry)));
             cache.put(deviceId, newEntry);
         } else if (!newEntry.sameAs(oldEntry.get())) {

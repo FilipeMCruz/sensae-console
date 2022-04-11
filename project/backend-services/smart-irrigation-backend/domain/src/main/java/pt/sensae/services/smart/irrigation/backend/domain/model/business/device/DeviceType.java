@@ -1,6 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device;
 
 public enum DeviceType {
-    SENSOR,
+    PARK_SENSOR,
+    STOVE_SENSOR,
     VALVE
 }

@@ -7,7 +7,7 @@ type Subscription {
 
 type Query {
     history(filters: HistoryQueryFilters) : [SensorDataHistory]
-    fetchGardens(filters: GardeningAreaFilters) : [GardeningArea]
+    fetchGardens : [GardeningArea]
     fetchLatestData(filters: LatestDataQueryFilters): [SensorData]
 }
 

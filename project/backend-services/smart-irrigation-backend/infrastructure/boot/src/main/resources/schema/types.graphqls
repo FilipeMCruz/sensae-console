@@ -120,7 +120,6 @@ type ValveDataHistoryDetails implements SensorDataHistoryDetails {
 type GardeningArea {
     id : String
     name : String
-    type : GardeningAreaTypeDTO
     valves : [String]
     area : [AreaBoundary]
 }
@@ -132,14 +131,8 @@ type AreaBoundary {
     altitude : Float
 }
 
-enum GardeningAreaTypeDTO {
-    PARK,
-    STOVE
-}
-
 input CreateGardeningAreaCommand {
     name : String
-    type : GardeningAreaTypeDTO
     valves : [String]
     area : [AreaBoundaryCommandDetails]
 }
@@ -147,7 +140,6 @@ input CreateGardeningAreaCommand {
 input UpdateGardeningAreaCommand {
     id : String
     name : String
-    type : GardeningAreaTypeDTO
     valves : [String]
     area : [AreaBoundaryCommandDetails]
 }
@@ -157,8 +149,4 @@ input AreaBoundaryCommandDetails {
     longitude : Float
     latitude : Float
     altitude : Float
-}
-
-input GardeningAreaFilters {
-    type : GardeningAreaTypeDTO
 }

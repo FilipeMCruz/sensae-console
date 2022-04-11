@@ -9,7 +9,6 @@ import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.C
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.UpdateGardeningAreaCommand;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.CreateGardeningAreaCommandDTOImpl;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.GardeningAreaTypeDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.UpdateGardeningAreaCommandDTOImpl;
 
 import java.util.List;
@@ -24,7 +23,6 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         var dtoCom = (UpdateGardeningAreaCommandDTOImpl) dto;
         var com = new UpdateGardeningAreaCommand();
         com.id = UUID.fromString(dtoCom.id);
-        com.type = dtoCom.type == GardeningAreaTypeDTO.PARK ? "park" : "stove";
         com.name = dtoCom.name;
         com.valvesIds = dtoCom.valves.stream().map(UUID::fromString).toList();
         com.area = extracted(dtoCom.area);
@@ -36,7 +34,6 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         var dtoCom = (CreateGardeningAreaCommandDTOImpl) dto;
         var com = new CreateGardeningAreaCommand();
         com.name = dtoCom.name;
-        com.type = dtoCom.type == GardeningAreaTypeDTO.PARK ? "park" : "stove";
         com.valvesIds = dtoCom.valves.stream().map(UUID::fromString).toList();
         com.area = extracted(dtoCom.area);
         return com;

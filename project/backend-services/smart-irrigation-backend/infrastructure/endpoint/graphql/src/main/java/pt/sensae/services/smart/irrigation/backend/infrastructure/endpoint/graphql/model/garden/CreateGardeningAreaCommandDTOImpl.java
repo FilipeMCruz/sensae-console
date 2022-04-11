@@ -11,6 +11,4 @@ public class CreateGardeningAreaCommandDTOImpl implements CreateGardeningAreaCom
     public List<AreaBoundaryDTO> area;
 
     public List<String> valves;
-
-    public GardeningAreaTypeDTO type;
 }

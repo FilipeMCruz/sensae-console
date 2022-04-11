@@ -16,9 +16,6 @@ public class GardeningAreaPostgres {
     @Column("name")
     public String areaName;
 
-    @Column("type")
-    public String areaType;
-
     @Column("irrigation_system")
     public String irrigationSystem;
 }

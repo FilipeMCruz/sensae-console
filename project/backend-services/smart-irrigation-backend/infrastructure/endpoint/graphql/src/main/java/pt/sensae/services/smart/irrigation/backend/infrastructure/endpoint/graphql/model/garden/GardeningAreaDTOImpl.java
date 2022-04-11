@@ -13,6 +13,4 @@ public class GardeningAreaDTOImpl implements GardeningAreaDTO {
     public List<AreaBoundaryDTO> area;
 
     public List<String> valves;
-
-    public GardeningAreaTypeDTO type;
 }

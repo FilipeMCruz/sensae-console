@@ -8,7 +8,6 @@ import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.C
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.UpdateGardeningAreaCommand;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -34,11 +33,6 @@ public class GardenMapper {
             return new BoundaryPoint(b.position, gps);
         }).collect(Collectors.toSet()));
 
-        var type = GardeningAreaType.STOVE;
-        if (Objects.equals(typeCommand, "park")) {
-            type = GardeningAreaType.PARK;
-        }
-
-        return new GardeningArea(of, GardenName.of(name), type, area, irrigationSystem);
+        return new GardeningArea(of, GardenName.of(name), area, irrigationSystem);
     }
 }

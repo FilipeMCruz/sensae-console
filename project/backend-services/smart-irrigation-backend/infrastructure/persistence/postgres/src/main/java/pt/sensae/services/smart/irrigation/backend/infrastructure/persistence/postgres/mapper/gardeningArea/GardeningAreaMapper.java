@@ -15,7 +15,6 @@ public class GardeningAreaMapper {
         dao.irrigationSystem = model.valves().devices().stream().map(id -> id.value().toString()).collect(Collectors.joining(",", "{", "}"));
         dao.areaId = model.id().value().toString();
         dao.areaName = model.name().value();
-        dao.areaType = model.type().name();
         return dao;
     }
 
@@ -25,10 +24,7 @@ public class GardeningAreaMapper {
 
         var id = GardeningAreaId.of(UUID.fromString(dao.areaId));
         var name = GardenName.of(dao.areaName);
-        var type = GardeningAreaType.STOVE;
-        if (dao.areaType.equals(GardeningAreaType.PARK.name())) {
-            type = GardeningAreaType.PARK;
-        }
-        return new GardeningArea(id, name, type, area, valves);
+
+        return new GardeningArea(id, name, area, valves);
     }
 }

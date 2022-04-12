@@ -1,53 +1,53 @@
 export interface CreateGardenResultDTO {
-  createGarden: GardeningArea
+  createGarden: GardeningAreaDTO
 }
 
 export interface UpdateGardenResultDTO {
-  updateGarden: GardeningArea
+  updateGarden: GardeningAreaDTO
 }
 
 export interface QueryHistoryResultDTO {
-  history: SensorDataHistory[]
+  history: SensorDataHistoryDTO[]
 }
 
 export interface QueryGardensResultDTO {
-  fetchGardens: GardeningArea[]
+  fetchGardens: GardeningAreaDTO[]
 }
 
 export interface QueryLatestDataResultDTO {
-  fetchLatestData: SensorData[]
+  fetchLatestData: SensorDataDTO[]
 }
 
 export interface SubscribeToDataResultDTO {
-  data: SensorData
+  data: SensorDataDTO
 }
 
 export interface SubscribeToDataByContentResultDTO {
-  dataByContent: SensorData
+  dataByContent: SensorDataDTO
 }
 
 export interface SubscribeToDataByDevicesResultDTO {
-  dataByDevices: SensorData
+  dataByDevices: SensorDataDTO
 }
 
 export interface SubscribeToDataByGardensResultDTO {
-  dataByGardens: SensorData
+  dataByGardens: SensorDataDTO
 }
 
 export interface UpdateGardenParamsDTO {
-  instructions: UpdateGardeningAreaCommand
+  instructions: UpdateGardeningAreaCommandDTO
 }
 
 export interface CreateGardenParamsDTO {
-  instructions: CreateGardeningAreaCommand
+  instructions: CreateGardeningAreaCommandDTO
 }
 
 export interface QueryLatestDataParamsDTO {
-  filters: LatestDataQueryFilters
+  filters: LatestDataQueryFiltersDTO
 }
 
 export interface QueryHistoryDataParamsDTO {
-  filters: HistoryQueryFilters
+  filters: HistoryQueryFiltersDTO
 }
 
 export interface SubscribeToDataParamsDTO {
@@ -73,160 +73,159 @@ export interface SubscribeToDataParamsDTO {
   Authorization: string
 }
 
-export interface SensorData {
-  dataId: string
-  device: Device
-  reportedAt: string
-  data: SensorDataDetails
-}
-
-export interface Device {
-  id: string
-  type: DeviceType
-  name: string
-  records: RecordEntry[]
-}
-
-export interface RecordEntry {
-  label: string
-  content: string
-}
-
-interface SensorDataDetails {
-  gps: GPSDataDetails
-}
-
-export interface ParkSensorDataDetails extends SensorDataDetails {
-  gps: GPSDataDetails
-  soilMoisture: SoilMoistureDataDetails
-  illuminance: IlluminanceDataDetails
-}
-
-export interface StoveSensorDataDetails extends SensorDataDetails {
-  gps: GPSDataDetails
-  temperature: TemperatureDataDetails
-  humidity: HumidityDataDetails
-}
-
-export interface ValveDataDetails extends SensorDataDetails {
-  gps: GPSDataDetails
-  valve: ValveStatusDataDetails
-}
-
-export interface TemperatureDataDetails {
-  celsius: number
-}
-
-export interface ValveStatusDataDetails {
-  status: ValveStatusDataDetailsType
-}
-
-enum ValveStatusDataDetailsType {
-  OPEN,
-  CLOSE
-}
-
-export interface HumidityDataDetails {
-  gramsPerCubicMeter: number
-}
-
-export interface SoilMoistureDataDetails {
-  percentage: number
-}
-
-export interface IlluminanceDataDetails {
-  lux: number
-}
-
-export interface GPSDataDetails {
-  longitude: number
-  latitude: number
-  altitude: number
-}
-
-export interface HistoryQueryFilters {
+export interface HistoryQueryFiltersDTO {
   devices: string[]
   gardens: string[]
   startTime: string
   endTime: string
 }
 
-export interface LatestDataQueryFilters {
+export interface LatestDataQueryFiltersDTO {
   devices: string[]
   gardens: string[]
 }
 
-export interface SensorDataHistory {
-  id: string
-  type: DeviceType
-  ledger: [DeviceLedgerHistoryEntry]
-}
-
-export interface DeviceLedgerHistoryEntry {
+export interface CreateGardeningAreaCommandDTO {
   name: string
-  gps: GPSDataDetails
-  records: RecordEntry[]
-  data: SensorDataHistoryDetails[]
+  area: AreaBoundaryCommandDetailsDTO[]
 }
 
-
-interface SensorDataHistoryDetails {
-  id: string
-  reportedAt: string
-}
-
-export interface ParkSensorDataHistoryDetails extends SensorDataHistoryDetails {
-  id: string
-  reportedAt: string
-  soilMoisture: SoilMoistureDataDetails
-  illuminance: IlluminanceDataDetails
-}
-
-export interface StoveSensorDataHistoryDetails extends SensorDataHistoryDetails {
-  id: string
-  reportedAt: string
-  temperature: TemperatureDataDetails
-  humidity: HumidityDataDetails
-}
-
-export interface ValveDataHistoryDetails extends SensorDataHistoryDetails {
-  id: string
-  reportedAt: string
-  valve: ValveStatusDataDetails
-}
-
-export interface GardeningArea {
+export interface UpdateGardeningAreaCommandDTO {
   id: string
   name: string
-  area: AreaBoundary[]
+  area: AreaBoundaryCommandDetailsDTO[]
 }
 
-export interface AreaBoundary {
+export interface AreaBoundaryCommandDetailsDTO {
   position: number
   longitude: number
   latitude: number
   altitude: number
 }
 
-export interface CreateGardeningAreaCommand {
-  name: string
-  area: AreaBoundaryCommandDetails[]
+export interface SensorDataDTO {
+  dataId: string
+  device: DeviceDTO
+  reportedAt: string
+  data: SensorDataDetailsDTO
 }
 
-export interface UpdateGardeningAreaCommand {
+export interface DeviceDTO {
+  id: string
+  type: DeviceTypeDTO
+  name: string
+  records: RecordEntryDTO[]
+}
+
+export interface RecordEntryDTO {
+  label: string
+  content: string
+}
+
+interface SensorDataDetailsDTO {
+  gps: GPSDataDetailsDTO
+}
+
+export interface ParkSensorDataDetailsDTO extends SensorDataDetailsDTO {
+  gps: GPSDataDetailsDTO
+  soilMoisture: SoilMoistureDataDetailsDTO
+  illuminance: IlluminanceDataDetailsDTO
+}
+
+export interface StoveSensorDataDetailsDTO extends SensorDataDetailsDTO {
+  gps: GPSDataDetailsDTO
+  temperature: TemperatureDataDetailsDTO
+  humidity: HumidityDataDetailsDTO
+}
+
+export interface ValveDataDetailsDTO extends SensorDataDetailsDTO {
+  gps: GPSDataDetailsDTO
+  valve: ValveStatusDataDetailsDTO
+}
+
+export interface TemperatureDataDetailsDTO {
+  celsius: number
+}
+
+export interface ValveStatusDataDetailsDTO {
+  status: ValveStatusDataDetailsTypeDTO
+}
+
+enum ValveStatusDataDetailsTypeDTO {
+  OPEN,
+  CLOSE
+}
+
+export interface HumidityDataDetailsDTO {
+  gramsPerCubicMeter: number
+}
+
+export interface SoilMoistureDataDetailsDTO {
+  percentage: number
+}
+
+export interface IlluminanceDataDetailsDTO {
+  lux: number
+}
+
+export interface GPSDataDetailsDTO {
+  longitude: number
+  latitude: number
+  altitude: number
+}
+
+export interface SensorDataHistoryDTO {
+  id: string
+  type: DeviceTypeDTO
+  ledger: [DeviceLedgerHistoryEntryDTO]
+}
+
+export interface DeviceLedgerHistoryEntryDTO {
+  name: string
+  gps: GPSDataDetailsDTO
+  records: RecordEntryDTO[]
+  data: SensorDataHistoryDetailsDTO[]
+}
+
+interface SensorDataHistoryDetailsDTO {
+  id: string
+  reportedAt: string
+}
+
+export interface ParkSensorDataHistoryDetailsDTO extends SensorDataHistoryDetailsDTO {
+  id: string
+  reportedAt: string
+  soilMoisture: SoilMoistureDataDetailsDTO
+  illuminance: IlluminanceDataDetailsDTO
+}
+
+export interface StoveSensorDataHistoryDetailsDTO extends SensorDataHistoryDetailsDTO {
+  id: string
+  reportedAt: string
+  temperature: TemperatureDataDetailsDTO
+  humidity: HumidityDataDetailsDTO
+}
+
+export interface ValveDataHistoryDetailsDTO extends SensorDataHistoryDetailsDTO {
+  id: string
+  reportedAt: string
+  valve: ValveStatusDataDetailsDTO
+}
+
+export interface GardeningAreaDTO {
   id: string
   name: string
-  area: AreaBoundaryCommandDetails[]
+  area: AreaBoundaryDTO[]
 }
 
-export interface AreaBoundaryCommandDetails {
+export interface AreaBoundaryDTO {
   position: number
   longitude: number
   latitude: number
   altitude: number
 }
 
-enum DeviceType {
+enum DeviceTypeDTO {
   PARK_SENSOR,
   STOVE_SENSOR,
   VALVE

@@ -4,7 +4,7 @@
   </a>
   <div *ngFor="let mfe of microfrontendServices">
     <span *ngIf="canShow(mfe)" class="spacer"></span>
-    <button *ngIf="canShow(mfe)" mat-button [routerLink]="mfe.routePath">
+    <button *ngIf="canShow(mfe)" mat-button (click)="goTo(mfe.routePath)">
       {{ mfe.displayName }}
     </button>
   </div>

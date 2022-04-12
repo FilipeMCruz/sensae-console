@@ -95,6 +95,20 @@ services:
       - 443
     depends_on:
       - sharespot-identity-management-backend
+  smart-irrigation-frontend:
+    build:
+      dockerfile: docker/smart-irrigation-frontend/Dockerfile
+      context: frontend-services
+    image: smart-irrigation-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sharespot-network
+    ports:
+      - 443
+    depends_on:
+      - smart-irrigation-backend
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer

@@ -35,6 +35,8 @@
     "sharespot-identity-management-frontend-e2e": "apps/sharespot-identity-management-frontend-e2e",
     "simple-auth-lib": "libs/simple-auth-lib",
     "smart-irrigation-dto": "libs/smart-irrigation/dto",
+    "smart-irrigation-frontend": "apps/smart-irrigation-frontend",
+    "smart-irrigation-frontend-e2e": "apps/smart-irrigation-frontend-e2e",
     "smart-irrigation-mapper": "libs/smart-irrigation/mapper",
     "smart-irrigation-model": "libs/smart-irrigation/model",
     "smart-irrigation-services": "libs/smart-irrigation/services",

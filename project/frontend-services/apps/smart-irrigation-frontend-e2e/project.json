@@ -1,0 +1,28 @@
+{
+  "root": "apps/smart-irrigation-frontend-e2e",
+  "sourceRoot": "apps/smart-irrigation-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/smart-irrigation-frontend-e2e/cypress.json",
+        "devServerTarget": "smart-irrigation-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "smart-irrigation-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/smart-irrigation-frontend-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["smart-irrigation-frontend"]
+}

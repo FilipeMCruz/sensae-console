@@ -78,6 +78,10 @@ export function createNamedApollo(
       link: createLink(httpLink, environment.endpoints.dataDecoder.backend),
       cache: new InMemoryCache(),
     },
+    smartIrrigation: {
+      link: createLink(httpLink, environment.endpoints.smartIrrigation.backend),
+      cache: new InMemoryCache(),
+    },
   };
 }
 

@@ -23,32 +23,22 @@ sharedMappings.register(
   [
     '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
-    '@frontend-services/data-processor-model',
-    '@frontend-services/data-processor-services',
-    '@frontend-services/data-decoder-model',
-    '@frontend-services/data-decoder-services',
-    '@frontend-services/device-records-model',
-    '@frontend-services/device-records-services',
-    '@frontend-services/fleet-management/model',
-    '@frontend-services/fleet-management/services',
-    '@frontend-services/identity-management/model',
-    '@frontend-services/identity-management/services',
+    '@frontend-services/smart-irrigation/model',
+    '@frontend-services//smart-irrigation/services',
   ],
   workspaceRootPath
 );
 
 module.exports = {
-  experiments: {
-    outputModule: true,
-  },
   output: {
-    uniqueName: 'ui-aggregator',
+    uniqueName: 'smart-irrigation-frontend',
     publicPath: 'auto',
-    clean: true,
   },
   optimization: {
     runtimeChunk: false,
-    minimize: false,
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     alias: {
@@ -57,11 +47,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: { type: 'module' },
-      remotes: {
-        'sharespot-data-decoder-frontend':
-          'http://localhost:4286/remoteEntry.js',
-        'smart-irrigation-frontend': 'http://localhost:4298/remoteEntry.js',
+      name: 'smartirrigationfrontend',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './Module':
+          'apps/smart-irrigation-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {
@@ -114,7 +104,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,
@@ -140,23 +130,11 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        '@azure/msal-angular': {
-          singleton: true,
-          strictVersion: true,
-          requiredVersion: 'auto',
-        },
-        '@azure/msal-browser': {
-          singleton: true,
-          strictVersion: true,
-          requiredVersion: 'auto',
-        },
-        'core-js': {
-          singleton: true,
-          strictVersion: true,
-          requiredVersion: 'auto',
-        },
         ...sharedMappings.getDescriptors(),
       }),
+      library: {
+        type: 'module',
+      },
     }),
     sharedMappings.getPlugin(),
   ],

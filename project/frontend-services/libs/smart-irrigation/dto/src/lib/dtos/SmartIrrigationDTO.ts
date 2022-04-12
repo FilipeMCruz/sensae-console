@@ -22,18 +22,6 @@ export interface SubscribeToDataResultDTO {
   data: SensorDataDTO
 }
 
-export interface SubscribeToDataByContentResultDTO {
-  dataByContent: SensorDataDTO
-}
-
-export interface SubscribeToDataByDevicesResultDTO {
-  dataByDevices: SensorDataDTO
-}
-
-export interface SubscribeToDataByGardensResultDTO {
-  dataByGardens: SensorDataDTO
-}
-
 export interface UpdateGardenParamsDTO {
   instructions: UpdateGardeningAreaCommandDTO
 }
@@ -51,26 +39,9 @@ export interface QueryHistoryDataParamsDTO {
 }
 
 export interface SubscribeToDataParamsDTO {
-  Authorization: string
-}
-
-export interface SubscribeToDataByContentParamsDTO {
-  Authorization: string
-  content: string
-}
-
-export interface SubscribeToDataByDevicesParamsDTO {
-  Authorization: string
-  devices: string[]
-}
-
-export interface SubscribeToDataByGardensParamsDTO {
-  Authorization: string
   gardens: string[]
-}
-
-export interface SubscribeToDataParamsDTO {
-  Authorization: string
+  devices: string[]
+  content: string
 }
 
 export interface HistoryQueryFiltersDTO {
@@ -87,20 +58,13 @@ export interface LatestDataQueryFiltersDTO {
 
 export interface CreateGardeningAreaCommandDTO {
   name: string
-  area: AreaBoundaryCommandDetailsDTO[]
+  area: AreaBoundaryDTO[]
 }
 
 export interface UpdateGardeningAreaCommandDTO {
   id: string
   name: string
-  area: AreaBoundaryCommandDetailsDTO[]
-}
-
-export interface AreaBoundaryCommandDetailsDTO {
-  position: number
-  longitude: number
-  latitude: number
-  altitude: number
+  area: AreaBoundaryDTO[]
 }
 
 export interface SensorDataDTO {

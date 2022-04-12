@@ -1,0 +1,22 @@
+query fetchLatestData($filters: LatestDataQueryFilters){
+    fetchLatestData(filters: $filters){
+        dataId
+        device{
+            id
+            name
+            type
+            records{
+                label
+                content
+            }
+        }
+        reportedAt
+        data{
+            gps{
+                longitude
+                latitude
+                altitude
+            }
+        }
+    }
+}

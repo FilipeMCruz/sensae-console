@@ -1,0 +1,12 @@
+mutation createGarden($instructions: CreateGardeningAreaCommand){
+    createGarden(instructions: $instructions){
+        id
+        name
+        area{
+            position
+            longitude
+            latitude
+            altitude
+        }
+    }
+}

@@ -21,4 +21,12 @@ export * from './lib/model/details/StoveSensorDataDetails';
 export * from './lib/model/details/HumidityDataDetails';
 export * from './lib/model/details/IlluminanceDataDetails';
 export * from './lib/model/details/ParkSensorDataDetails';
-
+export * from './lib/model/device/DeviceId'
+export * from './lib/model/device/DeviceName'
+export * from './lib/model/garden/GardeningAreaId';
+export * from './lib/model/garden/GardeningAreaName';
+export * from './lib/model/device/LatestDataQueryFilters';
+export * from './lib/model/history/HistoryQueryFilters'
+export * from './lib/model/garden/UpdateGardeningAreaCommand';
+export * from './lib/model/garden/CreateGardeningAreaCommand';
+export * from './lib/model/device/DataFilters';

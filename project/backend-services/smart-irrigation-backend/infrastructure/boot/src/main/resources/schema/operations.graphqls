@@ -1,8 +1,5 @@
 type Subscription {
-    data(Authorization: String) : SensorData
-    dataByContent(content: String, Authorization: String) : SensorData
-    dataByDevices(devices: [String], Authorization: String) : SensorData
-    dataByGardens(gardens: [String], Authorization: String) : SensorData
+    data(filters: LiveDataFilter, Authorization: String) : SensorData
 }
 
 type Query {

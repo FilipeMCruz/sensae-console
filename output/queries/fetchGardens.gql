@@ -1,0 +1,12 @@
+query fetchGardens{
+    fetchGardens{
+        id
+        name
+        area{
+            position
+            longitude
+            latitude
+            altitude
+        }
+    }
+}

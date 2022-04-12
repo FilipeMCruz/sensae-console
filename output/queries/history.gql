@@ -1,0 +1,22 @@
+query history($filters: HistoryQueryFilters){
+    history(filters: $filters){
+        id
+        type
+        ledger{
+            name
+            gps{
+                longitude
+                latitude
+                altitude
+            }
+            records{
+                label
+                content
+            }
+            data{
+                id
+                reportedAt
+            }
+        }
+    }
+}

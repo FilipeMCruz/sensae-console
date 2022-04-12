@@ -122,7 +122,7 @@ export interface RecordEntryDTO {
   content: string
 }
 
-interface SensorDataDetailsDTO {
+export interface SensorDataDetailsDTO {
   gps: GPSDataDetailsDTO
 }
 
@@ -151,7 +151,7 @@ export interface ValveStatusDataDetailsDTO {
   status: ValveStatusDataDetailsTypeDTO
 }
 
-enum ValveStatusDataDetailsTypeDTO {
+export enum ValveStatusDataDetailsTypeDTO {
   OPEN,
   CLOSE
 }
@@ -177,7 +177,7 @@ export interface GPSDataDetailsDTO {
 export interface SensorDataHistoryDTO {
   id: string
   type: DeviceTypeDTO
-  ledger: [DeviceLedgerHistoryEntryDTO]
+  ledger: DeviceLedgerHistoryEntryDTO[]
 }
 
 export interface DeviceLedgerHistoryEntryDTO {
@@ -187,7 +187,7 @@ export interface DeviceLedgerHistoryEntryDTO {
   data: SensorDataHistoryDetailsDTO[]
 }
 
-interface SensorDataHistoryDetailsDTO {
+export interface SensorDataHistoryDetailsDTO {
   id: string
   reportedAt: string
 }
@@ -225,7 +225,7 @@ export interface AreaBoundaryDTO {
   altitude: number
 }
 
-enum DeviceTypeDTO {
+export enum DeviceTypeDTO {
   PARK_SENSOR,
   STOVE_SENSOR,
   VALVE

@@ -4,6 +4,6 @@ export enum ValveStatusDataDetailsType {
 }
 
 export class ValveStatusDataDetails {
-  constructor(public status: ValveStatusDataDetails) {
+  constructor(public status: ValveStatusDataDetailsType) {
   }
 }

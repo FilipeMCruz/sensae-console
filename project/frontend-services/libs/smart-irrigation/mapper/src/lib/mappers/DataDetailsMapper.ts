@@ -47,11 +47,11 @@ export class DataDetailsMapper {
   static valveDtoToModel(dto: ValveStatusDataDetailsDTO): ValveStatusDataDetails {
     switch (dto.status) {
       case ValveStatusDataDetailsTypeDTO.CLOSE:
-        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSE);
+        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
       case ValveStatusDataDetailsTypeDTO.OPEN:
-        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSE);
+        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
       default:
-        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSE);
+        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
     }
   }
 

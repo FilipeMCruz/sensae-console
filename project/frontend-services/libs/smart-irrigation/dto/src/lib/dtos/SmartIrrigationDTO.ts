@@ -116,8 +116,8 @@ export interface ValveStatusDataDetailsDTO {
 }
 
 export enum ValveStatusDataDetailsTypeDTO {
-  OPEN,
-  CLOSE
+  OPEN = "OPEN",
+  CLOSE = "CLOSE"
 }
 
 export interface HumidityDataDetailsDTO {
@@ -190,7 +190,7 @@ export interface AreaBoundaryDTO {
 }
 
 export enum DeviceTypeDTO {
-  PARK_SENSOR,
-  STOVE_SENSOR,
-  VALVE
+  PARK_SENSOR = "PARK_SENSOR",
+  STOVE_SENSOR = "STOVE_SENSOR",
+  VALVE = "VALVE"
 }

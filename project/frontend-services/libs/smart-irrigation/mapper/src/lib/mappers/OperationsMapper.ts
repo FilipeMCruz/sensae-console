@@ -17,11 +17,13 @@ import {
   SensorDataHistory,
   UpdateGardeningAreaCommand
 } from "@frontend-services/smart-irrigation/model";
-import {DataHistoryMapper, DataMapper, GardenMapper} from "@frontend-services/smart-irrigation/mapper";
 import {LatestDataQueryFilters} from "@frontend-services/smart-irrigation/model";
 import {HistoryQueryFilters} from "@frontend-services/smart-irrigation/model";
 import {CreateGardeningAreaCommand} from "@frontend-services/smart-irrigation/model";
 import {DataFilters} from "@frontend-services/smart-irrigation/model";
+import {GardenMapper} from "./GardenMapper";
+import {DataMapper} from "./DataMapper";
+import {DataHistoryMapper} from "./DataHistoryMapper";
 
 export class OperationsMapper {
   static fetchGardenDtoToModel(dto: QueryGardensResultDTO): Array<GardeningArea> {

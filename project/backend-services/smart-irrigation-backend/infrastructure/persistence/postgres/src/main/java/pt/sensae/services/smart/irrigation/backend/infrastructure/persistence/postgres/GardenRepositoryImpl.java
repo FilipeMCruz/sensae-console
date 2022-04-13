@@ -1,6 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
@@ -26,6 +27,7 @@ public class GardenRepositoryImpl implements GardenRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Optional<GardeningArea> fetchById(GardeningAreaId id) {
         var boundariesDao = areaRepository.findAllByAreaId(id.value().toString());
 
@@ -34,6 +36,7 @@ public class GardenRepositoryImpl implements GardenRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Stream<GardeningArea> fetchMultiple(Stream<GardeningAreaId> id) {
         var ids = id.map(i -> i.value().toString()).toList();
         if (ids.isEmpty()) {
@@ -42,20 +45,24 @@ public class GardenRepositoryImpl implements GardenRepository {
         var boundaries = areaRepository.findAllByAreaIdIn(ids)
                 .collect(Collectors.groupingBy(o -> o.areaId));
 
-        return gardeningAreaRepository.findByAreaIdIn(ids)
-                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream())));
+        var gardeningAreas = gardeningAreaRepository.findByAreaIdIn(ids)
+                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream()))).toList();
+        return gardeningAreas.stream();
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Stream<GardeningArea> fetchAll() {
         var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
                 .collect(Collectors.groupingBy(o -> o.areaId));
 
-        return StreamSupport.stream(gardeningAreaRepository.findAll().spliterator(), false)
-                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream())));
+        var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAll().spliterator(), false)
+                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream()))).toList();
+        return gardeningAreas.stream();
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public GardeningArea save(GardeningArea garden) {
         var gardeningAreaPostgres = GardeningAreaMapper.modelToDao(garden);
 

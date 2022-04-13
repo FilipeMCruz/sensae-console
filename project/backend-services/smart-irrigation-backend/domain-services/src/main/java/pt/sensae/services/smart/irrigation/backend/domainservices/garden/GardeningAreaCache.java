@@ -31,8 +31,9 @@ public class GardeningAreaCache {
     }
 
     public Stream<GardeningArea> fetchByIds(Stream<GardeningAreaId> ids) {
-        var allPresent = this.cache.getAllPresent(ids.toList());
-        var toFetch = ids.filter(id -> !allPresent.containsKey(id));
+        var gardeningAreaIds = ids.toList();
+        var allPresent = this.cache.getAllPresent(gardeningAreaIds);
+        var toFetch = gardeningAreaIds.stream().filter(id -> !allPresent.containsKey(id));
         var gardens = repository.fetchMultiple(toFetch).collect(Collectors.toSet());
         this.cache.putAll(gardens.stream().collect(Collectors.toMap(GardeningArea::id, entry -> entry)));
         return Stream.concat(gardens.stream(), allPresent.values().stream());

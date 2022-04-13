@@ -24,11 +24,15 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MapComponent} from "./map/map.component";
 import {MatListModule} from "@angular/material/list";
+import {GardenDialogComponent} from "./garden-dialog/garden-dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatGridListModule} from "@angular/material/grid-list";
+import {TruncatePipe} from "@frontend-services/core";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
-  declarations: [MapComponent],
+  declarations: [MapComponent, GardenDialogComponent, TruncatePipe],
   imports: [
     MatSliderModule,
     MatSlideToggleModule,
@@ -58,6 +62,8 @@ import {MatListModule} from "@angular/material/list";
       },
     ]),
     MatListModule,
+    MatDialogModule,
+    MatGridListModule,
   ],
   providers: [],
 })

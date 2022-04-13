@@ -36,6 +36,27 @@ export class FetchHistory {
             data{
               id
               reportedAt
+              ...on ParkSensorDataHistoryDetails {
+                soilMoisture {
+                  percentage
+                }
+                illuminance {
+                  lux
+                }
+              }
+              ...on StoveSensorDataHistoryDetails {
+                temperature {
+                  celsius
+                }
+                humidity {
+                  gramsPerCubicMeter
+                }
+              }
+              ...on ValveDataHistoryDetails {
+                valve {
+                  status
+                }
+              }
             }
           }
         }

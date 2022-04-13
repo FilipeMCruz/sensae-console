@@ -1,6 +1,5 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
@@ -9,6 +8,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntry;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.query.DeviceQuery;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device.DeviceMapper;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.mapper.device.LedgerMapper;
@@ -52,6 +52,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Optional<LedgerEntry> fetchDeviceActiveLedgerEntry(DeviceId id) {
         return ledgerRepository.findByDeviceIdAndCloseAtNull(id.value().toString())
                 .map(ledgerEntryPostgres -> {
@@ -62,6 +63,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public void openDeviceLedgerEntry(DeviceId id, LedgerEntry entry) {
         var idS = id.value().toString();
         ledgerRepository.findByDeviceIdAndCloseAtNull(idS)
@@ -74,6 +76,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Stream<Device> fetchLatest(Ownership ownership) {
         var collect = buildQuery(ownership);
         var latestWithOwnership = ledgerRepository.findLatestWithOwnership(collect);
@@ -81,18 +84,17 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
+    @Transactional("transactionManagerPostgres")
     public Stream<Device> fetch(DeviceQuery query) {
         var ownership = buildQuery(query.ownership());
         var latestWithOwnership = ledgerRepository.findOldWithOwnership(ownership, Timestamp.from(query.open().value()), Timestamp.from(query.close().value()));
         return doWorkOnFoundLedgerEntries(latestWithOwnership);
     }
 
-    @NotNull
     private String buildQuery(Ownership ownership) {
         return ownership.value().stream().map(d -> d.value().toString()).collect(Collectors.joining(",", "{", "}"));
     }
 
-    @NotNull
     private Stream<Device> doWorkOnFoundLedgerEntries(Stream<LedgerEntryPostgres> latestWithOwnership) {
         var collect = latestWithOwnership.collect(Collectors.toSet());
 
@@ -101,13 +103,18 @@ public class DeviceRepositoryImpl implements DeviceRepository {
 
         var map = new HashMap<String, Set<LedgerEntry>>();
         collect.forEach(e -> {
-            var deviceRecords = RecordsMapper.daoToModel(records.get(e.persistenceId).stream());
+            var deviceRecordsPostgres = records.get(e.persistenceId);
+            var deviceRecords = new DeviceRecords(new HashSet<>());
+            if (deviceRecordsPostgres != null) {
+                deviceRecords = RecordsMapper.daoToModel(records.get(e.persistenceId).stream());
+            }
             var ledger = LedgerMapper.daoToModel(e, deviceRecords);
             map.computeIfAbsent(e.deviceId, k -> new HashSet<>()).add(ledger);
         });
 
-        return deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).distinct().toList())
-                .map(d -> DeviceMapper.daoToModel(d, map.get(d.deviceId)));
+        var devices = deviceRepository.getAllByDeviceIdIsIn(collect.stream().map(e -> e.deviceId).distinct().toList())
+                .map(d -> DeviceMapper.daoToModel(d, map.get(d.deviceId))).toList();
+        return devices.stream();
     }
 
     private void saveLedger(LedgerEntry entry, String idS) {

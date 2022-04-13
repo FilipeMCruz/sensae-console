@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>{{data.name.value}}</h1>
+<mat-grid-list class="dialog-content" gutterSize="10" mat-dialog-content cols="2" rowHeight="fit">
+  <mat-grid-tile [colspan]="1"
+                 [rowspan]="1">
+    <mat-grid-tile-header>
+      Sensors
+    </mat-grid-tile-header>
+    <ng-container *ngIf="loadingInfo">
+      Loading ...
+    </ng-container>
+    <ng-container *ngIf="!loadingInfo && sensorsData.length !== 0">
+      <mat-list dense>
+        <mat-list-item (click)="onSelect(sensor)" *ngFor="let sensor of sensorsData">
+          <mat-icon [ngStyle]="sensor.getColor()" mat-list-icon>sensors</mat-icon>
+          <div mat-line><strong>{{sensor.device.name.value | truncate : 25}}</strong>{{sensor.getFirstDataDetails()}}
+          </div>
+          <div mat-line> {{sensor.reportedAt | date:'medium' | truncate : 25}}{{sensor.getSecondDataDetails()}}</div>
+        </mat-list-item>
+      </mat-list>
+    </ng-container>
+    <ng-container *ngIf="!loadingInfo && sensorsData.length === 0">
+      No Sensor Data Found
+    </ng-container>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1"
+                 [rowspan]="2"
+                 [style.background]="'lightblue'">Image
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="1"
+                 [rowspan]="1">
+    <mat-grid-tile-header>
+      Valves
+    </mat-grid-tile-header>
+    <ng-container *ngIf="loadingInfo">
+      Loading ...
+    </ng-container>
+    <ng-container *ngIf="!loadingInfo && valvesData.length !== 0">
+      <mat-list dense>
+        <mat-list-item (click)="onSelect(valve)" *ngFor="let valve of valvesData">
+          <mat-icon mat-list-icon>water_drop</mat-icon>
+          <div mat-line><strong>{{valve.device.name.value}}</strong></div>
+          <div mat-line> {{valve.reportedAt | date:'medium'}} </div>
+          <div mat-line> {{valve.getFirstDataDetails()}}</div>
+        </mat-list-item>
+      </mat-list>
+    </ng-container>
+    <ng-container *ngIf="!loadingInfo && valvesData.length === 0">
+      No Valve Data Found
+    </ng-container>
+  </mat-grid-tile>
+</mat-grid-list>
+<div mat-dialog-actions class="to-right">
+  <button mat-stroked-button [mat-dialog-close]="true">Close</button>
+</div>

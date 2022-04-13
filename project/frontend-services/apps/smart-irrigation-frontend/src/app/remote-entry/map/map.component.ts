@@ -2,11 +2,13 @@ import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {Subscription} from 'rxjs';
 import {environment} from "../../../environments/environment";
-import {CreateGardeningAreaCommand, GardeningArea} from "@frontend-services/smart-irrigation/model";
+import {CreateGardeningAreaCommand, GardeningArea, GardeningAreaId} from "@frontend-services/smart-irrigation/model";
 import {CreateGarden, FetchGardens} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Polygon} from "geojson";
 import {LngLatLike} from "mapbox-gl";
+import {MatDialog} from "@angular/material/dialog";
+import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
 
 @Component({
   selector: 'frontend-services-map',
@@ -31,7 +33,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public gardenName = "";
 
-  constructor(private fetchGardensService: FetchGardens, private createGardenService: CreateGarden) {
+  constructor(private fetchGardensService: FetchGardens,
+              private createGardenService: CreateGarden,
+              public dialog: MatDialog) {
   }
 
   ngAfterViewInit(): void {
@@ -58,12 +62,31 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           'features': this.gardens.map(g => g.asFeature())
         }
       })
-      this.map.addLayer(GardeningArea.getBoundaryStyle());
-      this.map.addLayer(GardeningArea.getLabelStyle());
-      this.map.addLayer(GardeningArea.getAreaStyle());
-    });
+      this.map.addLayer(GardeningArea.getBoundaryStyle("gardens"));
+      this.map.addLayer(GardeningArea.getLabelStyle("gardens"));
+      this.map.addLayer(GardeningArea.getAreaStyle("gardens"));
+      this.map.on('click', 'gardens', (e) => {
+        if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
+          this.openGardenDetails(e.features[0].properties["id"]);
+      });
+      this.map.on('mouseenter', 'gardens', () => {
+        this.map.getCanvas().style.cursor = 'pointer';
+      });
 
+      this.map.on('mouseleave', 'gardens', () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+    });
     this.loadingGardens = false;
+  }
+
+  openGardenDetails(id: string) {
+    this.dialog.open(GardenDialogComponent, {
+      width: '70%',
+      height: '80%',
+      data: this.gardens.find(g => g.id.value == id),
+      disableClose: true,
+    });
   }
 
   ngOnDestroy() {
@@ -110,8 +133,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     const data = this.draw.getAll();
     if (data.features.length > 0) {
       const id = data.features[0].id;
-      if (id)
-        this.draw.delete(id.toLocaleString());
+      if (id) this.draw.delete(id.toLocaleString());
     }
     this.map.removeControl(this.draw);
     this.isDrawing = false;

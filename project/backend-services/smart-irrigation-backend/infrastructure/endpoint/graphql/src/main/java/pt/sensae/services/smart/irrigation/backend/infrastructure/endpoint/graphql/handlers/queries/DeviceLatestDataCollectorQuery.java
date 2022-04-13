@@ -22,7 +22,7 @@ public class DeviceLatestDataCollectorQuery {
     }
 
     @DgsQuery
-    public List<SensorDataDTO> history(@InputArgument("filters") LatestDataQueryFilters filters, @RequestHeader("Authorization") String auth) {
+    public List<SensorDataDTO> fetchLatestData(@InputArgument("filters") LatestDataQueryFilters filters, @RequestHeader("Authorization") String auth) {
         return service.fetch(filters.gardens.stream(),
                         filters.devices.stream(),
                         AuthMiddleware.buildAccessToken(auth))

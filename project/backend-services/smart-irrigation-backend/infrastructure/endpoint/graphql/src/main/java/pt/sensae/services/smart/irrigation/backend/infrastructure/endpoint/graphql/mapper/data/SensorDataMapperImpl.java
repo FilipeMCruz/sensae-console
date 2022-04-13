@@ -79,9 +79,11 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
         var device = new Device(any.get().content().name().value(), type, dto.id().value(), entries);
 
-        var gps = new GPSDataDetails(any.get().content().coordinates().altitude().toString(),
+        var alt = any.get().content().coordinates().altitude() == null ? "0" : any.get().content().coordinates().altitude().toString();
+
+        var gps = new GPSDataDetails(any.get().content().coordinates().latitude().toString(),
                 any.get().content().coordinates().longitude().toString(),
-                any.get().content().coordinates().altitude().toString());
+                alt);
 
         SensorDataDetails payload;
         if (singleData.get().payload() instanceof ParkPayload park) {
@@ -101,6 +103,6 @@ public class SensorDataMapperImpl implements SensorDataMapper {
             throw new RuntimeException("Error processing device data");
         }
         return new SensorDataDTOImpl(singleData.get().id().value(),
-                device, singleData.get().reportedAt().value().getEpochSecond(), payload);
+                device, singleData.get().reportedAt().value().toEpochMilli(), payload);
     }
 }

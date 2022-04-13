@@ -1,6 +1,6 @@
 export enum ValveStatusDataDetailsType {
   OPEN,
-  CLOSE
+  CLOSED
 }
 
 export class ValveStatusDataDetails {

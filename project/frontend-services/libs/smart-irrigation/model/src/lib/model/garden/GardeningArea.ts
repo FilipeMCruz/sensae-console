@@ -9,11 +9,11 @@ export class GardeningArea {
   constructor(public id: GardeningAreaId, public name: GardeningAreaName, public area: Array<AreaBoundary>) {
   }
 
-  static getLabelStyle(): mapboxgl.AnyLayer {
+  static getLabelStyle(source: string): mapboxgl.AnyLayer {
     return {
       'id': 'gardens-labels',
       'type': 'symbol',
-      'source': 'gardens',
+      'source': source,
       'layout': {
         'text-field': ['get', 'description'],
         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
@@ -24,11 +24,11 @@ export class GardeningArea {
     }
   }
 
-  static getAreaStyle(): mapboxgl.AnyLayer {
+  static getAreaStyle(source: string): mapboxgl.AnyLayer {
     return {
       'id': 'gardens',
       'type': 'fill',
-      'source': 'gardens',
+      'source': source,
       'layout': {},
       'paint': {
         'fill-color': '#a4ac86',
@@ -37,11 +37,11 @@ export class GardeningArea {
     }
   }
 
-  static getBoundaryStyle(): mapboxgl.AnyLayer {
+  static getBoundaryStyle(source: string): mapboxgl.AnyLayer {
     return {
       'id': 'gardens-outline',
       'type': 'line',
-      'source': 'gardens',
+      'source': source,
       'layout': {},
       'paint': {
         'line-color': '#582f0e',
@@ -55,7 +55,6 @@ export class GardeningArea {
       type: 'MultiPoint',
       coordinates: this.getArea(),
     };
-
     return center(feature).geometry.coordinates;
   }
 
@@ -70,6 +69,7 @@ export class GardeningArea {
       },
       properties: {
         description: this.name.value,
+        id: this.id.value
       }
     };
   }

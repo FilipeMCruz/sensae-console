@@ -39,6 +39,27 @@ export class SubscribeToData {
               latitude
               altitude
             }
+            ...on ParkSensorDataDetails {
+              soilMoisture {
+                percentage
+              }
+              illuminance {
+                lux
+              }
+            }
+            ...on StoveSensorDataDetails {
+              temperature {
+                celsius
+              }
+              humidity {
+                gramsPerCubicMeter
+              }
+            }
+            ...on ValveDataDetails {
+              valve {
+                status
+              }
+            }
           }
         }
       }

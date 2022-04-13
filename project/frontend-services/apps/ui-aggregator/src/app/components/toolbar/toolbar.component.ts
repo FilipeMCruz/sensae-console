@@ -132,9 +132,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   async goTo(url: string) {
-    this.router.navigate(['loading']);
+    await this.router.navigate(['loading']);
     await this.delay(500);
-    this.router.navigate([url]);
+    await this.router.navigate([url]);
   }
 
   openSnackBar(message: string) {

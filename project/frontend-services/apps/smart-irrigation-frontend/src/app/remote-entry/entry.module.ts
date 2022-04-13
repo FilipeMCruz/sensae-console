@@ -23,6 +23,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatSliderModule} from '@angular/material/slider';
 import {MapComponent} from "./map/map.component";
+import {MatListModule} from "@angular/material/list";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -56,6 +57,7 @@ import {MapComponent} from "./map/map.component";
         component: MapComponent,
       },
     ]),
+    MatListModule,
   ],
   providers: [],
 })

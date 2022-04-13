@@ -19,7 +19,7 @@ public class GardeningAreaCollectorQuery {
     }
 
     @DgsQuery
-    public List<GardeningAreaDTO> fetch(@RequestHeader("Authorization") String auth) {
+    public List<GardeningAreaDTO> fetchGardens(@RequestHeader("Authorization") String auth) {
         return service.fetchAll(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

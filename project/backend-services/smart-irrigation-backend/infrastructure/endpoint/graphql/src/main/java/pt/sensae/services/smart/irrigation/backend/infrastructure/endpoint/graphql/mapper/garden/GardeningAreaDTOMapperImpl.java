@@ -17,9 +17,9 @@ public class GardeningAreaDTOMapperImpl implements GardeningAreaDTOMapper {
         dto.name = model.name().value();
         dto.area = model.area().boundaries().stream().map(b -> {
             var out = new AreaBoundaryDTO();
-            out.altitude = b.point().altitude();
-            out.longitude = b.point().longitude();
-            out.latitude = b.point().latitude();
+            out.altitude = String.valueOf(b.point().altitude());
+            out.longitude = String.valueOf(b.point().longitude());
+            out.latitude = String.valueOf(b.point().latitude());
             out.position = b.position();
             return out;
         }).toList();

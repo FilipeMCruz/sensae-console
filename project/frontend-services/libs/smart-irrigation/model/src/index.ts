@@ -28,5 +28,5 @@ export * from './lib/model/garden/GardeningAreaName';
 export * from './lib/model/device/LatestDataQueryFilters';
 export * from './lib/model/history/HistoryQueryFilters'
 export * from './lib/model/garden/UpdateGardeningAreaCommand';
-export * from './lib/model/garden/CreateGardeningAreaCommand';
 export * from './lib/model/device/DataFilters';
+export * from './lib/model/garden/CreateGardeningAreaCommand';

@@ -130,6 +130,11 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
+        '@mapbox/mapbox-gl-draw': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
         ...sharedMappings.getDescriptors(),
       }),
       library: {

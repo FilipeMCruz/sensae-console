@@ -10,7 +10,7 @@ public class AreaBoundariesPostgres {
     @Id
     public Long persistenceId;
 
-    @Column("id")
+    @Column("area_id")
     public String areaId;
 
     @Column("position")

@@ -25,9 +25,9 @@ public class SensorDataMapperImpl implements SensorDataMapper {
     public SensorDataDTO toDto(ProcessedSensorDataDTO dto) {
         var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
 
-        var alt = dto.data.gps.altitude != null ? dto.data.gps.altitude.floatValue() : null;
+        var alt = dto.data.gps.altitude != null ? dto.data.gps.altitude.toString() : "";
 
-        var gps = new GPSDataDetails(dto.data.gps.latitude.floatValue(), dto.data.gps.longitude.floatValue(), alt);
+        var gps = new GPSDataDetails(dto.data.gps.latitude.toString(), dto.data.gps.longitude.toString(), alt);
         SensorDataDetails payload;
         DeviceType type;
         if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
@@ -79,9 +79,9 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
         var device = new Device(any.get().content().name().value(), type, dto.id().value(), entries);
 
-        var gps = new GPSDataDetails(any.get().content().coordinates().altitude(),
-                any.get().content().coordinates().longitude(),
-                any.get().content().coordinates().altitude());
+        var gps = new GPSDataDetails(any.get().content().coordinates().altitude().toString(),
+                any.get().content().coordinates().longitude().toString(),
+                any.get().content().coordinates().altitude().toString());
 
         SensorDataDetails payload;
         if (singleData.get().payload() instanceof ParkPayload park) {

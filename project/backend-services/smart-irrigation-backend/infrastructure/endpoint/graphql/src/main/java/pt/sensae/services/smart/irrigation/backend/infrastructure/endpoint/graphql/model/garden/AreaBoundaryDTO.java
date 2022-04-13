@@ -4,9 +4,9 @@ public class AreaBoundaryDTO {
 
     public int position;
 
-    public Float latitude;
+    public String latitude;
 
-    public Float longitude;
+    public String longitude;
 
-    public Float altitude;
+    public String altitude;
 }

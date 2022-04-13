@@ -64,9 +64,9 @@ type IlluminanceDataDetails {
 }
 
 type GPSDataDetails {
-    longitude : Float
-    latitude : Float
-    altitude : Float
+    longitude : String
+    latitude : String
+    altitude : String
 }
 
 input HistoryQueryFilters {
@@ -127,9 +127,9 @@ type GardeningArea {
 
 type AreaBoundary {
     position : Int
-    longitude : Float
-    latitude : Float
-    altitude : Float
+    longitude : String
+    latitude : String
+    altitude : String
 }
 
 input CreateGardeningAreaCommand {
@@ -145,9 +145,9 @@ input UpdateGardeningAreaCommand {
 
 input AreaBoundaryCommandDetails {
     position : Int
-    longitude : Float
-    latitude : Float
-    altitude : Float
+    longitude : String
+    latitude : String
+    altitude : String
 }
 
 enum DeviceType {

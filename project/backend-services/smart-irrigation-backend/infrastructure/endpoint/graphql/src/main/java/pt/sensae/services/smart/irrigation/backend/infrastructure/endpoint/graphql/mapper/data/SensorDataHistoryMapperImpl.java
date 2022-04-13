@@ -31,9 +31,9 @@ public class SensorDataHistoryMapperImpl implements SensorDataHistoryMapper {
                     .map(e -> new RecordEntry(e.label(), e.content()))
                     .collect(Collectors.toSet());
 
-            var gps = new GPSDataDetails(ledgerEntry.content().coordinates().latitude(),
-                    ledgerEntry.content().coordinates().longitude(),
-                    ledgerEntry.content().coordinates().altitude());
+            var gps = new GPSDataDetails(ledgerEntry.content().coordinates().latitude().toString(),
+                    ledgerEntry.content().coordinates().longitude().toString(),
+                    ledgerEntry.content().coordinates().altitude().toString());
 
             var data = ledgerEntry.dataHistory().stream().map(dataEntry -> {
                 if (dataEntry.payload() instanceof ParkPayload park) {

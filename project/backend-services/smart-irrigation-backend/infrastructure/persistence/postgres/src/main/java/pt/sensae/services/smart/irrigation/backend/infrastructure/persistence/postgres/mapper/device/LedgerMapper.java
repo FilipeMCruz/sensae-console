@@ -33,9 +33,9 @@ public class LedgerMapper {
     }
 
     public static LedgerEntry daoToModel(LedgerEntryPostgres dao, DeviceRecords records) {
-        var aFloat = dao.altitude != null ? Float.parseFloat(dao.altitude) : null;
+        var aFloat = dao.altitude != null ? Double.parseDouble(dao.altitude) : null;
 
-        var gpsPoint = new GPSPoint(Float.parseFloat(dao.latitude), Float.parseFloat(dao.longitude), aFloat);
+        var gpsPoint = new GPSPoint(Double.parseDouble(dao.latitude), Double.parseDouble(dao.longitude), aFloat);
         var deviceContent = new DeviceContent(DeviceName.of(dao.deviceName), records, gpsPoint);
 
         CloseDate close = dao.closeAt != null ? CloseDate.of(dao.closeAt.getTime()) : CloseDate.empty();

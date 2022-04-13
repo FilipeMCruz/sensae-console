@@ -19,7 +19,7 @@ export class CreateGarden {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  getData(command: CreateGardeningAreaCommand): Observable<GardeningArea> {
+  execute(command: CreateGardeningAreaCommand): Observable<GardeningArea> {
     const query = gql`
       mutation createGarden($instructions: CreateGardeningAreaCommand){
         createGarden(instructions: $instructions){

@@ -75,13 +75,13 @@ public class DeviceCache {
 
         var name = DeviceName.of(data.device.name);
 
-        var gpsPoint = GPSPoint.ofLatLong(data.data.gps.latitude.floatValue(),
-                data.data.gps.longitude.floatValue());
+        var gpsPoint = GPSPoint.ofLatLong(data.data.gps.latitude,
+                data.data.gps.longitude);
 
         if (data.hasProperty(PropertyName.ALTITUDE)) {
-            gpsPoint = GPSPoint.ofLatLongAlt(data.data.gps.latitude.floatValue(),
-                    data.data.gps.longitude.floatValue(),
-                    data.data.gps.altitude.floatValue());
+            gpsPoint = GPSPoint.ofLatLongAlt(data.data.gps.latitude,
+                    data.data.gps.longitude,
+                    data.data.gps.altitude);
         }
 
         var records = new DeviceRecords(data.device.records.entry.stream().map(e -> RecordEntry.of(e.label, e.content)).collect(Collectors.toSet()));

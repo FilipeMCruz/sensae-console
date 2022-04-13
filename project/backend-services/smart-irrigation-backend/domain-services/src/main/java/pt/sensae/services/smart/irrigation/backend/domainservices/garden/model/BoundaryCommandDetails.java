@@ -4,9 +4,9 @@ public class BoundaryCommandDetails {
 
     public int position;
 
-    public Float latitude;
+    public Double latitude;
 
-    public Float longitude;
+    public Double longitude;
 
-    public Float altitude;
+    public Double altitude;
 }

@@ -3,9 +3,25 @@ import {SensorDataDetails} from "../details/SensorDataDetails";
 import {ParkSensorDataDetails} from "../details/ParkSensorDataDetails";
 import {StoveSensorDataDetails} from "../details/StoveSensorDataDetails";
 import {ValveDataDetails} from "../details/ValveDataDetails";
+import {Feature} from "geojson";
+import * as mapboxgl from "mapbox-gl";
 
 export class Data {
   constructor(public id: string, public device: Device, public reportedAt: Date, public data: SensorDataDetails) {
+  }
+
+  static getDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'devices',
+      type: 'circle',
+      source,
+      paint: {
+        'circle-color': '#adb5bd',
+        'circle-radius': 4,
+        'circle-stroke-width': 1,
+        'circle-stroke-color': '#582f0e'
+      }
+    }
   }
 
   public update(update: Data) {
@@ -27,13 +43,25 @@ export class Data {
     }
   }
 
+  getFirstDataIcon() {
+    if (this.data instanceof ParkSensorDataDetails) {
+      return "grass";
+    } else if (this.data instanceof StoveSensorDataDetails) {
+      return "thermostat";
+    } else if (this.data instanceof ValveDataDetails) {
+      return "warning";
+    } else {
+      return "";
+    }
+  }
+
   getFirstDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return "Soil Moisture: " + this.data.soilMoisture.percentage + "%";
+      return this.data.soilMoisture.percentage + "%";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return "Temperature: " + this.data.temperature.celsius + "ºC";
+      return this.data.temperature.celsius + "ºC";
     } else if (this.data instanceof ValveDataDetails) {
-      return "Status: " + this.data.valve.status.toString();
+      return this.data.valve.status.toString();
     } else {
       return "";
     }
@@ -41,11 +69,36 @@ export class Data {
 
   getSecondDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return "Illuminance: " + this.data.illuminance.lux;
+      return this.data.illuminance.lux + "";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return "Air Humidity: " + this.data.humidity.gramsPerCubicMeter + "g/m3";
+      return this.data.humidity.gramsPerCubicMeter + "g/m3";
     } else {
       return "";
     }
+  }
+
+  getSecondDataIcon(): string {
+    if (this.data instanceof ParkSensorDataDetails) {
+      return 'wb_sunny';
+    } else if (this.data instanceof StoveSensorDataDetails) {
+      return 'opacity';
+    } else {
+      return "";
+    }
+  }
+
+  asFeature(): Feature {
+    console.log(this.data.gps.toCoordinates())
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: this.data.gps.toCoordinates()
+      },
+      properties: {
+        description: this.device.name.value,
+        id: this.device.id.value
+      }
+    };
   }
 }

@@ -26,3 +26,32 @@
 .to-right {
   float: right;
 }
+
+.grass {
+  background-color: #656d4a;
+}
+
+.thermostat {
+  background-color: #ee9b00;
+}
+
+.warning {
+  background-color: #bb3e03;
+}
+
+.wb_sunny {
+  background-color: #f9c74f;
+}
+
+.opacity {
+  background-color: #34a0a4;
+}
+
+.schedule {
+  background-color: #c2c5aa;
+}
+
+.data-list {
+  flex-grow: 1;
+  overflow: auto;
+}

@@ -28,43 +28,45 @@ import {GardenDialogComponent} from "./garden-dialog/garden-dialog.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {TruncatePipe} from "@frontend-services/core";
+import {MatChipsModule} from "@angular/material/chips";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
   declarations: [MapComponent, GardenDialogComponent, TruncatePipe],
-  imports: [
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatSidenavModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatButtonModule,
-    HttpClientModule,
-    CommonModule,
-    MatTabsModule,
-    MatButtonToggleModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: MapComponent,
-      },
-    ]),
-    MatListModule,
-    MatDialogModule,
-    MatGridListModule,
-  ],
+    imports: [
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatSidenavModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FormsModule,
+        MatExpansionModule,
+        MatInputModule,
+        MatButtonModule,
+        HttpClientModule,
+        CommonModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: MapComponent,
+            },
+        ]),
+        MatListModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatChipsModule,
+    ],
   providers: [],
 })
 export class RemoteEntryModule {

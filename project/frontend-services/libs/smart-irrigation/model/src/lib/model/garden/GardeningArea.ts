@@ -13,7 +13,7 @@ export class GardeningArea {
     return {
       'id': 'gardens-labels',
       'type': 'symbol',
-      'source': source,
+      source,
       'layout': {
         'text-field': ['get', 'description'],
         'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
@@ -28,7 +28,7 @@ export class GardeningArea {
     return {
       'id': 'gardens',
       'type': 'fill',
-      'source': source,
+      source,
       'layout': {},
       'paint': {
         'fill-color': '#a4ac86',
@@ -41,7 +41,7 @@ export class GardeningArea {
     return {
       'id': 'gardens-outline',
       'type': 'line',
-      'source': source,
+      source,
       'layout': {},
       'paint': {
         'line-color': '#582f0e',

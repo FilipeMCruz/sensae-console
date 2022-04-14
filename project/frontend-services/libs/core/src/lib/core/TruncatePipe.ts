@@ -11,7 +11,6 @@ export class TruncatePipe implements PipeTransform {
     if (completeWords) {
       limit = value.substring(0, limit).lastIndexOf(' ');
     }
-    const spacesToFill = Array(limit - value.length);
-    return value.length > limit ? value.substring(0, limit) + ellipsis + " | " : value + spacesToFill.join(" ") + " | ";
+    return value.length > limit ? value.substring(0, limit) + ellipsis : value;
   }
 }

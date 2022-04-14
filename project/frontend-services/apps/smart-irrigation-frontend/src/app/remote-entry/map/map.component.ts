@@ -2,8 +2,12 @@ import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {Subscription} from 'rxjs';
 import {environment} from "../../../environments/environment";
-import {CreateGardeningAreaCommand, GardeningArea, GardeningAreaId} from "@frontend-services/smart-irrigation/model";
-import {CreateGarden, FetchGardens} from "@frontend-services/smart-irrigation/services";
+import {
+  CreateGardeningAreaCommand, Data,
+  GardeningArea,
+  LatestDataQueryFilters
+} from "@frontend-services/smart-irrigation/model";
+import {CreateGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Polygon} from "geojson";
 import {LngLatLike} from "mapbox-gl";
@@ -25,6 +29,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private subscription!: Subscription;
 
+  public latestData: Data[] = [];
+
   public gardens: Array<GardeningArea> = [];
 
   public loadingGardens = true;
@@ -35,12 +41,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   constructor(private fetchGardensService: FetchGardens,
               private createGardenService: CreateGarden,
+              private fetchLatestDataService: FetchLatestData,
               public dialog: MatDialog) {
   }
 
   ngAfterViewInit(): void {
     this.initializeMap();
     this.fetchGardens();
+    this.fetchLatestData();
   }
 
   private fetchGardens() {
@@ -137,6 +145,27 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
     this.map.removeControl(this.draw);
     this.isDrawing = false;
+  }
+
+  fetchLatestData() {
+    const filter = new LatestDataQueryFilters([], []);
+    this.fetchLatestDataService.getData(filter).subscribe(
+      next => this.drawLatestData(next),
+      error => error);
+  }
+
+  drawLatestData(data: Array<Data>) {
+    this.latestData.push(...data);
+    this.map.on('load', () => {
+      this.map.addSource("devices", {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': this.latestData.map(g => g.asFeature())
+        }
+      });
+      this.map.addLayer(Data.getDataStyle("devices"));
+    });
   }
 
   buildGarden() {

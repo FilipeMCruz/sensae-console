@@ -37,7 +37,7 @@ public class ChangeDomain {
         var domain = repository.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DOMAIN));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_DOMAIN));
 
         if (domain.isRoot() || domain.isUnallocated()) {
             throw new NotValidException("Invalid Domain: Can't change root or unallocated domain's permissions");
@@ -59,39 +59,134 @@ public class ChangeDomain {
                 .filter(availablePermissions::contains)
                 .collect(Collectors.toSet());
 
-        if (permissions.contains(PermissionType.WRITE_DEVICE_RECORD)) {
-            permissions.add(PermissionType.READ_DEVICE_RECORD);
-        }
+        reviewDeviceRecordsPermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_DATA_TRANSFORMATION)) {
-            permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
-        }
+        reviewDataDecoderPermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_DATA_DECODER)) {
-            permissions.add(PermissionType.READ_DATA_DECODER);
-        }
+        reviewDataTransformationPermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_DEVICE)) {
-            permissions.add(PermissionType.READ_DEVICE);
-        }
+        reviewIdentityManagementDevicePermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_DOMAIN)) {
-            permissions.add(PermissionType.READ_DOMAIN);
-        }
+        reviewIdentityManagementDomainPermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_TENANT)) {
-            permissions.add(PermissionType.READ_TENANT);
-        }
+        reviewIdentityManagementTenantPermissions(permissions);
 
-        var permissionsSet = DomainPermissions.of(permissions);
+        reviewGardenSmartIrrigationPermissions(permissions);
 
-        var updated = new Domain(domainId, domainName, domain.getPath(), permissionsSet);
+        reviewDataFleetManagementPermissions(permissions);
+
+        var updated = new Domain(domainId, domainName, domain.getPath(), DomainPermissions.of(permissions));
 
         var changedDomain = repository.changeDomain(updated);
 
         updateChildPermissions(repository.getChildDomains(domainId), permissions);
 
         return DomainResultMapper.toResult(changedDomain);
+    }
+
+    private void reviewIdentityManagementTenantPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.EDIT_TENANT)) {
+            permissions.add(PermissionType.READ_TENANT);
+        }
+    }
+
+    private void reviewDataFleetManagementPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.READ_PAST_DATA_FLEET_MANAGEMENT)) {
+            permissions.add(PermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT);
+        }
+    }
+
+    private void reviewIdentityManagementDomainPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.EDIT_DOMAIN)) {
+            permissions.add(PermissionType.CREATE_DOMAIN);
+        }
+        
+        if (permissions.contains(PermissionType.EDIT_DOMAIN)) {
+            permissions.add(PermissionType.READ_DOMAIN);
+        }
+    }
+
+    private void reviewIdentityManagementDevicePermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.EDIT_DEVICE)) {
+            permissions.add(PermissionType.READ_DEVICE);
+        }
+    }
+
+    private void reviewDeviceRecordsPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.DELETE_DEVICE_RECORD)) {
+            permissions.add(PermissionType.EDIT_DEVICE_RECORD);
+        }
+
+        if (permissions.contains(PermissionType.EDIT_DEVICE_RECORD)) {
+            permissions.add(PermissionType.CREATE_DEVICE_RECORD);
+        }
+
+        if (permissions.contains(PermissionType.CREATE_DEVICE_RECORD)) {
+            permissions.add(PermissionType.READ_DEVICE_RECORD);
+        }
+    }
+
+    private void reviewDataDecoderPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.DELETE_DATA_DECODER)) {
+            permissions.add(PermissionType.EDIT_DATA_DECODER);
+        }
+
+        if (permissions.contains(PermissionType.EDIT_DATA_DECODER)) {
+            permissions.add(PermissionType.CREATE_DATA_DECODER);
+        }
+
+        if (permissions.contains(PermissionType.CREATE_DATA_DECODER)) {
+            permissions.add(PermissionType.READ_DATA_DECODER);
+        }
+    }
+
+    private void reviewDataTransformationPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.DELETE_DATA_TRANSFORMATION)) {
+            permissions.add(PermissionType.EDIT_DATA_TRANSFORMATION);
+        }
+
+        if (permissions.contains(PermissionType.EDIT_DATA_TRANSFORMATION)) {
+            permissions.add(PermissionType.CREATE_DATA_TRANSFORMATION);
+        }
+
+        if (permissions.contains(PermissionType.CREATE_DATA_TRANSFORMATION)) {
+            permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
+        }
+    }
+
+    private void reviewGardenSmartIrrigationPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.DELETE_GARDEN_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.EDIT_GARDEN_SMART_IRRIGATION);
+        }
+
+        if (permissions.contains(PermissionType.EDIT_GARDEN_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.CREATE_GARDEN_SMART_IRRIGATION);
+        }
+
+        if (permissions.contains(PermissionType.CREATE_GARDEN_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.READ_GARDEN_SMART_IRRIGATION);
+        }
+
+        reviewDataSmartIrrigationPermissions(permissions);
+    }
+
+    private void reviewDataSmartIrrigationPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.READ_PAST_DATA_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.READ_LIVE_DATA_SMART_IRRIGATION);
+        }
+
+        if (permissions.contains(PermissionType.READ_LIVE_DATA_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.READ_GARDEN_SMART_IRRIGATION);
+        }
+
+        reviewControlSmartIrrigationPermissions(permissions);
+    }
+
+    private void reviewControlSmartIrrigationPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.CONTROL_VALVE_SMART_IRRIGATION)) {
+            permissions.add(PermissionType.READ_LIVE_DATA_SMART_IRRIGATION);
+            permissions.add(PermissionType.READ_GARDEN_SMART_IRRIGATION);
+        }
     }
 
     private void updateChildPermissions(Stream<Domain> children, Set<PermissionType> availablePermissions) {

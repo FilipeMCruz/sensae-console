@@ -1,0 +1,14 @@
+type Subscription {
+    data(filters: LiveDataFilter, Authorization: String) : SensorData
+}
+
+type Query {
+    history(filters: HistoryQueryFilters) : [SensorDataHistory]
+    fetchGardens : [GardeningArea]
+    fetchLatestData(filters: LatestDataQueryFilters): [SensorData]
+}
+
+type Mutation {
+    createGarden(instructions: CreateGardeningAreaCommand) : GardeningArea
+    updateGarden(instructions: UpdateGardeningAreaCommand) : GardeningArea
+}

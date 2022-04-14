@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { GeoJSONSource } from 'mapbox-gl';
-import { Subscription } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import {GeoJSONSource} from 'mapbox-gl';
+import {Subscription} from 'rxjs';
+import {environment} from '../../../environments/environment';
 import {
   QueryGPSDeviceHistory,
   QueryLatestGPSDeviceData,
@@ -11,7 +11,7 @@ import {
   SubscribeToGPSDataByContent,
   SubscribeToGPSDataByDevice,
 } from '@frontend-services/fleet-management/services';
-import { DevicePastDataMapper } from '@frontend-services/fleet-management/mapper';
+import {DevicePastDataMapper} from '@frontend-services/fleet-management/mapper';
 import {
   Device,
   DeviceData,
@@ -28,6 +28,7 @@ import {
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements OnInit, OnDestroy {
+
   private map!: mapboxgl.Map;
 
   private lat = 40.6045295;
@@ -187,7 +188,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   private setPopups() {
     this.history.deviceHistories.forEach((h) => {
-      const popup = new mapboxgl.Popup({ maxWidth: 'none' });
+      const popup = new mapboxgl.Popup({maxWidth: 'none'});
       h.getLayersId()
         .filter(
           (l) => !l.endsWith(DeviceHistorySegmentType.INACTIVE.toString())

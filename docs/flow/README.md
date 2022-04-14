@@ -45,6 +45,21 @@ On a Higher level sensor data flows in the system as represented in here:
 
 This diagram does not account for invalid data or possible errors that occur during the process.
 
+## Improvements
+
+A device can send info about more than one sensor. This needs to be handled.
+
+Maybe alow data to be inside an array of `measures`.
+
+If only one is provided then the `device_id` is the one from the `device_id`, if not each measure is assigned a new `virtual_device_key`.
+
+The message would need to be splited for each "measure" and assigned to a virtual device in a new container.
+
+This container would store a device_id, and an array of `virtual_device_id` + `virtual_device_key`, split the data and then send multiple messages.
+
+The routing keys would need a `measures` key with `multi` or `single`. After this container the info would be sent to `data_validator` and follow the usual
+route.
+
 ## Further Discussion
 
 As always, changes/improvements to this page and the data flow are expected.

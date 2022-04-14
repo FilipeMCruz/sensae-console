@@ -1,0 +1,61 @@
+@startuml model
+
+skinparam Monochrome true
+skinparam Shadowing false
+hide empty members
+
+class Domain
+
+class Sensor
+
+class Valve
+
+class Garden
+
+interface Device
+
+class Area
+
+class LedgerEntry
+
+class Content
+
+class Ownership
+
+class OpenDate
+
+class CloseDate
+
+class Name
+
+class Id
+
+class GPSPoint
+
+class Record
+
+class EntryContent
+
+class EntryLabel
+
+Domain "*" - "*" Garden: owns >
+Area "1" -- "*" GPSPoint: has boundaries >
+Garden "1" -- "1" Area: defined by >
+Garden "1" -- "1..*" Sensor: has >
+Garden "1" -- "*" Valve: has >
+Valve --|> Device : is
+Sensor --|> Device : is
+Device "1" -- "*" LedgerEntry: has info >
+Device "1" -- "1" Id: has >
+LedgerEntry "1" -- "1" OpenDate: has >
+LedgerEntry "1" -- "0..1" CloseDate: has >
+LedgerEntry "1" -- "1" Content: refer to >
+LedgerEntry "1" -- "1" Ownership: belongs to >
+Content "1" -- "*" Records: has >
+Content "1" -- "1" Name: has >
+Content "1" - "1" GPSPoint: has >
+Domain "1" ---- "*" Ownership: refers to <
+Records "1" -- "1" EntryContent: has >
+Records "1" -- "1" EntryLabel: has >
+
+@enduml

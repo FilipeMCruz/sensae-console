@@ -23,11 +23,8 @@ public class SensorDataConsumer {
 
     @RabbitListener(queues = INGRESS_QUEUE)
     public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTO> in) {
-        try {
-            logConsumedMessage(in);
-            handler.save(in.data);
-        } catch (Exception ignore) {
-        }
+        logConsumedMessage(in);
+        handler.save(in.data);
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {

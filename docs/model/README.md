@@ -174,8 +174,28 @@ Due to lack a of discussion and tests some data is missing a well-defined unit o
 
 ## Improvements
 
-- Add `data.humidity.relative`
-- Add `data.battery.maxVolts`
+- Add `data.air_humidity.relative_percentage` as percentage
+- Add `data.water_pressure.bar` for water pipes
+- Add `data.battery.max_volts`
+- Add `data.battery.min_volts`
+- Add `data.ph`
+- Add `data.distance.millimeters`
+- Add `data.distance.max_millimeters`
+- Add `data.distance.min_millimeters`
+- Add `data.occupation.percentage`
+- Add `data.soil_conductivity.micro_siemens_per_cm`
+- Change `data.moisture.percentage` to `data.soil_moisture.relative_percentage`
+- Add `data.aqi.co2.ppm`
+- Add `data.aqi.co.ppm`
+- Add `data.aqi.no2.ppm`
+- Add `data.aqi.nh3.ppm`
+- Add `data.aqi.o3.ppm`
+- Add `data.aqi.pm2_5.micro_grams_per_cubic_meter`
+- Add `data.aqi.pm10.micro_grams_per_cubic_meter`
+- Change `data.pressure.hPa` to `data.air_pressure.hecto_pascal` air pressure
+- Remove `data.airHumidity.gramspercubicmeter`
+- Change `data.velocity.kmperh` to `data.velocity.kilometer_per_hour`
+- Change `data.alarm.value` to `data.trigger.value`
 
 ## Further Discussion
 

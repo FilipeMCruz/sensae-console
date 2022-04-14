@@ -79,6 +79,18 @@
       "@frontend-services/mutual": ["libs/mutual/src/index.ts"],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"
+      ],
+      "@frontend-services/smart-irrigation/dto": [
+        "libs/smart-irrigation/dto/src/index.ts"
+      ],
+      "@frontend-services/smart-irrigation/mapper": [
+        "libs/smart-irrigation/mapper/src/index.ts"
+      ],
+      "@frontend-services/smart-irrigation/model": [
+        "libs/smart-irrigation/model/src/index.ts"
+      ],
+      "@frontend-services/smart-irrigation/services": [
+        "libs/smart-irrigation/services/src/index.ts"
       ]
     }
   },

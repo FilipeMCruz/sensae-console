@@ -1,20 +1,20 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {
   Microfrontend,
   MicrofrontendType,
 } from '../microfrontends/microfrontend';
-import { Router } from '@angular/router';
-import { LookupService } from '../microfrontends/lookup.service';
-import { buildRoutes } from '../microfrontends/buildRoutes.service';
-import { AuthGuardService } from '../../services/AuthGuardService';
+import {Router} from '@angular/router';
+import {LookupService} from '../microfrontends/lookup.service';
+import {buildRoutes} from '../microfrontends/buildRoutes.service';
+import {AuthGuardService} from '../../services/AuthGuardService';
 import {
   MSAL_GUARD_CONFIG,
   MsalBroadcastService,
   MsalGuardConfiguration,
   MsalService,
 } from '@azure/msal-angular';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 import {
   AuthenticationResult,
   EventMessage,
@@ -24,8 +24,8 @@ import {
   PopupRequest,
   RedirectRequest,
 } from '@azure/msal-browser';
-import { AuthService } from '@frontend-services/simple-auth-lib';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {AuthService} from '@frontend-services/simple-auth-lib';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -48,7 +48,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private lookupService: LookupService,
     private authGuardService: AuthGuardService
-  ) {}
+  ) {
+  }
+
 
   ngOnInit(): void {
     this.isIframe = window !== window.parent && !window.opener;
@@ -118,7 +120,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     if (activeAccount) {
       this.externalAuthService.instance
-        .acquireTokenSilent({ scopes: ['profile'] })
+        .acquireTokenSilent({scopes: ['profile']})
         .then((token) =>
           this.authService.login(token.idToken).subscribe((value) => {
             value
@@ -129,9 +131,21 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  async goTo(url: string) {
+    await this.router.navigate(['loading']);
+    await this.delay(500);
+    await this.router.navigate([url]);
+  }
+
   openSnackBar(message: string) {
     this._snackBar.open(message, undefined, {
       duration: 3000,
+    });
+  }
+
+  delay(milliseconds: number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, milliseconds);
     });
   }
 
@@ -144,7 +158,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     if (this.msalGuardConfig.interactionType === InteractionType.Popup) {
       if (this.msalGuardConfig.authRequest) {
         this.externalAuthService
-          .loginPopup({ ...this.msalGuardConfig.authRequest } as PopupRequest)
+          .loginPopup({...this.msalGuardConfig.authRequest} as PopupRequest)
           .subscribe((response: AuthenticationResult) => {
             this.externalAuthService.instance.setActiveAccount(
               response.account

@@ -57,10 +57,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: { type: 'module' },
+      library: {type: 'module'},
       remotes: {
         'sharespot-data-decoder-frontend':
           'http://localhost:4286/remoteEntry.js',
+        'smart-irrigation-frontend': 'http://localhost:4298/remoteEntry.js',
       },
       shared: share({
         '@angular/animations': {
@@ -113,7 +114,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,
@@ -150,6 +151,16 @@ module.exports = {
           requiredVersion: 'auto',
         },
         'core-js': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        '@turf/center': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: '0',
+        },
+        '@mapbox/mapbox-gl-draw': {
           singleton: true,
           strictVersion: true,
           requiredVersion: 'auto',

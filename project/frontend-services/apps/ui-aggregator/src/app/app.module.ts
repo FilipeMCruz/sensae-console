@@ -35,6 +35,7 @@ import {
 } from '@azure/msal-angular';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {createLink} from '@frontend-services/mutual';
+import {LoadingPageComponent} from "./components/loading-page/loading-page.component";
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -78,6 +79,10 @@ export function createNamedApollo(
       link: createLink(httpLink, environment.endpoints.dataDecoder.backend),
       cache: new InMemoryCache(),
     },
+    smartIrrigation: {
+      link: createLink(httpLink, environment.endpoints.smartIrrigation.backend),
+      cache: new InMemoryCache(),
+    },
   };
 }
 
@@ -87,6 +92,7 @@ export function createNamedApollo(
     HomeComponent,
     NotFoundComponent,
     ToolbarComponent,
+    LoadingPageComponent,
   ],
   imports: [
     BrowserModule,

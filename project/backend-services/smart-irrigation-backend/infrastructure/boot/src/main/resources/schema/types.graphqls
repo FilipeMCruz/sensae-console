@@ -1,0 +1,163 @@
+type SensorData {
+    dataId : String
+    device : Device
+    reportedAt : String
+    data : SensorDataDetails
+}
+
+type Device {
+    id : String
+    name : String
+    type: DeviceType
+    records : [RecordEntry]
+}
+
+type RecordEntry {
+    label : String
+    content : String
+}
+
+interface SensorDataDetails {
+    gps : GPSDataDetails
+}
+
+type ParkSensorDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    soilMoisture : SoilMoistureDataDetails
+    illuminance : IlluminanceDataDetails
+}
+
+type StoveSensorDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    temperature : TemperatureDataDetails
+    humidity : HumidityDataDetails
+}
+
+type ValveDataDetails implements SensorDataDetails {
+    gps : GPSDataDetails
+    valve : ValveStatusDataDetails
+}
+
+type TemperatureDataDetails {
+    celsius : Float
+}
+
+type ValveStatusDataDetails {
+    status : ValveStatusDataDetailsType
+}
+
+enum ValveStatusDataDetailsType {
+    OPEN
+    CLOSE
+}
+
+type HumidityDataDetails {
+    gramsPerCubicMeter : Float
+}
+
+type SoilMoistureDataDetails {
+    percentage : Float
+}
+
+type IlluminanceDataDetails {
+    lux : Float
+}
+
+type GPSDataDetails {
+    longitude : String
+    latitude : String
+    altitude : String
+}
+
+input HistoryQueryFilters {
+    devices : [String]
+    gardens : [String]
+    startTime : String
+    endTime : String
+}
+
+input LatestDataQueryFilters {
+    devices : [String]
+    gardens : [String]
+}
+
+type SensorDataHistory {
+    id : String
+    type : DeviceType
+    ledger : [DeviceLedgerHistoryEntry]
+}
+
+type DeviceLedgerHistoryEntry {
+    name : String
+    gps : GPSDataDetails
+    records : [RecordEntry]
+    data : [SensorDataHistoryDetails]
+}
+
+interface SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+}
+
+type ParkSensorDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    soilMoisture : SoilMoistureDataDetails
+    illuminance : IlluminanceDataDetails
+}
+
+type StoveSensorDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    temperature : TemperatureDataDetails
+    humidity : HumidityDataDetails
+}
+
+type ValveDataHistoryDetails implements SensorDataHistoryDetails {
+    id : String
+    reportedAt : String
+    valve : ValveStatusDataDetails
+}
+
+type GardeningArea {
+    id : String
+    name : String
+    area : [AreaBoundary]
+}
+
+type AreaBoundary {
+    position : Int
+    longitude : String
+    latitude : String
+    altitude : String
+}
+
+input CreateGardeningAreaCommand {
+    name : String
+    area : [AreaBoundaryCommandDetails]
+}
+
+input UpdateGardeningAreaCommand {
+    id : String
+    name : String
+    area : [AreaBoundaryCommandDetails]
+}
+
+input AreaBoundaryCommandDetails {
+    position : Int
+    longitude : String
+    latitude : String
+    altitude : String
+}
+
+enum DeviceType {
+    PARK_SENSOR,
+    STOVE_SENSOR,
+    VALVE
+}
+
+input LiveDataFilter {
+    gardens : [String]
+    devices : [String]
+    content : String
+}

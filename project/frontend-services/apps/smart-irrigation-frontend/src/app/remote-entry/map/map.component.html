@@ -1,0 +1,47 @@
+<div>
+  <div id="map" class="map"></div>
+  <mat-card *ngIf="!isDrawing" class="garden-card">
+    <mat-card-title>
+      Gardens
+    </mat-card-title>
+    <mat-card-content>
+      <ng-container *ngIf="loadingGardens">
+        Loading ...
+      </ng-container>
+      <ng-container *ngIf="!loadingGardens && gardens.length !== 0">
+        <mat-list dense>
+          <mat-list-item (click)="onSelect(garden)" *ngFor="let garden of gardens">
+            <mat-icon mat-list-icon>yard</mat-icon>
+            <div mat-line><strong>{{garden.name.value}}</strong></div>
+            <div mat-line> {{garden.id.value}} </div>
+          </mat-list-item>
+        </mat-list>
+      </ng-container>
+      <ng-container *ngIf="!loadingGardens && gardens.length === 0">
+        No Gardens Found
+      </ng-container>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button (click)="startDrawGarden()">Create Garden</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="isDrawing" class="garden-card">
+    <mat-card-title>
+      New Garden
+    </mat-card-title>
+    <mat-card-content>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          type="text"
+          [(ngModel)]="gardenName"
+        />
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-stroked-button (click)="buildGarden()">Save</button>
+      <button mat-stroked-button (click)="deleteGarden()">Cancel</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

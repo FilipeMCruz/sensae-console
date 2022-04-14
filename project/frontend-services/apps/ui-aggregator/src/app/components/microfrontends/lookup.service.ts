@@ -32,6 +32,12 @@ const SHARESPOT_DATA_DECODER_FRONTEND_URL = environment.production
   '/micro-frontends/sharespot-data-decoder-frontend/remoteEntry.js'
   : 'http://localhost:4286/remoteEntry.js';
 
+const SMART_IRRIGATION_FRONTEND_URL = environment.production
+  ? 'https://' +
+  environment.domain +
+  '/micro-frontends/smart-irrigation-frontend/remoteEntry.js'
+  : 'http://localhost:4298/remoteEntry.js';
+
 @Injectable({providedIn: 'root'})
 export class LookupService {
   lookup(): Promise<Microfrontend[]> {
@@ -49,6 +55,21 @@ export class LookupService {
         details: {
           type: MicrofrontendType.SERVICE,
           permissions: Array.of('fleet_management:read'),
+        },
+      },
+      {
+        // For Loading
+        remoteEntry: SMART_IRRIGATION_FRONTEND_URL,
+        exposedModule: './Module',
+        type: 'module',
+
+        // For Routing
+        displayName: 'Smart Irrigation',
+        routePath: 'smart-irrigation',
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.SERVICE,
+          permissions: Array.of('fleet_management:read'), //TODO: add new permissions and change this
         },
       },
       {

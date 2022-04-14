@@ -2,7 +2,6 @@
 
 skinparam Monochrome true
 skinparam sequenceMessageAlign center
-skinparam Shadowing false
 skinparam componentStyle uml2
 skinparam packageStyle rectangle
 
@@ -13,7 +12,7 @@ skinparam packageStyle rectangle
 
 () "UI" as UI
 () "Helium Console\nRest API" as IN_ENDPOINT
-note bottom: Console integratoin endpoint
+note top: Console integratoin\nendpoint
 
 () "AAD API" as AUTH_ENDPOINT
 

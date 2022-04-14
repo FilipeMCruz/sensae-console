@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
+import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
@@ -45,9 +46,8 @@ public class DeviceLatestDataCollectorService {
 
     private Stream<DomainId> getDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        //TODO: Add new permissions
-//        if (!extract.permissions.contains("smart_irrigation:past_data:read"))
-//            throw new UnauthorizedException("No Permissions");
+        if (!extract.permissions.contains("smart_irrigation:past_data:read"))
+            throw new UnauthorizedException("No Permissions");
 
         return extract.domains.stream().map(UUID::fromString).map(DomainId::new);
     }

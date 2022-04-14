@@ -38,7 +38,7 @@ public class PermissionsMapper {
                     case READ_PAST_DATA_FLEET_MANAGEMENT -> "fleet_management:past_data:read";
 
                     case CREATE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:create";
-                    case EDIT_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:edit";
+                    case EDIT_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:edit";    
                     case DELETE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:delete";
                     case READ_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:read";
 

@@ -41,7 +41,7 @@ public class GPSDataCollector {
 
     public List<GPSSensorDataHistory> history(GPSSensorDataFilter filters, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("fleet_management:read"))
+        if (!extract.permissions.contains("fleet_management:past_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         validate(filters);

@@ -69,7 +69,7 @@ public class GPSDataPublisher {
 
     private Predicate<? super ProcessedSensorDataDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("fleet_management:read"))
+        if (!extract.permissions.contains("fleet_management:live_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         return withDomain(extract.domains.stream().map(UUID::fromString).toList());

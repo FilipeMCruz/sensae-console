@@ -52,7 +52,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private locationByContentEmitter: SubscribeToGPSDataByContent,
     private historyQuery: QueryGPSDeviceHistory,
     private latestDeviceData: QueryLatestGPSDeviceData
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.initializeMap();
@@ -200,12 +201,12 @@ export class MapComponent implements OnInit, OnDestroy {
                 .setLngLat(e.lngLat)
                 .setHTML(
                   '<strong>Device Name:</strong> ' +
-                    h.deviceName +
-                    '<br><strong>Device Id:</strong> ' +
-                    h.deviceId +
-                    '<br><strong>Distance Travelled:</strong> ' +
-                    e.features[0].properties.distance +
-                    ' kilometers.'
+                  h.deviceName +
+                  '<br><strong>Device Id:</strong> ' +
+                  h.deviceId +
+                  '<br><strong>Distance Travelled:</strong> ' +
+                  e.features[0].properties.distance +
+                  ' kilometers.'
                 )
                 .addTo(this.map);
             }

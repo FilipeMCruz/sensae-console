@@ -15,7 +15,8 @@ export class SubscribeToGPSDataByContent {
   constructor(private apollo: Apollo, private auth: AuthService) {}
 
   getData(content: string): Observable<DeviceData> {
-    if (!this.auth.isAuthenticated()) return EMPTY;
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["fleet_management:live_data:read"]))
+      return EMPTY;
 
     const query = gql`
       subscription locationByContent($content: String, $Authorization: String) {

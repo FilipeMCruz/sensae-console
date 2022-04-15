@@ -58,6 +58,10 @@ export class DomainInfoComponent implements OnChanges, OnInit {
   }
 
   canChangeDomains() {
+    return this.authService.isAllowed(Array.of("identity_management:domains:edit"))
+  }
+
+  canCreateDomains() {
     return this.authService.isAllowed(Array.of("identity_management:domains:create"))
   }
 

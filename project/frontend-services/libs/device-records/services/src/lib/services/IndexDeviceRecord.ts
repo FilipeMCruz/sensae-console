@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {HttpHeaders} from '@angular/common/http';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {filter, map} from 'rxjs/operators';
@@ -17,6 +17,9 @@ export class IndexDeviceRecord {
   }
 
   index(event: DeviceRecord): Observable<DeviceRecord> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_records:records:edit"]))
+      return EMPTY;
+
     const mutation = gql`
       mutation index($records: DeviceRecordsInput) {
         index(records: $records) {

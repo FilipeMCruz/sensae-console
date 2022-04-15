@@ -15,6 +15,7 @@
           [entry]="record"
           [deviceViewEntry]="deviceViewType.Edit"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
           (newDeviceEvent)="updateItem($event)"
           (deleteDeviceEvent)="deleteItem($event)"
         ></frontend-services-device-record>
@@ -27,6 +28,7 @@
           (newDeviceEvent)="addItem($event)"
           [deviceViewEntry]="deviceViewType.New"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>

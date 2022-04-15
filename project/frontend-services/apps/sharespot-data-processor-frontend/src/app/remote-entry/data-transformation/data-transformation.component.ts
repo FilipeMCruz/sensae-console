@@ -16,6 +16,7 @@ export class DataTransformationComponent implements OnChanges {
   @Input() entry!: DataTransformation;
   @Input() dataTransformationViewEntry!: DataTransformationViewType;
   @Input() canEdit = false;
+  @Input() canDelete = false;
 
   @Output() newDataTransformationEvent = new EventEmitter<DataTransformation>();
   @Output() deleteDataTransformationEvent =

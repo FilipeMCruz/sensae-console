@@ -29,7 +29,7 @@ public class DataTransformationRegisterService {
 
     public DataTransformationDTO register(DataTransformationDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("data_transformations:transformations:write"))
+        if (!extract.permissions.contains("data_transformations:transformations:edit"))
             throw new UnauthorizedException("No Permissions");
 
         var deviceRecords = mapper.dtoToDomain(dto);

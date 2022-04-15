@@ -100,7 +100,7 @@ public class ChangeDomain {
         if (permissions.contains(PermissionType.EDIT_DOMAIN)) {
             permissions.add(PermissionType.CREATE_DOMAIN);
         }
-        
+
         if (permissions.contains(PermissionType.EDIT_DOMAIN)) {
             permissions.add(PermissionType.READ_DOMAIN);
         }
@@ -118,10 +118,6 @@ public class ChangeDomain {
         }
 
         if (permissions.contains(PermissionType.EDIT_DEVICE_RECORD)) {
-            permissions.add(PermissionType.CREATE_DEVICE_RECORD);
-        }
-
-        if (permissions.contains(PermissionType.CREATE_DEVICE_RECORD)) {
             permissions.add(PermissionType.READ_DEVICE_RECORD);
         }
     }
@@ -132,10 +128,6 @@ public class ChangeDomain {
         }
 
         if (permissions.contains(PermissionType.EDIT_DATA_DECODER)) {
-            permissions.add(PermissionType.CREATE_DATA_DECODER);
-        }
-
-        if (permissions.contains(PermissionType.CREATE_DATA_DECODER)) {
             permissions.add(PermissionType.READ_DATA_DECODER);
         }
     }
@@ -146,10 +138,6 @@ public class ChangeDomain {
         }
 
         if (permissions.contains(PermissionType.EDIT_DATA_TRANSFORMATION)) {
-            permissions.add(PermissionType.CREATE_DATA_TRANSFORMATION);
-        }
-
-        if (permissions.contains(PermissionType.CREATE_DATA_TRANSFORMATION)) {
             permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
         }
     }

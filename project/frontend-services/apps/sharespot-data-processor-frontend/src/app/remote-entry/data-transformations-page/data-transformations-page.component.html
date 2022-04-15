@@ -18,6 +18,7 @@
           [entry]="transformation"
           [dataTransformationViewEntry]="dataTransformationViewType.Edit"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
           (newDataTransformationEvent)="updateItem($event)"
           (deleteDataTransformationEvent)="deleteItem($event)"
         ></frontend-services-data-transformation>
@@ -30,6 +31,7 @@
           (newDataTransformationEvent)="addItem($event)"
           [dataTransformationViewEntry]="dataTransformationViewType.New"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
         ></frontend-services-data-transformation>
       </mat-card-content>
     </mat-card>

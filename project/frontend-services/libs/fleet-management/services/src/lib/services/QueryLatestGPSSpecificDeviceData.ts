@@ -1,5 +1,5 @@
 import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import { Injectable } from '@angular/core';
 import { filter, map } from 'rxjs/operators';
 import { extract, isNonNull } from '@frontend-services/core';
@@ -16,6 +16,9 @@ export class QueryLatestGPSSpecificDeviceData {
   constructor(private apollo: Apollo, private auth: AuthService) {}
 
   getData(devices: Array<string>): Observable<DeviceData[]> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["fleet_management:past_data:read"]))
+      return EMPTY;
+
     const query = gql`
       query latestByDevice($devices: [String]) {
         latestByDevice(devices: $devices) {

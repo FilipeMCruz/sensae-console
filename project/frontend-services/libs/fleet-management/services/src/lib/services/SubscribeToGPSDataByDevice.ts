@@ -16,7 +16,8 @@ export class SubscribeToGPSDataByDevice {
   }
 
   getData(devices: Array<string>): Observable<DeviceData> {
-    if (!this.auth.isAuthenticated()) return EMPTY;
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["fleet_management:live_data:read"]))
+      return EMPTY;
 
     const query = gql`
       subscription location($devices: [String], $Authorization: String) {

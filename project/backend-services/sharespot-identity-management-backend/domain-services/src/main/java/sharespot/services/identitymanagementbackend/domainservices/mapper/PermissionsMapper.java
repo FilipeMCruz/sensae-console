@@ -10,17 +10,14 @@ public class PermissionsMapper {
         return permissions.distinct().map(p ->
                 switch (p) {
                     case READ_DEVICE_RECORD -> "device_records:records:read";
-                    case CREATE_DEVICE_RECORD -> "device_records:records:create";
                     case EDIT_DEVICE_RECORD -> "device_records:records:edit";
                     case DELETE_DEVICE_RECORD -> "device_records:records:delete";
 
                     case READ_DATA_TRANSFORMATION -> "data_transformations:transformations:read";
-                    case CREATE_DATA_TRANSFORMATION -> "data_transformations:transformations:create";
                     case EDIT_DATA_TRANSFORMATION -> "data_transformations:transformations:edit";
                     case DELETE_DATA_TRANSFORMATION -> "data_transformations:transformations:delete";
 
                     case READ_DATA_DECODER -> "data_decoders:decoders:read";
-                    case CREATE_DATA_DECODER -> "data_decoders:decoders:create";
                     case EDIT_DATA_DECODER -> "data_decoders:decoders:edit";
                     case DELETE_DATA_DECODER -> "data_decoders:decoders:delete";
 
@@ -38,7 +35,7 @@ public class PermissionsMapper {
                     case READ_PAST_DATA_FLEET_MANAGEMENT -> "fleet_management:past_data:read";
 
                     case CREATE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:create";
-                    case EDIT_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:edit";    
+                    case EDIT_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:edit";
                     case DELETE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:delete";
                     case READ_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:read";
 
@@ -53,17 +50,14 @@ public class PermissionsMapper {
         return permissions.distinct().map(p ->
                 switch (p) {
                     case "device_records:records:read" -> PermissionType.READ_DEVICE_RECORD;
-                    case "device_records:records:create" -> PermissionType.CREATE_DEVICE_RECORD;
                     case "device_records:records:edit" -> PermissionType.EDIT_DEVICE_RECORD;
                     case "device_records:records:delete" -> PermissionType.DELETE_DEVICE_RECORD;
 
                     case "data_transformations:transformations:read" -> PermissionType.READ_DATA_TRANSFORMATION;
-                    case "data_transformations:transformations:create" -> PermissionType.CREATE_DATA_TRANSFORMATION;
                     case "data_transformations:transformations:edit" -> PermissionType.EDIT_DATA_TRANSFORMATION;
                     case "data_transformations:transformations:delete" -> PermissionType.DELETE_DATA_TRANSFORMATION;
 
                     case "data_decoders:decoders:read" -> PermissionType.READ_DATA_DECODER;
-                    case "data_decoders:decoders:create" -> PermissionType.CREATE_DATA_DECODER;
                     case "data_decoders:decoders:edit" -> PermissionType.EDIT_DATA_DECODER;
                     case "data_decoders:decoders:delete" -> PermissionType.DELETE_DATA_DECODER;
 

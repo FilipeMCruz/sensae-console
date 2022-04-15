@@ -3,17 +3,14 @@ package sharespot.services.identitymanagementbackend.domain.identity.permissions
 public enum PermissionType {
 
     READ_DEVICE_RECORD,
-    CREATE_DEVICE_RECORD,
     DELETE_DEVICE_RECORD,
     EDIT_DEVICE_RECORD,
 
     READ_DATA_TRANSFORMATION,
-    CREATE_DATA_TRANSFORMATION,
     DELETE_DATA_TRANSFORMATION,
     EDIT_DATA_TRANSFORMATION,
 
     READ_DATA_DECODER,
-    CREATE_DATA_DECODER,
     EDIT_DATA_DECODER,
     DELETE_DATA_DECODER,
 

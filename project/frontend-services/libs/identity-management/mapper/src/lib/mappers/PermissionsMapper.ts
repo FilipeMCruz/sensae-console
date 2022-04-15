@@ -5,8 +5,6 @@ export class PermissionsMapper {
     switch (dto) {
       case "device_records:records:read" :
         return DomainPermissionType.READ_DEVICE_RECORD;
-      case "device_records:records:create" :
-        return DomainPermissionType.CREATE_DEVICE_RECORD;
       case "device_records:records:edit" :
         return DomainPermissionType.EDIT_DEVICE_RECORD;
       case "device_records:records:delete" :
@@ -14,8 +12,6 @@ export class PermissionsMapper {
 
       case "data_transformations:transformations:read" :
         return DomainPermissionType.READ_DATA_TRANSFORMATION;
-      case "data_transformations:transformations:create" :
-        return DomainPermissionType.CREATE_DATA_TRANSFORMATION;
       case "data_transformations:transformations:edit" :
         return DomainPermissionType.EDIT_DATA_TRANSFORMATION;
       case "data_transformations:transformations:delete" :
@@ -23,8 +19,6 @@ export class PermissionsMapper {
 
       case "data_decoders:decoders:read" :
         return DomainPermissionType.READ_DATA_DECODER;
-      case "data_decoders:decoders:create" :
-        return DomainPermissionType.CREATE_DATA_DECODER;
       case "data_decoders:decoders:edit" :
         return DomainPermissionType.EDIT_DATA_DECODER;
       case "data_decoders:decoders:delete" :
@@ -77,8 +71,6 @@ export class PermissionsMapper {
     switch (model) {
       case DomainPermissionType.READ_DEVICE_RECORD :
         return "device_records:records:read";
-      case DomainPermissionType.CREATE_DEVICE_RECORD :
-        return "device_records:records:create";
       case DomainPermissionType.EDIT_DEVICE_RECORD :
         return "device_records:records:edit";
       case DomainPermissionType.DELETE_DEVICE_RECORD :
@@ -86,8 +78,6 @@ export class PermissionsMapper {
 
       case DomainPermissionType.READ_DATA_TRANSFORMATION :
         return "data_transformations:transformations:read";
-      case DomainPermissionType.CREATE_DATA_TRANSFORMATION :
-        return "data_transformations:transformations:create";
       case DomainPermissionType.EDIT_DATA_TRANSFORMATION :
         return "data_transformations:transformations:edit";
       case DomainPermissionType.DELETE_DATA_TRANSFORMATION :
@@ -95,8 +85,6 @@ export class PermissionsMapper {
 
       case DomainPermissionType.READ_DATA_DECODER :
         return "data_decoders:decoders:read";
-      case DomainPermissionType.CREATE_DATA_DECODER :
-        return "data_decoders:decoders:create";
       case DomainPermissionType.EDIT_DATA_DECODER :
         return "data_decoders:decoders:edit";
       case DomainPermissionType.DELETE_DATA_DECODER :

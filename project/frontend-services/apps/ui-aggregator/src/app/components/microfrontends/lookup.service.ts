@@ -54,7 +54,7 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.SERVICE,
-          permissions: Array.of('fleet_management:live_data:read'),
+          permissions: Array.of('fleet_management:live_data:read', 'fleet_management:past_data:read'),
         },
       },
       {
@@ -69,7 +69,7 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.SERVICE,
-          permissions: Array.of('smart_irrigation:live_data:read', "smart_irrigation:garden:read"),
+          permissions: Array.of('smart_irrigation:past_data:read', 'smart_irrigation:live_data:read', "smart_irrigation:garden:read"),
         },
       },
       {

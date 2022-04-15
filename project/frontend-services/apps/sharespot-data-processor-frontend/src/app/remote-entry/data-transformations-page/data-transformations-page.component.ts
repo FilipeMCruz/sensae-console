@@ -97,6 +97,10 @@ export class DataTransformationsPageComponent implements OnInit {
   }
 
   canEdit() {
-    return this.authService.isAllowed(Array.of("data_transformations:transformations:write"));
+    return this.authService.isAllowed(Array.of("data_transformations:transformations:edit"));
+  }
+
+  canDelete() {
+    return this.authService.isAllowed(Array.of("data_transformations:transformations:delete"));
   }
 }

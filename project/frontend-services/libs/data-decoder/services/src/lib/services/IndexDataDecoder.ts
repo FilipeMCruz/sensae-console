@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {HttpHeaders} from '@angular/common/http';
 import {filter, map} from 'rxjs/operators';
@@ -17,6 +17,9 @@ export class IndexDataDecoder {
   }
 
   index(event: DataDecoder): Observable<DataDecoder> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["data_decoders:decoders:edit"]))
+      return EMPTY;
+
     const mutation = gql`
       mutation index($decoder: DataDecoderInput) {
         index(decoder: $decoder) {

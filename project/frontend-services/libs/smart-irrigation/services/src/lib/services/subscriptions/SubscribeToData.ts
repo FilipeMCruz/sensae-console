@@ -17,7 +17,8 @@ export class SubscribeToData {
   }
 
   getData(filters: DataFilters): Observable<Data> {
-    if (!this.auth.isAuthenticated()) return EMPTY;
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:live_data:read"]))
+      return EMPTY;
 
     const query = gql`
       subscription data($filters: LiveDataFilter, $Authorization: String){

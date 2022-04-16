@@ -43,6 +43,8 @@ export class PermissionsMapper {
 
       case "fleet_management:live_data:read" :
         return DomainPermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT;
+      case "fleet_management:latest_data:read" :
+        return DomainPermissionType.READ_LATEST_DATA_FLEET_MANAGEMENT;
       case "fleet_management:past_data:read" :
         return DomainPermissionType.READ_PAST_DATA_FLEET_MANAGEMENT;
 
@@ -57,6 +59,8 @@ export class PermissionsMapper {
 
       case "smart_irrigation:live_data:read" :
         return DomainPermissionType.READ_LIVE_DATA_SMART_IRRIGATION;
+      case "smart_irrigation:latest_data:read" :
+        return DomainPermissionType.READ_LATEST_DATA_SMART_IRRIGATION;
       case "smart_irrigation:past_data:read" :
         return DomainPermissionType.READ_PAST_DATA_SMART_IRRIGATION;
 
@@ -109,6 +113,8 @@ export class PermissionsMapper {
 
       case DomainPermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT :
         return "fleet_management:live_data:read";
+      case DomainPermissionType.READ_LATEST_DATA_FLEET_MANAGEMENT :
+        return "fleet_management:latest_data:read";
       case DomainPermissionType.READ_PAST_DATA_FLEET_MANAGEMENT :
         return "fleet_management:past_data:read";
 
@@ -123,6 +129,8 @@ export class PermissionsMapper {
 
       case DomainPermissionType.READ_LIVE_DATA_SMART_IRRIGATION :
         return "smart_irrigation:live_data:read";
+      case DomainPermissionType.READ_LATEST_DATA_SMART_IRRIGATION :
+        return "smart_irrigation:latest_data:read";
       case DomainPermissionType.READ_PAST_DATA_SMART_IRRIGATION :
         return "smart_irrigation:past_data:read";
 

@@ -29,7 +29,7 @@ public class DataDecoderRegisterService {
 
     public DataDecoderDTO register(DataDecoderDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("data_decoders:decoders:write"))
+        if (!extract.permissions.contains("data_decoders:decoders:edit"))
             throw new UnauthorizedException("No Permissions");
 
         var deviceRecords = mapper.dtoToDomain(dto);

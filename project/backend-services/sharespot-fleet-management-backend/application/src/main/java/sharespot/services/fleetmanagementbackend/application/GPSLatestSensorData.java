@@ -37,7 +37,7 @@ public class GPSLatestSensorData {
 
     private Stream<DomainId> extractDomainIds(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("fleet_management:past_data:read"))
+        if (!extract.permissions.contains("fleet_management:latest_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         return extract.domains.stream().distinct().map(d -> DomainId.of(UUID.fromString(d)));

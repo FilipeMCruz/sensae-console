@@ -12,6 +12,7 @@ export enum DomainPermissionType {
   DELETE_DATA_DECODER = 'Data Decoder | Delete Scripts',
 
   READ_LIVE_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Live Data',
+  READ_LATEST_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Latest Data',
   READ_PAST_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Past Data',
 
   EDIT_DOMAIN = 'Identity Management | Edit Domain Permissions',
@@ -30,6 +31,7 @@ export enum DomainPermissionType {
   READ_GARDEN_SMART_IRRIGATION = 'Smart Irrigation | See Gardens',
 
   READ_LIVE_DATA_SMART_IRRIGATION = 'Smart Irrigation | See Live Data',
+  READ_LATEST_DATA_SMART_IRRIGATION = 'Smart Irrigation | See Latest Data',
   READ_PAST_DATA_SMART_IRRIGATION = 'Smart Irrigation | See Past Data',
 
   CONTROL_VALVE_SMART_IRRIGATION = 'Smart Irrigation | Control Valves',

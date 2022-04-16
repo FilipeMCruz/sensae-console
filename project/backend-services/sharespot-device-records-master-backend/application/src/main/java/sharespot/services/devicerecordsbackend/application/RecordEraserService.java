@@ -29,7 +29,7 @@ public class RecordEraserService {
 
     public DeviceDTO erase(DeviceDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("device_records:records:write"))
+        if (!extract.permissions.contains("device_records:records:delete"))
             throw new UnauthorizedException("No Permissions");
         
         var deviceId = mapper.dtoToDomain(dto);

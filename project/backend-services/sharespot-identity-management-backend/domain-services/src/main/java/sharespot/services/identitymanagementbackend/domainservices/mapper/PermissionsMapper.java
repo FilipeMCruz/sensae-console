@@ -32,6 +32,7 @@ public class PermissionsMapper {
                     case READ_TENANT -> "identity_management:tenant:read";
 
                     case READ_LIVE_DATA_FLEET_MANAGEMENT -> "fleet_management:live_data:read";
+                    case READ_LATEST_DATA_FLEET_MANAGEMENT -> "fleet_management:latest_data:read";
                     case READ_PAST_DATA_FLEET_MANAGEMENT -> "fleet_management:past_data:read";
 
                     case CREATE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:create";
@@ -40,6 +41,7 @@ public class PermissionsMapper {
                     case READ_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:read";
 
                     case READ_LIVE_DATA_SMART_IRRIGATION -> "smart_irrigation:live_data:read";
+                    case READ_LATEST_DATA_SMART_IRRIGATION -> "smart_irrigation:latest_data:read";
                     case READ_PAST_DATA_SMART_IRRIGATION -> "smart_irrigation:past_data:read";
 
                     case CONTROL_VALVE_SMART_IRRIGATION -> "smart_irrigation:valve:control";
@@ -72,6 +74,7 @@ public class PermissionsMapper {
                     case "identity_management:tenant:read" -> PermissionType.READ_TENANT;
 
                     case "fleet_management:live_data:read" -> PermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT;
+                    case "fleet_management:latest_data:read" -> PermissionType.READ_LATEST_DATA_FLEET_MANAGEMENT;
                     case "fleet_management:past_data:read" -> PermissionType.READ_PAST_DATA_FLEET_MANAGEMENT;
 
                     case "smart_irrigation:garden:create" -> PermissionType.CREATE_GARDEN_SMART_IRRIGATION;
@@ -80,6 +83,7 @@ public class PermissionsMapper {
                     case "smart_irrigation:garden:read" -> PermissionType.READ_GARDEN_SMART_IRRIGATION;
 
                     case "smart_irrigation:live_data:read" -> PermissionType.READ_LIVE_DATA_SMART_IRRIGATION;
+                    case "smart_irrigation:latest_data:read" -> PermissionType.READ_LATEST_DATA_SMART_IRRIGATION;
                     case "smart_irrigation:past_data:read" -> PermissionType.READ_PAST_DATA_SMART_IRRIGATION;
 
                     case "smart_irrigation:valve:control" -> PermissionType.CONTROL_VALVE_SMART_IRRIGATION;

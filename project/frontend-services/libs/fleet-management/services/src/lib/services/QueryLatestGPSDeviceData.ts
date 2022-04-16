@@ -17,7 +17,7 @@ export class QueryLatestGPSDeviceData {
   }
 
   getData(): Observable<DeviceData[]> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["fleet_management:past_data:read"]))
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["fleet_management:latest_data:read"]))
       return EMPTY;
 
     const query = gql`

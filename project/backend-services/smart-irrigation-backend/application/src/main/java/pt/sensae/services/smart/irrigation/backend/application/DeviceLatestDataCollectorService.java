@@ -46,7 +46,7 @@ public class DeviceLatestDataCollectorService {
 
     private Stream<DomainId> getDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("smart_irrigation:past_data:read"))
+        if (!extract.permissions.contains("smart_irrigation:latest_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         return extract.domains.stream().map(UUID::fromString).map(DomainId::new);

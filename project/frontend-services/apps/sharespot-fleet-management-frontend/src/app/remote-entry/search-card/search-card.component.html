@@ -10,7 +10,7 @@
     </mat-expansion-panel-header>
     <h3>Types:</h3>
     <mat-button-toggle-group class="toggle" [(ngModel)]="dateQueryType">
-      <mat-button-toggle class="toggle-item" value="liveData"
+      <mat-button-toggle class="toggle-item" value="liveData" *ngIf="hasPermission('fleet_management:live_data:read')"
       >Live Data
       </mat-button-toggle
       >

@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 import {
   Device,
   DeviceHistoryQuery,
 } from '@frontend-services/fleet-management/model';
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
   selector: 'frontend-services-search-card',
@@ -30,6 +31,10 @@ export class SearchCardComponent {
   dateQueryType = 'liveData';
   allSelected = false;
   panelOpenState = true;
+
+
+  constructor(public authService: AuthService) {
+  }
 
   onContentClick() {
     if (this.searchContent.trim().length > 0) {
@@ -162,5 +167,9 @@ export class SearchCardComponent {
       this.onContentClick();
       return;
     }
+  }
+
+  hasPermission(permission: string): boolean {
+    return this.authService.isAllowed([permission]);
   }
 }

@@ -10,23 +10,27 @@
     </mat-expansion-panel-header>
     <h3>Types:</h3>
     <mat-button-toggle-group class="toggle" [(ngModel)]="dateQueryType">
-      <mat-button-toggle class="toggle-item" value="liveData"
-        >Live Data</mat-button-toggle
+      <mat-button-toggle class="toggle-item" value="liveData" *ngIf="hasPermission('fleet_management:live_data:read')"
+      >Live Data
+      </mat-button-toggle
       >
-      <mat-button-toggle class="toggle-item" value="pastData"
-        >Past Data</mat-button-toggle
+      <mat-button-toggle *ngIf="hasPermission('fleet_management:past_data:read')" class="toggle-item" value="pastData"
+      >Past Data
+      </mat-button-toggle
       >
     </mat-button-toggle-group>
-    <br />
+    <br/>
     <mat-button-toggle-group class="toggle" [(ngModel)]="queryType">
       <mat-button-toggle class="toggle-item" value="devices"
-        >Devices</mat-button-toggle
+      >Devices
+      </mat-button-toggle
       >
       <mat-button-toggle class="toggle-item" value="content"
-        >Content</mat-button-toggle
+      >Content
+      </mat-button-toggle
       >
     </mat-button-toggle-group>
-    <br />
+    <br/>
     <div *ngIf="queryType === 'devices'">
       <h3>Devices:</h3>
       <mat-form-field class="search-bar">
@@ -47,11 +51,11 @@
             [(ngModel)]="allSelected"
             [ngModelOptions]="{ standalone: true }"
             (change)="toggleAllSelection()"
-            >Select All
+          >Select All
           </mat-checkbox>
           <mat-option *ngFor="let device of devices" [value]="device">{{
             device.name
-          }}</mat-option>
+            }}</mat-option>
         </mat-select>
         <button
           *ngIf="selectedDevices.value ? selectedDevices.value[0] : false"
@@ -93,18 +97,21 @@
             formControlName="start"
             placeholder="Start date"
           />
-          <input matEndDate formControlName="end" placeholder="End date" />
+          <input matEndDate formControlName="end" placeholder="End date"/>
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
         <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')"
-          >Invalid start date</mat-error
+        >Invalid start date
+        </mat-error
         >
         <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')"
-          >Invalid end date</mat-error
+        >Invalid end date
+        </mat-error
         >
         <mat-error *ngIf="selectedDevices.value?.length === 0"
-          >No Devices Chosen</mat-error
+        >No Devices Chosen
+        </mat-error
         >
       </mat-form-field>
     </div>

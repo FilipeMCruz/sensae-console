@@ -21,6 +21,7 @@ import {
   DeviceHistorySource,
   GPSPointData,
 } from '@frontend-services/fleet-management/model';
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
   selector: 'frontend-services-map',
@@ -45,14 +46,15 @@ export class MapComponent implements OnInit, OnDestroy {
 
   currentHistoryTime = 0;
 
-  constructor(
-    private locationEmitter: SubscribeToAllGPSData,
-    private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
-    private locationByDeviceIdEmitter: SubscribeToGPSDataByDevice,
-    private locationByContentEmitter: SubscribeToGPSDataByContent,
-    private historyQuery: QueryGPSDeviceHistory,
-    private latestDeviceData: QueryLatestGPSDeviceData
-  ) {}
+  constructor(private authService: AuthService,
+              private locationEmitter: SubscribeToAllGPSData,
+              private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
+              private locationByDeviceIdEmitter: SubscribeToGPSDataByDevice,
+              private locationByContentEmitter: SubscribeToGPSDataByContent,
+              private historyQuery: QueryGPSDeviceHistory,
+              private latestDeviceData: QueryLatestGPSDeviceData
+  ) {
+  }
 
   ngOnInit(): void {
     this.initializeMap();
@@ -200,12 +202,12 @@ export class MapComponent implements OnInit, OnDestroy {
                 .setLngLat(e.lngLat)
                 .setHTML(
                   '<strong>Device Name:</strong> ' +
-                    h.deviceName +
-                    '<br><strong>Device Id:</strong> ' +
-                    h.deviceId +
-                    '<br><strong>Distance Travelled:</strong> ' +
-                    e.features[0].properties.distance +
-                    ' kilometers.'
+                  h.deviceName +
+                  '<br><strong>Device Id:</strong> ' +
+                  h.deviceId +
+                  '<br><strong>Distance Travelled:</strong> ' +
+                  e.features[0].properties.distance +
+                  ' kilometers.'
                 )
                 .addTo(this.map);
             }
@@ -299,5 +301,10 @@ export class MapComponent implements OnInit, OnDestroy {
         found.updateGPSData(sensor);
       }
     }
+  }
+
+  canViewLiveOrPastData() {
+    return this.authService.isAllowed(["fleet_management:live_data:read"]) ||
+      this.authService.isAllowed(["fleet_management:past_data:read"]);
   }
 }

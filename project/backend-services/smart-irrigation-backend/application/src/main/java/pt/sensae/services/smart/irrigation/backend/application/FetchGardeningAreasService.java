@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
+import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.garden.GardeningAreaDTOMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.garden.GardeningAreaDTO;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.FetchGardeningArea;
@@ -25,10 +26,9 @@ public class FetchGardeningAreasService {
     }
 
     public Stream<GardeningAreaDTO> fetchAll(AccessTokenDTO claims) {
-        //TODO: Add new permissions
-//        var extract = authHandler.extract(claims);
-//        if (!extract.permissions.contains("smart_irrigation:garden:read"))
-//            throw new UnauthorizedException("No Permissions");
+        var extract = authHandler.extract(claims);
+        if (!extract.permissions.contains("smart_irrigation:garden:read"))
+            throw new UnauthorizedException("No Permissions");
 
         return cache.fetchAll().map(mapper::toDto);
     }

@@ -88,6 +88,10 @@ export class DataDecodersPageComponent implements OnInit {
   }
 
   canEdit() {
-    return this.authService.isAllowed(Array.of("data_decoders:decoders:write"));
+    return this.authService.isAllowed(Array.of("data_decoders:decoders:edit"));
+  }
+
+  canDelete() {
+    return this.authService.isAllowed(Array.of("data_decoders:decoders:delete"));
   }
 }

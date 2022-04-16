@@ -39,7 +39,7 @@ public class MoveDevice {
         var domain = domainRepo.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DEVICE));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_DEVICE));
 
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
@@ -59,7 +59,7 @@ public class MoveDevice {
         var domain = domainRepo.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DEVICE));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_DEVICE));
 
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));

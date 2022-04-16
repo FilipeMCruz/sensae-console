@@ -11,6 +11,7 @@ export class DataDecoderComponent implements OnChanges {
   @Input() entry!: DataDecoder;
   @Input() dataDecoderViewEntry!: DataDecoderViewType;
   @Input() canEdit = false;
+  @Input() canDelete = false;
 
   @Output() newDataDecoderEvent = new EventEmitter<DataDecoder>();
   @Output() deleteDataDecoderEvent =

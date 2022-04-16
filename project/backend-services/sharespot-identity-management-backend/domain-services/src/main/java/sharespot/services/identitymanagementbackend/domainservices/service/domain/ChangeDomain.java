@@ -37,7 +37,7 @@ public class ChangeDomain {
         var domain = repository.findDomainById(domainId)
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_DOMAIN));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_DOMAIN));
 
         if (domain.isRoot() || domain.isUnallocated()) {
             throw new NotValidException("Invalid Domain: Can't change root or unallocated domain's permissions");
@@ -59,33 +59,9 @@ public class ChangeDomain {
                 .filter(availablePermissions::contains)
                 .collect(Collectors.toSet());
 
-        if (permissions.contains(PermissionType.WRITE_DEVICE_RECORD)) {
-            permissions.add(PermissionType.READ_DEVICE_RECORD);
-        }
+        PermissionType.reviewPermissions(permissions);
 
-        if (permissions.contains(PermissionType.WRITE_DATA_TRANSFORMATION)) {
-            permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
-        }
-
-        if (permissions.contains(PermissionType.WRITE_DATA_DECODER)) {
-            permissions.add(PermissionType.READ_DATA_DECODER);
-        }
-
-        if (permissions.contains(PermissionType.WRITE_DEVICE)) {
-            permissions.add(PermissionType.READ_DEVICE);
-        }
-
-        if (permissions.contains(PermissionType.WRITE_DOMAIN)) {
-            permissions.add(PermissionType.READ_DOMAIN);
-        }
-
-        if (permissions.contains(PermissionType.WRITE_TENANT)) {
-            permissions.add(PermissionType.READ_TENANT);
-        }
-
-        var permissionsSet = DomainPermissions.of(permissions);
-
-        var updated = new Domain(domainId, domainName, domain.getPath(), permissionsSet);
+        var updated = new Domain(domainId, domainName, domain.getPath(), DomainPermissions.of(permissions));
 
         var changedDomain = repository.changeDomain(updated);
 

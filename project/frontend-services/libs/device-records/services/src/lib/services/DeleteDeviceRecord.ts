@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {HttpHeaders} from '@angular/common/http';
 import {filter, map} from 'rxjs/operators';
@@ -17,6 +17,9 @@ export class DeleteDeviceRecord {
   }
 
   delete(event: DeviceRecord): Observable<Device> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_records:records:delete"]))
+      return EMPTY;
+
     const mutation = gql`
       mutation delete($device: DeviceInput) {
         delete(device: $device) {

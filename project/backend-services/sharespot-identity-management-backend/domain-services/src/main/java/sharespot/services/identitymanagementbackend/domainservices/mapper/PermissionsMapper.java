@@ -10,18 +10,41 @@ public class PermissionsMapper {
         return permissions.distinct().map(p ->
                 switch (p) {
                     case READ_DEVICE_RECORD -> "device_records:records:read";
-                    case WRITE_DEVICE_RECORD -> "device_records:records:write";
+                    case EDIT_DEVICE_RECORD -> "device_records:records:edit";
+                    case DELETE_DEVICE_RECORD -> "device_records:records:delete";
+
                     case READ_DATA_TRANSFORMATION -> "data_transformations:transformations:read";
-                    case WRITE_DATA_TRANSFORMATION -> "data_transformations:transformations:write";
+                    case EDIT_DATA_TRANSFORMATION -> "data_transformations:transformations:edit";
+                    case DELETE_DATA_TRANSFORMATION -> "data_transformations:transformations:delete";
+
                     case READ_DATA_DECODER -> "data_decoders:decoders:read";
-                    case WRITE_DATA_DECODER -> "data_decoders:decoders:write";
-                    case READ_FLEET_MANAGEMENT -> "fleet_management:read";
-                    case WRITE_DOMAIN -> "identity_management:domains:create";
+                    case EDIT_DATA_DECODER -> "data_decoders:decoders:edit";
+                    case DELETE_DATA_DECODER -> "data_decoders:decoders:delete";
+
+                    case EDIT_DOMAIN -> "identity_management:domains:edit";
+                    case CREATE_DOMAIN -> "identity_management:domains:create";
                     case READ_DOMAIN -> "identity_management:domains:read";
-                    case READ_TENANT -> "identity_management:tenant:read";
+
+                    case EDIT_DEVICE -> "identity_management:device:write";
                     case READ_DEVICE -> "identity_management:device:read";
-                    case WRITE_TENANT -> "identity_management:tenant:write";
-                    case WRITE_DEVICE -> "identity_management:device:write";
+
+                    case EDIT_TENANT -> "identity_management:tenant:write";
+                    case READ_TENANT -> "identity_management:tenant:read";
+
+                    case READ_LIVE_DATA_FLEET_MANAGEMENT -> "fleet_management:live_data:read";
+                    case READ_LATEST_DATA_FLEET_MANAGEMENT -> "fleet_management:latest_data:read";
+                    case READ_PAST_DATA_FLEET_MANAGEMENT -> "fleet_management:past_data:read";
+
+                    case CREATE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:create";
+                    case EDIT_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:edit";
+                    case DELETE_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:delete";
+                    case READ_GARDEN_SMART_IRRIGATION -> "smart_irrigation:garden:read";
+
+                    case READ_LIVE_DATA_SMART_IRRIGATION -> "smart_irrigation:live_data:read";
+                    case READ_LATEST_DATA_SMART_IRRIGATION -> "smart_irrigation:latest_data:read";
+                    case READ_PAST_DATA_SMART_IRRIGATION -> "smart_irrigation:past_data:read";
+
+                    case CONTROL_VALVE_SMART_IRRIGATION -> "smart_irrigation:valve:control";
                 });
     }
 
@@ -29,18 +52,41 @@ public class PermissionsMapper {
         return permissions.distinct().map(p ->
                 switch (p) {
                     case "device_records:records:read" -> PermissionType.READ_DEVICE_RECORD;
-                    case "device_records:records:write" -> PermissionType.WRITE_DEVICE_RECORD;
+                    case "device_records:records:edit" -> PermissionType.EDIT_DEVICE_RECORD;
+                    case "device_records:records:delete" -> PermissionType.DELETE_DEVICE_RECORD;
+
                     case "data_transformations:transformations:read" -> PermissionType.READ_DATA_TRANSFORMATION;
-                    case "data_transformations:transformations:write" -> PermissionType.WRITE_DATA_TRANSFORMATION;
+                    case "data_transformations:transformations:edit" -> PermissionType.EDIT_DATA_TRANSFORMATION;
+                    case "data_transformations:transformations:delete" -> PermissionType.DELETE_DATA_TRANSFORMATION;
+
                     case "data_decoders:decoders:read" -> PermissionType.READ_DATA_DECODER;
-                    case "data_decoders:decoders:write" -> PermissionType.WRITE_DATA_DECODER;
-                    case "fleet_management:read" -> PermissionType.READ_FLEET_MANAGEMENT;
-                    case "identity_management:domains:create" -> PermissionType.WRITE_DOMAIN;
+                    case "data_decoders:decoders:edit" -> PermissionType.EDIT_DATA_DECODER;
+                    case "data_decoders:decoders:delete" -> PermissionType.DELETE_DATA_DECODER;
+
+                    case "identity_management:domains:create" -> PermissionType.CREATE_DOMAIN;
+                    case "identity_management:domains:edit" -> PermissionType.EDIT_DOMAIN;
                     case "identity_management:domains:read" -> PermissionType.READ_DOMAIN;
-                    case "identity_management:tenant:read" -> PermissionType.READ_TENANT;
+
+                    case "identity_management:device:write" -> PermissionType.EDIT_DEVICE;
                     case "identity_management:device:read" -> PermissionType.READ_DEVICE;
-                    case "identity_management:tenant:write" -> PermissionType.WRITE_TENANT;
-                    case "identity_management:device:write" -> PermissionType.WRITE_DEVICE;
+
+                    case "identity_management:tenant:write" -> PermissionType.EDIT_TENANT;
+                    case "identity_management:tenant:read" -> PermissionType.READ_TENANT;
+
+                    case "fleet_management:live_data:read" -> PermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT;
+                    case "fleet_management:latest_data:read" -> PermissionType.READ_LATEST_DATA_FLEET_MANAGEMENT;
+                    case "fleet_management:past_data:read" -> PermissionType.READ_PAST_DATA_FLEET_MANAGEMENT;
+
+                    case "smart_irrigation:garden:create" -> PermissionType.CREATE_GARDEN_SMART_IRRIGATION;
+                    case "smart_irrigation:garden:edit" -> PermissionType.EDIT_GARDEN_SMART_IRRIGATION;
+                    case "smart_irrigation:garden:delete" -> PermissionType.DELETE_GARDEN_SMART_IRRIGATION;
+                    case "smart_irrigation:garden:read" -> PermissionType.READ_GARDEN_SMART_IRRIGATION;
+
+                    case "smart_irrigation:live_data:read" -> PermissionType.READ_LIVE_DATA_SMART_IRRIGATION;
+                    case "smart_irrigation:latest_data:read" -> PermissionType.READ_LATEST_DATA_SMART_IRRIGATION;
+                    case "smart_irrigation:past_data:read" -> PermissionType.READ_PAST_DATA_SMART_IRRIGATION;
+
+                    case "smart_irrigation:valve:control" -> PermissionType.CONTROL_VALVE_SMART_IRRIGATION;
                     default -> throw new RuntimeException("Invalid Permissions");
                 });
     }

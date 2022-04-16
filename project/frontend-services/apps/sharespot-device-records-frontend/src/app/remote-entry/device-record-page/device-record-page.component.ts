@@ -79,7 +79,11 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   canEdit() {
-    return this.authService.isAllowed(Array.of("device_records:records:write"))
+    return this.authService.isAllowed(Array.of("device_records:records:edit"))
+  }
+
+  canDelete() {
+    return this.authService.isAllowed(Array.of("device_records:records:delete"))
   }
 
 }

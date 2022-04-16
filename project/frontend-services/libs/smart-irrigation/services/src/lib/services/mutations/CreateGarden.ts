@@ -1,5 +1,5 @@
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from '@frontend-services/core';
@@ -20,6 +20,9 @@ export class CreateGarden {
   }
 
   execute(command: CreateGardeningAreaCommand): Observable<GardeningArea> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:create"]))
+      return EMPTY;
+
     const query = gql`
       mutation createGarden($instructions: CreateGardeningAreaCommand){
         createGarden(instructions: $instructions){

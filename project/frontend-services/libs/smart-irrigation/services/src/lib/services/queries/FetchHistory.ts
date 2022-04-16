@@ -1,5 +1,5 @@
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from '@frontend-services/core';
@@ -17,6 +17,9 @@ export class FetchHistory {
   }
 
   getData(filters: HistoryQueryFilters): Observable<Array<SensorDataHistory>> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:past_data:read"]))
+      return EMPTY;
+
     const query = gql`
       query history($filters: HistoryQueryFilters){
         history(filters: $filters){

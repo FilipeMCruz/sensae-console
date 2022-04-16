@@ -1,5 +1,5 @@
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from '@frontend-services/core';
@@ -18,6 +18,9 @@ export class FetchLatestData {
   }
 
   getData(filters: LatestDataQueryFilters): Observable<Array<Data>> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:latest_data:read"]))
+      return EMPTY;
+
     const query = gql`
       query fetchLatestData($filters: LatestDataQueryFilters){
         fetchLatestData(filters: $filters){

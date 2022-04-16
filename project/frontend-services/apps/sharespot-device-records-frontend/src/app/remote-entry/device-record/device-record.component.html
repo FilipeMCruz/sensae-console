@@ -8,7 +8,7 @@
     />
     <mat-hint>e.g. GPS Sensor A1</mat-hint>
   </mat-form-field>
-  <ng-container *ngIf="deviceView === deviceViewType.Edit && canEdit">
+  <ng-container *ngIf="deviceView === deviceViewType.Edit && canDelete">
     <button class="to-right" mat-stroked-button (click)="deleteDevice()">
       Delete
     </button>

@@ -31,7 +31,7 @@ public class MoveTenant {
         var domain = domainRepo.findDomainById(DomainId.of(command.newDomain))
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_TENANT));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_TENANT));
 
         var tenantToPlace = tenantRepo.findTenantById(TenantId.of(command.tenant))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
@@ -48,7 +48,7 @@ public class MoveTenant {
         var domain = domainRepo.findDomainById(DomainId.of(command.domain))
                 .orElseThrow(NotValidException.withMessage("Invalid Domain"));
 
-        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.WRITE_TENANT));
+        PermissionsValidator.verifyPermissions(tenant, domain, List.of(PermissionType.EDIT_TENANT));
 
         var tenantToPlace = tenantRepo.findTenantById(TenantId.of(command.tenant))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));

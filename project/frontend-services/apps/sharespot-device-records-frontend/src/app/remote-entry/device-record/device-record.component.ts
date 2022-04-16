@@ -17,6 +17,7 @@ export class DeviceRecordComponent implements OnChanges {
   @Input() entry!: DeviceRecord;
   @Input() deviceViewEntry!: DeviceViewType;
   @Input() canEdit = false;
+  @Input() canDelete = false;
 
   @Output() newDeviceEvent = new EventEmitter<DeviceRecord>();
   @Output() deleteDeviceEvent = new EventEmitter<DeviceRecord>();

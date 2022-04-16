@@ -18,6 +18,7 @@
           [entry]="decoder"
           [dataDecoderViewEntry]="dataDecoderViewType.Edit"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
           (newDataDecoderEvent)="updateItem($event)"
           (deleteDataDecoderEvent)="deleteItem($event)"
         ></frontend-services-data-decoder>
@@ -30,6 +31,7 @@
           (newDataDecoderEvent)="addItem($event)"
           [dataDecoderViewEntry]="dataDecoderViewType.New"
           [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
         ></frontend-services-data-decoder>
       </mat-card-content>
     </mat-card>

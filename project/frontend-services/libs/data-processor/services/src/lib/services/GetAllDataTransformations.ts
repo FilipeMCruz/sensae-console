@@ -29,6 +29,7 @@ export class GetAllDataTransformations {
           entries {
             oldPath
             newPath
+            sensorID
           }
         }
       }

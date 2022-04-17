@@ -29,6 +29,7 @@ export class IndexDataTransformation {
           entries {
             oldPath
             newPath
+            sensorID
           }
         }
       }

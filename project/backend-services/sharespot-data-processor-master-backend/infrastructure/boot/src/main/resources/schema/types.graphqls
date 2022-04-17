@@ -5,6 +5,7 @@ type DataTransformation {
 
 type PropertyTransformation {
     oldPath: String
+    sensorID: Int
     newPath: PropertyName
 }
 
@@ -19,6 +20,7 @@ input DataTransformationInput {
 
 input PropertyTransformationInput {
     oldPath: String
+    sensorID: Int
     newPath: PropertyName
 }
 
@@ -27,22 +29,40 @@ input DataTypeInput {
 }
 
 enum PropertyName {
+    AIR_HUMIDITY_GRAMS_PER_CUBIC_METER,
+    AIR_HUMIDITY_RELATIVE_PERCENTAGE,
+    AIR_PRESSURE,
+    ALTITUDE,
+    AQI,
+    BATTERY_MAX_VOLTS,
+    BATTERY_MIN_VOLTS,
+    BATTERY_PERCENTAGE,
+    BATTERY_VOLTS,
+    CO,
+    CO2,
     DATA_ID,
     DEVICE_ID,
     DEVICE_NAME,
-    REPORTED_AT,
+    DISTANCE,
+    ILLUMINANCE,
     LATITUDE,
     LONGITUDE,
-    TEMPERATURE,
+    MAX_DISTANCE,
+    MIN_DISTANCE,
     MOTION,
-    VELOCITY,
-    AQI,
-    HUMIDITY,
-    PRESSURE,
+    NH3,
+    NO2,
+    O3,
+    OCCUPATION,
+    PH,
+    PM10,
+    PM2_5,
+    REPORTED_AT,
+    SOIL_CONDUCTIVITY,
     SOIL_MOISTURE,
-    ILLUMINANCE,
-    ALTITUDE,
-    BATTERY_PERCENTAGE,
-    BATTERY_VOLTS,
-    ALARM
+    TEMPERATURE,
+    TRIGGER,
+    VELOCITY,
+    VOC,
+    WATER_PRESSURE,
 }

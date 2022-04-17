@@ -11,6 +11,8 @@ public class PropertyTransformationPostgres {
 
     public String oldPath;
 
+    public Integer subSensorId;
+
     @ManyToOne
     public DataTransformationPostgres transformation;
 

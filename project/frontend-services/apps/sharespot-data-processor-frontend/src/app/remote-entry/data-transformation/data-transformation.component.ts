@@ -31,8 +31,6 @@ export class DataTransformationComponent implements OnChanges {
   entryView = EntryViewType.List;
   entryViewType = EntryViewType;
 
-  nameType = PropertyName;
-
   propertyNameTypes: Array<string> = Object.values(PropertyName);
 
   currentIndex = -1;
@@ -97,9 +95,11 @@ export class DataTransformationComponent implements OnChanges {
         return 'gesture';
       case PropertyName.VELOCITY:
         return 'speed';
-      case PropertyName.HUMIDITY:
+      case PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER:
         return 'opacity';
-      case PropertyName.PRESSURE:
+      case PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE:
+        return 'opacity';
+      case PropertyName.AIR_PRESSURE:
         return 'compress';
       case PropertyName.TEMPERATURE:
         return 'thermostat';
@@ -114,12 +114,55 @@ export class DataTransformationComponent implements OnChanges {
       case PropertyName.BATTERY_PERCENTAGE:
         return 'battery_3_bar';
       case PropertyName.BATTERY_VOLTS:
-        return 'battery_charging_full';
-      case PropertyName.ALARM:
+        return 'battery_3_bar';
+      case PropertyName.TRIGGER:
         return 'warning';
+      case PropertyName.BATTERY_MAX_VOLTS:
+        return 'battery_full';
+      case PropertyName.BATTERY_MIN_VOLTS:
+        return 'battery_0_bar';
+      case PropertyName.DISTANCE:
+        return 'straighten';
+      case PropertyName.MAX_DISTANCE:
+        return 'straighten';
+      case PropertyName.MIN_DISTANCE:
+        return 'straighten';
+      case PropertyName.SOIL_CONDUCTIVITY:
+        return 'electric_bolt';
+      case PropertyName.CO2:
+        return 'co2';
+      case PropertyName.WATER_PRESSURE:
+        return 'water';
+      case PropertyName.OCCUPATION:
+        return 'fullscreen';
+      case PropertyName.VOC:
+        return 'volcano';
+      case PropertyName.PM2_5:
+        return 'volcano';
+      case PropertyName.PM10:
+        return 'volcano';
+      case PropertyName.O3:
+        return 'masks';
+      case PropertyName.NO2:
+        return 'masks';
+      case PropertyName.NH3:
+        return 'masks';
+      case PropertyName.CO:
+        return 'masks';
+      case PropertyName.PH:
+        return 'masks';
       case PropertyName.INVALID:
         return 'error';
     }
+  }
+
+  isGlobal(type: PropertyName): boolean {
+    return type === PropertyName.INVALID ||
+      type === PropertyName.DATA_ID ||
+      type === PropertyName.DEVICE_NAME ||
+      type === PropertyName.DEVICE_ID ||
+      type === PropertyName.REPORTED_AT ||
+      type === PropertyName.CO2
   }
 
   editEntry(index: number) {

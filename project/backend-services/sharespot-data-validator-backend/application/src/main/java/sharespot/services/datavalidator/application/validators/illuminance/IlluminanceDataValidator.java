@@ -10,7 +10,7 @@ public class IlluminanceDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.ILLUMINANCE)) {
-            if (data.data.illuminance.lux < 0 || data.data.illuminance.lux > 100000) {
+            if (data.getSensorData().illuminance.lux < 0 || data.getSensorData().illuminance.lux > 100000) {
                 return DataLegitimacyOptions.INCORRECT;
             }
         }

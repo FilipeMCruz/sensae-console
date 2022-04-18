@@ -3,7 +3,7 @@ package sharespot.services.identitymanagementslavebackend.application;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
+import pt.sharespot.iot.core.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeys;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
@@ -52,7 +52,7 @@ public class SensorDataHandlerService {
     private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .from(keys);
     }
 }

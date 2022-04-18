@@ -23,7 +23,7 @@ public class Haversine {
     }
 
     public static double calcHaversine(ProcessedSensorDataDTO first, ProcessedSensorDataDTO second) {
-        return haversine(first.data.gps.latitude, first.data.gps.longitude, second.data.gps.latitude, second.data.gps.longitude);
+        return haversine(first.getSensorData().gps.latitude, first.getSensorData().gps.longitude, second.getSensorData().gps.latitude, second.getSensorData().gps.longitude);
     }
 
     private static double haversine(double lat1, double lon1, double lat2, double lon2) {

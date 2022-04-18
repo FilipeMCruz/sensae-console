@@ -69,8 +69,8 @@ public class GPSDataCollector {
         history.deviceId = dto.get(0).device.id.toString();
         history.deviceName = dto.get(0).device.name;
         history.segments = buildHistorySegments(dto.stream().map(data -> {
-            var gps = new GPSDataDetails(data.data.gps.latitude, data.data.gps.longitude);
-            var status = new StatusDataDetails(data.data.motion.value);
+            var gps = new GPSDataDetails(data.getSensorData().gps.latitude, data.getSensorData().gps.longitude);
+            var status = new StatusDataDetails(data.getSensorData().motion.value);
             return new GPSSensorDataHistoryStep(gps, status, data.reportedAt);
         }).collect(Collectors.toList()));
         history.distance = Haversine.calcDistance(dto);

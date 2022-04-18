@@ -2,7 +2,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egr
 
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.ProcessedSensorDataWithRecordMapper;
@@ -34,7 +34,7 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .findFirst();
 
         if (latitudeOpt.isPresent() && longitudeOpt.isPresent()) {
-            domain.data.withGps(GPSDataDTO.ofLatLong(Double.valueOf(latitudeOpt.get().content()), Double.valueOf(longitudeOpt.get().content())));
+            domain.getSensorData().withGps(GPSDataDTO.ofLatLong(Double.valueOf(latitudeOpt.get().content()), Double.valueOf(longitudeOpt.get().content())));
         }
 
         domain.device.records = new DeviceRecordDTO(records.records()

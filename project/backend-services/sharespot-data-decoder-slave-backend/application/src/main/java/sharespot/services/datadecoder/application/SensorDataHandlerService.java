@@ -6,6 +6,7 @@ import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
 import pt.sharespot.iot.core.routing.keys.RoutingKeys;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.SensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -20,9 +21,9 @@ public class SensorDataHandlerService {
 
     private final DataDecoderExecutor mapper;
 
-    private FluxSink<MessageSupplied<SensorDataDTO>> dataStream;
+    private FluxSink<MessageSupplied<ProcessedSensorDataDTO>> dataStream;
 
-    private ConnectableFlux<MessageSupplied<SensorDataDTO>> dataPublisher;
+    private ConnectableFlux<MessageSupplied<ProcessedSensorDataDTO>> dataPublisher;
 
     private final RoutingKeysProvider provider;
 
@@ -33,13 +34,13 @@ public class SensorDataHandlerService {
 
     @PostConstruct
     public void init() {
-        Flux<MessageSupplied<SensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<MessageSupplied<ProcessedSensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<MessageSupplied<SensorDataDTO>> getSinglePublisher() {
+    public Flux<MessageSupplied<ProcessedSensorDataDTO>> getSinglePublisher() {
         return dataPublisher;
     }
 
@@ -47,11 +48,11 @@ public class SensorDataHandlerService {
         message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
     }
 
-    private Optional<SensorDataDTO> inToOutData(ObjectNode node, RoutingKeys keys) {
+    private Optional<ProcessedSensorDataDTO> inToOutData(ObjectNode node, RoutingKeys keys) {
         return mapper.decodeData(node, SensorTypeId.of(keys.sensorTypeId));
     }
 
-    private Optional<RoutingKeys> inToOutKeys(SensorDataDTO data, RoutingKeys keys) {
+    private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .from(keys);

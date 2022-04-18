@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Controller;
+import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageSupplied;
 import sharespot.services.datagateway.application.EventPublisher;
 
@@ -15,15 +17,17 @@ public class SensorDataSupplier implements EventPublisher {
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
-    private final AmqpTemplate rabbitTemplate;
+    private final AmqpTemplate template;
 
-    public SensorDataSupplier(AmqpTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    public SensorDataSupplier(AmqpTemplate template) {
+        this.template = template;
     }
 
     @Override
     public void publish(MessageSupplied<ObjectNode> message) {
-        rabbitTemplate.convertAndSend(TOPIC_EXCHANGE, message.routingKeys.toString(), message);
+        template.send(TOPIC_EXCHANGE,
+                message.routingKeys.toString(),
+                new Message(MessageMapper.toUnprocessedBuf(message).toByteArray()));
         logSuppliedMessage(message);
     }
 

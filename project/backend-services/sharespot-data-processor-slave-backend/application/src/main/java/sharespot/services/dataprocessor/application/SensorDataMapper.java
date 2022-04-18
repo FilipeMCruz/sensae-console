@@ -3,6 +3,7 @@ package sharespot.services.dataprocessor.application;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.ProcessedSensorDataMapper;
 import sharespot.services.dataprocessor.domain.SensorTypeId;
@@ -22,7 +23,7 @@ public class SensorDataMapper {
         this.cache = cache;
     }
 
-    public Optional<SensorDataDTO> inToOut(JsonNode inDto, SensorTypeId typeId) {
+    public Optional<ProcessedSensorDataDTO> inToOut(JsonNode inDto, SensorTypeId typeId) {
         return cache.findByDeviceId(typeId)
                 .flatMap(dt -> mapper.process(dt.getTransform(), inDto));
     }

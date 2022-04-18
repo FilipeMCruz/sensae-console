@@ -1,10 +1,6 @@
 package sharespot.services.fleetmanagementbackend.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
@@ -13,14 +9,13 @@ import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
 import sharespot.services.fleetmanagementbackend.application.RoutingKeysProvider;
+import sharespot.services.fleetmanagementbackend.infrastructure.endpoint.amqp.listener.SensorDataConsumer;
 
 import static sharespot.services.fleetmanagementbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.fleetmanagementbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String INGRESS_QUEUE = "Sharespot Fleet Management Queue";
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
@@ -32,7 +27,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(INGRESS_QUEUE)
+        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -55,17 +50,5 @@ public class AmqpConfiguration {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
-    }
-
-    @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
     }
 }

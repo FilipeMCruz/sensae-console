@@ -1,15 +1,15 @@
 package sharespot.services.datavalidator.application.validators;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.datavalidator.application.validators.alarm.AlarmDataValidator;
+import sharespot.services.datavalidator.application.validators.trigger.TriggerDataValidator;
 import sharespot.services.datavalidator.application.validators.aqi.AQIDataValidator;
 import sharespot.services.datavalidator.application.validators.battery.BatteryDataValidator;
 import sharespot.services.datavalidator.application.validators.gps.GPSDataValidator;
-import sharespot.services.datavalidator.application.validators.humidity.HumidityDataValidator;
+import sharespot.services.datavalidator.application.validators.airHumidity.AirHumidityDataValidator;
 import sharespot.services.datavalidator.application.validators.illuminance.IlluminanceDataValidator;
-import sharespot.services.datavalidator.application.validators.moisture.MoistureDataValidator;
+import sharespot.services.datavalidator.application.validators.soilMoisture.SoilMoistureDataValidator;
 import sharespot.services.datavalidator.application.validators.motion.MotionDataValidator;
-import sharespot.services.datavalidator.application.validators.pressure.PressureDataValidator;
+import sharespot.services.datavalidator.application.validators.airPressure.AirPressureDataValidator;
 import sharespot.services.datavalidator.application.validators.temperature.TemperatureDataValidator;
 import sharespot.services.datavalidator.application.validators.velocity.VelocityDataValidator;
 
@@ -20,15 +20,15 @@ public class ValidatorsFactory {
 
     public static List<DataValidator> buildValidators() {
         return List.of(
-                new AlarmDataValidator(),
+                new TriggerDataValidator(),
                 new AQIDataValidator(),
                 new BatteryDataValidator(),
                 new GPSDataValidator(),
-                new HumidityDataValidator(),
+                new AirHumidityDataValidator(),
                 new IlluminanceDataValidator(),
-                new MoistureDataValidator(),
+                new SoilMoistureDataValidator(),
                 new MotionDataValidator(),
-                new PressureDataValidator(),
+                new AirPressureDataValidator(),
                 new TemperatureDataValidator(),
                 new VelocityDataValidator()
         );

@@ -10,13 +10,13 @@ public class BatteryDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.BATTERY_PERCENTAGE)) {
-            if (data.data.battery.percentage < 5 || data.data.battery.percentage > 100) {
+            if (data.getSensorData().battery.percentage < 5 || data.getSensorData().battery.percentage > 100) {
                 return DataLegitimacyOptions.INCORRECT;
             }
         }
         if (data.hasProperty(PropertyName.BATTERY_VOLTS)) {
             //TODO think about how to check for wrong volts values
-            if (data.data.battery.volts < 0) {
+            if (data.getSensorData().battery.volts < 0) {
                 return DataLegitimacyOptions.INCORRECT;
             }
             return DataLegitimacyOptions.UNDETERMINED;

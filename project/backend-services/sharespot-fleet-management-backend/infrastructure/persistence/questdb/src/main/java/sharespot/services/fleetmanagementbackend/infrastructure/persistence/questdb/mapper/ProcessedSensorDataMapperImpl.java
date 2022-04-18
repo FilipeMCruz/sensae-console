@@ -3,9 +3,9 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.data.MotionDataDTO;
 import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.data.types.MotionDataDTO;
 import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
 import pt.sharespot.iot.core.sensor.device.domains.DeviceDomainPermissionsDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
@@ -16,10 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -33,7 +30,7 @@ public class ProcessedSensorDataMapperImpl {
         dao.deviceName = String.valueOf(in.device.name);
         dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
         dao.motion = toDAO(in);
-        dao.gpsData = GeoHash.withCharacterPrecision(in.data.gps.latitude, in.data.gps.longitude, 12).toBase32();
+        dao.gpsData = GeoHash.withCharacterPrecision(in.getSensorData().gps.latitude, in.getSensorData().gps.longitude, 12).toBase32();
         return dao;
     }
 
@@ -46,11 +43,11 @@ public class ProcessedSensorDataMapperImpl {
     }
 
     private String toDAO(ProcessedSensorDataDTO in) {
-        if (!in.data.hasProperty(PropertyName.MOTION)) {
+        if (!in.getSensorData().hasProperty(PropertyName.MOTION)) {
             return "UNKNOWN";
-        } else if ("ACTIVE".equalsIgnoreCase(in.data.motion.value)) {
+        } else if ("ACTIVE".equalsIgnoreCase(in.getSensorData().motion.value)) {
             return "ACTIVE";
-        } else if ("INACTIVE".equalsIgnoreCase(in.data.motion.value)) {
+        } else if ("INACTIVE".equalsIgnoreCase(in.getSensorData().motion.value)) {
             return "INACTIVE";
         } else {
             return "UNKNOWN";
@@ -69,7 +66,7 @@ public class ProcessedSensorDataMapperImpl {
         var details = new SensorDataDetailsDTO()
                 .withGps(GPSDataDTO.ofLatLong(originatingPoint.getLatitude(), originatingPoint.getLongitude()))
                 .withMotion(MotionDataDTO.of(dao.motion));
-        return new ProcessedSensorDataDTO(dataId, device, dao.reportedAt.getTime(), details);
+        return new ProcessedSensorDataDTO(dataId, device, dao.reportedAt.getTime(), Map.of(0, details));
     }
 
     public ProcessedSensorDataDAOImpl toSensorData(ResultSet resultSet) throws SQLException {

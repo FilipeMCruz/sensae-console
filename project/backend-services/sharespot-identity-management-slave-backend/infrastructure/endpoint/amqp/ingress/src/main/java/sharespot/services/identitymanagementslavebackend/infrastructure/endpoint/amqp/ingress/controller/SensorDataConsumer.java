@@ -1,9 +1,12 @@
 package sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.identitymanagementslavebackend.application.SensorDataHandlerService;
@@ -22,9 +25,10 @@ public class SensorDataConsumer {
     }
 
     @RabbitListener(queues = INGRESS_QUEUE)
-    public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTO> in) {
-        logConsumedMessage(in);
-        handler.publish(in);
+    public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
+        var consumed = MessageMapper.toModel(in.getBody());
+        logConsumedMessage(consumed);
+        handler.publish(consumed);
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {

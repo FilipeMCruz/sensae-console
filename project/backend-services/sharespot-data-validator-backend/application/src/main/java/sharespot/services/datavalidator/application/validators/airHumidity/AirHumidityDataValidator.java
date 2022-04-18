@@ -1,11 +1,11 @@
-package sharespot.services.datavalidator.application.validators.humidity;
+package sharespot.services.datavalidator.application.validators.airHumidity;
 
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.datavalidator.application.validators.DataValidator;
 
-public class HumidityDataValidator implements DataValidator {
+public class AirHumidityDataValidator implements DataValidator {
 
     /**
      * This assumes that the temperature varies between -15 and 30 C.
@@ -13,8 +13,8 @@ public class HumidityDataValidator implements DataValidator {
      */
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
-        if (data.hasProperty(PropertyName.HUMIDITY)) {
-            if (data.data.humidity.gramspercubicmeter < 0 || data.data.humidity.gramspercubicmeter > 30)
+        if (data.hasProperty(PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
+            if (data.getSensorData().airHumidity.gramsPerCubicMeter < 0 || data.getSensorData().airHumidity.gramsPerCubicMeter > 30)
                 return DataLegitimacyOptions.INCORRECT;
         }
 

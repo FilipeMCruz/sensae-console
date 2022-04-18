@@ -10,7 +10,7 @@ public class VelocityDataValidator implements DataValidator {
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         if (data.hasProperty(PropertyName.VELOCITY)) {
-            if (data.data.velocity.kmperh < 0 || data.data.velocity.kmperh > 150) {
+            if (data.getSensorData().velocity.kilometersPerHour < 0 || data.getSensorData().velocity.kilometersPerHour > 150) {
                 return DataLegitimacyOptions.INCORRECT;
             }
         }

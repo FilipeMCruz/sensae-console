@@ -43,9 +43,11 @@ public class DeviceCache {
         var oldEntry = get(deviceId);
         if (oldEntry.isEmpty()) {
             DeviceType type;
-            if (dto.hasProperty(PropertyName.ALARM)) {
+            if (dto.hasProperty(PropertyName.TRIGGER)) {
                 type = DeviceType.VALVE;
-            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
+            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
+                type = DeviceType.STOVE_SENSOR;
+            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
                 type = DeviceType.STOVE_SENSOR;
             } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
                 type = DeviceType.PARK_SENSOR;
@@ -75,13 +77,13 @@ public class DeviceCache {
 
         var name = DeviceName.of(data.device.name);
 
-        var gpsPoint = GPSPoint.ofLatLong(data.data.gps.latitude,
-                data.data.gps.longitude);
+        var gpsPoint = GPSPoint.ofLatLong(data.getSensorData().gps.latitude,
+                data.getSensorData().gps.longitude);
 
         if (data.hasProperty(PropertyName.ALTITUDE)) {
-            gpsPoint = GPSPoint.ofLatLongAlt(data.data.gps.latitude,
-                    data.data.gps.longitude,
-                    data.data.gps.altitude);
+            gpsPoint = GPSPoint.ofLatLongAlt(data.getSensorData().gps.latitude,
+                    data.getSensorData().gps.longitude,
+                    data.getSensorData().gps.altitude);
         }
 
         var records = new DeviceRecords(data.device.records.entry.stream().map(e -> RecordEntry.of(e.label, e.content)).collect(Collectors.toSet()));

@@ -16,18 +16,24 @@ public class DataMapper {
         var deviceId = DeviceId.of(dto.device.id);
         var reportedAt = ReportTime.of(dto.reportedAt);
 
-        if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
-            var temperature = Temperature.of(dto.data.temperature.celsius.floatValue());
-            var humidity = Humidity.of(dto.data.humidity.gramspercubicmeter.floatValue());
+        //TODO: use this to calculate humidity https://www.aqua-calc.com/calculate/humidity
+        if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
+            var temperature = Temperature.of(dto.getSensorData().temperature.celsius);
+            var humidity = Humidity.of(dto.getSensorData().airHumidity.gramsPerCubicMeter);
+            var payload = new StovePayload(temperature, humidity);
+            return new Data(id, deviceId, reportedAt, payload);
+        } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
+            var temperature = Temperature.of(dto.getSensorData().temperature.celsius);
+            var humidity = Humidity.of(dto.getSensorData().airHumidity.relativePercentage);
             var payload = new StovePayload(temperature, humidity);
             return new Data(id, deviceId, reportedAt, payload);
         } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
-            var lux = Illuminance.of(dto.data.illuminance.lux.floatValue());
-            var moisture = SoilMoisture.of(dto.data.moisture.percentage.floatValue());
+            var lux = Illuminance.of(dto.getSensorData().illuminance.lux);
+            var moisture = SoilMoisture.of(dto.getSensorData().soilMoisture.relativePercentage);
             var payload = new ParkPayload(lux, moisture);
             return new Data(id, deviceId, reportedAt, payload);
-        } else if (dto.hasProperty(PropertyName.ALARM)) {
-            var alertStatus = dto.data.alarm.value ? ValveStatusType.OPEN : ValveStatusType.CLOSE;
+        } else if (dto.hasProperty(PropertyName.TRIGGER)) {
+            var alertStatus = dto.getSensorData().trigger.value ? ValveStatusType.OPEN : ValveStatusType.CLOSE;
             var valve = new ValveStatus(alertStatus);
             var payload = new ValvePayload(valve);
             return new Data(id, deviceId, reportedAt, payload);

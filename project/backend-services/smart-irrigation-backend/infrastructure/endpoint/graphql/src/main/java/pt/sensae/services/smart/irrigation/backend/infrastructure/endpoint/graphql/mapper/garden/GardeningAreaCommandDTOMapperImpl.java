@@ -41,7 +41,7 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         return dtoCom.stream().map(b -> {
             var out = new BoundaryCommandDetails();
             out.position = b.position;
-            out.altitude = Double.valueOf(b.altitude);
+            out.altitude = Float.valueOf(b.altitude);
             out.latitude = Double.valueOf(b.latitude);
             out.longitude = Double.valueOf(b.longitude);
             return out;

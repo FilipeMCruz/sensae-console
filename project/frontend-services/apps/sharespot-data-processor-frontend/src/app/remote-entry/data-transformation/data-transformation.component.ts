@@ -188,12 +188,12 @@ export class DataTransformationComponent implements OnChanges {
   }
 
   private resetOptions() {
-    const usedPropertyNameTypes = this.dataTransformation.entries.map((e) =>
-      e.newPath.toString()
-    );
-    this.propertyNameTypes = Object.values(PropertyName).filter(
-      (v) => !usedPropertyNameTypes.includes(v)
-    );
+    // const usedPropertyNameTypes = this.dataTransformation.entries.map((e) =>
+    //   e.newPath.toString()
+    // );
+    // this.propertyNameTypes = Object.values(PropertyName).filter(
+    //   (v) => !usedPropertyNameTypes.includes(v)
+    // );
   }
 
   private clearEntryFields() {

@@ -15,6 +15,6 @@ export class PropertyTransformation {
   }
 
   getSubSensor() {
-    return this.subSensorId === 0 ? "" : " for Sensor " + this.subSensorId;
+    return this.subSensorId === 0 ? "" : "Sensor " + this.subSensorId;
   }
 }

@@ -57,7 +57,8 @@
           getNameType(entry)
           }}</mat-icon>
         <div mat-line>{{ entry.newPath }}</div>
-        <div mat-line>{{ entry.oldPath }} {{entry.getSubSensor()}}</div>
+        <div mat-line>{{ entry.oldPath }} </div>
+        <div mat-line>{{entry.getSubSensor()}}</div>
         <button
           *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
           mat-icon-button
@@ -92,7 +93,7 @@
       <mat-label>Sub Sensor Id</mat-label>
       <input [disabled]="isGlobal(currentEntry.newPath)" matInput type="number" [(ngModel)]="currentEntry.subSensorId"/>
       <mat-icon matSuffix>info</mat-icon>
-      <mat-hint>0 refers to the main sensor</mat-hint>
+      <mat-hint>Value 0 refers to the main sensor</mat-hint>
     </mat-form-field>
     <mat-form-field class="big-input">
       <mat-label>Path to Property</mat-label>

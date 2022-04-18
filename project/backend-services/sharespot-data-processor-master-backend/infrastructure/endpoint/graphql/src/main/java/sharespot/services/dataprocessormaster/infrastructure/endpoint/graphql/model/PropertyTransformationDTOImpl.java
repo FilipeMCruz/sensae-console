@@ -3,4 +3,6 @@ package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.m
 public class PropertyTransformationDTOImpl {
     public String oldPath;
     public PropertyNameDTOImpl newPath;
+
+    public Integer sensorID;
 }

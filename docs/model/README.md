@@ -44,41 +44,85 @@ The current data model is represented here as a Json Schema.
         }
     },
     "data": {
+        "airHumidity": {
+            "gramsPerCubicMeter": [float],
+            "relativePercentage": [float]
+        },
+        "airPressure": {
+            "hectoPascal": [float]
+        },
+        "aqi": {
+            "value": [float]
+        },
+        "battery": {
+            "percentage": [float],
+            "volts": [float],
+            "maxVolts": [float],
+            "minVolts": [float]
+        },
+        "co2": {
+            "ppm": [float]
+        },
+        "co": {
+            "ppm": [float]
+        },
+        "distance": {
+            "millimeters": [float],
+            "maxMillimeters": [float],
+            "minMillimeters": [float]
+        },
         "gps": {
             "latitude": [double],
             "longitude": [double],
-            "altitude": [double]
-        },
-        "temperature": {
-            "celsius": [double]
-        },
-        "motion": {
-            "value": [enum]
-        },
-        "velocity": {
-            "kmperh": [double]
-        },
-        "aqi": {
-            "eaqi": [double]
-        },
-        "humidity": {
-            "gramspercubicmeter": [double]
-        },
-        "pressure": {
-            "hPa": [double]
-        },
-        "battery": {
-            "volts": [double],
-            "percentage": [double],
-        },
-        "moisture": {
-            "percentage": [double]
+            "altitude": [float]
         },
         "illuminance": {
-            "lux": [double]
+            "lux": [optional]
         },
-        "alarm": {
+        "motion": {
+            "value": ["ACTIVE", "INACTIVE" or "UNKNOWN"]
+        }, 
+        "nh3": {
+            "ppm": [float]
+        },
+        "no2": {
+            "ppm": [float]
+        },
+        "o3": {
+            "ppm": [float]
+        },
+        "occupation" {
+            "percentage": [float]
+        },
+        "ph": {
+            "value": [float]
+        },
+        "pm2_5": {
+            "microGramsPerCubicMeter": [float]
+        },
+        "pm10": {
+            "microGramsPerCubicMeter": [float]
+        },
+        "soilConductivity": {
+            "microSiemensPerCentimeter": [float]
+        },
+        "soilMoisture": {
+            "relativePercentage": [float]
+        },
+        "temperature": {
+            "celsius": [float]
+        },
+        "trigger": {
             "value": [boolean]
+        },
+        "velocity": {
+            "kilometerPerHour": [float]
+        },
+        "voc": {
+            "ppm": [float]
+        },
+        "waterPressure": {
+            "bar": [float]
         }
     }
 }
@@ -111,41 +155,85 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
         }
     },
     "data": {
+        "airHumidity": {
+            "gramsPerCubicMeter": [optional],
+            "relativePercentage": [optional]
+        },
+        "airPressure": {
+            "hectoPascal": [optional]
+        },
+        "aqi": {
+            "value": [optional]
+        },
+        "battery": {
+            "percentage": [optional],
+            "volts": [optional],
+            "maxVolts": [optional],
+            "minVolts": [optional]
+        },
+        "co2": {
+            "ppm": [optional]
+        },
+        "co": {
+            "ppm": [optional]
+        },
+        "distance": {
+            "millimeters": [optional],
+            "maxMillimeters": [optional],
+            "minMillimeters": [optional]
+        },
         "gps": {
             "latitude": [optional],
             "longitude": [optional],
-            "altitude": [Optional]
-        },
-        "temperature": {
-            "celsius": [optional]
-        },
-        "motion": {
-            "value": [optional]
-        },
-        "velocity": {
-            "kmperh": [optional]
-        },
-        "aqi": {
-            "eaqi": [optional]
-        },
-        "humidity": {
-            "gramspercubicmeter": [optional]
-        },
-        "pressure": {
-            "hPa": [optional]
-        },
-        "battery": {
-            "volts": [optional],
-            "percentage": [optional],
-        },
-        "moisture": {
-            "percentage": [optional]
+            "altitude": [optional]
         },
         "illuminance": {
             "lux": [optional]
         },
-        "alarm": {
+        "motion": {
+            "value": ["ACTIVE", "INACTIVE" or "UNKNOWN"]
+        }, 
+        "nh3": {
+            "ppm": [optional]
+        },
+        "no2": {
+            "ppm": [optional]
+        },
+        "o3": {
+            "ppm": [optional]
+        },
+        "occupation" {
+            "percentage": [optional]
+        },
+        "ph": {
             "value": [optional]
+        },
+        "pm2_5": {
+            "microGramsPerCubicMeter": [optional]
+        },
+        "pm10": {
+            "microGramsPerCubicMeter": [optional]
+        },
+        "soilConductivity": {
+            "microSiemensPerCentimeter": [optional]
+        },
+        "soilMoisture": {
+            "relativePercentage": [optional]
+        },
+        "temperature": {
+            "celsius": [optional]
+        },
+        "trigger": {
+            "value": [optional]
+        },
+        "velocity": {
+            "kilometerPerHour": [optional]
+        },
+        "voc": {
+            "ppm": [optional]
+        },
+        "waterPressure": {
+            "bar": [optional]
         }
     }
 }
@@ -159,43 +247,21 @@ The units used to measure the given values are:
 - `data.gps.longitude`: value between -180 and 180;
 - `data.gps.altitude`: value im meters, 0m equals the sea level;
 - `data.motion.value`: `ACTIVE`, `INACTIVE` or `UNKNOWN`;
-- `data.velocity.kmperh`: value in km/h;
+- `data.velocity.kilometerPerHour`: value in km/h;
 - `data.temperature.celsius`: value in celsius;
-- `data.aqi.eaqi`: value in EAQI [ref](https://airindex.eea.europa.eu/Map/AQI/Viewer/);
-- `data.humidity.gramspercubicmeter`: value with grams of water per cubic meter;
-- `data.pressure.hPa`: value in hPa;
+- `data.aqi.value`: value in AQI [ref](https://www.airnow.gov/aqi/);
+- `data.airHumidity.gramsPerCubicMeter`: value with grams of water per cubic meter in the air;
+- `data.airHumidity.relativePercentage`: value with relative percentage of water in the air;
+- `data.airPressure.hectoPascal`: value in hPa related to the current air pressure;
 - `data.battery.volts`: value in volts;
 - `data.battery.percentage`: value representing the percentage of battery still available;
-- `data.moisture.percentage`: value representing the percentage of water in the soil;
+- `data.battery.maxVolts`: value representing the minimum volts in the battery needed for the sensor to work;
+- `data.battery.minVolts`: value representing the max volts the battery can hold;
+- `data.soilMoisture.relativePercentage`: value representing the percentage of water in the soil;
 - `data.illuminance.lux`: value representing luminous flux per unit area;
-- `data.alarm.value`: true or false / on or off;
+- `data.trigger.value`: true or false / on or off;
 
 Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
-
-## Improvements
-
-- Add `data.air_humidity.relative_percentage` as percentage
-- Add `data.water_pressure.bar` for water pipes
-- Add `data.battery.max_volts`
-- Add `data.battery.min_volts`
-- Add `data.ph`
-- Add `data.distance.millimeters`
-- Add `data.distance.max_millimeters`
-- Add `data.distance.min_millimeters`
-- Add `data.occupation.percentage`
-- Add `data.soil_conductivity.micro_siemens_per_cm`
-- Change `data.moisture.percentage` to `data.soil_moisture.relative_percentage`
-- Add `data.aqi.co2.ppm`
-- Add `data.aqi.co.ppm`
-- Add `data.aqi.no2.ppm`
-- Add `data.aqi.nh3.ppm`
-- Add `data.aqi.o3.ppm`
-- Add `data.aqi.pm2_5.micro_grams_per_cubic_meter`
-- Add `data.aqi.pm10.micro_grams_per_cubic_meter`
-- Change `data.pressure.hPa` to `data.air_pressure.hecto_pascal` air pressure
-- Remove `data.airHumidity.gramspercubicmeter`
-- Change `data.velocity.kmperh` to `data.velocity.kilometer_per_hour`
-- Change `data.alarm.value` to `data.trigger.value`
 
 ## Further Discussion
 

@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
-import {PropertyTransformation,} from '@frontend-services/data-processor/model';
 import {DataDecoder, DataDecoderViewType} from "@frontend-services/data-decoder/model";
 
 @Component({
@@ -18,7 +17,6 @@ export class DataDecoderComponent implements OnChanges {
     new EventEmitter<DataDecoder>();
 
   dataDecoder = DataDecoder.empty();
-  currentEntry = PropertyTransformation.empty();
 
   dataDecoderView = DataDecoderViewType.New;
   dataDecoderViewType = DataDecoderViewType;

@@ -26,29 +26,62 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
     public DataTransformation dtoToDomain(DataTransformationDTO dto) {
         var dataTransformationDTO = (DataTransformationDTOImpl) dto;
 
-        var properties = dataTransformationDTO.entries.stream().map(e -> switch (e.newPath) {
-            case DEVICE_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_ID);
-            case DEVICE_NAME -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_NAME);
-            case DATA_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DATA_ID);
-            case REPORTED_AT -> PropertyTransformation.create(e.oldPath, PropertyName.REPORTED_AT);
-            case LATITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LATITUDE);
-            case LONGITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LONGITUDE);
-            case TEMPERATURE -> PropertyTransformation.create(e.oldPath, PropertyName.TEMPERATURE);
-            case MOTION -> PropertyTransformation.create(e.oldPath, PropertyName.MOTION);
-            case VELOCITY -> PropertyTransformation.create(e.oldPath, PropertyName.VELOCITY);
-            case AQI -> PropertyTransformation.create(e.oldPath, PropertyName.AQI);
-            case HUMIDITY -> PropertyTransformation.create(e.oldPath, PropertyName.HUMIDITY);
-            case PRESSURE -> PropertyTransformation.create(e.oldPath, PropertyName.PRESSURE);
-            case SOIL_MOISTURE -> PropertyTransformation.create(e.oldPath, PropertyName.SOIL_MOISTURE);
-            case ILLUMINANCE -> PropertyTransformation.create(e.oldPath, PropertyName.ILLUMINANCE);
-            case ALTITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.ALTITUDE);
-            case BATTERY_VOLTS -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_VOLTS);
-            case BATTERY_PERCENTAGE -> PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_PERCENTAGE);
-            case ALARM -> PropertyTransformation.create(e.oldPath, PropertyName.ALARM);
-        }).toArray(PropertyTransformation[]::new);
+        var properties = dataTransformationDTO.entries.stream()
+                .filter(kt -> kt.oldPath != null && !kt.oldPath.isBlank() && kt.sensorID != null)
+                .map(e -> switch (e.newPath) {
+                    case DEVICE_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_ID, e.sensorID);
+                    case DEVICE_NAME -> PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_NAME, e.sensorID);
+                    case DATA_ID -> PropertyTransformation.create(e.oldPath, PropertyName.DATA_ID, e.sensorID);
+                    case REPORTED_AT -> PropertyTransformation.create(e.oldPath, PropertyName.REPORTED_AT, e.sensorID);
+                    case LATITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LATITUDE, e.sensorID);
+                    case LONGITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.LONGITUDE, e.sensorID);
+                    case TEMPERATURE -> PropertyTransformation.create(e.oldPath, PropertyName.TEMPERATURE, e.sensorID);
+                    case MOTION -> PropertyTransformation.create(e.oldPath, PropertyName.MOTION, e.sensorID);
+                    case VELOCITY -> PropertyTransformation.create(e.oldPath, PropertyName.VELOCITY, e.sensorID);
+                    case AQI -> PropertyTransformation.create(e.oldPath, PropertyName.AQI, e.sensorID);
+                    case AIR_HUMIDITY_GRAMS_PER_CUBIC_METER ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER, e.sensorID);
+                    case AIR_HUMIDITY_RELATIVE_PERCENTAGE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE, e.sensorID);
+                    case AIR_PRESSURE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.AIR_PRESSURE, e.sensorID);
+                    case SOIL_MOISTURE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.SOIL_MOISTURE, e.sensorID);
+                    case ILLUMINANCE -> PropertyTransformation.create(e.oldPath, PropertyName.ILLUMINANCE, e.sensorID);
+                    case ALTITUDE -> PropertyTransformation.create(e.oldPath, PropertyName.ALTITUDE, e.sensorID);
+                    case BATTERY_VOLTS ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_VOLTS, e.sensorID);
+                    case BATTERY_MAX_VOLTS ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_MAX_VOLTS, e.sensorID);
+                    case BATTERY_MIN_VOLTS ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_MIN_VOLTS, e.sensorID);
+                    case BATTERY_PERCENTAGE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.BATTERY_PERCENTAGE, e.sensorID);
+                    case TRIGGER -> PropertyTransformation.create(e.oldPath, PropertyName.TRIGGER, e.sensorID);
+
+                    case CO -> PropertyTransformation.create(e.oldPath, PropertyName.CO, e.sensorID);
+                    case CO2 -> PropertyTransformation.create(e.oldPath, PropertyName.CO2, e.sensorID);
+                    case DISTANCE -> PropertyTransformation.create(e.oldPath, PropertyName.DISTANCE, e.sensorID);
+                    case MAX_DISTANCE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.MAX_DISTANCE, e.sensorID);
+                    case MIN_DISTANCE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.MIN_DISTANCE, e.sensorID);
+                    case NH3 -> PropertyTransformation.create(e.oldPath, PropertyName.NH3, e.sensorID);
+                    case NO2 -> PropertyTransformation.create(e.oldPath, PropertyName.NO2, e.sensorID);
+                    case O3 -> PropertyTransformation.create(e.oldPath, PropertyName.O3, e.sensorID);
+                    case OCCUPATION -> PropertyTransformation.create(e.oldPath, PropertyName.OCCUPATION, e.sensorID);
+                    case PH -> PropertyTransformation.create(e.oldPath, PropertyName.PH, e.sensorID);
+                    case PM10 -> PropertyTransformation.create(e.oldPath, PropertyName.PM10, e.sensorID);
+                    case PM2_5 -> PropertyTransformation.create(e.oldPath, PropertyName.PM2_5, e.sensorID);
+                    case SOIL_CONDUCTIVITY ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.SOIL_CONDUCTIVITY, e.sensorID);
+                    case VOC -> PropertyTransformation.create(e.oldPath, PropertyName.VOC, e.sensorID);
+                    case WATER_PRESSURE ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.WATER_PRESSURE, e.sensorID);
+                }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
-                .map(PropertyTransformation::newPath)
+                .map(p -> p.newPath() + "-" + p.subSensorId())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .values()
                 .stream()
@@ -90,17 +123,37 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case MOTION -> PropertyNameDTOImpl.MOTION;
             case VELOCITY -> PropertyNameDTOImpl.VELOCITY;
             case AQI -> PropertyNameDTOImpl.AQI;
-            case HUMIDITY -> PropertyNameDTOImpl.HUMIDITY;
-            case PRESSURE -> PropertyNameDTOImpl.PRESSURE;
+            case AIR_HUMIDITY_GRAMS_PER_CUBIC_METER -> PropertyNameDTOImpl.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER;
+            case AIR_HUMIDITY_RELATIVE_PERCENTAGE -> PropertyNameDTOImpl.AIR_HUMIDITY_RELATIVE_PERCENTAGE;
+            case AIR_PRESSURE -> PropertyNameDTOImpl.AIR_PRESSURE;
             case SOIL_MOISTURE -> PropertyNameDTOImpl.SOIL_MOISTURE;
             case ILLUMINANCE -> PropertyNameDTOImpl.ILLUMINANCE;
             case ALTITUDE -> PropertyNameDTOImpl.ALTITUDE;
             case BATTERY_VOLTS -> PropertyNameDTOImpl.BATTERY_VOLTS;
+            case WATER_PRESSURE -> PropertyNameDTOImpl.WATER_PRESSURE;
             case BATTERY_PERCENTAGE -> PropertyNameDTOImpl.BATTERY_PERCENTAGE;
-            case ALARM -> PropertyNameDTOImpl.ALARM;
+            case TRIGGER -> PropertyNameDTOImpl.TRIGGER;
+            case BATTERY_MIN_VOLTS -> PropertyNameDTOImpl.BATTERY_MIN_VOLTS;
+            case BATTERY_MAX_VOLTS -> PropertyNameDTOImpl.BATTERY_MAX_VOLTS;
+            case PH -> PropertyNameDTOImpl.PH;
+            case DISTANCE -> PropertyNameDTOImpl.DISTANCE;
+            case MIN_DISTANCE -> PropertyNameDTOImpl.MIN_DISTANCE;
+            case MAX_DISTANCE -> PropertyNameDTOImpl.MAX_DISTANCE;
+            case OCCUPATION -> PropertyNameDTOImpl.OCCUPATION;
+            case SOIL_CONDUCTIVITY -> PropertyNameDTOImpl.SOIL_CONDUCTIVITY;
+            case CO2 -> PropertyNameDTOImpl.CO2;
+            case CO -> PropertyNameDTOImpl.CO;
+            case NH3 -> PropertyNameDTOImpl.NH3;
+            case O3 -> PropertyNameDTOImpl.O3;
+            case NO2 -> PropertyNameDTOImpl.NO2;
+            case VOC -> PropertyNameDTOImpl.VOC;
+            case PM2_5 -> PropertyNameDTOImpl.PM2_5;
+            case PM10 -> PropertyNameDTOImpl.PM10;
             default -> throw new RuntimeException("Invalid Property");
         };
+
         entry.oldPath = kt.oldPath();
+        entry.sensorID = kt.subSensorId();
         return entry;
     }
 

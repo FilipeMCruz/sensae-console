@@ -7,7 +7,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgr
 import java.util.Optional;
 
 @Repository
-public interface RecordsRepositoryPostgres extends CrudRepository<DeviceRecordsPostgres, Long> {
+public interface DeviceRepositoryPostgres extends CrudRepository<DeviceRecordsPostgres, Long> {
 
     Optional<DeviceRecordsPostgres> findByDeviceId(String deviceId);
 }

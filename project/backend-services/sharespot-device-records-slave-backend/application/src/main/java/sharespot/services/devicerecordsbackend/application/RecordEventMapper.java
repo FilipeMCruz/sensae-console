@@ -1,6 +1,6 @@
 package sharespot.services.devicerecordsbackend.application;
 
-import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 
 public interface RecordEventMapper {
 

@@ -3,11 +3,8 @@ package sharespot.services.devicerecordsbackend.application;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.routing.keys.*;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -47,13 +44,30 @@ public class SensorDataHandlerService {
     }
 
     private Optional<ProcessedSensorDataDTO> inToOutData(ProcessedSensorDataDTO node, RoutingKeys keys) {
-        return Optional.ofNullable(appender.tryToAppend(node));
+        var deviceWithSubDevices = appender.tryToAppend(node);
+        deviceWithSubDevices.sensors().forEach(sub -> this.publishSubSensor(sub, keys));
+        return Optional.ofNullable(deviceWithSubDevices.controller());
+    }
+
+    public void publishSubSensor(ProcessedSensorDataDTO data, RoutingKeys keys) {
+        subSensorInToOutKeys(data, keys)
+                .map(sub -> MessageSupplied.create(data, sub))
+                .ifPresent(dataStream::next);
     }
 
     private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .withRecords(RecordsOptions.WITH_RECORDS)
+                .from(keys);
+    }
+
+    private Optional<RoutingKeys> subSensorInToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
+        return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+                .withUpdated(data)
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
+                .withOwnership(DomainOwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
+                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .from(keys);
     }
 }

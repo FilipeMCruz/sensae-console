@@ -3,8 +3,12 @@ package sharespot.services.devicerecordsbackend.domainservices;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
-import sharespot.services.devicerecordsbackend.domain.model.Device;
+import sharespot.services.devicerecordsbackend.domain.model.device.Device;
+import sharespot.services.devicerecordsbackend.domain.model.DeviceRepository;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceName;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
+import sharespot.services.devicerecordsbackend.domain.model.subDevices.SubDevices;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -14,9 +18,9 @@ public class DeviceRecordCache {
 
     private final Cache<DeviceId, DeviceRecords> cache;
 
-    private final RecordsRepository repository;
+    private final DeviceRepository repository;
 
-    public DeviceRecordCache(RecordsRepository repository) {
+    public DeviceRecordCache(DeviceRepository repository) {
         this.repository = repository;
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))
@@ -45,6 +49,6 @@ public class DeviceRecordCache {
     }
 
     private DeviceRecords create(DeviceId id, DeviceName name) {
-        return repository.add(new DeviceRecords(new Device(id, name), Records.empty()));
+        return repository.add(new DeviceRecords(new Device(id, name), Records.empty(), SubDevices.empty()));
     }
 }

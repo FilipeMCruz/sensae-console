@@ -3,7 +3,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.int
 import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.DeviceIdDTO;
 import sharespot.services.devicerecordsbackend.application.RecordEventMapper;
-import sharespot.services.devicerecordsbackend.domain.model.records.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.internal.model.DeviceIdDTOImpl;
 
 @Service

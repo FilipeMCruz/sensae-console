@@ -78,7 +78,7 @@ public class SensorDataPublisher {
             return data -> true;
         }
         return data -> this.gardenCache.fetchByIds(gardenIds.stream())
-                .anyMatch(g -> g.area().contains(GPSPoint.from(data.data.gps)));
+                .anyMatch(g -> g.area().contains(GPSPoint.from(data.getSensorData().gps)));
     }
 
     private Predicate<ProcessedSensorDataDTO> withContent(String content) {

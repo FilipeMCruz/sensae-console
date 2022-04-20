@@ -1,10 +1,10 @@
-package sharespot.services.datavalidator.application.validators.alarm;
+package sharespot.services.datavalidator.application.validators.trigger;
 
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import sharespot.services.datavalidator.application.validators.DataValidator;
 
-public class AlarmDataValidator implements DataValidator {
+public class TriggerDataValidator implements DataValidator {
 
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {

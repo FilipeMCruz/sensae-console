@@ -1,21 +1,27 @@
 type DeviceRecords {
     device : Device
     entries : [RecordEntry]
+    subDevices : [SubDevice]
 }
 
 type RecordEntry {
-    label: String
+    label : String
     content : String
-    type: RecordType
+    type : RecordType
 }
 
 type Device {
-    id: String
-    name: String
+    id : String
+    name : String
+}
+
+type SubDevice {
+    id : String
+    ref : Int
 }
 
 type DeviceId {
-    id: String
+    id : String
 }
 
 enum RecordType {
@@ -24,17 +30,23 @@ enum RecordType {
 }
 
 input DeviceInput {
-    id: String
-    name: String
+    id : String
+    name : String
 }
 
 input DeviceRecordsInput {
     device : DeviceInput
     entries : [RecordEntryInput]
+    subDevices : [SubDeviceInput]
 }
 
 input RecordEntryInput {
-    label: String
+    label : String
     content : String
-    type: RecordType
+    type : RecordType
+}
+
+input SubDeviceInput {
+    id : String
+    ref : Int
 }

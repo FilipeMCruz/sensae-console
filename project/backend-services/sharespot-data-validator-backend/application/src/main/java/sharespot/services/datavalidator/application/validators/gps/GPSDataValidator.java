@@ -3,7 +3,7 @@ package sharespot.services.datavalidator.application.validators.gps;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 import sharespot.services.datavalidator.application.validators.DataValidator;
 
@@ -19,19 +19,19 @@ public class GPSDataValidator implements DataValidator {
         this.boxes = new ArrayList<>();
         initBoxes();
     }
-    
+
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
         var legitimacy = DataLegitimacyOptions.CORRECT;
 
         if (data.hasAllProperties(PropertyName.LATITUDE, PropertyName.LONGITUDE)) {
-            if (!inside(data.data.gps, boxes)) {
+            if (!inside(data.getSensorData().gps, boxes)) {
                 legitimacy = DataLegitimacyOptions.INCORRECT;
             }
         }
 
         if (data.hasProperty(PropertyName.ALTITUDE)) {
-            if (data.data.gps.altitude > 5000 || data.data.gps.altitude < -50) {
+            if (data.getSensorData().gps.altitude > 5000 || data.getSensorData().gps.altitude < -50) {
                 legitimacy = DataLegitimacyOptions.INCORRECT;
             }
         }

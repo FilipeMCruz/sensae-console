@@ -9,10 +9,6 @@ public class AQIDataValidator implements DataValidator {
 
     @Override
     public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
-        if (!data.hasProperty(PropertyName.AQI)) {
-            return DataLegitimacyOptions.CORRECT;
-        }
-        
-        return DataLegitimacyOptions.UNDETERMINED;
+        return DataLegitimacyOptions.CORRECT;
     }
 }

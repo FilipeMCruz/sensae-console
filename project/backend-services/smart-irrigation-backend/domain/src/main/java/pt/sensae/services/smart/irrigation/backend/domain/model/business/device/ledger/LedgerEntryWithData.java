@@ -12,7 +12,7 @@ public record LedgerEntryWithData(DeviceContent content, OpenDate openAt, CloseD
     }
 
     public boolean isIn(ReportTime time) {
-        return time.value().isAfter(openAt.value()) &&
+        return time.value().isAfter(openAt.value().minusMillis(10)) &&
                 (closeAt.value() == null || time.value().isBefore(closeAt.value()));
     }
 }

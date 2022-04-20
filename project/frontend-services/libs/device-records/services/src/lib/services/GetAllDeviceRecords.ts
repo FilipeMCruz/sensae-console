@@ -32,6 +32,10 @@ export class GetAllDeviceRecords {
             content
             type
           }
+          subDevices {
+            id
+            ref
+          }
         }
       }
     `;

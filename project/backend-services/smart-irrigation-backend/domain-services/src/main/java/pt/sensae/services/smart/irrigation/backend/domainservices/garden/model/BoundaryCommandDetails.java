@@ -8,5 +8,5 @@ public class BoundaryCommandDetails {
 
     public Double longitude;
 
-    public Double altitude;
+    public Float altitude;
 }

@@ -4,7 +4,7 @@ import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.inte
 import org.springframework.stereotype.Service;
 import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 import sharespot.services.devicerecordsbackend.application.RecordEventMapper;
-import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 
 @Service
 public class RecordEventMapperImpl implements RecordEventMapper {

@@ -7,12 +7,13 @@
   >
     Reload Devices
   </button>
-  <div class="list">
+  <div class="list" *ngIf="!this.loading">
     <mat-card *ngFor="let record of this.records" class="item">
-      <mat-card-title>Device Record</mat-card-title>
+      <mat-card-title>Device Information</mat-card-title>
       <mat-card-content>
         <frontend-services-device-record
-          [entry]="record"
+          [devices]="records"
+          [deviceEntry]="record"
           [deviceViewEntry]="deviceViewType.Edit"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"
@@ -22,9 +23,10 @@
       </mat-card-content>
     </mat-card>
     <mat-card *ngIf="canEdit()" class="item">
-      <mat-card-title>New Device Record</mat-card-title>
+      <mat-card-title>New Device Information</mat-card-title>
       <mat-card-content>
         <frontend-services-device-record
+          [devices]="records"
           (newDeviceEvent)="addItem($event)"
           [deviceViewEntry]="deviceViewType.New"
           [canEdit]="canEdit()"
@@ -32,5 +34,13 @@
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>
+  </div>
+  <div *ngIf="this.loading" class="wrapper">
+    <div class="notfound">
+      <h1>!</h1>
+    </div>
+    <div>
+      Loading Data
+    </div>
   </div>
 </div>

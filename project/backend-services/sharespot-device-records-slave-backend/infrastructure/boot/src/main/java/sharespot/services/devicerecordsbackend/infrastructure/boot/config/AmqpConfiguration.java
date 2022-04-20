@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.*;
 import sharespot.services.devicerecordsbackend.application.RoutingKeysProvider;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.egress.controller.SensorDataSupplier;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 
 import static sharespot.services.devicerecordsbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.devicerecordsbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -18,10 +20,6 @@ public class AmqpConfiguration {
 
     public static final String MASTER_EXCHANGE = "Sharespot Device Records Master Exchange";
     public static final String MASTER_QUEUE = "Sharespot Device Records Master Exchange -> Sharespot Device Records Slave Queue";
-
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
-
-    public static final String INGRESS_QUEUE = "Sharespot Device Records Slave Queue";
 
     private final RoutingKeysProvider provider;
 
@@ -49,12 +47,12 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(SensorDataSupplier.TOPIC_EXCHANGE);
     }
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(INGRESS_QUEUE)
+        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -65,24 +63,12 @@ public class AmqpConfiguration {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
-    }
-
-    @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
     }
 }

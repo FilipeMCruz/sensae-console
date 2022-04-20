@@ -1,17 +1,15 @@
 package sharespot.services.identitymanagementslavebackend.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.PermissionsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
+import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.egress.controller.SensorDataSupplier;
+import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -21,10 +19,6 @@ public class AmqpConfiguration {
 
     public static final String MASTER_EXCHANGE = "Sharespot Identity Management Master Exchange";
     public static final String MASTER_QUEUE = "Sharespot Identity Management Master Exchange -> Sharespot Identity Management Slave Queue";
-
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
-
-    public static final String INGRESS_QUEUE = "Sharespot Identity Management Slave Queue";
 
     private final RoutingKeysProvider provider;
 
@@ -52,12 +46,12 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(SensorDataSupplier.TOPIC_EXCHANGE);
     }
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(INGRESS_QUEUE)
+        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -67,24 +61,12 @@ public class AmqpConfiguration {
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
-                .withPermissions(PermissionsOptions.UNIDENTIFIED_PERMISSIONS)
+                .withOwnership(DomainOwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
-    }
-
-    @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
     }
 }

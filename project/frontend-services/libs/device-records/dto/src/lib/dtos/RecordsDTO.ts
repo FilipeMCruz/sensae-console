@@ -13,6 +13,7 @@ export interface DeviceRecordDelete {
 export interface DeviceRecordDTO {
   device: DeviceDTO;
   entries: Array<RecordEntryDTO>;
+  subDevices: Array<SubDevice>;
 }
 
 export interface DeviceDTO {
@@ -34,4 +35,9 @@ export enum RecordTypeDTO {
 export enum SensorDataRecordLabelDTO {
   GPS_LATITUDE = 'gpsLatitude',
   GPS_LONGITUDE = 'gpsLongitude',
+}
+
+export interface SubDevice {
+  id: string;
+  ref: number;
 }

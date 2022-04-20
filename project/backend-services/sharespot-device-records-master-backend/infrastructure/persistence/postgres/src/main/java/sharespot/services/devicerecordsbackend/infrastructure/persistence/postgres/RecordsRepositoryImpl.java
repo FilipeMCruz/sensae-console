@@ -2,7 +2,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.persistence.postg
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper.RecordMapper;
@@ -33,6 +33,9 @@ public class RecordsRepositoryImpl implements RecordsRepository {
             old.entries.addAll(deviceRecordsPostgres.entries);
             old.entries.forEach(e -> e.records = old);
             old.name = deviceRecordsPostgres.name;
+            old.subSensors.clear();
+            old.subSensors.addAll(deviceRecordsPostgres.subSensors);
+            old.subSensors.forEach(s -> s.controller = old);
             repositoryPostgres.save(old);
         } else {
             repositoryPostgres.save(deviceRecordsPostgres);

@@ -1,10 +1,13 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.smart.irrigation.backend.application.DataHandlerService;
+import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
@@ -22,9 +25,10 @@ public class ValveSensorDataConsumer {
     }
 
     @RabbitListener(queues = INGRESS_QUEUE)
-    public void receiveUpdate(MessageConsumed<ProcessedSensorDataDTO> in) {
-        logConsumedMessage(in);
-        handler.handle(in.data);
+    public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
+        var consumed = MessageMapper.toModel(in.getBody());
+        logConsumedMessage(consumed);
+        handler.handle(consumed.data);
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {

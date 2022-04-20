@@ -5,15 +5,16 @@ import sharespot.services.devicerecordsbackend.application.DeviceDTO;
 import sharespot.services.devicerecordsbackend.application.DeviceRecordDTO;
 import sharespot.services.devicerecordsbackend.application.RecordMapper;
 import sharespot.services.devicerecordsbackend.domain.model.records.Device;
-import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.exceptions.NotValidException;
 import sharespot.services.devicerecordsbackend.domain.model.records.*;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceRecordDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordEntryDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordTypeDTOImpl;
+import sharespot.services.devicerecordsbackend.domain.model.subDevices.DeviceRef;
+import sharespot.services.devicerecordsbackend.domain.model.subDevices.SubDevice;
+import sharespot.services.devicerecordsbackend.domain.model.subDevices.SubDevices;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,6 +35,10 @@ public class RecordMapperImpl implements RecordMapper {
             }
         }).collect(Collectors.toList());
 
+        var subDevices = deviceDTO.subDevices.stream()
+                .map(sub -> new SubDevice(new DeviceId(UUID.fromString(sub.id)), new DeviceRef(sub.ref)))
+                .collect(Collectors.toSet());
+
         var hasSensorLabelDuplicates = records.stream()
                 .filter(e -> e instanceof SensorDataRecordEntry)
                 .map(e -> ((SensorDataRecordEntry) e).label())
@@ -50,9 +55,32 @@ public class RecordMapperImpl implements RecordMapper {
                 .stream()
                 .anyMatch(occurrences -> occurrences != 1);
 
+        var hasSubDevicesRefDuplicate = subDevices.stream()
+                .map(SubDevice::ref)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .anyMatch(occurrences -> occurrences != 1);
+
+        var hasSubDevicesIdDuplicate = subDevices.stream()
+                .map(SubDevice::id)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .values()
+                .stream()
+                .anyMatch(occurrences -> occurrences != 1);
+
+        if (hasSubDevicesRefDuplicate) {
+            throw new NotValidException("A device can't have two equal refs to sub devices");
+        }
+
+        if (hasSubDevicesIdDuplicate) {
+            throw new NotValidException("A device can't have the same sub device for two or more refs");
+        }
+
         if (hasSensorLabelDuplicates) {
             throw new NotValidException("A record can't have two equal Sensor Data Labels");
         }
+
         if (hasDuplicates) {
             throw new NotValidException("A record can't have two equal Basic Labels");
         }
@@ -60,7 +88,7 @@ public class RecordMapperImpl implements RecordMapper {
         var id = new DeviceId(UUID.fromString(deviceDTO.device.id));
         var name = new DeviceName(deviceDTO.device.name);
 
-        return new DeviceRecords(new Device(id, name), new Records(records));
+        return new DeviceRecords(new Device(id, name), new Records(records), new SubDevices(subDevices));
     }
 
     @Override
@@ -81,6 +109,14 @@ public class RecordMapperImpl implements RecordMapper {
             entry.label = e.getLabel();
             return entry;
         }).collect(Collectors.toSet());
+
+        dto.subDevices = domain.subDevices().entries().stream().map(sub -> {
+            var subDevice = new SubDeviceDTOImpl();
+            subDevice.id = sub.id().value().toString();
+            subDevice.ref = sub.ref().value();
+            return subDevice;
+        }).collect(Collectors.toSet());
+
         return dto;
     }
 

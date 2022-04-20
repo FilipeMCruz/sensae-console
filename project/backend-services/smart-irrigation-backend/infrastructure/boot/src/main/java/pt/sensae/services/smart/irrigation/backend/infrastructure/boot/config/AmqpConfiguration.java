@@ -1,13 +1,12 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ParkSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.StoveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.routing.keys.*;
 import pt.sharespot.iot.core.routing.keys.data.*;
 
@@ -16,12 +15,6 @@ import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.co
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String PARK_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (park)";
-
-    public static final String STOVE_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (stove)";
-
-    public static final String VALVE_INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (valve)";
 
     public static final String TOPIC_EXCHANGE = "sensor.topic";
 
@@ -33,7 +26,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue parkQueue() {
-        return QueueBuilder.durable(PARK_INGRESS_QUEUE)
+        return QueueBuilder.durable(ParkSensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -41,7 +34,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue stoveQueue() {
-        return QueueBuilder.durable(STOVE_INGRESS_QUEUE)
+        return QueueBuilder.durable(StoveSensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -49,7 +42,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue valveQueue() {
-        return QueueBuilder.durable(VALVE_INGRESS_QUEUE)
+        return QueueBuilder.durable(ValveSensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -69,7 +62,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withSoilMoisture(SoilMoistureDataOptions.WITH_SOIL_MOISTURE_DATA)
                 .withIlluminance(IlluminanceDataOptions.WITH_ILLUMINANCE_DATA)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -85,9 +78,9 @@ public class AmqpConfiguration {
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
-                .withHumidity(HumidityDataOptions.WITH_HUMIDITY_DATA)
+                .withAirHumidity(AirHumidityDataOptions.WITH_AIR_HUMIDITY_DATA)
                 .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -103,25 +96,13 @@ public class AmqpConfiguration {
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
-                .withAlarm(AlarmDataOptions.WITH_ALARM_DATA)
-                .withPermissions(PermissionsOptions.WITH_PERMISSIONS)
+                .withTrigger(TriggerDataOptions.WITH_TRIGGER_DATA)
+                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
             return BindingBuilder.bind(valveQueue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
-    }
-
-    @Bean
-    public MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate amqpTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(jsonMessageConverter());
-        return rabbitTemplate;
     }
 }

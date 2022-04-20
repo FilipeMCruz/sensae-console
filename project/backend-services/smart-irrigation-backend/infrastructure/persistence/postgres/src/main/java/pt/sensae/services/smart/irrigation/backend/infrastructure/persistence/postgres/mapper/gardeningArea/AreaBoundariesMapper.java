@@ -27,7 +27,7 @@ public class AreaBoundariesMapper {
 
     public static Area daoToModel(Stream<AreaBoundariesPostgres> points) {
         var collect = points.map(dao -> {
-            var aFloat = dao.altitude != null ? Double.parseDouble(dao.altitude) : null;
+            var aFloat = dao.altitude != null ? Float.parseFloat(dao.altitude) : null;
 
             var gpsPoint = new GPSPoint(Double.parseDouble(dao.latitude), Double.parseDouble(dao.longitude), aFloat);
             return new BoundaryPoint(dao.position, gpsPoint);

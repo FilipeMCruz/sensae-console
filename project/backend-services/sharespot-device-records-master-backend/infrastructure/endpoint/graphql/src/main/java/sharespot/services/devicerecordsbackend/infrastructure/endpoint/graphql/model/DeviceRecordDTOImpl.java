@@ -7,4 +7,6 @@ import java.util.Set;
 public class DeviceRecordDTOImpl implements DeviceRecordDTO {
     public DeviceDTOImpl device;
     public Set<RecordEntryDTOImpl> entries;
+
+    public Set<SubDeviceDTOImpl> subDevices;
 }

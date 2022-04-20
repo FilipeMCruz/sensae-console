@@ -25,23 +25,30 @@ public class SensorDataMapperImpl implements SensorDataMapper {
     public SensorDataDTO toDto(ProcessedSensorDataDTO dto) {
         var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
 
-        var alt = dto.data.gps.altitude != null ? dto.data.gps.altitude.toString() : "";
+        var alt = dto.getSensorData().gps.altitude != null ? dto.getSensorData().gps.altitude.toString() : "";
 
-        var gps = new GPSDataDetails(dto.data.gps.latitude.toString(), dto.data.gps.longitude.toString(), alt);
+        var gps = new GPSDataDetails(dto.getSensorData().gps.latitude.toString(), dto.getSensorData().gps.longitude.toString(), alt);
         SensorDataDetails payload;
         DeviceType type;
-        if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.HUMIDITY)) {
-            var temperature = new TemperatureDataDetails(dto.data.temperature.celsius.floatValue());
-            var humidity = new HumidityDataDetails(dto.data.humidity.gramspercubicmeter.floatValue());
+        
+        //TODO: use this to calculate humidity https://www.aqua-calc.com/calculate/humidity
+        if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
+            var temperature = new TemperatureDataDetails(dto.getSensorData().temperature.celsius);
+            var humidity = new HumidityDataDetails(dto.getSensorData().airHumidity.relativePercentage);
+            payload = new StoveSensorDataDetails(gps, temperature, humidity);
+            type = DeviceType.STOVE_SENSOR;
+        } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
+            var temperature = new TemperatureDataDetails(dto.getSensorData().temperature.celsius);
+            var humidity = new HumidityDataDetails(dto.getSensorData().airHumidity.gramsPerCubicMeter);
             payload = new StoveSensorDataDetails(gps, temperature, humidity);
             type = DeviceType.STOVE_SENSOR;
         } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
-            var lux = new IlluminanceDataDetails(dto.data.illuminance.lux.floatValue());
-            var moisture = new SoilMoistureDataDetails(dto.data.moisture.percentage.floatValue());
+            var lux = new IlluminanceDataDetails(dto.getSensorData().illuminance.lux);
+            var moisture = new SoilMoistureDataDetails(dto.getSensorData().soilMoisture.relativePercentage);
             payload = new ParkSensorDataDetails(gps, lux, moisture);
             type = DeviceType.PARK_SENSOR;
-        } else if (dto.hasProperty(PropertyName.ALARM)) {
-            var alertStatus = dto.data.alarm.value ? ValveStatusDataDetailsType.OPEN : ValveStatusDataDetailsType.CLOSE;
+        } else if (dto.hasProperty(PropertyName.TRIGGER)) {
+            var alertStatus = dto.getSensorData().trigger.value ? ValveStatusDataDetailsType.OPEN : ValveStatusDataDetailsType.CLOSE;
             var valve = new ValveStatusDataDetails(alertStatus);
             payload = new ValveDataDetails(gps, valve);
             type = DeviceType.VALVE;

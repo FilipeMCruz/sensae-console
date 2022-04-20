@@ -32,6 +32,15 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   ) {
   }
 
+  private static onNewData(data: Data[], newData: Data) {
+    const found = data.find(d => d.device.id);
+    if (found) {
+      found.update(newData);
+    } else {
+      data.push(newData);
+    }
+  }
+
   ngAfterViewInit(): void {
     this.fetchLatestData();
     this.subscribeToData();
@@ -60,21 +69,12 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   private subscribeToData() {
     const filter = new DataFilters([], [this.data.id], "");
     this.subscription = this.subscribeToDataService.getData(filter).subscribe(next => {
-        if (next.device.type === DeviceType.VALVE) {
-          this.onNewData(this.valvesData, next);
+        if (next.device.type.valueOf() === DeviceType.VALVE.valueOf()) {
+          GardenDialogComponent.onNewData(this.valvesData, next);
         } else {
-          this.onNewData(this.sensorsData, next);
+          GardenDialogComponent.onNewData(this.sensorsData, next);
         }
       },
       error => error);
-  }
-
-  private onNewData(data: Data[], newData: Data) {
-    const found = data.find(d => d.device.id);
-    if (found) {
-      found.update(newData);
-    } else {
-      this.sensorsData.push(newData);
-    }
   }
 }

@@ -5,6 +5,7 @@ import {
   RecordEntry,
   RecordEntryType,
   SensorDataRecordLabel,
+  SubDevice
 } from '@frontend-services/device-records/model';
 
 export class RecordMapper {
@@ -31,8 +32,10 @@ export class RecordMapper {
         }
       }
     });
+    const subDevices = dto.subDevices.map(deviceRef => new SubDevice(deviceRef.ref, deviceRef.id));
+
     const device = new Device(dto.device.id, dto.device.name);
-    return new DeviceRecord(device, entries);
+    return new DeviceRecord(device, entries, subDevices);
   }
 
   static modelToDto(model: DeviceRecord): DeviceRecordDTO {
@@ -62,9 +65,16 @@ export class RecordMapper {
         }
       }
     });
+    const subDevices = model.subDevices.map(sub => {
+      return {
+        id: sub.id,
+        ref: sub.reference
+      }
+    })
     return {
       device: {id: model.device.id, name: model.device.name},
       entries: entries,
+      subDevices: subDevices
     };
   }
 }

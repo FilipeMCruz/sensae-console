@@ -14,10 +14,7 @@ import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecord
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordEntry;
 import sharespot.services.devicerecordsbackend.domain.model.records.SensorDataRecordLabel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,7 +38,9 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .findFirst();
 
         if (latitudeOpt.isPresent() && longitudeOpt.isPresent()) {
-            domain.getSensorData().withGps(GPSDataDTO.ofLatLong(Double.valueOf(latitudeOpt.get().content()), Double.valueOf(longitudeOpt.get().content())));
+            domain.getSensorData()
+                    .withGps(GPSDataDTO.ofLatLong(Double.valueOf(latitudeOpt.get()
+                            .content()), Double.valueOf(longitudeOpt.get().content())));
         }
 
         domain.device.records = new DeviceRecordDTO(records.records()
@@ -51,6 +50,8 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .map(e -> (BasicRecordEntry) e)
                 .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
                 .collect(Collectors.toSet()));
+
+        domain.device.name = records.device().name().value();
 
         return new DeviceWithSubDevices(domain, processSubSensors(domain, records));
     }
@@ -69,7 +70,7 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 processedSensorDataDTO.device = deviceInformationDTO;
                 processedSensorDataDTO.reportedAt = domain.reportedAt;
                 processedSensorDataDTO.dataId = UUID.randomUUID();
-                processedSensorDataDTO.measures.put(0, subSensorMeasures);
+                processedSensorDataDTO.measures = Map.of(0, subSensorMeasures);
                 subDevices.add(processedSensorDataDTO);
             }
         });

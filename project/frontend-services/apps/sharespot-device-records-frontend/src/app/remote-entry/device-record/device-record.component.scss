@@ -16,12 +16,26 @@
 }
 
 .item-list {
-  margin-top: 10px;
+  margin: 10px;
   border-radius: 10px;
   box-shadow: #0c1821 0px 2px 3px -1px;
-  max-width: 100%;
+  max-width: 90%;
 }
 
 .to-right {
   float: right;
+}
+
+.entries {
+  height: 28vh;
+}
+
+.inner-element {
+  height: 20vh;
+  min-height: 20vh;
+  overflow: auto;
+}
+
+.empty {
+  height: inherit;
 }

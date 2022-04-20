@@ -11,12 +11,10 @@ import sharespot.services.devicerecordsbackend.domain.model.records.*;
 import sharespot.services.devicerecordsbackend.domain.model.subDevices.DeviceRef;
 import sharespot.services.devicerecordsbackend.domain.model.subDevices.SubDevice;
 import sharespot.services.devicerecordsbackend.domain.model.subDevices.SubDevices;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.DeviceRecordDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordEntryDTOImpl;
-import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.RecordTypeDTOImpl;
+import sharespot.services.devicerecordsbackend.infrastructure.endpoint.graphql.model.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -111,6 +109,14 @@ public class RecordMapperImpl implements RecordMapper {
             entry.label = e.getLabel();
             return entry;
         }).collect(Collectors.toSet());
+
+        dto.subDevices = domain.subDevices().entries().stream().map(sub -> {
+            var subDevice = new SubDeviceDTOImpl();
+            subDevice.id = sub.id().value().toString();
+            subDevice.ref = sub.ref().value();
+            return subDevice;
+        }).collect(Collectors.toSet());
+
         return dto;
     }
 

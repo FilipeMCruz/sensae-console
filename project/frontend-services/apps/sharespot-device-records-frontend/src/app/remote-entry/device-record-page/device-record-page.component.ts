@@ -14,6 +14,7 @@ export class DeviceRecordPageComponent implements OnInit {
   records: Array<DeviceRecord> = new Array<DeviceRecord>();
 
   deviceViewType = DeviceViewType;
+  loading = true;
 
   constructor(
     public dialog: MatDialog,
@@ -43,9 +44,10 @@ export class DeviceRecordPageComponent implements OnInit {
   }
 
   fetchAllDevices() {
+    this.loading = true;
     this.recordsCollector
       .getData()
-      .subscribe((data: Array<DeviceRecord>) => (this.records = data));
+      .subscribe((data: Array<DeviceRecord>) => (this.records = data), error => error, () => this.loading = false);
   }
 
   updateItem(event: DeviceRecord) {

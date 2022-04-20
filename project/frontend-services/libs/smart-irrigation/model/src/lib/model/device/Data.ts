@@ -88,7 +88,6 @@ export class Data {
   }
 
   asFeature(): Feature {
-    console.log(this.data.gps.toCoordinates())
     return {
       type: 'Feature',
       geometry: {

@@ -2,7 +2,7 @@ package sharespot.services.devicerecordsbackend.infrastructure.persistence.postg
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 import sharespot.services.devicerecordsbackend.domain.model.records.DeviceRecords;
 import sharespot.services.devicerecordsbackend.domain.model.records.RecordsRepository;
 import sharespot.services.devicerecordsbackend.infrastructure.persistence.postgres.mapper.RecordMapper;

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import sharespot.services.devicerecordsbackend.domain.model.DeviceId;
+import sharespot.services.devicerecordsbackend.domain.model.device.DeviceId;
 
 import javax.annotation.PostConstruct;
 
@@ -14,7 +14,7 @@ public class RecordEventHandlerService {
     private FluxSink<DeviceDTO> dataStream;
 
     private ConnectableFlux<DeviceDTO> dataPublisher;
-    
+
     private final RecordEventMapper mapper;
 
     public RecordEventHandlerService(RecordEventMapper mapper) {

@@ -117,7 +117,7 @@
               <mat-label>Sensor Data</mat-label>
               <mat-icon matSuffix>label</mat-icon>
               <mat-select [(ngModel)]="currentEntry.label">
-                <mat-option [value]="currentEntry.label">{{ currentEntry.label }}</mat-option>
+                <mat-option *ngIf="currentEntry.label" [value]="currentEntry.label">{{ currentEntry.label }}</mat-option>
                 <mat-option *ngFor="let option of sensorDataType" [value]="option">
                   {{ option }}
                 </mat-option>

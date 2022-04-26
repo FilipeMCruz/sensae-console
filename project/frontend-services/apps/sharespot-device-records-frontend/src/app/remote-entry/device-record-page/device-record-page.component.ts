@@ -47,7 +47,10 @@ export class DeviceRecordPageComponent implements OnInit {
     this.loading = true;
     this.recordsCollector
       .getData()
-      .subscribe((data: Array<DeviceRecord>) => (this.records = data), error => error, () => this.loading = false);
+      .subscribe(
+        (data: Array<DeviceRecord>) => (this.records = data.sort((a, b) => a.device.name.localeCompare(b.device.name))),
+        error => error,
+        () => this.loading = false);
   }
 
   updateItem(event: DeviceRecord) {

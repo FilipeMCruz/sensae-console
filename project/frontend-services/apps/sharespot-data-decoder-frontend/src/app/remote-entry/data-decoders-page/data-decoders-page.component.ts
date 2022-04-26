@@ -15,6 +15,7 @@ export class DataDecodersPageComponent implements OnInit {
     new Array<DataDecoder>();
 
   dataDecoderViewType = DataDecoderViewType;
+  loading = true;
 
   constructor(
     public dialog: MatDialog,
@@ -44,11 +45,13 @@ export class DataDecodersPageComponent implements OnInit {
   }
 
   fetchAllDataDecoders() {
+    this.loading = true;
     this.collector
       .getData()
       .subscribe(
-        (data: Array<DataDecoder>) => (this.dataDecoders = data)
-      );
+        (data: Array<DataDecoder>) => (this.dataDecoders = data.sort((a, b) => a.data.type.localeCompare(b.data.type))),
+        error => error,
+        () => this.loading = false);
   }
 
   updateItem(event: DataDecoder) {

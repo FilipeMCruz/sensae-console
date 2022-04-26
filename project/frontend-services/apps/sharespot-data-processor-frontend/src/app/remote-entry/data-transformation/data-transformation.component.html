@@ -72,10 +72,10 @@
           </mat-list-item>
         </mat-list>
         <br/>
-        <button
-          *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
-          mat-stroked-button
-          (click)="entryView = entryViewType.New"
+        <button class="to-right"
+                *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
+                mat-stroked-button
+                (click)="entryView = entryViewType.New"
         >
           New Entry
         </button>

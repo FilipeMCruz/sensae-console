@@ -8,17 +8,6 @@
     Reload Data Transformations
   </button>
   <div class="list" *ngIf="!this.loading">
-    <mat-card *ngIf="canEdit()" class="item">
-      <mat-card-title>New Data Transformation</mat-card-title>
-      <mat-card-content>
-        <frontend-services-data-transformation
-          (newDataTransformationEvent)="addItem($event)"
-          [dataTransformationViewEntry]="dataTransformationViewType.New"
-          [canEdit]="canEdit()"
-          [canDelete]="canDelete()"
-        ></frontend-services-data-transformation>
-      </mat-card-content>
-    </mat-card>
     <mat-card
       *ngFor="let transformation of this.dataTransformations"
       class="item"
@@ -32,6 +21,17 @@
           [canDelete]="canDelete()"
           (newDataTransformationEvent)="updateItem($event)"
           (deleteDataTransformationEvent)="deleteItem($event)"
+        ></frontend-services-data-transformation>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="canEdit()" class="item">
+      <mat-card-title>New Data Transformation</mat-card-title>
+      <mat-card-content>
+        <frontend-services-data-transformation
+          (newDataTransformationEvent)="addItem($event)"
+          [dataTransformationViewEntry]="dataTransformationViewType.New"
+          [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
         ></frontend-services-data-transformation>
       </mat-card-content>
     </mat-card>

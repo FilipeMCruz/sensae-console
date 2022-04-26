@@ -9,9 +9,9 @@ public class PermissionsMapper {
     public static Stream<String> toResult(Stream<PermissionType> permissions) {
         return permissions.distinct().map(p ->
                 switch (p) {
-                    case READ_DEVICE_RECORD -> "device_records:records:read";
-                    case EDIT_DEVICE_RECORD -> "device_records:records:edit";
-                    case DELETE_DEVICE_RECORD -> "device_records:records:delete";
+                    case READ_DEVICE_INFORMATION -> "device_management:device:read";
+                    case EDIT_DEVICE_INFORMATION -> "device_management:device:edit";
+                    case DELETE_DEVICE_INFORMATION -> "device_management:device:delete";
 
                     case READ_DATA_TRANSFORMATION -> "data_transformations:transformations:read";
                     case EDIT_DATA_TRANSFORMATION -> "data_transformations:transformations:edit";
@@ -51,9 +51,9 @@ public class PermissionsMapper {
     public static Stream<PermissionType> toDomain(Stream<String> permissions) {
         return permissions.distinct().map(p ->
                 switch (p) {
-                    case "device_records:records:read" -> PermissionType.READ_DEVICE_RECORD;
-                    case "device_records:records:edit" -> PermissionType.EDIT_DEVICE_RECORD;
-                    case "device_records:records:delete" -> PermissionType.DELETE_DEVICE_RECORD;
+                    case "device_management:device:read" -> PermissionType.READ_DEVICE_INFORMATION;
+                    case "device_management:device:edit" -> PermissionType.EDIT_DEVICE_INFORMATION;
+                    case "device_management:device:delete" -> PermissionType.DELETE_DEVICE_INFORMATION;
 
                     case "data_transformations:transformations:read" -> PermissionType.READ_DATA_TRANSFORMATION;
                     case "data_transformations:transformations:edit" -> PermissionType.EDIT_DATA_TRANSFORMATION;

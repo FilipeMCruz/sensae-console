@@ -17,7 +17,7 @@ export class GetAllDeviceRecords {
   }
 
   getData(): Observable<Array<DeviceRecord>> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_records:records:read"]))
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:read"]))
       return EMPTY;
 
     const query = gql`

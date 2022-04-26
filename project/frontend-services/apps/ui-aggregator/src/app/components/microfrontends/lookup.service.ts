@@ -84,7 +84,7 @@ export class LookupService {
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
-          permissions: Array.of('device_records:records:read'),
+          permissions: Array.of('device_management:device:read'),
         },
       },
       {

@@ -23,9 +23,9 @@ public class RecordCollectorService {
         this.authHandler = authHandler;
     }
 
-    public Stream<DeviceRecordDTO> records(AccessTokenDTO claims) {
+    public Stream<DeviceRecordDTO> catalog(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("device_records:records:read"))
+        if (!extract.permissions.contains("device_management:device:read"))
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect().map(mapper::domainToDto);

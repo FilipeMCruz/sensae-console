@@ -29,7 +29,7 @@ public class RecordRegisterService {
 
     public DeviceRecordDTO register(DeviceRecordDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("device_records:records:edit"))
+        if (!extract.permissions.contains("device_management:device:edit"))
             throw new UnauthorizedException("No Permissions");
 
         var deviceRecords = mapper.dtoToDomain(dto);

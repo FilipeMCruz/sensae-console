@@ -17,7 +17,7 @@ export class DeleteDeviceRecord {
   }
 
   delete(event: DeviceRecord): Observable<Device> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_records:records:delete"]))
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:delete"]))
       return EMPTY;
 
     const mutation = gql`

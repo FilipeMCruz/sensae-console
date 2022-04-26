@@ -84,24 +84,26 @@ function decoder(bytes, port) {
   const altitude = ((bytes[16] << 8) | bytes[17]) / 100;
 
   return {
-    gps: {
-      latitude: latitude,
-      longitude: longitude,
-      altitude: altitude,
+    0: {
+      gps: {
+        latitude: latitude,
+        longitude: longitude,
+        altitude: altitude,
+      },
+      //trigger: {
+      //  value: alarm,
+      //},
+      //battery: {
+      //  volts: batV,
+      //},
+      roll: roll, // this values are ignored since the model does not expect them
+      pitch: pitch, // this values are ignored since the model does not expect them
+      MD: motion_mode, // this values are ignored since the model does not expect them
+      LON: led_updown, // this values are ignored since the model does not expect them
+      FW: Firmware, // this values are ignored since the model does not expect them
+      HDOP: hdop, // this values are ignored since the model does not expect them
+      accuracy: 3, // this values are ignored since the model does not expect them
     },
-    alarm: {
-      value: alarm,
-    },
-    battery: {
-      volts: batV
-    },
-    roll: roll, // this values are ignored since the model does not expect them
-    pitch: pitch, // this values are ignored since the model does not expect them
-    MD: motion_mode, // this values are ignored since the model does not expect them
-    LON: led_updown, // this values are ignored since the model does not expect them
-    FW: Firmware, // this values are ignored since the model does not expect them
-    HDOP: hdop, // this values are ignored since the model does not expect them
-    accuracy: 3, // this values are ignored since the model does not expect them
   };
 }
 
@@ -113,6 +115,6 @@ function convert(object) {
       id: object.id,
       name: object.name,
     },
-    data: decodePayload(object.payload, object.port),
+    measures: decodePayload(object.payload, object.port),
   };
 }

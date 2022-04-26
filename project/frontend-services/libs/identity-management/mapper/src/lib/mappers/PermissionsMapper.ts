@@ -3,12 +3,12 @@ import {DomainPermissionType} from '@frontend-services/identity-management/model
 export class PermissionsMapper {
   static dtoToModel(dto: string): DomainPermissionType {
     switch (dto) {
-      case "device_records:records:read" :
-        return DomainPermissionType.READ_DEVICE_RECORD;
-      case "device_records:records:edit" :
-        return DomainPermissionType.EDIT_DEVICE_RECORD;
-      case "device_records:records:delete" :
-        return DomainPermissionType.DELETE_DEVICE_RECORD;
+      case "device_management:device:read" :
+        return DomainPermissionType.READ_DEVICE_INFORMATION;
+      case "device_management:device:edit" :
+        return DomainPermissionType.DELETE_DEVICE_INFORMATION;
+      case "device_management:device:delete" :
+        return DomainPermissionType.EDIT_DEVICE_INFORMATION;
 
       case "data_transformations:transformations:read" :
         return DomainPermissionType.READ_DATA_TRANSFORMATION;
@@ -73,12 +73,12 @@ export class PermissionsMapper {
 
   static modelToDto(model: DomainPermissionType): string {
     switch (model) {
-      case DomainPermissionType.READ_DEVICE_RECORD :
-        return "device_records:records:read";
-      case DomainPermissionType.EDIT_DEVICE_RECORD :
-        return "device_records:records:edit";
-      case DomainPermissionType.DELETE_DEVICE_RECORD :
-        return "device_records:records:delete";
+      case DomainPermissionType.READ_DEVICE_INFORMATION :
+        return "device_management:device:read";
+      case DomainPermissionType.DELETE_DEVICE_INFORMATION :
+        return "device_management:device:edit";
+      case DomainPermissionType.EDIT_DEVICE_INFORMATION :
+        return "device_management:device:delete";
 
       case DomainPermissionType.READ_DATA_TRANSFORMATION :
         return "data_transformations:transformations:read";

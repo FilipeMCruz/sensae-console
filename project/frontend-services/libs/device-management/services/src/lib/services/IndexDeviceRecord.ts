@@ -17,7 +17,7 @@ export class IndexDeviceRecord {
   }
 
   index(event: DeviceRecord): Observable<DeviceRecord> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_records:records:edit"]))
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:edit"]))
       return EMPTY;
 
     const mutation = gql`

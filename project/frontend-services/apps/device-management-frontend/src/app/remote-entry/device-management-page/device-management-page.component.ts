@@ -88,11 +88,11 @@ export class DeviceManagementPageComponent implements OnInit {
   }
 
   canEdit() {
-    return this.authService.isAllowed(Array.of("device_records:records:edit"))
+    return this.authService.isAllowed(Array.of("device_management:device:edit"))
   }
 
   canDelete() {
-    return this.authService.isAllowed(Array.of("device_records:records:delete"))
+    return this.authService.isAllowed(Array.of("device_management:device:delete"))
   }
 
 }

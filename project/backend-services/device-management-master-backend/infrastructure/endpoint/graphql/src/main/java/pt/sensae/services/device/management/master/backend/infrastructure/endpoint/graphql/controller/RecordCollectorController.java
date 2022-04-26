@@ -20,6 +20,6 @@ public class RecordCollectorController {
 
     @DgsQuery(field = "deviceRecords")
     public List<DeviceRecordDTO> collect(@RequestHeader("Authorization") String auth) {
-        return service.records(AuthMiddleware.buildAccessToken(auth)).toList();
+        return service.catalog(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

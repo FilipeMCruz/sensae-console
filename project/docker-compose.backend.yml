@@ -63,13 +63,13 @@ services:
       - sharespot-network
     ports:
       - 8084:8080
-  sharespot-data-validator-backend:
-    build: backend-services/sharespot-data-validator-backend
-    image: sharespot-data-validator-backend
+  data-validator-backend:
+    build: backend-services/data-validator-backend
+    image: data-validator-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-validator-backend.env
+      - ./secrets/prod/data-validator-backend.env
     networks:
       - sharespot-network
     ports:

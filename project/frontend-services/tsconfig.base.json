@@ -40,17 +40,17 @@
       "@frontend-services/data-processor/services": [
         "libs/data-processor/services/src/index.ts"
       ],
-      "@frontend-services/device-records/dto": [
-        "libs/device-records/dto/src/index.ts"
+      "@frontend-services/device-management/dto": [
+        "libs/device-management/dto/src/index.ts"
       ],
-      "@frontend-services/device-records/mapper": [
-        "libs/device-records/mapper/src/index.ts"
+      "@frontend-services/device-management/mapper": [
+        "libs/device-management/mapper/src/index.ts"
       ],
-      "@frontend-services/device-records/model": [
-        "libs/device-records/model/src/index.ts"
+      "@frontend-services/device-management/model": [
+        "libs/device-management/model/src/index.ts"
       ],
-      "@frontend-services/device-records/services": [
-        "libs/device-records/services/src/index.ts"
+      "@frontend-services/device-management/services": [
+        "libs/device-management/services/src/index.ts"
       ],
       "@frontend-services/fleet-management/dto": [
         "libs/fleet-management/dto/src/index.ts"

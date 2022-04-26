@@ -49,9 +49,9 @@ public class DomainPermissionTypePostgres {
 
     public static DomainPermissionTypePostgres create(PermissionType type) {
         return switch (type) {
-            case READ_DEVICE_RECORD -> new DomainPermissionTypePostgres(1);
-            case DELETE_DEVICE_RECORD -> new DomainPermissionTypePostgres(15);
-            case EDIT_DEVICE_RECORD -> new DomainPermissionTypePostgres(2);
+            case READ_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(1);
+            case DELETE_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(15);
+            case EDIT_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(2);
             case READ_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(3);
             case DELETE_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(17);
             case EDIT_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(4);
@@ -81,8 +81,8 @@ public class DomainPermissionTypePostgres {
 
     public static PermissionType from(DomainPermissionTypePostgres postgres) {
         return switch (postgres.type) {
-            case 1 -> PermissionType.READ_DEVICE_RECORD;
-            case 2 -> PermissionType.EDIT_DEVICE_RECORD;
+            case 1 -> PermissionType.READ_DEVICE_INFORMATION;
+            case 2 -> PermissionType.EDIT_DEVICE_INFORMATION;
             case 3 -> PermissionType.READ_DATA_TRANSFORMATION;
             case 4 -> PermissionType.EDIT_DATA_TRANSFORMATION;
             case 5 -> PermissionType.READ_LIVE_DATA_FLEET_MANAGEMENT;
@@ -95,7 +95,7 @@ public class DomainPermissionTypePostgres {
             case 12 -> PermissionType.READ_DATA_DECODER;
             case 13 -> PermissionType.EDIT_DATA_DECODER;
             case 14 -> PermissionType.CREATE_DOMAIN;
-            case 15 -> PermissionType.DELETE_DEVICE_RECORD;
+            case 15 -> PermissionType.DELETE_DEVICE_INFORMATION;
             case 16 -> PermissionType.READ_LATEST_DATA_FLEET_MANAGEMENT;
             case 17 -> PermissionType.DELETE_DATA_TRANSFORMATION;
             case 18 -> PermissionType.READ_LATEST_DATA_SMART_IRRIGATION;

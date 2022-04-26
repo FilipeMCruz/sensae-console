@@ -44,87 +44,94 @@
       Update
     </button>
   </ng-container>
+  <br>
+  <br>
 </p>
-<div>
-  Property Transformations:
-  <div *ngIf="entryView === entryViewType.List">
-    <mat-list>
-      <mat-list-item
-        class="item-list"
-        *ngFor="let entry of dataTransformation.entries; let i = index"
-      >
-        <mat-icon (click)="editEntry(i)" mat-list-icon>{{
-          getNameType(entry)
-          }}</mat-icon>
-        <div mat-line>{{ entry.newPath }}</div>
-        <div mat-line>{{ entry.oldPath }} </div>
-        <div mat-line>{{entry.getSubSensor()}}</div>
-        <button
-          *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
-          mat-icon-button
-          (click)="removeEntry($event, i)"
+<mat-tab-group>
+  <mat-tab label="Property Transformations">
+    <div class="entries">
+      <div *ngIf="entryView === entryViewType.List">
+        <mat-list class="inner-element">
+          <mat-list-item
+            class="item-list"
+            *ngFor="let entry of dataTransformation.entries; let i = index"
+          >
+            <mat-icon (click)="editEntry(i)" mat-list-icon>{{
+              getNameType(entry)
+              }}</mat-icon>
+            <div mat-line>{{ entry.newPath }}</div>
+            <div mat-line>{{ entry.oldPath }} </div>
+            <div mat-line><i>{{entry.getSubSensor()}}</i></div>
+            <button
+              *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
+              mat-icon-button
+              (click)="removeEntry($event, i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+        <br/>
+        <button class="to-right"
+                *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
+                mat-stroked-button
+                (click)="entryView = entryViewType.New"
         >
-          <mat-icon>delete</mat-icon>
+          New Entry
         </button>
-      </mat-list-item>
-    </mat-list>
-    <br/>
-    <button
-      *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
-      mat-stroked-button
-      (click)="entryView = entryViewType.New"
-    >
-      New Entry
-    </button>
-  </div>
-  <div *ngIf="entryView !== entryViewType.List">
-    <br/>
-    <mat-form-field class="medium-input">
-      <mat-label>Property Name</mat-label>
-      <mat-icon matSuffix>label</mat-icon>
-      <mat-select [(ngModel)]="currentEntry.newPath">
-        <mat-option *ngFor="let option of propertyNameTypes" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-      <mat-hint>Pick One</mat-hint>
-    </mat-form-field>
-    <mat-form-field class="big-input">
-      <mat-label>Sub Sensor Id</mat-label>
-      <input [disabled]="isGlobal(currentEntry.newPath)" matInput type="number" [(ngModel)]="currentEntry.subSensorId"/>
-      <mat-icon matSuffix>info</mat-icon>
-      <mat-hint>Value 0 refers to the main sensor</mat-hint>
-    </mat-form-field>
-    <mat-form-field class="big-input">
-      <mat-label>Path to Property</mat-label>
-      <input matInput [(ngModel)]="currentEntry.oldPath"/>
-      <mat-icon matSuffix>info</mat-icon>
-      <mat-hint>data.payload.lat</mat-hint>
-    </mat-form-field>
-    <br/>
-    <br/>
-    <button
-      *ngIf="entryView === entryViewType.New"
-      mat-stroked-button
-      color="primary"
-      (click)="addEntry()"
-    >
-      Add Record Entry
-    </button>
-    <button
-      *ngIf="entryView === entryViewType.Edit"
-      mat-stroked-button
-      color="primary"
-      (click)="saveEntryEdit()"
-    >
-      Save Changes
-    </button>
-    <button
-      class="to-right"
-      mat-stroked-button
-      (click)="entryView = entryViewType.List"
-    >
-      Back
-    </button>
-  </div>
-</div>
+      </div>
+      <div *ngIf="entryView !== entryViewType.List">
+        <br/>
+        <div class="inner-element">
+          <mat-form-field class="medium-input">
+            <mat-label>Property Name</mat-label>
+            <mat-icon matSuffix>label</mat-icon>
+            <mat-select [(ngModel)]="currentEntry.newPath">
+              <mat-option *ngFor="let option of propertyNameTypes" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>Pick One</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="big-input">
+            <mat-label>Sub Sensor Id</mat-label>
+            <input [disabled]="isGlobal(currentEntry.newPath)" matInput type="number"
+                   [(ngModel)]="currentEntry.subSensorId"/>
+            <mat-icon matSuffix>info</mat-icon>
+            <mat-hint>Value 0 refers to the main sensor</mat-hint>
+          </mat-form-field>
+          <mat-form-field class="big-input">
+            <mat-label>Path to Property</mat-label>
+            <input matInput [(ngModel)]="currentEntry.oldPath"/>
+            <mat-icon matSuffix>info</mat-icon>
+            <mat-hint>data.payload.lat</mat-hint>
+          </mat-form-field>
+        </div>
+        <br/>
+        <button
+          *ngIf="entryView === entryViewType.New"
+          mat-stroked-button
+          color="primary"
+          (click)="addEntry()"
+        >
+          Add Record Entry
+        </button>
+        <button
+          *ngIf="entryView === entryViewType.Edit"
+          mat-stroked-button
+          color="primary"
+          (click)="saveEntryEdit()"
+        >
+          Save Changes
+        </button>
+        <button
+          class="to-right"
+          mat-stroked-button
+          (click)="entryView = entryViewType.List"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

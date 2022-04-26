@@ -1,0 +1,30 @@
+{
+  "root": "apps/device-management-frontend-e2e",
+  "sourceRoot": "apps/device-management-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/device-management-frontend-e2e/cypress.json",
+        "devServerTarget": "device-management-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "device-management-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/device-management-frontend-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["device-management-frontend"]
+}

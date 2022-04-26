@@ -82,7 +82,7 @@ function toBytes(payload) {
 }
 ```
 
-As a full example the current `lgt92` sensor decoder can be seen [here](lgt92.js).
+As a full example the current `lgt92` sensor decoder can be seen [here](assets/lgt92.js).
 
 ## Further Discussion
 

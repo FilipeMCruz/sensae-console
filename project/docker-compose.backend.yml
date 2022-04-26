@@ -52,37 +52,37 @@ services:
       - sharespot-network
     ports:
       - 8083:8080
-  sharespot-device-records-slave-backend:
-    build: backend-services/sharespot-device-records-slave-backend
-    image: sharespot-device-records-slave-backend
+  device-management-slave-backend:
+    build: backend-services/device-management-slave-backend
+    image: device-management-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-slave-backend.env
+      - ./secrets/prod/device-management-slave-backend.env
     networks:
       - sharespot-network
     ports:
       - 8084:8080
-  sharespot-data-validator-backend:
-    build: backend-services/sharespot-data-validator-backend
-    image: sharespot-data-validator-backend
+  data-validator-backend:
+    build: backend-services/data-validator-backend
+    image: data-validator-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-validator-backend.env
+      - ./secrets/prod/data-validator-backend.env
     networks:
       - sharespot-network
     ports:
       - 8095:8080
-  sharespot-device-records-master-backend:
-    build: backend-services/sharespot-device-records-master-backend
-    image: sharespot-device-records-master-backend
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-master-backend.env
+      - ./secrets/prod/device-management-master-backend.env
     networks:
       - sharespot-network
     ports:

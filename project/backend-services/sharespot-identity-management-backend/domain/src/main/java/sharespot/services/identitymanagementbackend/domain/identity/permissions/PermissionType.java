@@ -4,9 +4,9 @@ import java.util.Set;
 
 public enum PermissionType {
 
-    READ_DEVICE_RECORD,
-    DELETE_DEVICE_RECORD,
-    EDIT_DEVICE_RECORD,
+    READ_DEVICE_INFORMATION,
+    DELETE_DEVICE_INFORMATION,
+    EDIT_DEVICE_INFORMATION,
 
     READ_DATA_TRANSFORMATION,
     DELETE_DATA_TRANSFORMATION,
@@ -93,12 +93,12 @@ public enum PermissionType {
     }
 
     private static void reviewDeviceRecordsPermissions(Set<PermissionType> permissions) {
-        if (permissions.contains(PermissionType.DELETE_DEVICE_RECORD)) {
-            permissions.add(PermissionType.EDIT_DEVICE_RECORD);
+        if (permissions.contains(PermissionType.DELETE_DEVICE_INFORMATION)) {
+            permissions.add(PermissionType.EDIT_DEVICE_INFORMATION);
         }
 
-        if (permissions.contains(PermissionType.EDIT_DEVICE_RECORD)) {
-            permissions.add(PermissionType.READ_DEVICE_RECORD);
+        if (permissions.contains(PermissionType.EDIT_DEVICE_INFORMATION)) {
+            permissions.add(PermissionType.READ_DEVICE_INFORMATION);
         }
     }
 

@@ -24,6 +24,7 @@ export class DataTransformationsPageComponent implements OnInit {
     new Array<DataTransformation>();
 
   dataTransformationViewType = DataTransformationViewType;
+  loading = true;
 
   constructor(
     public dialog: MatDialog,
@@ -53,11 +54,13 @@ export class DataTransformationsPageComponent implements OnInit {
   }
 
   fetchAllDataTransformations() {
+    this.loading = true;
     this.collector
       .getData()
       .subscribe(
-        (data: Array<DataTransformation>) => (this.dataTransformations = data)
-      );
+        (data: Array<DataTransformation>) => (this.dataTransformations = data.sort((a, b) => a.data.type.localeCompare(b.data.type))),
+        error => error,
+        () => this.loading = false);
   }
 
   updateItem(event: DataTransformation) {

@@ -7,7 +7,7 @@ import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.data.GPSDataOptions;
+import pt.sharespot.iot.core.routing.keys.data.*;
 import sharespot.services.fleetmanagementbackend.application.RoutingKeysProvider;
 import sharespot.services.fleetmanagementbackend.infrastructure.endpoint.amqp.listener.SensorDataConsumer;
 
@@ -45,6 +45,17 @@ public class AmqpConfiguration {
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
+                .withTemperature(TemperatureDataOptions.WITHOUT_TEMPERATURE_DATA)
+                .withTrigger(TriggerDataOptions.WITHOUT_TRIGGER_DATA)
+                .withSoilMoisture(SoilMoistureDataOptions.WITHOUT_SOIL_MOISTURE_DATA)
+                .withAirHumidity(AirHumidityDataOptions.WITHOUT_AIR_HUMIDITY_DATA)
+                .withIlluminance(IlluminanceDataOptions.WITHOUT_ILLUMINANCE_DATA)
+                .withCO(CODataOptions.WITHOUT_CO_DATA)
+                .withCO2(CO2DataOptions.WITHOUT_CO2_DATA)
+                .withPm10(PM10DataOptions.WITHOUT_PM10_DATA)
+                .withPm2_5(PM2_5DataOptions.WITHOUT_PM2_5_DATA)
+                .withNH3(NH3DataOptions.WITHOUT_NH3_DATA)
+                .withAQI(AirQualityDataOptions.WITHOUT_AQI_DATA)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

@@ -19,7 +19,7 @@ export class PropertyTransformation {
   }
 
   getSubSensor() {
-    return this.subSensorId === 0 ? "" : "Sensor " + this.subSensorId;
+    return this.subSensorId === 0 ? "Controller" : "Sensor " + this.subSensorId;
   }
 
   getIcon(): string {

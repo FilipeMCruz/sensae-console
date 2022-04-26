@@ -61,7 +61,7 @@
               }}</mat-icon>
             <div mat-line>{{ entry.newPath }}</div>
             <div mat-line>{{ entry.oldPath }} </div>
-            <div mat-line>{{entry.getSubSensor()}}</div>
+            <div mat-line><i>{{entry.getSubSensor()}}</i></div>
             <button
               *ngIf="dataTransformationView !== dataTransformationViewType.Compare && canEdit"
               mat-icon-button

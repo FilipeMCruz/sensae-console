@@ -1,0 +1,104 @@
+{
+  "projectType": "application",
+  "root": "apps/device-management-frontend",
+  "sourceRoot": "apps/device-management-frontend/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/device-management-frontend",
+        "index": "apps/device-management-frontend/src/index.html",
+        "main": "apps/device-management-frontend/src/main.ts",
+        "polyfills": "apps/device-management-frontend/src/polyfills.ts",
+        "tsConfig": "apps/device-management-frontend/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/device-management-frontend/src/favicon.ico",
+          "apps/device-management-frontend/src/assets"
+        ],
+        "styles": ["apps/device-management-frontend/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/device-management-frontend/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/device-management-frontend/src/environments/environment.ts",
+              "with": "apps/device-management-frontend/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/device-management-frontend/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "device-management-frontend:build:production"
+        },
+        "development": {
+          "browserTarget": "device-management-frontend:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "publicHost": "http://localhost:4283",
+        "port": 4283
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "device-management-frontend:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/device-management-frontend/src/**/*.ts",
+          "apps/device-management-frontend/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/device-management-frontend"],
+      "options": {
+        "jestConfig": "apps/device-management-frontend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

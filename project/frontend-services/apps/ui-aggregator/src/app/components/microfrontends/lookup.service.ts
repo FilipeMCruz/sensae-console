@@ -14,10 +14,10 @@ const SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL = environment.production
   '/micro-frontends/sharespot-fleet-management-frontend/remoteEntry.js'
   : 'http://localhost:4284/remoteEntry.js';
 
-const SHARESPOT_DEVICE_RECORDS_FRONTEND_URL = environment.production
+const DEVICE_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-device-records-frontend/remoteEntry.js'
+  '/micro-frontends/device-management-frontend/remoteEntry.js'
   : 'http://localhost:4283/remoteEntry.js';
 
 const SHARESPOT_DATA_PROCESSOR_FRONTEND_URL = environment.production
@@ -74,13 +74,13 @@ export class LookupService {
       },
       {
         // For Loading
-        remoteEntry: SHARESPOT_DEVICE_RECORDS_FRONTEND_URL,
+        remoteEntry: DEVICE_MANAGEMENT_FRONTEND_URL,
         exposedModule: './Module',
         type: 'module',
 
         // For Routing
-        displayName: 'Device Records',
-        routePath: 'records',
+        displayName: 'Device Management',
+        routePath: 'device-management',
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,
@@ -125,7 +125,7 @@ export class LookupService {
 
         // For Routing
         displayName: 'Identity Management',
-        routePath: 'identity',
+        routePath: 'identity-management',
         ngModuleName: 'RemoteEntryModule',
         details: {
           type: MicrofrontendType.TOOL,

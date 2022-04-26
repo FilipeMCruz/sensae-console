@@ -74,15 +74,15 @@ services:
       - sharespot-network
     ports:
       - 8095:8080
-  sharespot-device-records-master-backend:
-    build: backend-services/sharespot-device-records-master-backend
-    image: sharespot-device-records-master-backend
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-master-backend.env
+      - ./secrets/prod/device-management-master-backend.env
     networks:
       - sharespot-network
     ports:

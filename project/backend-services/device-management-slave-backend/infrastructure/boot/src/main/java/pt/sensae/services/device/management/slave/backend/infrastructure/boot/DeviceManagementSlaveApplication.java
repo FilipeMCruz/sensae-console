@@ -8,9 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"sharespot.services", "pt.sharespot"})
-@EnableJpaRepositories("sharespot.services")
-@EntityScan("sharespot.services")
+@ComponentScan(basePackages = {"pt.sensae.services"})
+@EnableJpaRepositories("pt.sensae.services")
+@EntityScan("pt.sensae.services")
 public class DeviceManagementSlaveApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

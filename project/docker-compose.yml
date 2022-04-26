@@ -20,16 +20,17 @@ services:
     ports:
       - 443:443
     depends_on:
-      - sharespot-device-records-frontend
+      - device-management-frontend
       - sharespot-data-processor-frontend
       - sharespot-data-decoder-frontend
       - sharespot-fleet-management-frontend
       - sharespot-identity-management-frontend
-  sharespot-device-records-frontend:
+      - smart-irrigation-frontend
+  device-management-frontend:
     build:
-      dockerfile: docker/sharespot-device-records-frontend/Dockerfile
+      dockerfile: docker/device-management-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-device-records-frontend
+    image: device-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
@@ -38,7 +39,7 @@ services:
     ports:
       - 443
     depends_on:
-      - sharespot-device-records-master-backend
+      - device-management-master-backend
   sharespot-data-processor-frontend:
     build:
       dockerfile: docker/sharespot-data-processor-frontend/Dockerfile
@@ -183,15 +184,15 @@ services:
       - ./secrets/prod/sharespot-data-decoder-slave-backend.env
     networks:
       - sharespot-network
-  sharespot-device-records-master-backend:
-    build: backend-services/sharespot-device-records-master-backend
-    image: sharespot-device-records-master-backend
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-master-backend.env
+      - ./secrets/prod/device-management-master-backend.env
     networks:
       - sharespot-network
     ports:

@@ -1,0 +1,28 @@
+{
+  "projectType": "library",
+  "root": "libs/device-management/dto",
+  "sourceRoot": "libs/device-management/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/device-management/dto"
+      ],
+      "options": {
+        "jestConfig": "libs/device-management/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/device-management/dto/src/**/*.ts",
+          "libs/device-management/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

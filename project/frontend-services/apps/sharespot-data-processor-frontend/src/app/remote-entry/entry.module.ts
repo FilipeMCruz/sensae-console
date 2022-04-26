@@ -21,6 +21,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DataTransformationsPageComponent } from './data-transformations-page/data-transformations-page.component';
 import { DataTransformationComponent } from './data-transformation/data-transformation.component';
 import { DataTransformationDialogComponent } from './data-transformation-dialog/data-transformation-dialog.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 @NgModule({
   declarations: [
@@ -28,33 +29,34 @@ import { DataTransformationDialogComponent } from './data-transformation-dialog/
     DataTransformationComponent,
     DataTransformationDialogComponent,
   ],
-  imports: [
-    MatStepperModule,
-    MatSidenavModule,
-    MatCardModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatListModule,
-    MatSnackBarModule,
-    MatExpansionModule,
-    MatRadioModule,
-    MatOptionModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    CommonModule,
-    HttpClientModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: DataTransformationsPageComponent,
-      },
-    ]),
-  ],
+    imports: [
+        MatStepperModule,
+        MatSidenavModule,
+        MatCardModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatListModule,
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatRadioModule,
+        MatOptionModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        CommonModule,
+        HttpClientModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: DataTransformationsPageComponent,
+            },
+        ]),
+        MatTabsModule,
+    ],
   providers: [],
 })
 export class RemoteEntryModule {}

@@ -52,13 +52,13 @@ services:
       - sharespot-network
     ports:
       - 8083:8080
-  sharespot-device-records-slave-backend:
-    build: backend-services/sharespot-device-records-slave-backend
-    image: sharespot-device-records-slave-backend
+  device-management-slave-backend:
+    build: backend-services/device-management-slave-backend
+    image: device-management-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-device-records-slave-backend.env
+      - ./secrets/prod/device-management-slave-backend.env
     networks:
       - sharespot-network
     ports:

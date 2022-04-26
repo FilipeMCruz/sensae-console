@@ -32,6 +32,10 @@ export class IndexDeviceRecord {
             content
             type
           }
+          subDevices {
+            id
+            ref
+          }
         }
       }
     `;

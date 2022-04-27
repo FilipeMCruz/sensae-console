@@ -15,6 +15,7 @@ import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
 import pt.sharespot.iot.core.sensor.device.controls.DeviceCommandDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
+import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,24 +46,43 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                             .content()), Double.valueOf(longitudeOpt.get().content())));
         }
 
-        domain.device.records = new DeviceRecordDTO(records.records()
+        var newRecords = records.records()
                 .entries()
                 .stream()
                 .filter(e -> e instanceof BasicRecordEntry)
                 .map(e -> (BasicRecordEntry) e)
                 .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet());
+
+        if (domain.hasProperty(PropertyName.DEVICE_RECORDS)) {
+            domain.device.records.entry.stream()
+                    .filter(entry -> newRecords.stream().noneMatch(e -> Objects.equals(entry.label, e.label)))
+                    .forEach(newRecords::add);
+        }
+
+        domain.device.records = new DeviceRecordDTO(newRecords);
 
         domain.device.name = records.device().name().value();
 
-        var deviceCommandDTOS = records.commands()
-                .entries()
-                .stream()
-                .filter(c -> c.ref().isSelf())
-                .map(this::processCommands)
-                .toList();
+        if (domain.hasProperty(PropertyName.DEVICE_COMMANDS)) {
+            domain.device.commands.forEach((devKey, value) -> {
+                var commandEntries = records.commands()
+                        .entries()
+                        .stream()
+                        .filter(c -> Objects.equals(c.ref().value(), devKey))
+                        .toList();
 
-        domain.getSensorCommands().addAll(deviceCommandDTOS);
+                value.stream().filter(com -> commandEntries.stream().noneMatch(c -> com.id.equals(c.id().value())))
+                        .forEach(e -> domain.device.commands.computeIfAbsent(devKey, k -> new ArrayList<>()).add(e));
+            });
+        } else {
+            domain.device.commands = new HashMap<>();
+            records.commands()
+                    .entries()
+                    .forEach(e -> domain.device.commands
+                            .computeIfAbsent(e.ref().value(), k -> new ArrayList<>())
+                            .add(this.processCommands(e)));
+        }
 
         return new DeviceWithSubDevices(domain, processSubSensors(domain, records));
     }

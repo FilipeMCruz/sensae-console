@@ -11,6 +11,7 @@ import pt.sensae.services.device.management.slave.backend.domain.model.device.De
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.Records;
 import pt.sensae.services.device.management.slave.backend.domain.model.subDevices.SubDevices;
+import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -50,7 +51,6 @@ public class DeviceRecordCache {
         return device;
     }
 
-    //TODO: add records and commands if they exist in the data packet; 
     private DeviceInformation create(DeviceId id, DeviceName name) {
         return repository.add(new DeviceInformation(new Device(id, name), Records.empty(), SubDevices.empty(), DeviceCommands.empty()));
     }

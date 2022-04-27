@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.device.management.slave.backend.application.RoutingKeysProvider;
 import pt.sensae.services.device.management.slave.backend.infrastructure.endpoint.amqp.egress.controller.SensorDataSupplier;
 import pt.sensae.services.device.management.slave.backend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.*;
 
 @Configuration
@@ -40,7 +41,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(SensorDataSupplier.TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

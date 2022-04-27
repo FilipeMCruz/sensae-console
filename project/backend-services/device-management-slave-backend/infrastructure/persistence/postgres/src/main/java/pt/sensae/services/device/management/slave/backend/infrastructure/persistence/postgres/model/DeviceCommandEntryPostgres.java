@@ -2,18 +2,24 @@ package pt.sensae.services.device.management.slave.backend.infrastructure.persis
 
 import javax.persistence.*;
 
-@Entity(name = "sub_device")
-public class DeviceSubSensorPostgres {
+@Entity(name = "command_entry")
+public class DeviceCommandEntryPostgres {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long persistenceId;
 
-    @ManyToOne
-    public DeviceInformationPostgres controller;
+    public String id;
+
+    public String name;
+
+    public String payload;
+
+    public Integer port;
 
     public Integer subDeviceRef;
 
-    @Column(unique = true)
-    public String subDeviceId;
+    @ManyToOne
+    public DeviceInformationPostgres device;
+
 }

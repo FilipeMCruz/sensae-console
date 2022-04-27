@@ -12,6 +12,6 @@ public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
     public RoutingKeys.RoutingKeysBuilder getBuilder(RoutingKeysBuilderOptions options) {
-        return new RoutingKeysFactory().getBuilder(ContainerTypeOptions.DEVICE_RECORDS, options);
+        return new RoutingKeysFactory().getBuilder(ContainerTypeOptions.DEVICE_MANAGEMENT, options);
     }
 }

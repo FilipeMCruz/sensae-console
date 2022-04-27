@@ -1,13 +1,13 @@
 package pt.sensae.services.device.management.slave.backend.domain.model;
 
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceRecords;
+import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 
 import java.util.Optional;
 
 public interface DeviceRepository {
 
-    Optional<DeviceRecords> findByDeviceId(DeviceId id);
+    Optional<DeviceInformation> findByDeviceId(DeviceId id);
 
-    DeviceRecords add(DeviceRecords domain);
+    DeviceInformation add(DeviceInformation domain);
 }

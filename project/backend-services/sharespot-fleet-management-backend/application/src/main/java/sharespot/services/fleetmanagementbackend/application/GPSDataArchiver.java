@@ -33,8 +33,7 @@ public class GPSDataArchiver {
             if (lastTenMinutesData.isEmpty()) {
                 data.getSensorData().withMotion(MotionDataDTO.of("UNKNOWN"));
             } else {
-                var moving = Haversine.isMoving(data, lastTenMinutesData, DISTANCE_IN_KM);
-                if (moving) {
+                if (Haversine.isMoving(data, lastTenMinutesData, DISTANCE_IN_KM)) {
                     data.getSensorData().withMotion(MotionDataDTO.of("ACTIVE"));
                 } else {
                     data.getSensorData().withMotion(MotionDataDTO.of("INACTIVE"));

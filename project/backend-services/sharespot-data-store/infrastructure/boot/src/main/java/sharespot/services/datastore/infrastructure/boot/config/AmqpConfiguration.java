@@ -3,6 +3,7 @@ package sharespot.services.datastore.infrastructure.boot.config;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.datastore.application.RoutingKeysProvider;
@@ -14,8 +15,6 @@ import static sharespot.services.datastore.infrastructure.boot.config.AmqpDeadLe
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
-
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -24,7 +23,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

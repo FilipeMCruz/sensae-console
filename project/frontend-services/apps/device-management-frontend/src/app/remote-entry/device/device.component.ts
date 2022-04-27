@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
 import {
+  DeviceCommand,
   DeviceInformation,
   DeviceViewType,
   EntryViewType,
@@ -26,12 +27,14 @@ export class DeviceComponent implements OnChanges {
   device = DeviceInformation.empty();
   currentEntry = RecordEntry.empty();
   currentSubDevice = SubDevice.empty();
+  currentCommand = DeviceCommand.empty();
 
   deviceView = DeviceViewType.New;
   deviceViewType = DeviceViewType;
 
   entryView = EntryViewType.List;
   subDeviceView = EntryViewType.List;
+  commandsView = EntryViewType.List;
 
   viewType = EntryViewType;
 
@@ -42,6 +45,7 @@ export class DeviceComponent implements OnChanges {
 
   currentEntryIndex = -1;
   currentSubDeviceIndex = -1;
+  currentCommandIndex = -1;
 
   ngOnChanges(): void {
     if (this.deviceEntry) {
@@ -94,7 +98,7 @@ export class DeviceComponent implements OnChanges {
   editEntry(index: number) {
     if (this.deviceView != this.deviceViewType.Compare) {
       this.currentEntryIndex = index;
-      this.currentEntry = this.device.entries[index];
+      this.currentEntry = this.device.entries[index].clone();
       this.entryView = EntryViewType.Edit;
     }
   }
@@ -133,9 +137,10 @@ export class DeviceComponent implements OnChanges {
   }
 
   editDevice(index: number) {
+    console.log(this.device)
     if (this.deviceView != this.deviceViewType.Compare) {
       this.currentSubDeviceIndex = index;
-      this.currentSubDevice = this.device.subDevices[index];
+      this.currentSubDevice = this.device.subDevices[index].clone();
       this.subDeviceView = EntryViewType.Edit;
     }
   }
@@ -154,6 +159,13 @@ export class DeviceComponent implements OnChanges {
     }
   }
 
+  removeSubDevice(event: Event, index: number) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    this.device.subDevices.splice(index, 1);
+    this.refreshEntries();
+  }
+
   private refreshSubDevices() {
     this.resetOptions();
     this.subDeviceView = EntryViewType.List;
@@ -166,5 +178,44 @@ export class DeviceComponent implements OnChanges {
 
   getDeviceName(id: string) {
     return this.devices.find(d => d.device.id === id)?.device.name
+  }
+
+  addCommand() {
+    if (this.currentCommand.isValid()) {
+      this.device.commands.push(this.currentCommand);
+      this.refreshCommands();
+    }
+  }
+
+  saveCommand() {
+    if (this.currentCommand.isValid()) {
+      this.device.commands[this.currentCommandIndex] = this.currentCommand;
+      this.refreshCommands();
+    }
+  }
+
+  removeCommand(event: Event, index: number) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    this.device.commands.splice(index, 1);
+    this.refreshCommands();
+  }
+
+  editCommand(index: number) {
+    if (this.deviceView != this.deviceViewType.Compare) {
+      this.currentCommandIndex = index;
+      this.currentCommand = this.device.commands[index].clone();
+      this.commandsView = EntryViewType.Edit;
+    }
+  }
+
+  private refreshCommands() {
+    this.resetOptions();
+    this.commandsView = EntryViewType.List;
+    this.clearCommandFields();
+  }
+
+  private clearCommandFields() {
+    this.currentCommand = DeviceCommand.empty();
   }
 }

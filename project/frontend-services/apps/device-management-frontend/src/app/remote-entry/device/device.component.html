@@ -23,6 +23,16 @@
     />
     <mat-hint>e.g. 8af821e5-3e0b-4469-88b0-fd07bee3b09d</mat-hint>
   </mat-form-field>
+  <br/>
+  <mat-form-field class="medium-input">
+    <mat-label>Device DownLink</mat-label>
+    <input
+      [disabled]="deviceView === deviceViewType.Compare || !canEdit"
+      [(ngModel)]="device.device.downlink"
+      matInput
+    />
+    <mat-hint>e.g. https://console.helium.com/api/v1/down/../../..</mat-hint>
+  </mat-form-field>
   <ng-container *ngIf="deviceView === deviceViewType.New && canEdit">
     <button
       [disabled]="!device.isValid()"
@@ -117,7 +127,8 @@
               <mat-label>Sensor Data</mat-label>
               <mat-icon matSuffix>label</mat-icon>
               <mat-select [(ngModel)]="currentEntry.label">
-                <mat-option *ngIf="currentEntry.label" [value]="currentEntry.label">{{ currentEntry.label }}</mat-option>
+                <mat-option *ngIf="currentEntry.label"
+                            [value]="currentEntry.label">{{ currentEntry.label }}</mat-option>
                 <mat-option *ngFor="let option of sensorDataType" [value]="option">
                   {{ option }}
                 </mat-option>
@@ -173,7 +184,7 @@
             <button
               *ngIf="deviceView !== deviceViewType.Compare && canEdit"
               mat-icon-button
-              (click)="removeEntry($event, i)"
+              (click)="removeSubDevice($event, i)"
             >
               <mat-icon>delete</mat-icon>
             </button>
@@ -245,6 +256,111 @@
           class="to-right"
           mat-stroked-button
           (click)="subDeviceView = viewType.List"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Commands">
+    <div class="entries">
+      <div *ngIf="commandsView === viewType.List">
+        <mat-list *ngIf="device.commands.length !== 0" class="inner-element">
+          <mat-list-item
+            class="item-list"
+            *ngFor="let sub of device.commands; let i = index"
+          >
+            <mat-icon (click)="editCommand(i)" mat-list-icon>send</mat-icon>
+            <div mat-line>{{sub.name}}</div>
+            <div mat-line><i>{{sub.id}}</i></div>
+            <button
+              *ngIf="deviceView !== deviceViewType.Compare && canEdit"
+              mat-icon-button
+              (click)="removeCommand($event, i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+        <ng-container *ngIf="device.commands.length === 0" class="inner-element">
+          <br/>
+          <br/>
+          <br/>
+          <div class="empty">No Commands</div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </ng-container>
+        <br/>
+        <button class="to-right"
+                *ngIf="deviceView !== deviceViewType.Compare && canEdit"
+                mat-stroked-button
+                (click)="commandsView = viewType.New"
+        >
+          New Command
+        </button>
+      </div>
+      <div *ngIf="commandsView !== viewType.List">
+        <div class="inner-element">
+          <br/>
+          <div>
+            <mat-form-field class="medium-input">
+              <mat-label>Command Id</mat-label>
+              <mat-icon matSuffix>label</mat-icon>
+              <input matInput [(ngModel)]="currentCommand.id"/>
+              <mat-hint>e.g. openValve</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="big-input">
+              <mat-label>Command Name</mat-label>
+              <mat-icon matSuffix>badge</mat-icon>
+              <input matInput [(ngModel)]="currentCommand.name"/>
+              <mat-hint>e.g. Open Valve 1</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="big-input">
+              <mat-label>Command Payload (in Base64)</mat-label>
+              <mat-icon matSuffix>forward_to_inbox</mat-icon>
+              <input matInput [(ngModel)]="currentCommand.payload"/>
+              <mat-hint>e.g. b2xh==</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="medium-input">
+              <mat-label>Device Port</mat-label>
+              <mat-icon matSuffix>sensor_door</mat-icon>
+              <input type="number" matInput [(ngModel)]="currentCommand.port"/>
+              <mat-hint>e.g. 80</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="medium-input">
+              <mat-label>Sub Device Reference</mat-label>
+              <mat-icon matSuffix>sensors</mat-icon>
+              <input type="number" matInput [(ngModel)]="currentCommand.ref"/>
+              <mat-hint>e.g. 1</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+        <br/>
+        <button
+          *ngIf="commandsView === viewType.New && canEdit"
+          mat-stroked-button
+          color="primary"
+          (click)="addCommand()"
+        >
+          Add Command
+        </button>
+        <button
+          *ngIf="commandsView === viewType.Edit && canEdit"
+          mat-stroked-button
+          color="primary"
+          (click)="saveCommand()"
+        >
+          Save Changes
+        </button>
+        <button
+          class="to-right"
+          mat-stroked-button
+          (click)="commandsView = viewType.List"
         >
           Back
         </button>

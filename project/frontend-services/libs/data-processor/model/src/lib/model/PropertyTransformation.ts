@@ -96,6 +96,8 @@ export class PropertyTransformation {
         return 'masks';
       case PropertyName.PH:
         return 'masks';
+      case PropertyName.DEVICE_DOWNLINK:
+        return 'download';
       case PropertyName.INVALID:
         return 'error';
     }

@@ -86,7 +86,7 @@ export class DataTransformationComponent implements OnChanges {
       type === PropertyName.DEVICE_NAME ||
       type === PropertyName.DEVICE_ID ||
       type === PropertyName.REPORTED_AT ||
-      type === PropertyName.CO2
+      type === PropertyName.DEVICE_DOWNLINK
   }
 
   editEntry(index: number) {

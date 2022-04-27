@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity(name = "record")
-public class DeviceRecordsPostgres {
+public class DeviceInformationPostgres {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,10 +14,15 @@ public class DeviceRecordsPostgres {
     public String deviceId;
 
     public String name;
+    
+    public String downlink;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "records", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<DeviceRecordEntryPostgres> entries;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "controller", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<DeviceSubSensorPostgres> subSensors;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
+    public Set<DeviceCommandEntryPostgres> commands;
 }

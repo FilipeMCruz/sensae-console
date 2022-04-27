@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceRepository;
 import pt.sensae.services.device.management.slave.backend.domain.model.commands.DeviceCommands;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
@@ -31,8 +32,8 @@ public class DeviceRecordCache {
                 .build();
     }
 
-    public DeviceInformation findByDeviceId(DeviceId id, DeviceName name) {
-        return Objects.requireNonNullElseGet(cache.getIfPresent(id), () -> update(id, name));
+    public DeviceInformation findByDeviceId(Device device) {
+        return Objects.requireNonNullElseGet(cache.getIfPresent(device.id()), () -> update(device));
     }
 
     public void update(DeviceId id) {
@@ -44,14 +45,14 @@ public class DeviceRecordCache {
         }
     }
 
-    public DeviceInformation update(DeviceId id, DeviceName name) {
-        var deviceById = repository.findByDeviceId(id);
-        var device = deviceById.isEmpty() ? this.create(id, name) : deviceById.get();
-        cache.put(id, device);
-        return device;
+    public DeviceInformation update(Device device) {
+        var deviceById = repository.findByDeviceId(device.id());
+        var information = deviceById.isEmpty() ? this.create(device) : deviceById.get();
+        cache.put(device.id(), information);
+        return information;
     }
 
-    private DeviceInformation create(DeviceId id, DeviceName name) {
-        return repository.add(new DeviceInformation(new Device(id, name), Records.empty(), SubDevices.empty(), DeviceCommands.empty()));
+    private DeviceInformation create(Device device) {
+        return repository.add(new DeviceInformation(device, Records.empty(), SubDevices.empty(), DeviceCommands.empty()));
     }
 }

@@ -2,6 +2,7 @@ package pt.sensae.services.device.management.slave.backend.infrastructure.persis
 
 import pt.sensae.services.device.management.slave.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.*;
@@ -20,6 +21,7 @@ public class DeviceMapper {
         var postgres = new DeviceInformationPostgres();
         postgres.deviceId = records.device().id().value().toString();
         postgres.name = records.device().name().value();
+        postgres.downlink = records.device().downlink().value();
         postgres.entries = records.records().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryPostgres();
             entry.type = e instanceof BasicRecordEntry ?
@@ -62,6 +64,7 @@ public class DeviceMapper {
 
         var deviceId = new DeviceId(UUID.fromString(records.deviceId));
         var deviceName = new DeviceName(records.name);
+        var deviceDownlink = new DeviceDownlink(records.downlink);
 
         var subDevices = records.subSensors.stream()
                 .map(sub -> new SubDevice(new DeviceId(UUID.fromString(sub.subDeviceId)), new DeviceRef(sub.subDeviceRef)))
@@ -71,6 +74,6 @@ public class DeviceMapper {
                 .map(c -> new CommandEntry(CommandId.of(c.id), CommandName.of(c.name), CommandPayload.of(c.payload), CommandPort.of(c.port), DeviceRef.of(c.subDeviceRef)))
                 .collect(Collectors.toSet());
 
-        return new DeviceInformation(new Device(deviceId, deviceName), new Records(collect), new SubDevices(subDevices), new DeviceCommands(commands));
+        return new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new Records(collect), new SubDevices(subDevices), new DeviceCommands(commands));
     }
 }

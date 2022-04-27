@@ -2,14 +2,14 @@ package pt.sensae.services.device.management.master.backend.infrastructure.persi
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.model.DeviceRecordsPostgres;
+import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.model.DeviceInformationPostgres;
 
 import java.util.Optional;
 
 @Repository
-public interface RecordsRepositoryPostgres extends CrudRepository<DeviceRecordsPostgres, Long> {
+public interface RecordsRepositoryPostgres extends CrudRepository<DeviceInformationPostgres, Long> {
 
-    Optional<DeviceRecordsPostgres> findByDeviceId(String deviceId);
+    Optional<DeviceInformationPostgres> findByDeviceId(String deviceId);
 
     void deleteByDeviceId(String deviceId);
 }

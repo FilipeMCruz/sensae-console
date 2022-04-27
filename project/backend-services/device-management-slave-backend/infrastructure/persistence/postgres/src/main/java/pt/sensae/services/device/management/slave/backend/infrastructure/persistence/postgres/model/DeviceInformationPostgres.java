@@ -14,6 +14,8 @@ public class DeviceInformationPostgres {
     public String deviceId;
 
     public String name;
+    
+    public String downlink;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "records", cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<DeviceRecordEntryPostgres> entries;

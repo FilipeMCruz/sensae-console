@@ -2,6 +2,8 @@ package pt.sensae.services.device.management.slave.backend.application;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceWithSubDevices;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.slave.backend.domainservices.DeviceRecordCache;
@@ -20,7 +22,8 @@ public class RecordAppenderService {
     }
 
     public DeviceWithSubDevices tryToAppend(ProcessedSensorDataDTO dto) {
-        var byDeviceId = cache.findByDeviceId(new DeviceId(dto.device.id), new DeviceName(dto.device.name));
+        var device = new Device(new DeviceId(dto.device.id), new DeviceName(dto.device.name), new DeviceDownlink(dto.device.downlink));
+        var byDeviceId = cache.findByDeviceId(device);
         return dataWithRecordMapper.domainToDto(dto, byDeviceId);
     }
 }

@@ -13,6 +13,16 @@ type RecordEntry {
 type Device {
     id : String
     name : String
+    downlink : String
+    commands : [DeviceCommand]
+}
+
+type DeviceCommand {
+    id : String
+    name : String
+    ref : Int
+    port : Int
+    payload : String
 }
 
 type SubDevice {

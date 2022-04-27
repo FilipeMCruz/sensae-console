@@ -2,6 +2,7 @@ type DeviceRecords {
     device : Device
     entries : [RecordEntry]
     subDevices : [SubDevice]
+    commands : [DeviceCommand]
 }
 
 type RecordEntry {
@@ -14,7 +15,6 @@ type Device {
     id : String
     name : String
     downlink : String
-    commands : [DeviceCommand]
 }
 
 type DeviceCommand {
@@ -42,12 +42,14 @@ enum RecordType {
 input DeviceInput {
     id : String
     name : String
+    downlink : String
 }
 
 input DeviceRecordsInput {
     device : DeviceInput
     entries : [RecordEntryInput]
     subDevices : [SubDeviceInput]
+    commands: [DeviceCommandInput]
 }
 
 input RecordEntryInput {
@@ -59,4 +61,12 @@ input RecordEntryInput {
 input SubDeviceInput {
     id : String
     ref : Int
+}
+
+input DeviceCommandInput {
+    id : String
+    name : String
+    ref : Int
+    port : Int
+    payload : String
 }

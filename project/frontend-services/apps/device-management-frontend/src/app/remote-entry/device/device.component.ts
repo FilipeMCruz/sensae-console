@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, Output,} from '@angular/core';
 import {
-  DeviceRecord,
+  DeviceInformation,
   DeviceViewType,
   EntryViewType,
   RecordEntry,
@@ -14,16 +14,16 @@ import {
   styleUrls: ['./device.component.scss'],
 })
 export class DeviceComponent implements OnChanges {
-  @Input() deviceEntry!: DeviceRecord;
+  @Input() deviceEntry!: DeviceInformation;
   @Input() deviceViewEntry!: DeviceViewType;
   @Input() canEdit = false;
   @Input() canDelete = false;
-  @Input() devices: DeviceRecord[] = [];
+  @Input() devices: DeviceInformation[] = [];
 
-  @Output() newDeviceEvent = new EventEmitter<DeviceRecord>();
-  @Output() deleteDeviceEvent = new EventEmitter<DeviceRecord>();
+  @Output() newDeviceEvent = new EventEmitter<DeviceInformation>();
+  @Output() deleteDeviceEvent = new EventEmitter<DeviceInformation>();
 
-  device = DeviceRecord.empty();
+  device = DeviceInformation.empty();
   currentEntry = RecordEntry.empty();
   currentSubDevice = SubDevice.empty();
 
@@ -101,7 +101,7 @@ export class DeviceComponent implements OnChanges {
 
   private resetView() {
     this.deviceView = this.deviceViewType.New;
-    this.device = DeviceRecord.empty();
+    this.device = DeviceInformation.empty();
     this.resetOptions();
   }
 

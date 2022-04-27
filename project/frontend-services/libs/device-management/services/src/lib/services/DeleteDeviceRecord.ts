@@ -4,7 +4,7 @@ import {EMPTY, Observable} from 'rxjs';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {HttpHeaders} from '@angular/common/http';
 import {filter, map} from 'rxjs/operators';
-import {Device, DeviceRecord} from '@frontend-services/device-management/model';
+import {Device, DeviceInformation} from '@frontend-services/device-management/model';
 import {DeviceRecordDelete} from '@frontend-services/device-management/dto';
 import {DeviceMapper} from '@frontend-services/device-management/mapper';
 import {extract, isNonNull} from "@frontend-services/core";
@@ -16,7 +16,7 @@ export class DeleteDeviceRecord {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  delete(event: DeviceRecord): Observable<Device> {
+  delete(event: DeviceInformation): Observable<Device> {
     if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:delete"]))
       return EMPTY;
 

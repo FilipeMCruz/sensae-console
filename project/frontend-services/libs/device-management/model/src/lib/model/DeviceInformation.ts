@@ -1,13 +1,14 @@
 import {RecordEntry} from './RecordEntry';
 import {Device} from './Device';
 import {SubDevice} from "./SubDevice";
+import {DeviceCommand} from "./DeviceCommand";
 
-export class DeviceRecord {
-  constructor(public device: Device, public entries: Array<RecordEntry>, public subDevices: Array<SubDevice>) {
+export class DeviceInformation {
+  constructor(public device: Device, public entries: Array<RecordEntry>, public subDevices: Array<SubDevice>, public commands: Array<DeviceCommand>) {
   }
 
   static empty() {
-    return new DeviceRecord(Device.empty(), new Array<RecordEntry>(), new Array<SubDevice>());
+    return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>());
   }
 
   isValid() {

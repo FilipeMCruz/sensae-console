@@ -9,4 +9,7 @@ public class DeviceRecordDTOImpl implements DeviceRecordDTO {
     public Set<RecordEntryDTOImpl> entries;
 
     public Set<SubDeviceDTOImpl> subDevices;
+
+    public Set<DeviceCommandDTOImpl> commands;
+
 }

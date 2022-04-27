@@ -88,7 +88,7 @@ public class RecordMapperImpl implements RecordMapper {
         var name = new DeviceName(deviceDTO.device.name);
         var downlink = new DeviceDownlink(deviceDTO.device.downlink);
 
-        var commands = deviceDTO.device.commands.stream()
+        var commands = deviceDTO.commands.stream()
                 .map(c -> new CommandEntry(CommandId.of(c.id), CommandName.of(c.name), CommandPayload.of(c.payload), CommandPort.of(c.port), DeviceRef.of(c.ref)))
                 .collect(Collectors.toSet());
 
@@ -122,7 +122,7 @@ public class RecordMapperImpl implements RecordMapper {
             return subDevice;
         }).collect(Collectors.toSet());
 
-        dto.device.commands = domain.commands().entries().stream().map(e -> {
+        dto.commands = domain.commands().entries().stream().map(e -> {
             var entry = new DeviceCommandDTOImpl();
             entry.id = e.id().value();
             entry.name = e.name().value();

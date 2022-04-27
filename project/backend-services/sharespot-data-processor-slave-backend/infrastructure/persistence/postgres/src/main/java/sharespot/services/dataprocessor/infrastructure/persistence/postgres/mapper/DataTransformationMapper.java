@@ -58,6 +58,7 @@ public class DataTransformationMapper {
             case 34 -> PropertyName.VOC;
             case 35 -> PropertyName.PM2_5;
             case 36 -> PropertyName.PM10;
+            case 37 -> PropertyName.DEVICE_DOWNLINK;
             default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }

@@ -7,6 +7,7 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import sharespot.services.dataprocessor.application.RoutingKeysProvider;
@@ -16,8 +17,6 @@ import static sharespot.services.dataprocessor.infrastructure.boot.config.AmqpDe
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
 
@@ -51,7 +50,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

@@ -78,6 +78,8 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
                     case VOC -> PropertyTransformation.create(e.oldPath, PropertyName.VOC, e.sensorID);
                     case WATER_PRESSURE ->
                             PropertyTransformation.create(e.oldPath, PropertyName.WATER_PRESSURE, e.sensorID);
+                    case DEVICE_DOWNLINK ->
+                            PropertyTransformation.create(e.oldPath, PropertyName.DEVICE_DOWNLINK, e.sensorID);
                 }).toArray(PropertyTransformation[]::new);
 
         var hasDuplicateTransformations = Arrays.stream(properties)
@@ -149,6 +151,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
             case VOC -> PropertyNameDTOImpl.VOC;
             case PM2_5 -> PropertyNameDTOImpl.PM2_5;
             case PM10 -> PropertyNameDTOImpl.PM10;
+            case DEVICE_DOWNLINK -> PropertyNameDTOImpl.DEVICE_DOWNLINK;
             default -> throw new RuntimeException("Invalid Property");
         };
 

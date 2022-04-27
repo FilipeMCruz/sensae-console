@@ -65,4 +65,5 @@ enum PropertyName {
     VELOCITY,
     VOC,
     WATER_PRESSURE,
+    DEVICE_DOWNLINK,
 }

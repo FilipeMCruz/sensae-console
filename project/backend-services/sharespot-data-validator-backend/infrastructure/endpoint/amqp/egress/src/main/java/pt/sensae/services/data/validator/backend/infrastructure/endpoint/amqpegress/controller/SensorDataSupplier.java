@@ -7,6 +7,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageSupplied;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sensae.services.data.validator.backend.application.SensorDataHandlerService;
 
@@ -15,13 +16,11 @@ public class SensorDataSupplier {
 
     Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
 
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
-
     public SensorDataSupplier(AmqpTemplate template, SensorDataHandlerService service) {
         service.getSinglePublisher()
                 .subscribe(outData -> {
                     logSuppliedMessage(outData);
-                    template.send(TOPIC_EXCHANGE,
+                    template.send(IoTCoreExchanges.DATA_EXCHANGE,
                             outData.routingKeys.toString(),
                             new Message(MessageMapper.toBuf(outData).toByteArray()));
                 });

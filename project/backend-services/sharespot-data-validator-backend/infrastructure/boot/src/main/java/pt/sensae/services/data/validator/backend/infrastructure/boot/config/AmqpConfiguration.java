@@ -3,6 +3,7 @@ package pt.sensae.services.data.validator.backend.infrastructure.boot.config;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
@@ -23,7 +24,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(SensorDataSupplier.TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

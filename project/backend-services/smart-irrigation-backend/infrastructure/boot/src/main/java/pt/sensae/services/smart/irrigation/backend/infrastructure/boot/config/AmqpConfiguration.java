@@ -7,6 +7,7 @@ import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvid
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ParkSensorDataConsumer;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.StoveSensorDataConsumer;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ValveSensorDataConsumer;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.*;
 import pt.sharespot.iot.core.routing.keys.data.*;
 
@@ -15,8 +16,6 @@ import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.co
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     private final RoutingKeysProvider provider;
 
@@ -50,7 +49,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

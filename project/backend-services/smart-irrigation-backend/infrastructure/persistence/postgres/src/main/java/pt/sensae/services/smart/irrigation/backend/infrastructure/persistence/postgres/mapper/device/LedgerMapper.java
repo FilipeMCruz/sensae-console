@@ -9,6 +9,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RemoteControl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.postgres.model.device.LedgerEntryPostgres;
 
 import java.sql.Timestamp;
@@ -20,7 +21,10 @@ public class LedgerMapper {
 
     public static LedgerEntryPostgres modelToDao(LedgerEntry ledgerEntry, String deviceId) {
         var close = ledgerEntry.closeAt().value() != null ? Timestamp.from(ledgerEntry.closeAt().value()) : null;
-        var altitude = ledgerEntry.content().coordinates().altitude() != null ? ledgerEntry.content().coordinates().altitude().toString() : null;
+        var altitude = ledgerEntry.content().coordinates().altitude() != null ? ledgerEntry.content()
+                .coordinates()
+                .altitude()
+                .toString() : null;
         return new LedgerEntryPostgres(deviceId,
                 Timestamp.from(ledgerEntry.openAt().value()),
                 close,
@@ -28,7 +32,12 @@ public class LedgerMapper {
                 ledgerEntry.content().coordinates().latitude().toString(),
                 ledgerEntry.content().coordinates().longitude().toString(),
                 altitude,
-                ledgerEntry.ownership().value().stream().map(id -> id.value().toString()).collect(Collectors.joining(",", "{", "}"))
+                ledgerEntry.ownership()
+                        .value()
+                        .stream()
+                        .map(id -> id.value().toString())
+                        .collect(Collectors.joining(",", "{", "}")),
+                ledgerEntry.content().remoteControl().value()
         );
     }
 
@@ -36,11 +45,13 @@ public class LedgerMapper {
         var aFloat = dao.altitude != null ? Float.parseFloat(dao.altitude) : null;
 
         var gpsPoint = new GPSPoint(Double.parseDouble(dao.latitude), Double.parseDouble(dao.longitude), aFloat);
-        var deviceContent = new DeviceContent(DeviceName.of(dao.deviceName), records, gpsPoint);
+        var deviceContent = new DeviceContent(DeviceName.of(dao.deviceName), records, gpsPoint, RemoteControl.of(dao.remoteControl));
 
         CloseDate close = dao.closeAt != null ? CloseDate.of(dao.closeAt.getTime()) : CloseDate.empty();
 
-        var collect = Arrays.stream(dao.ownership.substring(1, dao.ownership.length() - 2).split(",")).map(UUID::fromString).map(DomainId::of);
+        var collect = Arrays.stream(dao.ownership.substring(1, dao.ownership.length() - 2).split(","))
+                .map(UUID::fromString)
+                .map(DomainId::of);
         return new LedgerEntry(deviceContent, OpenDate.of(dao.openAt.getTime()), close, Ownership.of(collect));
     }
 }

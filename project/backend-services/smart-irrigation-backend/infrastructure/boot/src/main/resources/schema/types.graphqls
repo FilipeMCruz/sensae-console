@@ -10,6 +10,7 @@ type Device {
     name : String
     type: DeviceType
     records : [RecordEntry]
+    remoteControl : Boolean
 }
 
 type RecordEntry {

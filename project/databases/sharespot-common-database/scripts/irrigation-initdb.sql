@@ -75,7 +75,8 @@ CREATE TABLE public.ledger_entries (
                                        latitude character  varying(255),
                                        longitude character  varying(255),
                                        altitude character  varying(255),
-                                       ownership  text
+                                       ownership  text,
+                                       remote_control boolean default false not null
 );
 
 ALTER TABLE public.ledger_entries OWNER TO "user";

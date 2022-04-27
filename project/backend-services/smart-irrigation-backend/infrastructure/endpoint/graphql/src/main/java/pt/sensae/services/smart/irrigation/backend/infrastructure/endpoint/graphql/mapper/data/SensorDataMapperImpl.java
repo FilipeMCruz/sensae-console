@@ -5,6 +5,8 @@ import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorData
 import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ValveCommand;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RemoteControl;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ParkPayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;
@@ -16,6 +18,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graph
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,14 +26,16 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
     @Override
     public SensorDataDTO toDto(ProcessedSensorDataDTO dto) {
-        var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
+        var entries = dto.device.records.entry.stream()
+                .map(e -> new RecordEntry(e.label, e.content))
+                .collect(Collectors.toSet());
 
         var alt = dto.getSensorData().gps.altitude != null ? dto.getSensorData().gps.altitude.toString() : "";
 
         var gps = new GPSDataDetails(dto.getSensorData().gps.latitude.toString(), dto.getSensorData().gps.longitude.toString(), alt);
         SensorDataDetails payload;
         DeviceType type;
-        
+
         //TODO: use this to calculate humidity https://www.aqua-calc.com/calculate/humidity
         if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
             var temperature = new TemperatureDataDetails(dto.getSensorData().temperature.celsius);
@@ -55,15 +60,23 @@ public class SensorDataMapperImpl implements SensorDataMapper {
         } else {
             throw new NotValidException("No Valid data packet found");
         }
+        var validCommandsNumber = dto.getSensorCommands()
+                .stream()
+                .map(e -> ValveCommand.from(e.id))
+                .filter(Optional::isPresent)
+                .toList()
+                .size();
 
-        var device = new Device(dto.device.name, type, dto.device.id, entries);
+        var control = validCommandsNumber == 2 && type == DeviceType.VALVE;
+
+        var device = new Device(dto.device.name, type, dto.device.id, entries, control);
 
         return new SensorDataDTOImpl(dto.dataId, device, dto.reportedAt, payload);
     }
 
     @Override
     public SensorDataDTO toDto(DeviceWithData dto) {
-        var any = dto.ledger().entries().stream().findAny();
+        var any = dto.ledger().entries().stream().findFirst();
 
         if (any.isEmpty()) {
             throw new RuntimeException("Error processing device data");
@@ -84,9 +97,16 @@ public class SensorDataMapperImpl implements SensorDataMapper {
             case STOVE_SENSOR -> DeviceType.STOVE_SENSOR;
         };
 
-        var device = new Device(any.get().content().name().value(), type, dto.id().value(), entries);
+        var device = new Device(any.get().content().name().value(), type, dto.id().value(), entries, any.get()
+                .content()
+                .remoteControl()
+                .value());
 
-        var alt = any.get().content().coordinates().altitude() == null ? "0" : any.get().content().coordinates().altitude().toString();
+        var alt = any.get().content().coordinates().altitude() == null ? "0" : any.get()
+                .content()
+                .coordinates()
+                .altitude()
+                .toString();
 
         var gps = new GPSDataDetails(any.get().content().coordinates().latitude().toString(),
                 any.get().content().coordinates().longitude().toString(),

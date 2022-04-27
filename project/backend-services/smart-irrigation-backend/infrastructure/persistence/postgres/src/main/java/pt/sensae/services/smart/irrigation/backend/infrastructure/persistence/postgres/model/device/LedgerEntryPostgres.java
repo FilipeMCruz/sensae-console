@@ -33,13 +33,16 @@ public class LedgerEntryPostgres {
     @Column("altitude")
     public String altitude;
 
+    @Column("remote_control")
+    public Boolean remoteControl;
+
     @Column("ownership")
     public String ownership;
 
     public LedgerEntryPostgres() {
     }
 
-    public LedgerEntryPostgres(String deviceId, Timestamp openAt, Timestamp closeAt, String deviceName, String latitude, String longitude, String altitude, String ownership) {
+    public LedgerEntryPostgres(String deviceId, Timestamp openAt, Timestamp closeAt, String deviceName, String latitude, String longitude, String altitude, String ownership, Boolean remoteControl) {
         this.deviceId = deviceId;
         this.openAt = openAt;
         this.closeAt = closeAt;
@@ -48,5 +51,6 @@ public class LedgerEntryPostgres {
         this.longitude = longitude;
         this.altitude = altitude;
         this.ownership = ownership;
+        this.remoteControl = remoteControl;
     }
 }

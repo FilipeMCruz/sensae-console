@@ -3,6 +3,7 @@ package sharespot.services.identitymanagementslavebackend.infrastructure.boot.co
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
@@ -46,7 +47,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(SensorDataSupplier.TOPIC_EXCHANGE);
+        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
     }
 
     @Bean

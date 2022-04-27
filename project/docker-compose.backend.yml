@@ -63,6 +63,17 @@ services:
       - sharespot-network
     ports:
       - 8084:8080
+  device-commander-backend:
+    build: backend-services/device-commander-backend
+    image: device-commander-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-commander-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8088:8080
   data-validator-backend:
     build: backend-services/data-validator-backend
     image: data-validator-backend

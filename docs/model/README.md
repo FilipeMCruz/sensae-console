@@ -92,7 +92,7 @@ The current data model is represented here as a Json Schema.
             "o3": {
                 "ppm": [float]
             },
-            "occupation" {
+            "occupation": {
                 "percentage": [float]
             },
             "ph": {
@@ -205,7 +205,7 @@ At the time of data processing, though `measures.{number} Processor Slave` or `m
             "o3": {
                 "ppm": [optional]
             },
-            "occupation" {
+            "occupation": {
                 "percentage": [optional]
             },
             "ph": {

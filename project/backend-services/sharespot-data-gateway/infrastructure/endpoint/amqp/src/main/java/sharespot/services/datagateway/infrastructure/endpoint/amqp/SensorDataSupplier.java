@@ -8,14 +8,13 @@ import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Controller;
 import pt.sharespot.iot.core.buf.mapper.MessageMapper;
 import pt.sharespot.iot.core.routing.MessageSupplied;
+import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import sharespot.services.datagateway.application.EventPublisher;
 
 @Controller
 public class SensorDataSupplier implements EventPublisher {
 
     Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
-
-    public static final String TOPIC_EXCHANGE = "sensor.topic";
 
     private final AmqpTemplate template;
 
@@ -25,7 +24,7 @@ public class SensorDataSupplier implements EventPublisher {
 
     @Override
     public void publish(MessageSupplied<ObjectNode> message) {
-        template.send(TOPIC_EXCHANGE,
+        template.send(IoTCoreExchanges.DATA_EXCHANGE,
                 message.routingKeys.toString(),
                 new Message(MessageMapper.toUnprocessedBuf(message).toByteArray()));
         logSuppliedMessage(message);

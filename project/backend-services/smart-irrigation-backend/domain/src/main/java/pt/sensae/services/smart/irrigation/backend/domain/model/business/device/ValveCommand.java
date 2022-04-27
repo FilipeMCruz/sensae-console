@@ -1,5 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device;
 
+import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
+
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,6 +30,14 @@ public enum ValveCommand {
             return Optional.of(CLOSE_VALVE);
         } else {
             return Optional.empty();
+        }
+    }
+
+    public static ValveCommand from(ValveStatusType type) {
+        if (type == ValveStatusType.OPEN) {
+            return OPEN_VALVE;
+        } else {
+            return CLOSE_VALVE;
         }
     }
 }

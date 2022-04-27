@@ -61,7 +61,7 @@ public class DeviceCache {
         return type;
     }
 
-    private Optional<LedgerEntry> get(DeviceId id) {
+    public Optional<LedgerEntry> get(DeviceId id) {
         return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
     }
 

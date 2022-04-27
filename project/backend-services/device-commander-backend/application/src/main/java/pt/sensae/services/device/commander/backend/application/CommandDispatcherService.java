@@ -4,7 +4,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pt.sensae.services.device.commander.backend.domain.model.commands.CommandEntry;
-import pt.sensae.services.device.commander.backend.domain.model.commands.DeviceCommandRecieved;
+import pt.sensae.services.device.commander.backend.domain.model.commands.DeviceCommandReceived;
 import pt.sensae.services.device.commander.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.commander.backend.domainservices.DeviceRecordCache;
 
@@ -20,7 +20,7 @@ public class CommandDispatcherService {
         this.template = template;
     }
 
-    public void tryToSend(DeviceCommandRecieved command) {
+    public void tryToSend(DeviceCommandReceived command) {
         cache.findByDeviceId(command.deviceId())
                 .ifPresent(device -> device.commands()
                         .entries()

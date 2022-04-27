@@ -51,7 +51,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding bindingCommand(Queue commandQueue, FanoutExchange commandExchange) {
-        return BindingBuilder.bind(commandQueue).to(commandExchange);
+    Binding bindingCommand(Queue commandQueue, TopicExchange commandExchange) {
+        return BindingBuilder.bind(commandQueue).to(commandExchange).with("#");
     }
 }

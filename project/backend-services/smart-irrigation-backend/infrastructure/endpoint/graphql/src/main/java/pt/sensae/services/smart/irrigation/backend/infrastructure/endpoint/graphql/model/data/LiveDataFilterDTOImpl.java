@@ -1,6 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data;
 
-import pt.sensae.services.smart.irrigation.backend.application.model.LiveDataFilterDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilterDTO;
 
 import java.util.Set;
 

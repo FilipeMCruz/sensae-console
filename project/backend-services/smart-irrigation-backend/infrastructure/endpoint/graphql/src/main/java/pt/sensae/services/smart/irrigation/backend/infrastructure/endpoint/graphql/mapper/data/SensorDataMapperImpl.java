@@ -1,12 +1,11 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ValveCommand;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RemoteControl;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ParkPayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;

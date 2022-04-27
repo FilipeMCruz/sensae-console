@@ -1,8 +1,8 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataHistoryMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataHistoryDTO;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataHistoryMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataHistoryDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ParkPayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;

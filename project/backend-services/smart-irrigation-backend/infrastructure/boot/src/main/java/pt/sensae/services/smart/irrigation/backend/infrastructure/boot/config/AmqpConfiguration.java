@@ -4,9 +4,10 @@ import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ParkSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.StoveSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ValveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.egress.controller.DeviceCommandSupplier;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ParkSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.StoveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
 import pt.sharespot.iot.core.routing.keys.*;
 import pt.sharespot.iot.core.routing.keys.data.*;
@@ -50,6 +51,11 @@ public class AmqpConfiguration {
     @Bean
     public TopicExchange topic() {
         return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
+    }
+
+    @Bean
+    public TopicExchange commandExchange() {
+        return new TopicExchange(DeviceCommandSupplier.COMMANDS_EXCHANGE);
     }
 
     @Bean

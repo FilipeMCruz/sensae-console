@@ -3,7 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.grap
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import org.springframework.web.bind.annotation.RequestHeader;
-import pt.sensae.services.smart.irrigation.backend.application.FetchGardeningAreasService;
+import pt.sensae.services.smart.irrigation.backend.application.services.garden.FetchGardeningAreasService;
 import pt.sensae.services.smart.irrigation.backend.application.model.garden.GardeningAreaDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 

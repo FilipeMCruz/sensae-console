@@ -2,7 +2,7 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.grap
 
 import java.util.List;
 
-public class HistoryQueryFilters {
+public class HistoryQueryFiltersDTOImpl {
 
     public List<String> devices;
 

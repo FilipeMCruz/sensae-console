@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.garden.GardeningAreaDTOMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.garden.GardeningAreaDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTO;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.GardeningAreaDTOImpl;
 
 @Service
@@ -16,7 +16,7 @@ public class GardeningAreaDTOMapperImpl implements GardeningAreaDTOMapper {
         dto.id = model.id().value().toString();
         dto.name = model.name().value();
         dto.area = model.area().boundaries().stream().map(b -> {
-            var out = new AreaBoundaryDTO();
+            var out = new AreaBoundaryDTOImpl();
             out.altitude = String.valueOf(b.point().altitude());
             out.longitude = String.valueOf(b.point().longitude());
             out.latitude = String.valueOf(b.point().latitude());

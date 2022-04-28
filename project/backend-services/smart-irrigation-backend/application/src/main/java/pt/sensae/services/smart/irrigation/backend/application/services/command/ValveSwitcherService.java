@@ -16,6 +16,7 @@ import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.L
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -34,10 +35,11 @@ public class ValveSwitcherService {
         this.authHandler = authHandler;
     }
 
-    public void switchValve(String deviceId, AccessTokenDTO claims) {
+    public Boolean switchValve(String deviceId, AccessTokenDTO claims) {
         var ownership = new Ownership(getDomainFilter(claims).collect(Collectors.toSet()));
         var id = new DeviceId(UUID.fromString(deviceId));
 
+        var success = new AtomicBoolean(false);
         dataCollector.fetch(new LatestDataQuery(new HashSet<>(), Set.of(id), ownership))
                 .findFirst()
                 .flatMap(data -> data.ledger().entries().stream().findFirst())
@@ -47,8 +49,12 @@ public class ValveSwitcherService {
                         .findFirst()
                         .filter(d -> d.payload() instanceof ValvePayload)
                         .map(d -> (ValvePayload) d.payload()))
-                .ifPresent(valve -> publisher.publish(new DeviceCommand(ValveCommand.from(valve.status()
-                        .value()), id)));
+                .ifPresent(valve -> {
+                    success.compareAndSet(false, true);
+                    publisher.publish(new DeviceCommand(ValveCommand.from(valve.status()
+                            .value()), id));
+                });
+        return success.get();
     }
 
     private Stream<DomainId> getDomainFilter(AccessTokenDTO claims) {

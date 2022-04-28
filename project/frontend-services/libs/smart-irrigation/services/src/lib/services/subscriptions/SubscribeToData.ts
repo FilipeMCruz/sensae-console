@@ -28,6 +28,7 @@ export class SubscribeToData {
             id
             name
             type
+            remoteControl
             records{
               label
               content

@@ -2,7 +2,7 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.grap
 
 import java.util.List;
 
-public class LatestDataQueryFilters {
+public class LatestDataQueryFiltersDTOImpl {
 
     public List<String> devices;
 

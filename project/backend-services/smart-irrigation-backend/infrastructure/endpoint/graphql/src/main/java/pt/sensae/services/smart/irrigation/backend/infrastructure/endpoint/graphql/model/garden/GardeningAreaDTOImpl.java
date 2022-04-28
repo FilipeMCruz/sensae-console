@@ -10,5 +10,5 @@ public class GardeningAreaDTOImpl implements GardeningAreaDTO {
 
     public String name;
 
-    public List<AreaBoundaryDTO> area;
+    public List<AreaBoundaryDTOImpl> area;
 }

@@ -79,6 +79,7 @@ export interface DeviceDTO {
   type: DeviceTypeDTO
   name: string
   records: RecordEntryDTO[]
+  remoteControl : boolean
 }
 
 export interface RecordEntryDTO {

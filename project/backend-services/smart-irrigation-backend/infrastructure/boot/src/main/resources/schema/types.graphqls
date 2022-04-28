@@ -162,3 +162,7 @@ input LiveDataFilter {
     devices : [String]
     content : String
 }
+
+input ValvesToSwitch {
+    id: String
+}

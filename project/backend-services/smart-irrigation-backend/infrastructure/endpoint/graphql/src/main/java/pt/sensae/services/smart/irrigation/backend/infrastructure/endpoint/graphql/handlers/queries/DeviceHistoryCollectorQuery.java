@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import pt.sensae.services.smart.irrigation.backend.application.services.data.DeviceHistoryDataCollectorService;
 import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataHistoryDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.HistoryQueryFilters;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.HistoryQueryFiltersDTOImpl;
 
 import java.time.Instant;
 import java.util.List;
@@ -23,7 +23,7 @@ public class DeviceHistoryCollectorQuery {
     }
 
     @DgsQuery
-    public List<SensorDataHistoryDTO> history(@InputArgument("filters") HistoryQueryFilters filters, @RequestHeader("Authorization") String auth) {
+    public List<SensorDataHistoryDTO> history(@InputArgument("filters") HistoryQueryFiltersDTOImpl filters, @RequestHeader("Authorization") String auth) {
         return service.fetch(filters.gardens.stream(),
                         filters.devices.stream(),
                         Instant.ofEpochSecond(Long.parseLong(filters.startTime)),

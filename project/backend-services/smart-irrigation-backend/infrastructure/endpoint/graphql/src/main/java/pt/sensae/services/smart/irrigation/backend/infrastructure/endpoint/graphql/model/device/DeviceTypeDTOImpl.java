@@ -1,4 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device;
 
-public record RecordEntry(String label, String content) {
+public enum DeviceTypeDTOImpl {
+    PARK_SENSOR,
+    STOVE_SENSOR,
+    VALVE
 }

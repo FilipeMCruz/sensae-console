@@ -18,12 +18,19 @@ public final class DeviceContent {
     }
 
     public boolean queueValveSwitch() {
+        if (!remoteControl.value()) {
+            return false;
+        }
         if (this.remoteControl.isQueued()) {
             return false;
-        } else {
-            this.remoteControl = remoteControl.queue();
-            return true;
         }
+
+        this.remoteControl = remoteControl.queue();
+        return true;
+    }
+
+    public void resetQueue() {
+        this.remoteControl = remoteControl.reset();
     }
 
     public DeviceName name() {

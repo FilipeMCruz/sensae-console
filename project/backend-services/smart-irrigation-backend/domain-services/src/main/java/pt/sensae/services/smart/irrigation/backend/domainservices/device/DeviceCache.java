@@ -25,10 +25,7 @@ public class DeviceCache {
     private final DeviceRepository repository;
 
     public DeviceCache(DeviceRepository repository) {
-        this.cache = Caffeine.newBuilder()
-                .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(50)
-                .build();
+        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(50).build();
         this.repository = repository;
     }
 
@@ -41,6 +38,8 @@ public class DeviceCache {
             cache.put(deviceId, newEntry);
         } else if (!newEntry.sameAs(oldEntry.get())) {
             update(deviceId, newEntry);
+        } else {
+            oldEntry.get().content().resetQueue();
         }
     }
 
@@ -49,8 +48,7 @@ public class DeviceCache {
     }
 
     public boolean tryToSwitchValve(DeviceId id) {
-        return get(id).map(ledgerEntry -> ledgerEntry.content().queueValveSwitch())
-                .orElse(false);
+        return get(id).map(ledgerEntry -> ledgerEntry.content().queueValveSwitch()).orElse(false);
     }
 
     @NotNull

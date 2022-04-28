@@ -33,7 +33,11 @@ public class DeviceRecordCache {
     }
 
     public DeviceInformation findByDeviceId(Device device) {
-        return Objects.requireNonNullElseGet(cache.getIfPresent(device.id()), () -> update(device));
+        var deviceInCache = Objects.requireNonNullElseGet(cache.getIfPresent(device.id()), () -> update(device));
+        if (!device.downlink().equals(deviceInCache.device().downlink())) {
+            this.repository.updateDownlink(device);
+        }
+        return deviceInCache;
     }
 
     public void update(DeviceId id) {

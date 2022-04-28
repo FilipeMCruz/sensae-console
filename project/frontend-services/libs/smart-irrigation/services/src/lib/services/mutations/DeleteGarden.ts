@@ -8,9 +8,8 @@ import {AuthService} from '@frontend-services/simple-auth-lib';
 import {
   DeleteGardeningAreaCommand,
   GardeningArea,
-  UpdateGardeningAreaCommand
 } from "@frontend-services/smart-irrigation/model";
-import {DeleteGardenResultDTO, UpdateGardenResultDTO} from "@frontend-services/smart-irrigation/dto";
+import {DeleteGardenResultDTO} from "@frontend-services/smart-irrigation/dto";
 import {OperationsMapper} from "@frontend-services/smart-irrigation/mapper";
 
 @Injectable({

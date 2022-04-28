@@ -4,6 +4,6 @@ import {SensorDataDetails} from "./SensorDataDetails";
 
 export class ValveDataDetails extends SensorDataDetails {
   constructor(gps: GPSDataDetails, public valve: ValveStatusDataDetails) {
-    super(gps);
+    super(gps, '#adb5bd');
   }
 }

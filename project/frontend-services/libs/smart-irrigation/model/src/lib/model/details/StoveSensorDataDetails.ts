@@ -5,6 +5,6 @@ import {SensorDataDetails} from "./SensorDataDetails";
 
 export class StoveSensorDataDetails extends SensorDataDetails {
   constructor(gps: GPSDataDetails, public temperature: TemperatureDataDetails, public humidity: HumidityDataDetails) {
-    super(gps);
+    super(gps, '#a68a64');
   }
 }

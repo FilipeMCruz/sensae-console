@@ -16,7 +16,7 @@ export class Data {
       type: 'circle',
       source,
       paint: {
-        'circle-color': '#adb5bd',
+        'circle-color': ['get', 'color'],
         'circle-radius': 4,
         'circle-stroke-width': 1,
         'circle-stroke-color': '#582f0e'
@@ -32,15 +32,7 @@ export class Data {
   }
 
   getColor() {
-    if (this.data instanceof ParkSensorDataDetails) {
-      return {'color': '#656d4a'};
-    } else if (this.data instanceof StoveSensorDataDetails) {
-      return {'color': '#a68a64'}
-    } else if (this.data instanceof ValveDataDetails) {
-      return {'color': '#adb5bd'}
-    } else {
-      return {'color': '#adb5bd'}
-    }
+    return {'color': this.data.color}
   }
 
   getFirstDataIcon() {
@@ -96,7 +88,8 @@ export class Data {
       },
       properties: {
         description: this.device.name.value,
-        id: this.device.id.value
+        id: this.device.id.value,
+        color: this.data.color
       }
     };
   }

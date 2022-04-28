@@ -98,4 +98,12 @@ export class OperationsMapper {
       content: filters.content
     };
   }
+
+  static switchValve(deviceId: string) {
+    return {
+      instructions: {
+        id: deviceId
+      }
+    }
+  }
 }

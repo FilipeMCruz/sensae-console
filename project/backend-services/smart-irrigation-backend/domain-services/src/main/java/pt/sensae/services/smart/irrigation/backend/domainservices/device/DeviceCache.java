@@ -44,6 +44,15 @@ public class DeviceCache {
         }
     }
 
+    public Optional<LedgerEntry> get(DeviceId id) {
+        return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
+    }
+
+    public boolean tryToSwitchValve(DeviceId id) {
+        return get(id).map(ledgerEntry -> ledgerEntry.content().queueValveSwitch())
+                .orElse(false);
+    }
+
     @NotNull
     private DeviceType getDeviceType(ProcessedSensorDataDTO dto) {
         DeviceType type;
@@ -59,10 +68,6 @@ public class DeviceCache {
             throw new NotValidException("No Valid data packet found");
         }
         return type;
-    }
-
-    public Optional<LedgerEntry> get(DeviceId id) {
-        return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
     }
 
     private void update(DeviceId id, LedgerEntry newEntry) {
@@ -90,8 +95,8 @@ public class DeviceCache {
                 .size();
 
         var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ?
-                new RemoteControl(true) :
-                new RemoteControl(false);
+                RemoteControl.of(true) :
+                RemoteControl.of(false);
 
         var records = new DeviceRecords(data.device.records.entry.stream()
                 .map(e -> RecordEntry.of(e.label, e.content))

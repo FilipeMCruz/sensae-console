@@ -18,6 +18,10 @@ export interface QueryLatestDataResultDTO {
   fetchLatestData: SensorDataDTO[]
 }
 
+export interface SwitchValveResultDTO {
+  switchValve: boolean
+}
+
 export interface SubscribeToDataResultDTO {
   data: SensorDataDTO
 }
@@ -79,7 +83,7 @@ export interface DeviceDTO {
   type: DeviceTypeDTO
   name: string
   records: RecordEntryDTO[]
-  remoteControl : boolean
+  remoteControl: boolean
 }
 
 export interface RecordEntryDTO {

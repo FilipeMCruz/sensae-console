@@ -96,6 +96,8 @@ export class DataTransformationMapper {
         return PropertyName.PM2_5;
       case PropertyNameDTO.PM10:
         return PropertyName.PM10;
+      case PropertyNameDTO.DEVICE_DOWNLINK:
+        return PropertyName.DEVICE_DOWNLINK;
     }
   }
 
@@ -184,6 +186,8 @@ export class DataTransformationMapper {
         return PropertyNameDTO.PM2_5;
       case PropertyName.PM10:
         return PropertyNameDTO.PM10;
+      case PropertyName.DEVICE_DOWNLINK:
+        return PropertyNameDTO.DEVICE_DOWNLINK;
     }
   }
 }

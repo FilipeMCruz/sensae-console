@@ -1,5 +1,5 @@
-import { DeviceRecord } from './DeviceRecord';
+import { DeviceInformation } from './DeviceInformation';
 
 export class DeviceRecordPair {
-  constructor(public fresh: DeviceRecord, public old: DeviceRecord) {}
+  constructor(public fresh: DeviceInformation, public old: DeviceInformation) {}
 }

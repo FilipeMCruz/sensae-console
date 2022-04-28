@@ -4,7 +4,7 @@ import {DeviceId} from "./DeviceId";
 import {DeviceName} from "./DeviceName";
 
 export class Device {
-  constructor(public id: DeviceId, public type: DeviceType, public name: DeviceName, public records: Array<RecordEntry>) {
+  constructor(public id: DeviceId, public type: DeviceType, public name: DeviceName, public records: Array<RecordEntry>, public remoteControl: boolean) {
 
   }
 }

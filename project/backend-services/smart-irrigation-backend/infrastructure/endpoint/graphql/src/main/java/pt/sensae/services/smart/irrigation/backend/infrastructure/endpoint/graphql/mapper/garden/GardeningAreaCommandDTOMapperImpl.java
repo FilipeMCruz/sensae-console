@@ -7,7 +7,7 @@ import pt.sensae.services.smart.irrigation.backend.application.model.garden.Upda
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.BoundaryCommandDetails;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.CreateGardeningAreaCommand;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.UpdateGardeningAreaCommand;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTO;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.CreateGardeningAreaCommandDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.UpdateGardeningAreaCommandDTOImpl;
 
@@ -37,7 +37,7 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         return com;
     }
 
-    private List<BoundaryCommandDetails> extracted(List<AreaBoundaryDTO> dtoCom) {
+    private List<BoundaryCommandDetails> extracted(List<AreaBoundaryDTOImpl> dtoCom) {
         return dtoCom.stream().map(b -> {
             var out = new BoundaryCommandDetails();
             out.position = b.position;

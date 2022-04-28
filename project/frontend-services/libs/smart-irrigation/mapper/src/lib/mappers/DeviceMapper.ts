@@ -8,11 +8,12 @@ export class DeviceMapper {
     const records = dto.records.map(d => new RecordEntry(d.label, d.content));
     switch (dto.type) {
       case DeviceTypeDTO.PARK_SENSOR:
-        return new Device(id, DeviceType.PARK_SENSOR, name, records);
+        return new Device(id, DeviceType.PARK_SENSOR, name, records, dto.remoteControl);
       case DeviceTypeDTO.STOVE_SENSOR:
-        return new Device(id, DeviceType.STOVE_SENSOR, name, records);
+        return new Device(id, DeviceType.STOVE_SENSOR, name, records, dto.remoteControl);
       case DeviceTypeDTO.VALVE:
-        return new Device(id, DeviceType.VALVE, name, records);
+        console.log(new Device(id, DeviceType.VALVE, name, records, dto.remoteControl))
+        return new Device(id, DeviceType.VALVE, name, records, dto.remoteControl);
     }
   }
 }

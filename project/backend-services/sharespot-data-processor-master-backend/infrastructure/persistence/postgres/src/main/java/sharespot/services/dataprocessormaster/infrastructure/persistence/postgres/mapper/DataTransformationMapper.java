@@ -79,7 +79,9 @@ public class DataTransformationMapper {
             case VOC -> PropertyNamePostgres.of(34);
             case PM2_5 -> PropertyNamePostgres.of(35);
             case PM10 -> PropertyNamePostgres.of(36);
-            case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS -> throw new RuntimeException();
+            case DEVICE_DOWNLINK -> PropertyNamePostgres.of(37);
+            case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS, DEVICE_COMMANDS ->
+                    throw new RuntimeException();
         };
     }
 
@@ -121,6 +123,7 @@ public class DataTransformationMapper {
             case 34 -> PropertyName.VOC;
             case 35 -> PropertyName.PM2_5;
             case 36 -> PropertyName.PM10;
+            case 37 -> PropertyName.DEVICE_DOWNLINK;
             default -> throw new IllegalStateException("Unexpected value: " + postgres.value);
         };
     }

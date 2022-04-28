@@ -11,10 +11,12 @@ COPY infrastructure/persistence/questdb/pom.xml infrastructure/persistence/quest
 COPY infrastructure/persistence/postgres/pom.xml infrastructure/persistence/postgres/pom.xml
 COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
 COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
+COPY infrastructure/endpoint/amqp/ingress/pom.xml infrastructure/endpoint/amqp/ingress/pom.xml
+COPY infrastructure/endpoint/amqp/egress/pom.xml infrastructure/endpoint/amqp/egress/pom.xml
 COPY infrastructure/pom.xml infrastructure/pom.xml
 COPY pom.xml pom.xml
 # build all external dependencies
-RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=smart-irrigation-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,postgres,domain-services
+RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=smart-irrigation-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,postgres,domain-services,ingress,egress
 
 COPY . .
 RUN mvn clean package

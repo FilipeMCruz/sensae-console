@@ -10,6 +10,7 @@ type Device {
     name : String
     type: DeviceType
     records : [RecordEntry]
+    remoteControl : Boolean
 }
 
 type RecordEntry {
@@ -160,4 +161,8 @@ input LiveDataFilter {
     gardens : [String]
     devices : [String]
     content : String
+}
+
+input ValvesToSwitch {
+    id: String
 }

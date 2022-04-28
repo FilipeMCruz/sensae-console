@@ -3,15 +3,19 @@ package pt.sensae.services.device.management.slave.backend.infrastructure.endpoi
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.application.ProcessedSensorDataWithRecordMapper;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceWithSubDevices;
+import pt.sensae.services.device.management.slave.backend.domain.model.commands.CommandEntry;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.BasicRecordEntry;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceRecords;
+import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordEntry;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordLabel;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.sensor.device.controls.DeviceCommandDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
 import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
+import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +24,7 @@ import java.util.stream.Collectors;
 public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorDataWithRecordMapper {
 
     @Override
-    public DeviceWithSubDevices domainToDto(ProcessedSensorDataDTO domain, DeviceRecords records) {
+    public DeviceWithSubDevices domainToDto(ProcessedSensorDataDTO domain, DeviceInformation records) {
         var sensorDataToUpdate = records.records()
                 .entries()
                 .stream()
@@ -42,36 +46,83 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                             .content()), Double.valueOf(longitudeOpt.get().content())));
         }
 
-        domain.device.records = new DeviceRecordDTO(records.records()
+        var newRecords = records.records()
                 .entries()
                 .stream()
                 .filter(e -> e instanceof BasicRecordEntry)
                 .map(e -> (BasicRecordEntry) e)
                 .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet());
+
+        if (domain.hasProperty(PropertyName.DEVICE_RECORDS)) {
+            domain.device.records.entry.stream()
+                    .filter(entry -> newRecords.stream().noneMatch(e -> Objects.equals(entry.label, e.label)))
+                    .forEach(newRecords::add);
+        }
+
+        domain.device.records = new DeviceRecordDTO(newRecords);
 
         domain.device.name = records.device().name().value();
+
+        if (domain.hasProperty(PropertyName.DEVICE_COMMANDS)) {
+            domain.device.commands.forEach((devKey, value) -> {
+                var commandEntries = records.commands()
+                        .entries()
+                        .stream()
+                        .filter(c -> Objects.equals(c.ref().value(), devKey))
+                        .toList();
+
+                value.stream().filter(com -> commandEntries.stream().noneMatch(c -> com.id.equals(c.id().value())))
+                        .forEach(e -> domain.device.commands.computeIfAbsent(devKey, k -> new ArrayList<>()).add(e));
+            });
+        } else {
+            domain.device.commands = new HashMap<>();
+            records.commands()
+                    .entries()
+                    .forEach(e -> domain.device.commands
+                            .computeIfAbsent(e.ref().value(), k -> new ArrayList<>())
+                            .add(this.processCommands(e)));
+        }
 
         return new DeviceWithSubDevices(domain, processSubSensors(domain, records));
     }
 
-    private List<ProcessedSensorDataDTO> processSubSensors(ProcessedSensorDataDTO domain, DeviceRecords records) {
+    private DeviceCommandDTO processCommands(CommandEntry model) {
+        var command = new DeviceCommandDTO();
+        command.id = model.id().value();
+        command.name = model.name().value();
+        command.port = model.port().value();
+        command.payload = model.payload().value();
+        return command;
+    }
+
+    private List<ProcessedSensorDataDTO> processSubSensors(ProcessedSensorDataDTO domain, DeviceInformation records) {
         var subDevices = new ArrayList<ProcessedSensorDataDTO>();
 
         records.subDevices().entries().forEach(sub -> {
             var subSensorMeasures = domain.measures.get(sub.ref().value());
-            if (subSensorMeasures != null) {
-                var processedSensorDataDTO = new ProcessedSensorDataDTO();
 
-                var deviceInformationDTO = new DeviceInformationDTO();
-                deviceInformationDTO.id = sub.id().value();
+            var subSensorCommands = records.commands()
+                    .entries()
+                    .stream()
+                    .filter(com -> com.ref().equals(sub.ref()))
+                    .map(this::processCommands)
+                    .toList();
 
-                processedSensorDataDTO.device = deviceInformationDTO;
-                processedSensorDataDTO.reportedAt = domain.reportedAt;
-                processedSensorDataDTO.dataId = UUID.randomUUID();
-                processedSensorDataDTO.measures = Map.of(0, subSensorMeasures);
-                subDevices.add(processedSensorDataDTO);
-            }
+            var deviceInformationDTO = new DeviceInformationDTO();
+            deviceInformationDTO.id = sub.id().value();
+            deviceInformationDTO.downlink = domain.device.downlink;
+
+            var processedSensorDataDTO = new ProcessedSensorDataDTO();
+            processedSensorDataDTO.device = deviceInformationDTO;
+            processedSensorDataDTO.reportedAt = domain.reportedAt;
+            processedSensorDataDTO.dataId = UUID.randomUUID();
+
+            processedSensorDataDTO.measures = Map.of(0, Objects.requireNonNullElseGet(subSensorMeasures, SensorDataDetailsDTO::new));
+
+            processedSensorDataDTO.device.commands = Map.of(0, Objects.requireNonNullElseGet(subSensorCommands, ArrayList::new));
+
+            subDevices.add(processedSensorDataDTO);
         });
 
         return subDevices;

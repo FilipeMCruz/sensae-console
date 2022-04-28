@@ -1,8 +1,9 @@
 export class Device {
-  constructor(public id: string, public name: string) {}
+  constructor(public id: string, public name: string, public downlink: string) {
+  }
 
   static empty() {
-    return new Device('', '');
+    return new Device('', '', '');
   }
 
   same(device: Device) {

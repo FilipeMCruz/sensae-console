@@ -1,30 +1,40 @@
 export interface DeviceRecordQuery {
-  deviceRecords: Array<DeviceRecordDTO>;
+  deviceRecords: Array<DeviceRecordDTO>
 }
 
 export interface DeviceRecordsInput {
-  index: DeviceRecordDTO;
+  index: DeviceRecordDTO
 }
 
 export interface DeviceRecordDelete {
-  delete: DeviceDTO;
+  delete: DeviceDTO
 }
 
 export interface DeviceRecordDTO {
-  device: DeviceDTO;
-  entries: Array<RecordEntryDTO>;
-  subDevices: Array<SubDevice>;
+  device: DeviceDTO
+  entries: Array<RecordEntryDTO>
+  subDevices: Array<SubDevice>
+  commands: Array<DeviceCommandDTO>
 }
 
 export interface DeviceDTO {
-  id: string;
-  name: string;
+  id: string
+  name: string
+  downlink: string
+}
+
+export interface DeviceCommandDTO {
+  id: string
+  name: string
+  ref: number
+  port: number
+  payload: string
 }
 
 export interface RecordEntryDTO {
-  label: string | SensorDataRecordLabelDTO;
-  content: string;
-  type: RecordTypeDTO;
+  label: string | SensorDataRecordLabelDTO
+  content: string
+  type: RecordTypeDTO
 }
 
 export enum RecordTypeDTO {
@@ -38,6 +48,6 @@ export enum SensorDataRecordLabelDTO {
 }
 
 export interface SubDevice {
-  id: string;
-  ref: number;
+  id: string
+  ref: number
 }

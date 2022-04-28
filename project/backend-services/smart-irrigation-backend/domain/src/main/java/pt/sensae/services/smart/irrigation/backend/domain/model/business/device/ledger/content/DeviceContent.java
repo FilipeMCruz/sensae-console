@@ -2,5 +2,5 @@ package pt.sensae.services.smart.irrigation.backend.domain.model.business.device
 
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 
-public record DeviceContent(DeviceName name, DeviceRecords records, GPSPoint coordinates) {
+public record DeviceContent(DeviceName name, DeviceRecords records, GPSPoint coordinates, RemoteControl remoteControl) {
 }

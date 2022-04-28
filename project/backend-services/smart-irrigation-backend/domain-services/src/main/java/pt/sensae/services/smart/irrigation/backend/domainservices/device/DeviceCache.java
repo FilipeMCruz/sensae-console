@@ -2,19 +2,14 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.device;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.Device;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceRepository;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceType;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceContent;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceName;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.DeviceRecords;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.RecordEntry;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.*;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
@@ -42,28 +37,32 @@ public class DeviceCache {
         var newEntry = toLedgerEntry(dto);
         var oldEntry = get(deviceId);
         if (oldEntry.isEmpty()) {
-            DeviceType type;
-            if (dto.hasProperty(PropertyName.TRIGGER)) {
-                type = DeviceType.VALVE;
-            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
-                type = DeviceType.STOVE_SENSOR;
-            } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
-                type = DeviceType.STOVE_SENSOR;
-            } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
-                type = DeviceType.PARK_SENSOR;
-            } else {
-                throw new NotValidException("No Valid data packet found");
-            }
-            repository.add(new Device(deviceId, type, DeviceLedger.start(newEntry)));
+            repository.add(new Device(deviceId, getDeviceType(dto), DeviceLedger.start(newEntry)));
             cache.put(deviceId, newEntry);
         } else if (!newEntry.sameAs(oldEntry.get())) {
             update(deviceId, newEntry);
         }
     }
 
-    private Optional<LedgerEntry> get(DeviceId id) {
-        return Optional.ofNullable(cache.getIfPresent(id))
-                .or(() -> repository.fetchDeviceActiveLedgerEntry(id));
+    @NotNull
+    private DeviceType getDeviceType(ProcessedSensorDataDTO dto) {
+        DeviceType type;
+        if (dto.hasProperty(PropertyName.TRIGGER)) {
+            type = DeviceType.VALVE;
+        } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
+            type = DeviceType.STOVE_SENSOR;
+        } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
+            type = DeviceType.STOVE_SENSOR;
+        } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
+            type = DeviceType.PARK_SENSOR;
+        } else {
+            throw new NotValidException("No Valid data packet found");
+        }
+        return type;
+    }
+
+    public Optional<LedgerEntry> get(DeviceId id) {
+        return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
     }
 
     private void update(DeviceId id, LedgerEntry newEntry) {
@@ -77,18 +76,28 @@ public class DeviceCache {
 
         var name = DeviceName.of(data.device.name);
 
-        var gpsPoint = GPSPoint.ofLatLong(data.getSensorData().gps.latitude,
-                data.getSensorData().gps.longitude);
+        var gpsPoint = GPSPoint.ofLatLong(data.getSensorData().gps.latitude, data.getSensorData().gps.longitude);
 
         if (data.hasProperty(PropertyName.ALTITUDE)) {
-            gpsPoint = GPSPoint.ofLatLongAlt(data.getSensorData().gps.latitude,
-                    data.getSensorData().gps.longitude,
-                    data.getSensorData().gps.altitude);
+            gpsPoint = GPSPoint.ofLatLongAlt(data.getSensorData().gps.latitude, data.getSensorData().gps.longitude, data.getSensorData().gps.altitude);
         }
 
-        var records = new DeviceRecords(data.device.records.entry.stream().map(e -> RecordEntry.of(e.label, e.content)).collect(Collectors.toSet()));
+        var validCommandsNumber = data.getSensorCommands()
+                .stream()
+                .map(e -> ValveCommand.from(e.id))
+                .filter(Optional::isPresent)
+                .toList()
+                .size();
 
-        var content = new DeviceContent(name, records, gpsPoint);
+        var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ?
+                new RemoteControl(true) :
+                new RemoteControl(false);
+
+        var records = new DeviceRecords(data.device.records.entry.stream()
+                .map(e -> RecordEntry.of(e.label, e.content))
+                .collect(Collectors.toSet()));
+
+        var content = new DeviceContent(name, records, gpsPoint, control);
 
         return new LedgerEntry(content, OpenDate.of(data.reportedAt), CloseDate.empty(), owners);
     }

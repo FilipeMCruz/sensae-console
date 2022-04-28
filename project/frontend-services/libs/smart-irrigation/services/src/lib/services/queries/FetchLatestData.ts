@@ -29,6 +29,7 @@ export class FetchLatestData {
             id
             name
             type
+            remoteControl
             records{
               label
               content

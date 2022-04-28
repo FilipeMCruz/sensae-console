@@ -175,6 +175,15 @@ services:
       - ./secrets/prod/device-management-slave-backend.env
     networks:
       - sharespot-network
+  device-commander-backend:
+    build: backend-services/device-commander-backend
+    image: device-commander-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-commander-backend.env
+    networks:
+      - sharespot-network
   sharespot-data-decoder-slave-backend:
     build: backend-services/sharespot-data-decoder-slave-backend
     image: sharespot-data-decoder-slave-backend

@@ -14,7 +14,7 @@ public class DeviceRecordEntryPostgres {
     public String content;
 
     @ManyToOne
-    public DeviceRecordsPostgres records;
+    public DeviceInformationPostgres records;
 
     @Embedded
     public DeviceRecordEntryTypePostgres type;

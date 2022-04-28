@@ -10,10 +10,10 @@ public class DeviceSubSensorPostgres {
     public Long persistenceId;
 
     @ManyToOne
-    public DeviceRecordsPostgres controller;
+    public DeviceInformationPostgres controller;
 
-    @Column(unique = true)
     public Integer subDeviceRef;
 
+    @Column(unique = true)
     public String subDeviceId;
 }

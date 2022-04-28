@@ -35,5 +35,6 @@ export enum PropertyName {
   SOIL_CONDUCTIVITY = "Soil Conductivity (in µS/cm)",
   VOC = "Volatile Organic Compounds (in ppm)",
   WATER_PRESSURE = "Water Pressure in pipes (in bar)",
+  DEVICE_DOWNLINK = "Device Downlink Url",
   INVALID = 'Invalid',
 }

@@ -1,9 +1,9 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.smart.irrigation.backend.application.mapper.LiveDataMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.LiveDataFilter;
-import pt.sensae.services.smart.irrigation.backend.application.model.LiveDataFilterDTO;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.data.LiveDataMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilter;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilterDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.LiveDataFilterDTOImpl;

@@ -1,21 +1,23 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.smart.irrigation.backend.application.mapper.SensorDataMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ValveCommand;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ParkPayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.*;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.Device;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceType;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntry;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceDTOImpl;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceTypeDTOImpl;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntryDTOImpl;
 import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.properties.PropertyName;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,47 +25,57 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
     @Override
     public SensorDataDTO toDto(ProcessedSensorDataDTO dto) {
-        var entries = dto.device.records.entry.stream().map(e -> new RecordEntry(e.label, e.content)).collect(Collectors.toSet());
+        var entries = dto.device.records.entry.stream()
+                .map(e -> new RecordEntryDTOImpl(e.label, e.content))
+                .collect(Collectors.toSet());
 
         var alt = dto.getSensorData().gps.altitude != null ? dto.getSensorData().gps.altitude.toString() : "";
 
         var gps = new GPSDataDetails(dto.getSensorData().gps.latitude.toString(), dto.getSensorData().gps.longitude.toString(), alt);
         SensorDataDetails payload;
-        DeviceType type;
-        
+        DeviceTypeDTOImpl type;
+
         //TODO: use this to calculate humidity https://www.aqua-calc.com/calculate/humidity
         if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)) {
             var temperature = new TemperatureDataDetails(dto.getSensorData().temperature.celsius);
             var humidity = new HumidityDataDetails(dto.getSensorData().airHumidity.relativePercentage);
             payload = new StoveSensorDataDetails(gps, temperature, humidity);
-            type = DeviceType.STOVE_SENSOR;
+            type = DeviceTypeDTOImpl.STOVE_SENSOR;
         } else if (dto.hasAllProperties(PropertyName.TEMPERATURE, PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
             var temperature = new TemperatureDataDetails(dto.getSensorData().temperature.celsius);
             var humidity = new HumidityDataDetails(dto.getSensorData().airHumidity.gramsPerCubicMeter);
             payload = new StoveSensorDataDetails(gps, temperature, humidity);
-            type = DeviceType.STOVE_SENSOR;
+            type = DeviceTypeDTOImpl.STOVE_SENSOR;
         } else if (dto.hasAllProperties(PropertyName.ILLUMINANCE, PropertyName.SOIL_MOISTURE)) {
             var lux = new IlluminanceDataDetails(dto.getSensorData().illuminance.lux);
             var moisture = new SoilMoistureDataDetails(dto.getSensorData().soilMoisture.relativePercentage);
             payload = new ParkSensorDataDetails(gps, lux, moisture);
-            type = DeviceType.PARK_SENSOR;
+            type = DeviceTypeDTOImpl.PARK_SENSOR;
         } else if (dto.hasProperty(PropertyName.TRIGGER)) {
             var alertStatus = dto.getSensorData().trigger.value ? ValveStatusDataDetailsType.OPEN : ValveStatusDataDetailsType.CLOSE;
             var valve = new ValveStatusDataDetails(alertStatus);
             payload = new ValveDataDetails(gps, valve);
-            type = DeviceType.VALVE;
+            type = DeviceTypeDTOImpl.VALVE;
         } else {
             throw new NotValidException("No Valid data packet found");
         }
+        var validCommandsNumber = dto.getSensorCommands()
+                .stream()
+                .map(e -> ValveCommand.from(e.id))
+                .filter(Optional::isPresent)
+                .toList()
+                .size();
 
-        var device = new Device(dto.device.name, type, dto.device.id, entries);
+        var control = validCommandsNumber == 2 && type == DeviceTypeDTOImpl.VALVE;
+
+        var device = new DeviceDTOImpl(dto.device.name, type, dto.device.id, entries, control);
 
         return new SensorDataDTOImpl(dto.dataId, device, dto.reportedAt, payload);
     }
 
     @Override
     public SensorDataDTO toDto(DeviceWithData dto) {
-        var any = dto.ledger().entries().stream().findAny();
+        var any = dto.ledger().entries().stream().findFirst();
 
         if (any.isEmpty()) {
             throw new RuntimeException("Error processing device data");
@@ -76,17 +88,24 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
         var entries = any.get().content()
                 .records().entries().stream()
-                .map(e -> new RecordEntry(e.label(), e.content())).collect(Collectors.toSet());
+                .map(e -> new RecordEntryDTOImpl(e.label(), e.content())).collect(Collectors.toSet());
 
         var type = switch (dto.type()) {
-            case PARK_SENSOR -> DeviceType.PARK_SENSOR;
-            case VALVE -> DeviceType.VALVE;
-            case STOVE_SENSOR -> DeviceType.STOVE_SENSOR;
+            case PARK_SENSOR -> DeviceTypeDTOImpl.PARK_SENSOR;
+            case VALVE -> DeviceTypeDTOImpl.VALVE;
+            case STOVE_SENSOR -> DeviceTypeDTOImpl.STOVE_SENSOR;
         };
 
-        var device = new Device(any.get().content().name().value(), type, dto.id().value(), entries);
+        var device = new DeviceDTOImpl(any.get().content().name().value(), type, dto.id().value(), entries, any.get()
+                .content()
+                .remoteControl()
+                .value());
 
-        var alt = any.get().content().coordinates().altitude() == null ? "0" : any.get().content().coordinates().altitude().toString();
+        var alt = any.get().content().coordinates().altitude() == null ? "0" : any.get()
+                .content()
+                .coordinates()
+                .altitude()
+                .toString();
 
         var gps = new GPSDataDetails(any.get().content().coordinates().latitude().toString(),
                 any.get().content().coordinates().longitude().toString(),

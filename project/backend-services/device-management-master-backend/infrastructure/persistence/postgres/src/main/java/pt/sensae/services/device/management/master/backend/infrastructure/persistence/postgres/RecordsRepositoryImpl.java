@@ -3,7 +3,7 @@ package pt.sensae.services.device.management.master.backend.infrastructure.persi
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceRecords;
+import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.records.RecordsRepository;
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.mapper.RecordMapper;
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
@@ -22,20 +22,29 @@ public class RecordsRepositoryImpl implements RecordsRepository {
 
     @Override
     @Transactional
-    public DeviceRecords save(DeviceRecords domain) {
+    public DeviceInformation save(DeviceInformation domain) {
         var id = domain.device().id();
         var deviceRecordsPostgres = RecordMapper.domainToPostgres(domain);
 
         var byDeviceId = repositoryPostgres.findByDeviceId(id.value().toString());
         if (byDeviceId.isPresent()) {
             var old = byDeviceId.get();
+
+            old.name = deviceRecordsPostgres.name;
+            old.downlink = deviceRecordsPostgres.downlink;
+
             old.entries.clear();
             old.entries.addAll(deviceRecordsPostgres.entries);
             old.entries.forEach(e -> e.records = old);
-            old.name = deviceRecordsPostgres.name;
+
             old.subSensors.clear();
             old.subSensors.addAll(deviceRecordsPostgres.subSensors);
             old.subSensors.forEach(s -> s.controller = old);
+
+            old.commands.clear();
+            old.commands.addAll(deviceRecordsPostgres.commands);
+            old.commands.forEach(s -> s.device = old);
+
             repositoryPostgres.save(old);
         } else {
             repositoryPostgres.save(deviceRecordsPostgres);
@@ -44,7 +53,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     }
 
     @Override
-    public Stream<DeviceRecords> findAll() {
+    public Stream<DeviceInformation> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
                 .map(RecordMapper::postgresToDomain);
     }

@@ -3,8 +3,8 @@ package pt.sensae.services.device.management.slave.backend.infrastructure.persis
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceRepository;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceRecords;
-import pt.sensae.services.device.management.slave.backend.infrastructure.persistence.postgres.mapper.RecordMapper;
+import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
+import pt.sensae.services.device.management.slave.backend.infrastructure.persistence.postgres.mapper.DeviceMapper;
 import pt.sensae.services.device.management.slave.backend.infrastructure.persistence.postgres.repository.DeviceRepositoryPostgres;
 
 import java.util.Optional;
@@ -19,15 +19,15 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public Optional<DeviceRecords> findByDeviceId(DeviceId id) {
+    public Optional<DeviceInformation> findByDeviceId(DeviceId id) {
         return repositoryPostgres.findByDeviceId(id.value().toString())
-                .map(RecordMapper::postgresToDomain);
+                .map(DeviceMapper::postgresToDomain);
     }
 
     @Override
-    public DeviceRecords add(DeviceRecords domain) {
-        var deviceRecordsPostgres = RecordMapper.domainToPostgres(domain);
+    public DeviceInformation add(DeviceInformation domain) {
+        var deviceRecordsPostgres = DeviceMapper.domainToPostgres(domain);
         repositoryPostgres.save(deviceRecordsPostgres);
-        return RecordMapper.postgresToDomain(deviceRecordsPostgres);
+        return DeviceMapper.postgresToDomain(deviceRecordsPostgres);
     }
 }

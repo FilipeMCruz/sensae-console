@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {DeviceRecord, DeviceRecordPair, DeviceViewType,} from '@frontend-services/device-management/model';
+import {DeviceInformation, DeviceRecordPair, DeviceViewType,} from '@frontend-services/device-management/model';
 import {
   DeleteDeviceRecord,
   GetAllDeviceRecords,
@@ -15,7 +15,7 @@ import {DeviceDialogComponent} from "../device-dialog/device-dialog.component";
   styleUrls: ['./device-management-page.component.scss'],
 })
 export class DeviceManagementPageComponent implements OnInit {
-  records: Array<DeviceRecord> = new Array<DeviceRecord>();
+  records: Array<DeviceInformation> = new Array<DeviceInformation>();
 
   deviceViewType = DeviceViewType;
   loading = true;
@@ -52,16 +52,16 @@ export class DeviceManagementPageComponent implements OnInit {
     this.recordsCollector
       .getData()
       .subscribe(
-        (data: Array<DeviceRecord>) => (this.records = data.sort((a, b) => a.device.name.localeCompare(b.device.name))),
+        (data: Array<DeviceInformation>) => (this.records = data.sort((a, b) => a.device.name.localeCompare(b.device.name))),
         error => error,
         () => this.loading = false);
   }
 
-  updateItem(event: DeviceRecord) {
+  updateItem(event: DeviceInformation) {
     this.saveItem(event);
   }
 
-  addItem(event: DeviceRecord) {
+  addItem(event: DeviceInformation) {
     const deviceRecords = this.records.filter(
       (r) => r.device.id == event.device.id
     );
@@ -72,7 +72,7 @@ export class DeviceManagementPageComponent implements OnInit {
     }
   }
 
-  private saveItem(event: DeviceRecord) {
+  private saveItem(event: DeviceInformation) {
     this.indexer.index(event).subscribe((deviceRecord) => {
       this.records = this.records.filter(
         (r) => r.device.id != deviceRecord.device.id
@@ -81,7 +81,7 @@ export class DeviceManagementPageComponent implements OnInit {
     });
   }
 
-  deleteItem(event: DeviceRecord) {
+  deleteItem(event: DeviceInformation) {
     this.eraser.delete(event).subscribe((device) => {
       this.records = this.records.filter((r) => r.device.id != device.id);
     });

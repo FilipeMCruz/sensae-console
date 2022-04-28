@@ -6,9 +6,9 @@ import java.util.stream.Stream;
 
 public interface RecordsRepository {
 
-    DeviceRecords save(DeviceRecords records);
+    DeviceInformation save(DeviceInformation records);
 
-    Stream<DeviceRecords> findAll();
+    Stream<DeviceInformation> findAll();
 
     DeviceId delete(DeviceId id);
 

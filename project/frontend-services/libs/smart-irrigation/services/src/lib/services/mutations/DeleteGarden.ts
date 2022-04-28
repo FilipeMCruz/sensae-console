@@ -5,24 +5,28 @@ import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from '@frontend-services/core';
 import {HttpHeaders} from '@angular/common/http';
 import {AuthService} from '@frontend-services/simple-auth-lib';
-import {GardeningArea, UpdateGardeningAreaCommand} from "@frontend-services/smart-irrigation/model";
-import {UpdateGardenResultDTO} from "@frontend-services/smart-irrigation/dto";
+import {
+  DeleteGardeningAreaCommand,
+  GardeningArea,
+  UpdateGardeningAreaCommand
+} from "@frontend-services/smart-irrigation/model";
+import {DeleteGardenResultDTO, UpdateGardenResultDTO} from "@frontend-services/smart-irrigation/dto";
 import {OperationsMapper} from "@frontend-services/smart-irrigation/mapper";
 
 @Injectable({
   providedIn: 'root',
 })
-export class UpdateGarden {
+export class DeleteGarden {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  getData(command: UpdateGardeningAreaCommand): Observable<GardeningArea> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:edit"]))
+  getData(command: DeleteGardeningAreaCommand): Observable<GardeningArea> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:delete"]))
       return EMPTY;
 
     const query = gql`
-      mutation updateGarden($instructions: UpdateGardeningAreaCommand){
-        updateGarden(instructions: $instructions){
+      mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
+        deleteGarden(instructions: $instructions){
           id
           name
           area{
@@ -37,7 +41,7 @@ export class UpdateGarden {
 
     return this.apollo
       .use('smartIrrigation')
-      .subscribe<UpdateGardenResultDTO>({
+      .subscribe<DeleteGardenResultDTO>({
         query,
         context: {
           headers: new HttpHeaders().set(
@@ -45,12 +49,12 @@ export class UpdateGarden {
             'Bearer ' + this.auth.getToken()
           ),
         },
-        variables: OperationsMapper.updateGardenInstructions(command)
+        variables: OperationsMapper.deleteGardenInstructions(command)
       })
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: UpdateGardenResultDTO) => OperationsMapper.updateGardenDtoToModel(data))
+        map((data: DeleteGardenResultDTO) => OperationsMapper.deleteGardenDtoToModel(data))
       );
   }
 }

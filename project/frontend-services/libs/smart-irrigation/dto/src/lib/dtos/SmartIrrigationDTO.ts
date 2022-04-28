@@ -6,6 +6,10 @@ export interface UpdateGardenResultDTO {
   updateGarden: GardeningAreaDTO
 }
 
+export interface DeleteGardenResultDTO {
+  deleteGarden: GardeningAreaDTO
+}
+
 export interface QueryHistoryResultDTO {
   history: SensorDataHistoryDTO[]
 }
@@ -28,6 +32,10 @@ export interface SubscribeToDataResultDTO {
 
 export interface UpdateGardenParamsDTO {
   instructions: UpdateGardeningAreaCommandDTO
+}
+
+export interface DeleteGardenParamsDTO {
+  instructions: DeleteGardeningAreaCommandDTO
 }
 
 export interface CreateGardenParamsDTO {
@@ -69,6 +77,10 @@ export interface UpdateGardeningAreaCommandDTO {
   id: string
   name: string
   area: AreaBoundaryDTO[]
+}
+
+export interface DeleteGardeningAreaCommandDTO {
+  id: string
 }
 
 export interface SensorDataDTO {

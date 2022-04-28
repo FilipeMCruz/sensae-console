@@ -1,6 +1,6 @@
 import {
   CreateGardenParamsDTO,
-  CreateGardenResultDTO,
+  CreateGardenResultDTO, DeleteGardenParamsDTO, DeleteGardenResultDTO,
   QueryGardensResultDTO,
   QueryHistoryDataParamsDTO,
   QueryHistoryResultDTO,
@@ -12,7 +12,7 @@ import {
   UpdateGardenResultDTO
 } from "@frontend-services/smart-irrigation/dto";
 import {
-  Data,
+  Data, DeleteGardeningAreaCommand,
   GardeningArea,
   SensorDataHistory,
   UpdateGardeningAreaCommand
@@ -70,8 +70,16 @@ export class OperationsMapper {
     return {instructions: {area, name: model.name.value}}
   }
 
+  static deleteGardenInstructions(model: DeleteGardeningAreaCommand): DeleteGardenParamsDTO {
+    return {instructions: {id: model.id.value}}
+  }
+
   static updateGardenDtoToModel(dto: UpdateGardenResultDTO): GardeningArea {
     return GardenMapper.dtoToModel(dto.updateGarden);
+  }
+
+  static deleteGardenDtoToModel(dto: DeleteGardenResultDTO): GardeningArea {
+    return GardenMapper.dtoToModel(dto.deleteGarden);
   }
 
   static updateGardenInstructions(model: UpdateGardeningAreaCommand): UpdateGardenParamsDTO {

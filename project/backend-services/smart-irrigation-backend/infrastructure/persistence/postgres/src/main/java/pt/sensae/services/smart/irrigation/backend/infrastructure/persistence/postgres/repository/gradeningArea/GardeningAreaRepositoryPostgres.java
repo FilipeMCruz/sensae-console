@@ -11,8 +11,12 @@ import java.util.stream.Stream;
 @Repository
 public interface GardeningAreaRepositoryPostgres extends CrudRepository<GardeningAreaPostgres, Long> {
 
+    Optional<GardeningAreaPostgres> findByDeletedFalseAndAreaId(String areaId);
+
     Optional<GardeningAreaPostgres> findByAreaId(String areaId);
 
-    Stream<GardeningAreaPostgres> findByAreaIdIn(List<String> areaId);
+    Stream<GardeningAreaPostgres> findAllByDeletedFalseAndAreaIdIn(List<String> areaId);
+
+    Stream<GardeningAreaPostgres> findAllByDeletedFalse();
 
 }

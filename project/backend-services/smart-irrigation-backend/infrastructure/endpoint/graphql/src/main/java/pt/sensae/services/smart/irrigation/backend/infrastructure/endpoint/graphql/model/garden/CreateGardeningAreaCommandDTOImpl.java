@@ -9,6 +9,4 @@ public class CreateGardeningAreaCommandDTOImpl implements CreateGardeningAreaCom
     public String name;
 
     public List<AreaBoundaryDTOImpl> area;
-
-    public List<String> valves;
 }

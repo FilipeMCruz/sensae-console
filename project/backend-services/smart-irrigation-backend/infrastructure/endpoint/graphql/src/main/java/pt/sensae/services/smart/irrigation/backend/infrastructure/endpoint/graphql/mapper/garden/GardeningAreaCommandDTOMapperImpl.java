@@ -3,12 +3,15 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.grap
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.garden.GardeningAreaCommandDTOMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.garden.CreateGardeningAreaCommandDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.garden.DeleteGardeningAreaCommandDTO;
 import pt.sensae.services.smart.irrigation.backend.application.model.garden.UpdateGardeningAreaCommandDTO;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.BoundaryCommandDetails;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.CreateGardeningAreaCommand;
+import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.DeleteGardeningAreaCommand;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.model.UpdateGardeningAreaCommand;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.AreaBoundaryDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.CreateGardeningAreaCommandDTOImpl;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.DeleteGardeningAreaCommandDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.garden.UpdateGardeningAreaCommandDTOImpl;
 
 import java.util.List;
@@ -34,6 +37,14 @@ public class GardeningAreaCommandDTOMapperImpl implements GardeningAreaCommandDT
         var com = new CreateGardeningAreaCommand();
         com.name = dtoCom.name;
         com.area = extracted(dtoCom.area);
+        return com;
+    }
+
+    @Override
+    public DeleteGardeningAreaCommand toCommand(DeleteGardeningAreaCommandDTO dto) {
+        var dtoCom = (DeleteGardeningAreaCommandDTOImpl) dto;
+        var com = new DeleteGardeningAreaCommand();
+        com.id = UUID.fromString(dtoCom.id);
         return com;
     }
 

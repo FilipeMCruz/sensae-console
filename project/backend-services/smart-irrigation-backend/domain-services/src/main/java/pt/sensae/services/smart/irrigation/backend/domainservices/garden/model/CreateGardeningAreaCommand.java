@@ -6,7 +6,5 @@ public class CreateGardeningAreaCommand {
 
     public String name;
 
-    public String type;
-
     public List<BoundaryCommandDetails> area;
 }

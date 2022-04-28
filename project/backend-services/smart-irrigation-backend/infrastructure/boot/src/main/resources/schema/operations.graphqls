@@ -11,5 +11,6 @@ type Query {
 type Mutation {
     createGarden(instructions: CreateGardeningAreaCommand) : GardeningArea
     updateGarden(instructions: UpdateGardeningAreaCommand) : GardeningArea
+    deleteGarden(instructions: DeleteGardeningAreaCommand) : GardeningArea
     switchValve(instructions: ValvesToSwitch): Boolean
 }

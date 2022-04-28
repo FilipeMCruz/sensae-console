@@ -9,7 +9,5 @@ public class UpdateGardeningAreaCommand {
 
     public UUID id;
 
-    public String type;
-
     public List<BoundaryCommandDetails> area;
 }

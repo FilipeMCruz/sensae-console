@@ -43,4 +43,9 @@ public class GardeningAreaCache {
         var save = this.repository.save(garden);
         this.cache.put(save.id(), save);
     }
+
+    public void delete(GardeningAreaId of) {
+        this.repository.delete(of);
+        this.cache.invalidate(of);
+    }
 }

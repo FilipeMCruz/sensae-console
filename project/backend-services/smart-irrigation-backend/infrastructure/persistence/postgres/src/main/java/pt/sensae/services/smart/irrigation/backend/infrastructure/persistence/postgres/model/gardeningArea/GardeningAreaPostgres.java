@@ -15,4 +15,7 @@ public class GardeningAreaPostgres {
 
     @Column("name")
     public String areaName;
+
+    @Column("hidden")
+    public boolean deleted;
 }

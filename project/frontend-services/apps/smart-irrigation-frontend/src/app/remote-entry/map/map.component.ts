@@ -3,14 +3,14 @@ import * as mapboxgl from 'mapbox-gl';
 import {Subscription} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {
-  CreateGardeningAreaCommand, Data,
+  CreateGardeningAreaCommand, Data, DeleteGardeningAreaCommand,
   GardeningArea,
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
-import {CreateGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
+import {CreateGarden, DeleteGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Polygon} from "geojson";
-import {LngLatLike} from "mapbox-gl";
+import {GeoJSONSource, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
 
@@ -41,6 +41,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   constructor(private fetchGardensService: FetchGardens,
               private createGardenService: CreateGarden,
+              private deleteGardenService: DeleteGarden,
               private fetchLatestDataService: FetchLatestData,
               public dialog: MatDialog) {
   }
@@ -88,6 +89,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.loadingGardens = false;
   }
 
+  private updateGardensSource() {
+    const source = this.map.getSource("gardens") as GeoJSONSource;
+    source.setData({
+      'type': 'FeatureCollection',
+      'features': this.gardens.map(g => g.asFeature())
+    });
+  }
+
   openGardenDetails(id: string) {
     this.dialog.open(GardenDialogComponent, {
       width: '70%',
@@ -128,7 +137,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.buildMap();
   }
 
-  startDrawGarden() {
+  startGardenSketch() {
     this.draw = new MapboxDraw({
       displayControlsDefault: false,
       defaultMode: 'draw_polygon'
@@ -137,7 +146,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.isDrawing = true;
   }
 
-  deleteGarden() {
+  deleteGardenSketch() {
     const data = this.draw.getAll();
     if (data.features.length > 0) {
       const id = data.features[0].id;
@@ -183,5 +192,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       zoom: 20,
       essential: true // this animation is considered essential with respect to prefers-reduced-motion
     })
+  }
+
+  onDelete(garden: GardeningArea) {
+    this.deleteGardenService.getData(new DeleteGardeningAreaCommand(garden.id)).subscribe(
+      next => {
+        this.gardens = this.gardens.filter(elem => elem.id.value !== next.id.value);
+        this.updateGardensSource();
+      }
+    )
+  }
+
+  onEdit(garden: GardeningArea) {
+    //TODO:
+    console.log("todo:edit");
   }
 }

@@ -12,7 +12,6 @@ export class DeviceMapper {
       case DeviceTypeDTO.STOVE_SENSOR:
         return new Device(id, DeviceType.STOVE_SENSOR, name, records, dto.remoteControl, false);
       case DeviceTypeDTO.VALVE:
-        console.log(new Device(id, DeviceType.VALVE, name, records, dto.remoteControl, false))
         return new Device(id, DeviceType.VALVE, name, records, dto.remoteControl, false);
     }
   }

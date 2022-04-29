@@ -11,9 +11,29 @@
       <ng-container *ngIf="!loadingGardens && gardens.length !== 0">
         <mat-list dense>
           <mat-list-item (click)="onSelect(garden)" *ngFor="let garden of gardens">
-            <mat-icon mat-list-icon>yard</mat-icon>
-            <div mat-line><strong>{{garden.name.value}}</strong></div>
-            <div mat-line> {{garden.id.value}} </div>
+            <div style="display:flex; justify-content:space-between;align-items:center">
+              <div style="display:flex;align-items:center">
+                <mat-icon mat-list-icon>yard</mat-icon>
+                <div style="display:flex; flex-direction:column">
+                  <div>
+                    <h3 matLine> {{garden.name.value}}</h3>
+                  </div>
+                  <div style="margin-top:-30px">
+                    <p matLine>
+                      {{garden.id.value | truncate:30}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button mat-icon-button (click)="onEdit(garden)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDelete(garden)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
           </mat-list-item>
         </mat-list>
       </ng-container>
@@ -22,7 +42,7 @@
       </ng-container>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button (click)="startDrawGarden()">Create Garden</button>
+      <button mat-stroked-button (click)="startGardenSketch()">Create Garden</button>
     </mat-card-actions>
   </mat-card>
   <mat-card *ngIf="isDrawing" class="garden-card">
@@ -41,7 +61,7 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-stroked-button (click)="buildGarden()">Save</button>
-      <button mat-stroked-button (click)="deleteGarden()">Cancel</button>
+      <button mat-stroked-button (click)="deleteGardenSketch()">Cancel</button>
     </mat-card-actions>
   </mat-card>
 </div>

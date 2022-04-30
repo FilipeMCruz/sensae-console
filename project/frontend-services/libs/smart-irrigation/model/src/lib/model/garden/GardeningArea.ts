@@ -4,6 +4,7 @@ import {GardeningAreaId} from "./GardeningAreaId";
 import center from "@turf/center";
 import {Feature} from "geojson";
 import * as mapboxgl from "mapbox-gl";
+import bbox from "@turf/bbox";
 
 export class GardeningArea {
   constructor(public id: GardeningAreaId, public name: GardeningAreaName, public area: Array<AreaBoundary>) {
@@ -48,6 +49,14 @@ export class GardeningArea {
         'line-width': 2
       }
     }
+  }
+
+  bounds(): number[] {
+    const feature = {
+      type: 'MultiPoint',
+      coordinates: this.getArea(),
+    };
+    return bbox(feature)
   }
 
   center(): number[] {

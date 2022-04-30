@@ -10,7 +10,7 @@ import {
 import {CreateGarden, DeleteGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Polygon} from "geojson";
-import {GeoJSONSource, LngLatLike} from "mapbox-gl";
+import {EventData, GeoJSONSource, LngLatBounds, LngLatBoundsLike, LngLatLike, MapLayerEventType} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
 
@@ -36,6 +36,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public loadingGardens = true;
 
   public isDrawing = false;
+
+  public isSketchValid = false;
 
   public gardenName = "";
 
@@ -90,6 +92,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateGardensSource() {
+    console.log("Oi mate")
     const source = this.map.getSource("gardens") as GeoJSONSource;
     source.setData({
       'type': 'FeatureCollection',
@@ -143,6 +146,8 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       defaultMode: 'draw_polygon'
     });
     this.map.addControl(this.draw);
+    this.map.on('draw.create', () => this.checkIfSketchIsValid());
+    this.map.on('draw.update', () => this.checkIfSketchIsValid());
     this.isDrawing = true;
   }
 
@@ -154,6 +159,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
     this.map.removeControl(this.draw);
     this.isDrawing = false;
+    this.gardenName = "";
   }
 
   fetchLatestData() {
@@ -178,23 +184,26 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   buildGarden() {
+    console.log("Oi mate")
     const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
     const command = CreateGardeningAreaCommand.build(this.gardenName, gardenArea.coordinates[0]);
     this.createGardenService.execute(command).subscribe(
-      next => this.gardens.push(next),
-      error => error,
-      () => this.isDrawing = false);
+      next => {
+        this.isDrawing = false
+        this.map.removeControl(this.draw);
+        this.gardenName = "";
+        this.gardens.push(next);
+        this.updateGardensSource();
+      },
+      error => error);
   }
 
   onSelect(garden: GardeningArea) {
-    this.map.flyTo({
-      center: garden.center() as LngLatLike,
-      zoom: 20,
-      essential: true // this animation is considered essential with respect to prefers-reduced-motion
-    })
+    this.map.fitBounds(garden.bounds() as LngLatBoundsLike, {padding: 20});
   }
 
-  onDelete(garden: GardeningArea) {
+  onDelete(event: MouseEvent, garden: GardeningArea) {
+    event.stopPropagation();
     this.deleteGardenService.getData(new DeleteGardeningAreaCommand(garden.id)).subscribe(
       next => {
         this.gardens = this.gardens.filter(elem => elem.id.value !== next.id.value);
@@ -203,8 +212,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     )
   }
 
-  onEdit(garden: GardeningArea) {
+  onEdit(event: MouseEvent, garden: GardeningArea) {
+    event.stopPropagation();
     //TODO:
     console.log("todo:edit");
+  }
+
+  private checkIfSketchIsValid() {
+    const gardenArea = this.draw.getAll().features[0].geometry as Polygon;
+    if (gardenArea.coordinates[0].length > 2) {
+      this.isSketchValid = true;
+    }
   }
 }

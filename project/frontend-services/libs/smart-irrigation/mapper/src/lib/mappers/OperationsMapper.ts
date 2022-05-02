@@ -43,8 +43,8 @@ export class OperationsMapper {
       filters: {
         devices: model.devices.map(d => d.value),
         gardens: model.gardens.map(g => g.value),
-        endTime: model.endTime.getTime().toString(),
-        startTime: model.startTime.getTime().toString()
+        endTime: Math.round(model.endTime.getTime() / 1000).toString(),
+        startTime: Math.round(model.startTime.getTime() / 1000).toString(),
       }
     }
   }

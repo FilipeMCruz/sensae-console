@@ -30,11 +30,12 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {TruncatePipe} from "@frontend-services/core";
 import {MatChipsModule} from "@angular/material/chips";
 import {ValveDialogComponent} from "./valve-dialog/valve-dialog.component";
+import {DeviceHistoryDialogComponent} from "./device-history-dialog/device-history-dialog.component";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
-  declarations: [MapComponent, GardenDialogComponent, TruncatePipe, ValveDialogComponent],
+  declarations: [MapComponent, GardenDialogComponent, TruncatePipe, ValveDialogComponent, DeviceHistoryDialogComponent],
   imports: [
     MatSliderModule,
     MatSlideToggleModule,

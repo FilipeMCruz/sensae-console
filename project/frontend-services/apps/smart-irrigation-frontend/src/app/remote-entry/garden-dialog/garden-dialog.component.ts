@@ -4,15 +4,21 @@ import {
   Data,
   DataFilters,
   DeviceType,
-  GardeningArea,
+  GardeningArea, HistoryQueryFilters,
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
 import {Subscription} from "rxjs";
-import {FetchLatestData, SubscribeToData, SwitchValve} from "@frontend-services/smart-irrigation/services";
+import {
+  FetchHistory,
+  FetchLatestData,
+  SubscribeToData,
+  SwitchValve
+} from "@frontend-services/smart-irrigation/services";
 import {ValveDialogComponent} from "../valve-dialog/valve-dialog.component";
 import * as mapboxgl from "mapbox-gl";
 import {environment} from "../../../environments/environment";
 import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
+import {DeviceHistoryDialogComponent} from "../device-history-dialog/device-history-dialog.component";
 
 @Component({
   selector: 'frontend-services-garden-dialog',
@@ -32,6 +38,7 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   private map!: mapboxgl.Map;
 
   constructor(private fetchLatestDataService: FetchLatestData,
+              private fetchHistoryService: FetchHistory,
               private subscribeToDataService: SubscribeToData,
               private switchValveService: SwitchValve,
               public dialogRef: MatDialogRef<GardenDialogComponent>,
@@ -127,8 +134,15 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-
-
+  openDeviceHistory(sensorData: Data) {
+    this.fetchHistoryService.getData(HistoryQueryFilters.defaultDevice(sensorData.device.id)).subscribe(next => {
+      this.dialog.open(DeviceHistoryDialogComponent, {
+        width: '70%',
+        height: '80%',
+        data: next[0]
+      });
+    })
+  }
 
   private subscribeToData() {
     const filter = new DataFilters([], [this.data.id], "");

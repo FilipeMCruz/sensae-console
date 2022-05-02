@@ -11,7 +11,7 @@
     <ng-container *ngIf="!loadingInfo && sensorsData.length !== 0">
       <mat-list class="data-list" dense>
         <mat-list-item (mouseenter)="onHoverEnter(sensor)" (mouseleave)="onHoverLeave(sensor)"
-                       (click)="onSelect(sensor)" *ngFor="let sensor of sensorsData">
+                       (click)="openDeviceHistory(sensor)" *ngFor="let sensor of sensorsData">
           <mat-icon [ngStyle]="sensor.getColor()" mat-list-icon>sensors</mat-icon>
           <div mat-line>
             <strong>{{sensor.device.name.value | truncate : 25}}</strong>

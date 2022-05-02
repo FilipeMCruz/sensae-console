@@ -37,12 +37,15 @@ public class DataRepositoryImpl implements DataRepository {
                 dataQuestDB.temperature,
                 dataQuestDB.humidity,
                 dataQuestDB.soilMoisture,
-                dataQuestDB.illuminance, 
+                dataQuestDB.illuminance,
                 dataQuestDB.valveStatus);
     }
 
     @Override
     public Stream<Data> fetch(DataQuery query) {
+        if (query.deviceId().isEmpty()) {
+            return Stream.empty();
+        }
         var devices = inConcat(query.deviceId().stream().map(d -> d.value().toString()));
         var open = Timestamp.from(query.open().value()).toString();
         var close = Timestamp.from(query.close().value()).toString();

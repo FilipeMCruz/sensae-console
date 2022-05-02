@@ -16,8 +16,8 @@ export class SwitchValve {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  switchData(device: Device): Observable<Device> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:valve:control"]))
+  execute(device: Device): Observable<Device> {
+    if (!this.canDo())
       return EMPTY;
 
     const query = gql`
@@ -43,10 +43,14 @@ export class SwitchValve {
         filter(isNonNull),
         map((data: SwitchValveResultDTO) => {
           if (data.switchValve) {
-            device.changeQueued = true;
+            device.switchQueued = true;
           }
           return device;
         })
       );
+  }
+
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["smart_irrigation:valve:control"]);
   }
 }

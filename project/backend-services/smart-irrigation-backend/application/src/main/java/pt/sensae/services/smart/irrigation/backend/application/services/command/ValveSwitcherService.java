@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.application.services.command;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
@@ -43,10 +44,9 @@ public class ValveSwitcherService {
         var ownership = new Ownership(getDomainFilter(claims).collect(Collectors.toSet()));
         var id = new DeviceId(UUID.fromString(deviceId));
 
-        if (this.cache.tryToSwitchValve(id)) {
+        if (!this.cache.tryToSwitchValve(id)) {
             return false;
         }
-
         var success = new AtomicBoolean(false);
         dataCollector.fetch(new LatestDataQuery(new HashSet<>(), Set.of(id), ownership))
                 .findFirst()

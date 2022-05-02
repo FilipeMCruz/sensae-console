@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{data.device.name.value}} Control</h1>
+<div mat-dialog-content>
+  <p><strong>Current Status:</strong> {{status}}</p>
+  <p>
+    <mat-icon aria-hidden="false" aria-label="Example home icon">warning</mat-icon>
+    This action may take up to 5 minutes to be processed
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Keep Valve {{status}}</button>
+  <button mat-button [mat-dialog-close]="true">{{status === "Closed" ? "Open Valve" : "Close Valve"}}</button>
+</div>

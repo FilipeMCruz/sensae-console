@@ -44,7 +44,7 @@ public class DeviceCache {
     }
 
     public Optional<LedgerEntry> get(DeviceId id) {
-        return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
+        return Optional.ofNullable(cache.get(id, key -> repository.fetchDeviceActiveLedgerEntry(id).orElse(null)));
     }
 
     public boolean tryToSwitchValve(DeviceId id) {

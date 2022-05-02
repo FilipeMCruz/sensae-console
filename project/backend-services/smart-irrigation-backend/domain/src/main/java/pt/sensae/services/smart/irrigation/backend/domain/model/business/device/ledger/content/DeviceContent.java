@@ -1,7 +1,9 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content;
 
+import org.slf4j.LoggerFactory;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 
+import java.time.Instant;
 import java.util.Objects;
 
 public final class DeviceContent {
@@ -22,7 +24,9 @@ public final class DeviceContent {
             return false;
         }
         if (this.remoteControl.isQueued()) {
-            return false;
+            if (this.remoteControl.when().plusSeconds(600).isAfter(Instant.now())) {
+                return false;
+            }
         }
 
         this.remoteControl = remoteControl.queue();

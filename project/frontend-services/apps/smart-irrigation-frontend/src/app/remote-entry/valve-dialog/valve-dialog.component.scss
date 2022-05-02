@@ -1,0 +1,57 @@
+.item {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+  rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 10px;
+  margin: 10px;
+  min-width: 500px;
+  max-width: 500px;
+}
+
+.list {
+  max-width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.dialog-content {
+  min-height: 85%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.to-right {
+  float: right;
+}
+
+.grass {
+  background-color: #656d4a;
+}
+
+.thermostat {
+  background-color: #ee9b00;
+}
+
+.warning {
+  background-color: #bb3e03;
+}
+
+.wb_sunny {
+  background-color: #f9c74f;
+}
+
+.opacity {
+  background-color: #34a0a4;
+}
+
+.schedule {
+  background-color: #c2c5aa;
+}
+
+.data-list {
+  flex-grow: 1;
+  overflow: auto;
+}

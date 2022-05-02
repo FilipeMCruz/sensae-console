@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, Inject, OnDestroy} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   Data,
   DataFilters,
@@ -8,7 +8,8 @@ import {
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
 import {Subscription} from "rxjs";
-import {FetchLatestData, SubscribeToData} from "@frontend-services/smart-irrigation/services";
+import {FetchLatestData, SubscribeToData, SwitchValve} from "@frontend-services/smart-irrigation/services";
+import {ValveDialogComponent} from "../valve-dialog/valve-dialog.component";
 
 @Component({
   selector: 'frontend-services-garden-dialog',
@@ -27,8 +28,10 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
 
   constructor(private fetchLatestDataService: FetchLatestData,
               private subscribeToDataService: SubscribeToData,
+              private switchValveService: SwitchValve,
               public dialogRef: MatDialogRef<GardenDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: GardeningArea
+              @Inject(MAT_DIALOG_DATA) public data: GardeningArea,
+              public dialog: MatDialog
   ) {
   }
 
@@ -52,7 +55,16 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   onSelect(sensorData: Data) {
-    console.log(sensorData)
+    if (sensorData.device.remoteControl && !sensorData.device.switchQueued && this.switchValveService.canDo()) {
+      const dialogRef = this.dialog.open(ValveDialogComponent, {
+        width: '350px',
+        data: sensorData,
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) this.switchValveService.execute(sensorData.device).subscribe(value => sensorData.device = value);
+      });
+    }
   }
 
   private fetchLatestData() {

@@ -29,44 +29,45 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {TruncatePipe} from "@frontend-services/core";
 import {MatChipsModule} from "@angular/material/chips";
+import {ValveDialogComponent} from "./valve-dialog/valve-dialog.component";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
-  declarations: [MapComponent, GardenDialogComponent, TruncatePipe],
-    imports: [
-        MatSliderModule,
-        MatSlideToggleModule,
-        MatDividerModule,
-        MatTooltipModule,
-        MatSelectModule,
-        MatSidenavModule,
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatIconModule,
-        FormsModule,
-        MatExpansionModule,
-        MatInputModule,
-        MatButtonModule,
-        HttpClientModule,
-        CommonModule,
-        MatTabsModule,
-        MatButtonToggleModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: MapComponent,
-            },
-        ]),
-        MatListModule,
-        MatDialogModule,
-        MatGridListModule,
-        MatChipsModule,
-    ],
+  declarations: [MapComponent, GardenDialogComponent, TruncatePipe, ValveDialogComponent],
+  imports: [
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatDividerModule,
+    MatTooltipModule,
+    MatSelectModule,
+    MatSidenavModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    FormsModule,
+    MatExpansionModule,
+    MatInputModule,
+    MatButtonModule,
+    HttpClientModule,
+    CommonModule,
+    MatTabsModule,
+    MatButtonToggleModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: MapComponent,
+      },
+    ]),
+    MatListModule,
+    MatDialogModule,
+    MatGridListModule,
+    MatChipsModule,
+  ],
   providers: [],
 })
 export class RemoteEntryModule {

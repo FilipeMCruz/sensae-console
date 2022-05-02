@@ -87,7 +87,12 @@ export class Data {
         coordinates: this.data.gps.toCoordinates()
       },
       properties: {
-        description: this.device.name.value,
+        description: `
+<strong>Device Name:</strong> ${this.device.name.value}</br>
+<strong>Device Id:</strong> ${this.device.id.value}</br>
+<strong>Reported At:</strong> ${this.reportedAt.toLocaleString()}</br>
+${this.data.getDataDetailsInHTML()}
+`,
         id: this.device.id.value,
         color: this.data.color
       }

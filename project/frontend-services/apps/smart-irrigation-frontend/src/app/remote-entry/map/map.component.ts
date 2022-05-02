@@ -15,8 +15,8 @@ import {
   UpdateGarden
 } from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
-import {Polygon} from "geojson";
-import {EventData, GeoJSONSource, LngLatBounds, LngLatBoundsLike, LngLatLike, MapLayerEventType} from "mapbox-gl";
+import {Point, Polygon} from "geojson";
+import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
 
@@ -93,7 +93,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.map.on('mouseenter', 'gardens', () => {
         this.map.getCanvas().style.cursor = 'pointer';
       });
-
       this.map.on('mouseleave', 'gardens', () => {
         this.map.getCanvas().style.cursor = '';
       });
@@ -188,8 +187,35 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           'features': this.latestData.map(g => g.asFeature())
         }
       });
+
       this.map.addLayer(Data.getDataStyle("devices"));
+      const popup = new mapboxgl.Popup({
+        maxWidth: 'none',
+        closeButton: false,
+        closeOnClick: false
+      });
+      this.map.on('mouseenter', 'devices', (e) => {
+        this.map.getCanvas().style.cursor = 'pointer';
+
+        if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
+          const cords = e.features[0].geometry as Point;
+          const coordinates = cords.coordinates.slice();
+          const description = e.features[0].properties["description"];
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
+        }
+      });
+
+      this.map.on('mouseleave', 'devices', () => {
+        this.map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
     });
+
   }
 
   buildGarden() {

@@ -52,7 +52,7 @@
       Loading ...
     </ng-container>
     <ng-container *ngIf="!loadingInfo && valvesData.length !== 0">
-      <mat-list dense>
+      <mat-list class="data-list" dense>
         <mat-list-item (mouseenter)="onHoverEnter(valve)" (mouseleave)="onHoverLeave(valve)" (click)="onSelect(valve)"
                        *ngFor="let valve of valvesData">
           <mat-icon mat-list-icon>water_drop</mat-icon>

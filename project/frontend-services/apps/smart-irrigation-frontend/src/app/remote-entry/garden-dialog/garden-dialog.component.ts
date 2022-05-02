@@ -113,6 +113,10 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       });
       this.map.addLayer(Data.getDataStyle("devices"));
       this.map.addLayer(Data.getHoverDataStyle("devices"));
+      this.map.addLayer(Data.getIlluminanceDataStyle("devices"))
+      this.map.addLayer(Data.getTemperatureDataStyle("devices"))
+      this.map.addLayer(Data.getHumidityDataStyle("devices"))
+      this.map.addLayer(Data.getSoilMoistureDataStyle("devices"))
       this.map.setFilter("hoverDevices", [
         'match',
         ['get', 'id'],
@@ -122,6 +126,9 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       ])
     });
   }
+
+
+
 
   private subscribeToData() {
     const filter = new DataFilters([], [this.data.id], "");
@@ -148,26 +155,22 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   onHoverEnter(sensorData: Data) {
-    this.map.on('load', () => {
-      this.map.setFilter("hoverDevices", [
-        'match',
-        ['get', 'id'],
-        sensorData.device.id.value,
-        true,
-        false
-      ])
-    });
+    this.map.setFilter("hoverDevices", [
+      'match',
+      ['get', 'id'],
+      sensorData.device.id.value,
+      true,
+      false
+    ])
   }
 
   onHoverLeave(sensorData: Data) {
-    this.map.on('load', () => {
-      this.map.setFilter("hoverDevices", [
-        'match',
-        ['get', 'id'],
-        'none',
-        true,
-        false
-      ])
-    });
+    this.map.setFilter("hoverDevices", [
+      'match',
+      ['get', 'id'],
+      'none',
+      true,
+      false
+    ])
   }
 }

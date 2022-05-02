@@ -24,6 +24,152 @@ export class Data {
     }
   }
 
+  static getIlluminanceDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'devices-illuminance-heat',
+      type: 'heatmap',
+      source,
+      filter: Data.getFilterByProperty('illuminance'),
+      paint: {
+        'heatmap-weight': {
+          property: 'illuminance',
+          type: 'identity'
+        },
+        'heatmap-radius': 50,
+        'heatmap-opacity': 0.4,
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(236,222,239,0)',
+          0.2,
+          '#fffae5',
+          0.4,
+          '#ffee99',
+          0.6,
+          '#ffe566',
+          0.8,
+          '#ffdd32',
+          0.95,
+          '#ffd400'
+        ]
+      }
+    }
+  }
+
+  static getSoilMoistureDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'devices-moisture-heat',
+      type: 'heatmap',
+      source,
+      filter: Data.getFilterByProperty('soilMoisture'),
+      paint: {
+        'heatmap-weight': {
+          property: 'soilMoisture',
+          type: 'identity'
+        },
+        'heatmap-radius': 50,
+        'heatmap-opacity': 0.4,
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(236,222,239,0)',
+          0.2,
+          '#eeef20',
+          0.4,
+          '#d4d700',
+          0.6,
+          '#aacc00',
+          0.8,
+          '#55a630',
+          0.95,
+          '#007f5f'
+        ]
+      }
+    }
+  }
+
+  private static getFilterByProperty(property: string) {
+    return [
+      'match',
+      ['get', property],
+      0,
+      false,
+      true
+    ];
+  }
+
+  static getHumidityDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'devices-humidity-heat',
+      type: 'heatmap',
+      source,
+      filter: Data.getFilterByProperty('humidity'),
+      paint: {
+        'heatmap-weight': {
+          property: 'humidity',
+          type: 'identity'
+        },
+        'heatmap-radius': 50,
+        'heatmap-opacity': 0.4,
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(236,222,239,0)',
+          0.2,
+          '#caf0f8',
+          0.4,
+          '#90e0ef',
+          0.6,
+          '#00b4d8',
+          0.8,
+          '#0096c7',
+          0.95,
+          '#03045e'
+        ]
+      }
+    }
+  }
+
+  static getTemperatureDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'devices-temperature-heat',
+      type: 'heatmap',
+      source,
+      filter: Data.getFilterByProperty('temperature'),
+      paint: {
+        'heatmap-weight': {
+          property: 'temperature',
+          type: 'identity'
+        },
+        'heatmap-radius': 50,
+        'heatmap-opacity': 0.4,
+        'heatmap-color': [
+          'interpolate',
+          ['linear'],
+          ['heatmap-density'],
+          0,
+          'rgba(236,222,239,0)',
+          0.2,
+          '#005f73',
+          0.4,
+          '#94d2bd',
+          0.6,
+          '#e9d8a6',
+          0.8,
+          '#ca6702',
+          0.95,
+          '#bb3e03'
+        ]
+      }
+    }
+  }
+
   static getHoverDataStyle(source: string): mapboxgl.AnyLayer {
     return {
       id: 'hoverDevices',
@@ -94,6 +240,11 @@ export class Data {
   }
 
   asFeature(): Feature {
+    const illuminance = this.data instanceof ParkSensorDataDetails ? this.data.illuminance.lux / 50 : 0;
+    const soilMoisture = this.data instanceof ParkSensorDataDetails ? this.data.soilMoisture.percentage * 2 : 0;
+    const temperature = this.data instanceof StoveSensorDataDetails ? this.data.temperature.celsius / 60 * 2000 : 0;
+    const humidity = this.data instanceof StoveSensorDataDetails ? this.data.humidity.gramsPerCubicMeter / 30 * 2000 : 0;
+
     return {
       type: 'Feature',
       geometry: {
@@ -108,7 +259,11 @@ export class Data {
 ${this.data.getDataDetailsInHTML()}
 `,
         id: this.device.id.value,
-        color: this.data.color
+        color: this.data.color,
+        illuminance,
+        soilMoisture,
+        temperature,
+        humidity
       }
     };
   }

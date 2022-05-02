@@ -24,6 +24,20 @@ export class Data {
     }
   }
 
+  static getHoverDataStyle(source: string): mapboxgl.AnyLayer {
+    return {
+      id: 'hoverDevices',
+      type: 'circle',
+      source,
+      paint: {
+        'circle-color': ['get', 'color'],
+        'circle-radius': 10,
+        'circle-stroke-width': 1,
+        'circle-stroke-color': '#582f0e'
+      }
+    }
+  }
+
   public update(update: Data) {
     this.id = update.id;
     this.device = update.device;

@@ -10,6 +10,9 @@ import {
 import {Subscription} from "rxjs";
 import {FetchLatestData, SubscribeToData, SwitchValve} from "@frontend-services/smart-irrigation/services";
 import {ValveDialogComponent} from "../valve-dialog/valve-dialog.component";
+import * as mapboxgl from "mapbox-gl";
+import {environment} from "../../../environments/environment";
+import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 
 @Component({
   selector: 'frontend-services-garden-dialog',
@@ -25,6 +28,8 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   sensorsData: Data[] = [];
 
   private subscription!: Subscription;
+
+  private map!: mapboxgl.Map;
 
   constructor(private fetchLatestDataService: FetchLatestData,
               private subscribeToDataService: SubscribeToData,
@@ -44,7 +49,9 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
   ngAfterViewInit(): void {
+    this.buildMap();
     this.fetchLatestData();
     this.subscribeToData();
   }
@@ -52,6 +59,21 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscription)
       this.subscription.unsubscribe();
+  }
+
+  buildMap(): void {
+    this.map = new mapboxgl.Map({
+      container: 'map-details',
+      style: environment.mapbox.style,
+      center: this.data.center() as LngLatLike,
+      bounds: this.data.bounds() as LngLatBoundsLike,
+      interactive: false
+    });
+    this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.on('load', () =>
+      this.map.resize() &&
+      this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100})
+    );
   }
 
   onSelect(sensorData: Data) {
@@ -62,7 +84,7 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        if (result) this.switchValveService.execute(sensorData.device).subscribe(value => sensorData.device = value);
+        if (result) this.switchValveService.execute(sensorData.device).subscribe();
       });
     }
   }
@@ -73,9 +95,32 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       next => {
         this.valvesData.push(...next.filter(d => d.device.type === DeviceType.VALVE));
         this.sensorsData.push(...next.filter(d => d.device.type !== DeviceType.VALVE));
+        this.drawDevices();
+        this.updateDeviceSource();
       },
       error => error,
       () => this.loadingInfo = false);
+  }
+
+  drawDevices() {
+    this.map.on('load', () => {
+      this.map.addSource("devices", {
+        'type': 'geojson',
+        data: {
+          'type': 'FeatureCollection',
+          'features': []
+        }
+      });
+      this.map.addLayer(Data.getDataStyle("devices"));
+      this.map.addLayer(Data.getHoverDataStyle("devices"));
+      this.map.setFilter("hoverDevices", [
+        'match',
+        ['get', 'id'],
+        'none',
+        true,
+        false
+      ])
+    });
   }
 
   private subscribeToData() {
@@ -86,7 +131,43 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
         } else {
           GardenDialogComponent.onNewData(this.sensorsData, next);
         }
+        this.updateDeviceSource();
       },
       error => error);
+  }
+
+  private updateDeviceSource() {
+    const features = [...this.sensorsData];
+    features.push(...this.valvesData);
+    this.map.on('load', () => {
+      (this.map.getSource("devices") as GeoJSONSource).setData({
+        'type': 'FeatureCollection',
+        'features': features.map(g => g.asFeature())
+      })
+    });
+  }
+
+  onHoverEnter(sensorData: Data) {
+    this.map.on('load', () => {
+      this.map.setFilter("hoverDevices", [
+        'match',
+        ['get', 'id'],
+        sensorData.device.id.value,
+        true,
+        false
+      ])
+    });
+  }
+
+  onHoverLeave(sensorData: Data) {
+    this.map.on('load', () => {
+      this.map.setFilter("hoverDevices", [
+        'match',
+        ['get', 'id'],
+        'none',
+        true,
+        false
+      ])
+    });
   }
 }

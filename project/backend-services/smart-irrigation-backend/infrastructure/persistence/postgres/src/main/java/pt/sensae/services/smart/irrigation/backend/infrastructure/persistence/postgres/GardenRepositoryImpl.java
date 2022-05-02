@@ -69,7 +69,10 @@ public class GardenRepositoryImpl implements GardenRepository {
         var gardeningAreaPostgres = GardeningAreaMapper.modelToDao(garden);
 
         gardeningAreaRepository.findByDeletedFalseAndAreaId(garden.id().value().toString())
-                .ifPresent(areaPostgres -> gardeningAreaPostgres.persistenceId = areaPostgres.persistenceId);
+                .ifPresent(areaPostgres -> {
+                    gardeningAreaPostgres.persistenceId = areaPostgres.persistenceId;
+                    areaRepository.deleteAllByAreaId(garden.id().value().toString());
+                });
 
         gardeningAreaRepository.save(gardeningAreaPostgres);
 

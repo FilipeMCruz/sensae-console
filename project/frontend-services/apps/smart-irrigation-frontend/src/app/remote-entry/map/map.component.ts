@@ -5,9 +5,15 @@ import {environment} from "../../../environments/environment";
 import {
   CreateGardeningAreaCommand, Data, DeleteGardeningAreaCommand,
   GardeningArea,
-  LatestDataQueryFilters
+  LatestDataQueryFilters, UpdateGardeningAreaCommand
 } from "@frontend-services/smart-irrigation/model";
-import {CreateGarden, DeleteGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
+import {
+  CreateGarden,
+  DeleteGarden,
+  FetchGardens,
+  FetchLatestData,
+  UpdateGarden
+} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Polygon} from "geojson";
 import {EventData, GeoJSONSource, LngLatBounds, LngLatBoundsLike, LngLatLike, MapLayerEventType} from "mapbox-gl";
@@ -36,14 +42,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public loadingGardens = true;
 
   public isDrawing = false;
+  public isEditing = false;
 
   public isSketchValid = false;
 
   public gardenName = "";
 
+  public editing!: GardeningArea;
+
   constructor(private fetchGardensService: FetchGardens,
               private createGardenService: CreateGarden,
               private deleteGardenService: DeleteGarden,
+              private updateGardenService: UpdateGarden,
               private fetchLatestDataService: FetchLatestData,
               public dialog: MatDialog) {
   }
@@ -92,7 +102,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateGardensSource() {
-    console.log("Oi mate")
     const source = this.map.getSource("gardens") as GeoJSONSource;
     source.setData({
       'type': 'FeatureCollection',
@@ -184,7 +193,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   buildGarden() {
-    console.log("Oi mate")
     const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
     const command = CreateGardeningAreaCommand.build(this.gardenName, gardenArea.coordinates[0]);
     this.createGardenService.execute(command).subscribe(
@@ -199,7 +207,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   onSelect(garden: GardeningArea) {
-    this.map.fitBounds(garden.bounds() as LngLatBoundsLike, {padding: 20});
+    this.map.fitBounds(garden.bounds() as LngLatBoundsLike, {padding: 100});
   }
 
   onDelete(event: MouseEvent, garden: GardeningArea) {
@@ -214,8 +222,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   onEdit(event: MouseEvent, garden: GardeningArea) {
     event.stopPropagation();
-    //TODO:
-    console.log("todo:edit");
+
+    this.draw = new MapboxDraw({
+      displayControlsDefault: false,
+      defaultMode: 'simple_select'
+    });
+    this.map.addControl(this.draw);
+    this.map.on('draw.create', () => this.checkIfSketchIsValid());
+    this.map.on('draw.update', () => this.checkIfSketchIsValid());
+    this.editing = garden;
+    this.gardens = this.gardens.filter(elem => elem.id.value !== garden.id.value);
+    this.updateGardensSource();
+    this.isDrawing = true;
+    this.isEditing = true;
+    this.draw.add(garden.asFeature());
   }
 
   private checkIfSketchIsValid() {
@@ -223,5 +243,32 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     if (gardenArea.coordinates[0].length > 2) {
       this.isSketchValid = true;
     }
+  }
+
+  deleteGardenEditSketch() {
+    const data = this.draw.getAll();
+    if (data.features.length > 0) {
+      const id = data.features[0].id;
+      if (id) this.draw.delete(id.toLocaleString());
+    }
+    this.map.removeControl(this.draw);
+    this.gardens.push(this.editing);
+    this.updateGardensSource();
+    this.isDrawing = false
+    this.isEditing = false;
+  }
+
+  editGarden() {
+    const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
+    const command = UpdateGardeningAreaCommand.build(this.editing.id.value, this.editing.name.value, gardenArea.coordinates[0]);
+    this.updateGardenService.execute(command).subscribe(
+      next => {
+        this.isDrawing = false
+        this.isEditing = false;
+        this.map.removeControl(this.draw);
+        this.gardens.push(next);
+        this.updateGardensSource();
+      },
+      error => error);
   }
 }

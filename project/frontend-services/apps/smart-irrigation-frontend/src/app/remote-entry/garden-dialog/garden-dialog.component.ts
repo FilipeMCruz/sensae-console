@@ -135,13 +135,11 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   openDeviceHistory(sensorData: Data) {
-    this.fetchHistoryService.getData(HistoryQueryFilters.defaultDevice(sensorData.device.id)).subscribe(next => {
-      this.dialog.open(DeviceHistoryDialogComponent, {
-        width: '70%',
-        height: '80%',
-        data: next[0]
-      });
-    })
+    this.dialog.open(DeviceHistoryDialogComponent, {
+      width: '70%',
+      height: '80%',
+      data: sensorData
+    });
   }
 
   private subscribeToData() {

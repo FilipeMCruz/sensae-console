@@ -8,6 +8,6 @@ export class HistoryQueryFilters {
   static defaultDevice(id: DeviceId): HistoryQueryFilters {
     const start = new Date();
     start.setMonth(start.getMonth() - 1);
-    return new HistoryQueryFilters(Array.of(id), [], new Date(), start);
+    return new HistoryQueryFilters(Array.of(id), [], start, new Date());
   }
 }

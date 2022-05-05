@@ -4,7 +4,6 @@ import {
   SensorDataHistoryDTO
 } from "@frontend-services/smart-irrigation/dto";
 import {
-  Device,
   DeviceLedgerHistoryEntry,
   DeviceType,
   RecordEntry,

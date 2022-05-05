@@ -165,6 +165,16 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
+        'echarts': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
+        'ngx-echarts': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
         ...sharedMappings.getDescriptors(),
       }),
     }),

@@ -31,6 +31,7 @@ import {TruncatePipe} from "@frontend-services/core";
 import {MatChipsModule} from "@angular/material/chips";
 import {ValveDialogComponent} from "./valve-dialog/valve-dialog.component";
 import {DeviceHistoryDialogComponent} from "./device-history-dialog/device-history-dialog.component";
+import {NgxEchartsModule} from "ngx-echarts";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
@@ -68,6 +69,9 @@ import {DeviceHistoryDialogComponent} from "./device-history-dialog/device-histo
     MatDialogModule,
     MatGridListModule,
     MatChipsModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    })
   ],
   providers: [],
 })

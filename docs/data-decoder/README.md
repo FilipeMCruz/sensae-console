@@ -4,15 +4,16 @@ This document describes how to create `data decoder`s according to the latest ve
 
 Current version:
 
-- `system` : `0.6.0`
+- `iot-core` : `0.1.15`
+- `system` : `0.7.0`
 
 ## Introduction
 
 The `data decoder`s purpose is to provide a flexible way of transforming the data into something that the system [understands](../model/README.md).
 
-This action is performed by a `Data Decoder Slave` container when IoT Data is sent to `/sensor-data/encoded/<sensor-type>`.
+This action is performed by a `Data Decoder Slave` container when IoT Data is sent to the HTTP endpoint `/sensor-data/encoded/<sensor-type>`.
 
-To register a new decoder one needs to go to the `Data Decoder` tag in the system's UI, define the `<sensor-type>`, write the script and submit the new decoder.
+To register a new decoder one needs to go to the `Data Decoder` page in the system's UI, define the `<sensor-type>`, write the script and submit the new decoder.
 
 ## Rules
 
@@ -24,9 +25,9 @@ There are certain rules when creating the script:
 
 ## Helper Functions
 
-Since no npm or node packages are available it can be difficult to start writing decoders, to tackle this were are some common functions:
+Since no npm or node packages are available it can be difficult to start writing decoders, to tackle this here are some common functions:
 
-This function, `decodeBase64`, receives a `Base64` encoded string and decodes it. Usually the payload comes as a `Base64` string.
+This function, `decodeBase64`, receives a `Base64` encoded string and decodes it. To save bandwidth the sensor payload usually comes as a `Base64` string.
 
 ``` js
 function decodeBase64(s) {

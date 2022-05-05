@@ -3,6 +3,10 @@
 This project has two environments, `dev` and `prod`.
 Both of this environments need docker to run and docker-compose to orchestrate the containers.
 
+Current version:
+
+- `system` : `0.7.0`
+
 ## DEV Environment
 
 This environment is manly used by developers running `linux`,`mac` or a `bsd` system (windows is currently not supported) and can be started with:
@@ -15,7 +19,7 @@ This command will only start the databases, message brokers and load balancers (
 This way the frontend and backend services can be started by the programmer on debug mode if and when needed.
 
 Every external interaction with the environment is secured with `ssl`. To run the environment locally an `ssl certificate` has to be generated.
-It is advised to use the program `openssl`.
+It is advised to use `openssl`.
 Run the following commands to create the certificate `crt` and `key`.
 
 ``` sh
@@ -69,10 +73,36 @@ export const environment = {
     style: "mapbox://styles/mapbox/light-v10"
   }
 }
-
 ```
 
-File: `project/frontend-services/apps/sharespot-device-records-frontend/src/environments/environment.ts`
+File: `project/frontend-services/apps/smart-irrigation-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  endpoints: {
+    smartIrrigation: {
+      backend: {
+        domain: "localhost:8098",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        },
+        websocket: {
+          scheme: "ws://",
+          path: "/subscriptions"
+        }
+      }
+    }
+  },
+  mapbox: {
+    accessToken: "<private key used to access mapbox api>",
+    style: "mapbox://styles/mapbox/light-v10"
+  }
+}
+```
+
+File: `project/frontend-services/apps/device-management-frontend/src/environments/environment.ts`
 
 ```ts
 export const environment = {
@@ -202,6 +232,19 @@ export const environment = {
           path: "/graphql"
         }
       }
+    },
+    smartIrrigation: {
+      backend: {
+        domain: "localhost:8098",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        },
+        websocket: {
+          scheme: "ws://",
+          path: "/subscriptions"
+        }
+      }
     }
   },
   domain: "localhost"
@@ -212,7 +255,7 @@ File: `project/secrets/dev/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-records, identity-management, data-processor and data-decoder backends>
+POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder, smart-irrigation and device-commander backends>
 ```
 
 File: `project/secrets/dev/sharespot-data-store-database.env`
@@ -354,7 +397,7 @@ spring.data.mongodb.username=user
 spring.data.mongodb.password=<key to exchange with data store database mongodb> 
 ```
 
-File: `project/backend-services/sharespot-device-records-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/device-management-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8085
@@ -385,7 +428,7 @@ sensae.auth.issuer=<website domain that generates jwt>
 sensae.auth.audience=<website domain that consumes jwt>
 ```
 
-File: `project/backend-services/sharespot-device-records-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/device-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8086
@@ -417,7 +460,7 @@ spring.rabbitmq.password=guest
 sharespot.auth.key=<auth key to authenticate requests>
 ```
 
-File: `project/backend-services/sharespot-data-validator-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+File: `project/backend-services/data-validator-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
 server.port=8093
@@ -505,6 +548,53 @@ spring.jpa.hibernate.ddl-auto=validate
 spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
+File: `project/backend-services/device-commander-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8082
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/records
+spring.datasource.username=user
+spring.datasource.password=<key to exchange with sharespot-common-database>
+spring.jpa.show-sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+```
+
+File: `project/backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8098
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+logging.level.com.netflix.graphql.dgs=TRACE
+logging.level.org.springframework.jdbc.core=TRACE
+
+spring.datasource.data.jdbc-url=jdbc:postgresql://localhost:8898/qdb?sslmode=disable
+spring.datasource.data.username=admin
+spring.datasource.data.password=quest
+
+spring.datasource.business.jdbc-url=jdbc:postgresql://localhost:5432/irrigation
+spring.datasource.business.username=user
+spring.datasource.business.password=<key to exchange with sharespot-common-database>
+
+sensae.auth.pub.key.path=<path to X509 public key>
+sensae.auth.issuer=<website domain that generates jwt>
+sensae.auth.audience=<website domain that consumes jwt>
+```
+
 ## PROD Environment
 
 This environment is used in production and can be started with (after creating the files below):
@@ -555,7 +645,34 @@ export const environment = {
 };
 ```
 
-File: `project/frontend-services/apps/sharespot-device-records-frontend/src/environments/environment.prod.ts`
+File: `project/frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.prod.ts`
+
+``` ts
+export const environment = {
+  production: true,
+  endpoints: {
+    smartIrrigation: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/smart-irrigation/graphql"
+        },
+        websocket: {
+          scheme: "wss://",
+          path: "/smart-irrigation/subscriptions"
+        }
+      }
+    }
+  },
+  mapbox: {
+    accessToken: "<private key used to access mapbox api>",
+    style: "mapbox://styles/mapbox/light-v10"
+  }
+};
+```
+
+File: `project/frontend-services/apps/device-management-frontend/src/environments/environment.prod.ts`
 
 ```ts
 export const environment = {
@@ -643,7 +760,7 @@ export const environment = {
         domain: "<public domain>",
         http: {
           scheme: 'https://',
-          path: "/device-records/graphql"
+          path: "/device-management/graphql"
         }
       }
     },
@@ -686,6 +803,19 @@ export const environment = {
           path: "/identity-management/graphql"
         }
       }
+    },
+    smartIrrigation: {
+      backend: {
+        domain: "<public domain>",
+        http: {
+          scheme: "https://",
+          path: "/smart-irrigation/graphql"
+        },
+        websocket: {
+          scheme: "wss://",
+          path: "/smart-irrigation/subscriptions"
+        }
+      }
     }
   },
   domain: "<public domain>"
@@ -706,7 +836,7 @@ File. `project/secrets/prod/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-records, identity-management, data-processor and data-decoder backends>
+POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder, smart-irrigation and device-commander backends>
 ```
 
 File. `project/secrets/prod/sharespot-data-decoder-master-backend.env`
@@ -767,7 +897,7 @@ MONGO_INITDB_ROOT_PASSWORD=<key to exchange with data-store>
 MONGO_INITDB_DATABASE=data
 ```
 
-File. `project/secrets/prod/sharespot-device-records-master-backend.env`
+File. `project/secrets/prod/device-management-master-backend.env`
 
 ``` conf
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
@@ -779,7 +909,15 @@ SENSAE_AUTH_ISSUER=<website domain that generates jwt>
 SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```
 
-File. `project/secrets/prod/sharespot-device-records-slave-backend.env`
+File. `project/secrets/prod/device-management-slave-backend.env`
+
+``` conf
+SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
+SPRING_DATASOURCE_USERNAME=user
+SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+```
+
+File. `project/secrets/prod/device-commander-backend.env`
 
 ``` conf
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
@@ -793,21 +931,6 @@ File. `project/secrets/prod/sharespot-data-gateway.env`
 SHARESPOT_AUTH_KEY=<auth key to authenticate requests>
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
-```
-
-File. `project/secrets/prod/sharespot-fleet-management-backend.env`
-
-``` conf
-SPRING_RABBITMQ_USERNAME=guest
-SPRING_RABBITMQ_PASSWORD=guest
-
-SPRING_DATASOURCE_URL=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
-SPRING_DATASOURCE_USERNAME=admin
-SPRING_DATASOURCE_PASSWORD=quest
-
-SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
-SENSAE_AUTH_ISSUER=<website domain that generates jwt>
-SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```
 
 File. `project/secrets/prod/sharespot-identity-management-backend.env`
@@ -836,9 +959,43 @@ SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
 ```
 
-File. `project/secrets/prod/sharespot-data-validator-backend.env`
+File. `project/secrets/prod/data-validator-backend.env`
 
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest
 SPRING_RABBITMQ_PASSWORD=guest
+```
+
+File. `project/secrets/prod/sharespot-fleet-management-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
+SPRING_DATASOURCE_URL=jdbc:postgresql://questdb:8812/qdb?sslmode=disable
+SPRING_DATASOURCE_USERNAME=admin
+SPRING_DATASOURCE_PASSWORD=quest
+
+SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
+SENSAE_AUTH_ISSUER=<website domain that generates jwt>
+SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
+```
+
+File. `project/secrets/prod/sharespot-fleet-management-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
+SPRING_DATASOURCE_DATA_JDBC_URL=jdbc:postgresql://irrigation-database:8812/qdb?sslmode=disable
+SPRING_DATASOURCE_DATA_USERNAME=admin
+SPRING_DATASOURCE_DATA_PASSWORD=quest
+
+SPRING_DATASOURCE_BUSINESS_JDBC_URL=jdbc:postgresql://sharespot-common-database:5432/irrigation
+SPRING_DATASOURCE_BUSINESS_USERNAME=user
+SPRING_DATASOURCE_BUSINESS_PASSWORD=<key to exchange with sharespot-common-database>
+
+SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
+SENSAE_AUTH_ISSUER=<website domain that generates jwt>
+SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```

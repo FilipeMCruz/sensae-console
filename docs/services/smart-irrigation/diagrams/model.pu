@@ -6,11 +6,15 @@ hide empty members
 
 class Domain
 
-class Sensor
+class ParkSensor as "Park Sensor"
+
+class StoveSensor as "Stove Sensor"
 
 class Valve
 
-class Garden
+class Garden as "Gardening Area"
+
+class GardenName as "Name"
 
 interface Device
 
@@ -38,24 +42,23 @@ class EntryContent
 
 class EntryLabel
 
-Domain "*" - "*" Garden: owns >
 Area "1" -- "*" GPSPoint: has boundaries >
 Garden "1" -- "1" Area: defined by >
-Garden "1" -- "1..*" Sensor: has >
-Garden "1" -- "*" Valve: has >
+Garden "1" -- "1" GardenName: named >
 Valve --|> Device : is
-Sensor --|> Device : is
+ParkSensor --|> Device : is
+StoveSensor --|> Device : is
 Device "1" -- "*" LedgerEntry: has info >
 Device "1" -- "1" Id: has >
 LedgerEntry "1" -- "1" OpenDate: has >
 LedgerEntry "1" -- "0..1" CloseDate: has >
 LedgerEntry "1" -- "1" Content: refer to >
 LedgerEntry "1" -- "1" Ownership: belongs to >
-Content "1" -- "*" Records: has >
+Content "1" -- "*" Record: has >
 Content "1" -- "1" Name: has >
 Content "1" - "1" GPSPoint: has >
-Domain "1" ---- "*" Ownership: refers to <
-Records "1" -- "1" EntryContent: has >
-Records "1" -- "1" EntryLabel: has >
+Ownership "1" -- "*" Domain: refers to >
+Record "1" -- "1" EntryContent: has >
+Record "1" -- "1" EntryLabel: has >
 
 @enduml

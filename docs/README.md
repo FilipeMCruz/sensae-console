@@ -13,3 +13,5 @@ It's intended mostly for developers and stakeholders.
 - [Data Decoder](data-decoder/README.md)
 - [Identity Management](identity-management/README.md)
 - [Know Problems](problems/README.md)
+- [Service - Fleet Management](services/fleet-management/README.md)
+- [Service - Smart Irrigation](services/smart-irrigation/README.md)

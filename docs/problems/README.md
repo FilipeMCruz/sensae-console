@@ -2,7 +2,7 @@
 
 Current version:
 
-- `system` : `0.6.0`
+- `system` : `0.7.0`
 
 ## Auth
 

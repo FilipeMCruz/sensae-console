@@ -5,7 +5,7 @@
     <parent>
         <artifactId>sharespot-data-decoder-master-backend</artifactId>
         <groupId>sharespot.services</groupId>
-        <version>0.6.0</version>
+        <version>0.7.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,13 +14,13 @@
         <dependency>
             <groupId>sharespot.services</groupId>
             <artifactId>domain-services</artifactId>
-            <version>0.6.0</version>
+            <version>0.7.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.4.16</version>
+            <version>3.4.17</version>
         </dependency>
     </dependencies>
 

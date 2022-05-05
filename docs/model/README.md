@@ -4,242 +4,257 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.13`
-- `system` : `0.6.0`
+- `iot-core` : `0.1.15`
+- `system` : `0.7.0`
 
 ## Introduction
 
-This model comes into play once the IoT data is processed, either by a `measures.{number} Processor Slave` or by a `measures.{number} Decoder Slave` container.
+This model comes into play once the IoT sensor/controller data is processed, either by a `Data Processor Slave` or by a `Data Decoder Slave` container.
 
-Containers such as `Device Records Slave` or `Fleet Management Backend` expect this specific data structure and semantics.
+Containers such as `Device Management Slave`, `Identity Management`, `Data Validator`, `Fleet Management Backend` and `Smart Irrigation Backend` expect this specific data structure and semantics.
 
 This model is described by the [iot-core](https://github.com/ShareSpotPT/iot-core) package.
 
 ## Data Model
 
 The current data model is represented here as a Json Schema.
+Internally data is handled using [protobuf](https://github.com/protocolbuffers/protobuf).
 
 ``` json
 {
-    "dataId": [uuid],
-    "reportedAt": [long],
-    "device": {
-        "id": [uuid],
-        "name": [string],
-        "records": [
-            {
-            "entry": {
-                "label": [string],
-                "content": [string]
-            }
+  "dataId": "[uuid]",
+  "reportedAt": "[long]",
+  "device": {
+    "id": "[uuid]",
+    "name": "[string]",
+    "downlink": "[string]",
+    "records": [
+      {
+        "entry": {
+          "label": "[string]",
+          "content": "[string]"
         }
-        ],
-        "domains": {
-            "read": [
-                [uuid]
-            ],
-            "readWrite": [
-                [uuid]
-            ]
-        }
+      }
+    ],
+    "domains": {
+      "read": ["[uuid]"],
+      "readWrite": ["[uuid]"]
     },
-    "measures": {
-        [int]: {
-            "airHumidity": {
-                "gramsPerCubicMeter": [float],
-                "relativePercentage": [float]
-            },
-            "airPressure": {
-                "hectoPascal": [float]
-            },
-            "aqi": {
-                "value": [float]
-            },
-            "battery": {
-                "percentage": [float],
-                "volts": [float],
-                "maxVolts": [float],
-                "minVolts": [float]
-            },
-            "co2": {
-                "ppm": [float]
-            },
-            "co": {
-                "ppm": [float]
-            },
-            "distance": {
-                "millimeters": [float],
-                "maxMillimeters": [float],
-                "minMillimeters": [float]
-            },
-            "gps": {
-                "latitude": [double],
-                "longitude": [double],
-                "altitude": [float]
-            },
-            "illuminance": {
-                "lux": [optional]
-            },
-            "motion": {
-                "value": ["ACTIVE", "INACTIVE" or "UNKNOWN"]
-            }, 
-            "nh3": {
-                "ppm": [float]
-            },
-            "no2": {
-                "ppm": [float]
-            },
-            "o3": {
-                "ppm": [float]
-            },
-            "occupation": {
-                "percentage": [float]
-            },
-            "ph": {
-                "value": [float]
-            },
-            "pm2_5": {
-                "microGramsPerCubicMeter": [float]
-            },
-            "pm10": {
-                "microGramsPerCubicMeter": [float]
-            },
-            "soilConductivity": {
-                "microSiemensPerCentimeter": [float]
-            },
-            "soilMoisture": {
-                "relativePercentage": [float]
-            },
-            "temperature": {
-                "celsius": [float]
-            },
-            "trigger": {
-                "value": [boolean]
-            },
-            "velocity": {
-                "kilometerPerHour": [float]
-            },
-            "voc": {
-                "ppm": [float]
-            },
-            "waterPressure": {
-                "bar": [float]
-            }
+    "commands": {
+      "[int]": [
+        {
+          "id": "[uuid]",
+          "name": "[string]",
+          "payload": "[base64 string]",
+          "port": "[int]"
         }
+      ]
     }
+  },
+  "measures": {
+    "[int]": {
+      "airHumidity": {
+        "gramsPerCubicMeter": "[float]",
+        "relativePercentage": "[float]"
+      },
+      "airPressure": {
+        "hectoPascal": "[float]"
+      },
+      "aqi": {
+        "value": "[float]"
+      },
+      "battery": {
+        "percentage": "[float]",
+        "volts": "[float]",
+        "maxVolts": "[float]",
+        "minVolts": "[float]"
+      },
+      "co2": {
+        "ppm": "[float]"
+      },
+      "co": {
+        "ppm": "[float]"
+      },
+      "distance": {
+        "millimeters": "[float]",
+        "maxMillimeters": "[float]",
+        "minMillimeters": "[float]"
+      },
+      "gps": {
+        "latitude": "[double]",
+        "longitude": "[double]",
+        "altitude": "[float]"
+      },
+      "illuminance": {
+        "lux": "[float]"
+      },
+      "motion": {
+        "value": "[ACTIVE, INACTIVE or UNKNOWN]"
+      },
+      "nh3": {
+        "ppm": "[float]"
+      },
+      "no2": {
+        "ppm": "[float]"
+      },
+      "o3": {
+        "ppm": "[float]"
+      },
+      "occupation": {
+        "percentage": "[float]"
+      },
+      "ph": {
+        "value": "[float]"
+      },
+      "pm2_5": {
+        "microGramsPerCubicMeter": "[float]"
+      },
+      "pm10": {
+        "microGramsPerCubicMeter": "[float]"
+      },
+      "soilConductivity": {
+        "microSiemensPerCentimeter": "[float]"
+      },
+      "soilMoisture": {
+        "relativePercentage": "[float]"
+      },
+      "temperature": {
+        "celsius": "[float]"
+      },
+      "trigger": {
+        "value": "[boolean]"
+      },
+      "velocity": {
+        "kilometerPerHour": "[float]"
+      },
+      "voc": {
+        "ppm": "[float]"
+      },
+      "waterPressure": {
+        "bar": "[float]"
+      }
+    }
+  }
 }
 ```
 
-At the time of data processing, though `measures.{number} Processor Slave` or `measures.{number} Decoder Slave` containers, some data is required, optional or rejected (if written).
+At the time of data processing, though `Data Processor Slave` or `Data Decoder Slave` containers, each property can be required, optional or rejected (if written).
 
 ``` json
 {
-    "dataId": [required],
-    "reportedAt": [required],
-    "device": {
-        "id": [required],
-        "name": [optional],
-        "records": [
-            {
-            "entry": {
-                "label": [optional],
-                "content": [optional]
-            }
+  "dataId": "[required]",
+  "reportedAt": "[required]",
+  "device": {
+    "id": "[required]",
+    "name": "[optional]",
+    "downlink": "[optional]",
+    "records": [
+      {
+        "entry": {
+          "label": "[optional]",
+          "content": "[optional]"
         }
-        ],
-        "domains": {
-            "read": [
-                [rejected]
-            ],
-            "readWrite": [
-                [rejected]
-            ]
-        }
+      }
+    ],
+    "domains": {
+      "read": ["[rejected]"],
+      "readWrite": ["[rejected]"]
     },
-    "measures": {
-        [int]: {
-            "airHumidity": {
-                "gramsPerCubicMeter": [optional],
-                "relativePercentage": [optional]
-            },
-            "airPressure": {
-                "hectoPascal": [optional]
-            },
-            "aqi": {
-                "value": [optional]
-            },
-            "battery": {
-                "percentage": [optional],
-                "volts": [optional],
-                "maxVolts": [optional],
-                "minVolts": [optional]
-            },
-            "co2": {
-                "ppm": [optional]
-            },
-            "co": {
-                "ppm": [optional]
-            },
-            "distance": {
-                "millimeters": [optional],
-                "maxMillimeters": [optional],
-                "minMillimeters": [optional]
-            },
-            "gps": {
-                "latitude": [optional],
-                "longitude": [optional],
-                "altitude": [optional]
-            },
-            "illuminance": {
-                "lux": [optional]
-            },
-            "motion": {
-                "value": ["ACTIVE", "INACTIVE" or "UNKNOWN"]
-            }, 
-            "nh3": {
-                "ppm": [optional]
-            },
-            "no2": {
-                "ppm": [optional]
-            },
-            "o3": {
-                "ppm": [optional]
-            },
-            "occupation": {
-                "percentage": [optional]
-            },
-            "ph": {
-                "value": [optional]
-            },
-            "pm2_5": {
-                "microGramsPerCubicMeter": [optional]
-            },
-            "pm10": {
-                "microGramsPerCubicMeter": [optional]
-            },
-            "soilConductivity": {
-                "microSiemensPerCentimeter": [optional]
-            },
-            "soilMoisture": {
-                "relativePercentage": [optional]
-            },
-            "temperature": {
-                "celsius": [optional]
-            },
-            "trigger": {
-                "value": [optional]
-            },
-            "velocity": {
-                "kilometerPerHour": [optional]
-            },
-            "voc": {
-                "ppm": [optional]
-            },
-            "waterPressure": {
-                "bar": [optional]
-            }
+    "commands": {
+      "[optional]": [
+        {
+          "id": "[optional]",
+          "name": "[optional]",
+          "payload": "[optional]",
+          "port": "[optional]"
         }
+      ]
     }
+  },
+  "measures": {
+    "[optional]": {
+      "airHumidity": {
+        "gramsPerCubicMeter": "[optional]",
+        "relativePercentage": "[optional]"
+      },
+      "airPressure": {
+        "hectoPascal": "[optional]"
+      },
+      "aqi": {
+        "value": "[optional]"
+      },
+      "battery": {
+        "percentage": "[optional]",
+        "volts": "[optional]",
+        "maxVolts": "[optional]",
+        "minVolts": "[optional]"
+      },
+      "co2": {
+        "ppm": "[optional]"
+      },
+      "co": {
+        "ppm": "[optional]"
+      },
+      "distance": {
+        "millimeters": "[optional]",
+        "maxMillimeters": "[optional]",
+        "minMillimeters": "[optional]"
+      },
+      "gps": {
+        "latitude": "[optional]",
+        "longitude": "[optional]",
+        "altitude": "[optional]"
+      },
+      "illuminance": {
+        "lux": "[optional]"
+      },
+      "motion": {
+        "value": "[optional]"
+      },
+      "nh3": {
+        "ppm": "[optional]"
+      },
+      "no2": {
+        "ppm": "[optional]"
+      },
+      "o3": {
+        "ppm": "[optional]"
+      },
+      "occupation": {
+        "percentage": "[optional]"
+      },
+      "ph": {
+        "value": "[optional]"
+      },
+      "pm2_5": {
+        "microGramsPerCubicMeter": "[optional]"
+      },
+      "pm10": {
+        "microGramsPerCubicMeter": "[optional]"
+      },
+      "soilConductivity": {
+        "microSiemensPerCentimeter": "[optional]"
+      },
+      "soilMoisture": {
+        "relativePercentage": "[optional]"
+      },
+      "temperature": {
+        "celsius": "[optional]"
+      },
+      "trigger": {
+        "value": "[optional]"
+      },
+      "velocity": {
+        "kilometerPerHour": "[optional]"
+      },
+      "voc": {
+        "ppm": "[optional]"
+      },
+      "waterPressure": {
+        "bar": "[optional]"
+      }
+    }
+  }
 }
 ```
 
@@ -279,8 +294,22 @@ The units used to measure the given values are:
 - `measures.{number}.distance.millimeters`: value representing the distance to a given point in millimeters;
 - `measures.{number}.distance.maxMillimeters`: value representing the maximum distance the sensor can be to a given point in millimeters;
 - `measures.{number}.distance.minMillimeters`: value representing the minimum distance the sensor can be to a given point in millimeters;
+- `device.commands.{number}.payload`: base64 string;
 
-Due to lack a of discussion and tests some data is missing a well-defined unit of measurement.
+Due to lack a of discussion and tests some data types may be missing a well-defined unit of measurement.
+
+## Support for Controllers
+
+In order to support Controllers, devices that aggregate various sensors, `measures` and `device.commands` can link to a sub device.
+
+The value 0 is reserved for the controller/main device, any other number can be used to reference a sub device.
+
+As an example imagine a controller that has 3 sub devices, a valve and two sensors, one with temperature values and other with humidity values.
+We could map the `valve` to sub device **1**, the `temperature sensor` to sub device **2** and the `humidity sensor` to sub device **3**.
+
+In `device management` this controller would be defined as a device that holds 3 devices, and would reference device 'XXX' as sub device **1** (the `valve`), device 'YYY' (the `temperature sensor`) as sub device **2** and device 'ZZZ' (the `humidity sensor`) as sub device **3**.
+
+Everything in `measures.{number}` and `device.commands.{number}` would be processed as if it was sent by the referenced sub device and not the controller.
 
 ## Further Discussion
 

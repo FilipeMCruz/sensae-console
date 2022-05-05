@@ -7,6 +7,6 @@
   </p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()" cdkFocusInitial>Keep Valve {{status}}</button>
   <button mat-button [mat-dialog-close]="true">{{status === "Closed" ? "Open Valve" : "Close Valve"}}</button>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Keep Valve {{status}}</button>
 </div>

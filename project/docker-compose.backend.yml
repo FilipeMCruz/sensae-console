@@ -111,20 +111,20 @@ services:
       - sharespot-network
     ports:
       - 8086:8080
-  # smart-irrigation-backend:
-  #   build: backend-services/smart-irrigation-backend
-  #   container_name: smart-irrigation-backend
-  #   image: smart-irrigation-backend
-  #   volumes:
-  #     - ./secrets/keys:/etc/ssh/app
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/prod/smart-irrigation-backend.env
-  #   networks:
-  #     - sharespot-network
-  #   ports:
-  #     - 8098:8080
+  smart-irrigation-backend:
+    build: backend-services/smart-irrigation-backend
+    container_name: smart-irrigation-backend
+    image: smart-irrigation-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/smart-irrigation-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8098:8080
   sharespot-identity-management-backend:
     build: backend-services/sharespot-identity-management-backend
     image: sharespot-identity-management-backend

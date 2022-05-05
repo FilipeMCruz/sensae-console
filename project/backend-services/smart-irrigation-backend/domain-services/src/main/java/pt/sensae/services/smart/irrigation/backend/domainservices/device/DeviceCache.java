@@ -25,10 +25,7 @@ public class DeviceCache {
     private final DeviceRepository repository;
 
     public DeviceCache(DeviceRepository repository) {
-        this.cache = Caffeine.newBuilder()
-                .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(50)
-                .build();
+        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(50).build();
         this.repository = repository;
     }
 
@@ -41,7 +38,17 @@ public class DeviceCache {
             cache.put(deviceId, newEntry);
         } else if (!newEntry.sameAs(oldEntry.get())) {
             update(deviceId, newEntry);
+        } else {
+            oldEntry.get().content().resetQueue();
         }
+    }
+
+    public Optional<LedgerEntry> get(DeviceId id) {
+        return Optional.ofNullable(cache.get(id, key -> repository.fetchDeviceActiveLedgerEntry(id).orElse(null)));
+    }
+
+    public boolean tryToSwitchValve(DeviceId id) {
+        return get(id).map(ledgerEntry -> ledgerEntry.content().queueValveSwitch()).orElse(false);
     }
 
     @NotNull
@@ -59,10 +66,6 @@ public class DeviceCache {
             throw new NotValidException("No Valid data packet found");
         }
         return type;
-    }
-
-    public Optional<LedgerEntry> get(DeviceId id) {
-        return Optional.ofNullable(cache.getIfPresent(id)).or(() -> repository.fetchDeviceActiveLedgerEntry(id));
     }
 
     private void update(DeviceId id, LedgerEntry newEntry) {
@@ -90,8 +93,8 @@ public class DeviceCache {
                 .size();
 
         var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ?
-                new RemoteControl(true) :
-                new RemoteControl(false);
+                RemoteControl.of(true) :
+                RemoteControl.of(false);
 
         var records = new DeviceRecords(data.device.records.entry.stream()
                 .map(e -> RecordEntry.of(e.label, e.content))

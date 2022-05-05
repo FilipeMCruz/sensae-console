@@ -6,6 +6,10 @@ export interface UpdateGardenResultDTO {
   updateGarden: GardeningAreaDTO
 }
 
+export interface DeleteGardenResultDTO {
+  deleteGarden: GardeningAreaDTO
+}
+
 export interface QueryHistoryResultDTO {
   history: SensorDataHistoryDTO[]
 }
@@ -18,12 +22,20 @@ export interface QueryLatestDataResultDTO {
   fetchLatestData: SensorDataDTO[]
 }
 
+export interface SwitchValveResultDTO {
+  switchValve: boolean
+}
+
 export interface SubscribeToDataResultDTO {
   data: SensorDataDTO
 }
 
 export interface UpdateGardenParamsDTO {
   instructions: UpdateGardeningAreaCommandDTO
+}
+
+export interface DeleteGardenParamsDTO {
+  instructions: DeleteGardeningAreaCommandDTO
 }
 
 export interface CreateGardenParamsDTO {
@@ -67,6 +79,10 @@ export interface UpdateGardeningAreaCommandDTO {
   area: AreaBoundaryDTO[]
 }
 
+export interface DeleteGardeningAreaCommandDTO {
+  id: string
+}
+
 export interface SensorDataDTO {
   dataId: string
   device: DeviceDTO
@@ -79,7 +95,7 @@ export interface DeviceDTO {
   type: DeviceTypeDTO
   name: string
   records: RecordEntryDTO[]
-  remoteControl : boolean
+  remoteControl: boolean
 }
 
 export interface RecordEntryDTO {

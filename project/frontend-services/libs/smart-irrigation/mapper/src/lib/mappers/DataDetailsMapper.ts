@@ -95,19 +95,19 @@ export class DataDetailsMapper {
   }
 
   static parkHistoryDataDtoToModel(dto: ParkSensorDataHistoryDetailsDTO): ParkSensorDataHistoryDetails {
-    return new ParkSensorDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt)),
+    return new ParkSensorDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt) * 1000),
       DataDetailsMapper.soilMoistureDtoToModel(dto.soilMoisture),
       DataDetailsMapper.illuminanceDtoToModel(dto.illuminance));
   }
 
   static stoveHistoryDataDtoToModel(dto: StoveSensorDataHistoryDetailsDTO): StoveSensorDataHistoryDetails {
-    return new StoveSensorDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt)),
+    return new StoveSensorDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt) * 1000),
       DataDetailsMapper.temperatureDtoToModel(dto.temperature),
       DataDetailsMapper.humidityDtoToModel(dto.humidity));
   }
 
   static valveHistoryDataDtoToModel(dto: ValveDataHistoryDetailsDTO): ValveDataHistoryDetails {
-    return new ValveDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt)),
+    return new ValveDataHistoryDetails(dto.id, new Date(Number(dto.reportedAt) * 1000),
       DataDetailsMapper.valveDtoToModel(dto.valve));
   }
 }

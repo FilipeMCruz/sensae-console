@@ -1,5 +1,6 @@
 package pt.sensae.services.device.management.slave.backend.domain.model;
 
+import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 
@@ -10,4 +11,6 @@ public interface DeviceRepository {
     Optional<DeviceInformation> findByDeviceId(DeviceId id);
 
     DeviceInformation add(DeviceInformation domain);
+
+    void updateDownlink(Device domain);
 }

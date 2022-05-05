@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ValidateCredentials } from './services/ValidateCredentials';
-import { ReplaySubject } from 'rxjs';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
-import { TenantIdentity } from './dto/CredentialsDTO';
+import {Injectable} from '@angular/core';
+import {ValidateCredentials} from './services/ValidateCredentials';
+import {ReplaySubject} from 'rxjs';
+import jwt_decode, {JwtPayload} from 'jwt-decode';
+import {TenantIdentity} from './dto/CredentialsDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,7 @@ export class AuthService {
     const domains = payload['domains'];
     // @ts-ignore
     const permissions = payload['permissions'];
-    return { email, domains, name, permissions, oid };
+    return {email, domains, name, permissions, oid};
   }
 
   login(token: string) {

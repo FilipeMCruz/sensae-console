@@ -31,7 +31,7 @@ public class GardenRepositoryImpl implements GardenRepository {
     public Optional<GardeningArea> fetchById(GardeningAreaId id) {
         var boundariesDao = areaRepository.findAllByAreaId(id.value().toString());
 
-        return gardeningAreaRepository.findByAreaId(id.value().toString())
+        return gardeningAreaRepository.findByDeletedFalseAndAreaId(id.value().toString())
                 .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundariesDao)));
     }
 
@@ -45,8 +45,9 @@ public class GardenRepositoryImpl implements GardenRepository {
         var boundaries = areaRepository.findAllByAreaIdIn(ids)
                 .collect(Collectors.groupingBy(o -> o.areaId));
 
-        var gardeningAreas = gardeningAreaRepository.findByAreaIdIn(ids)
-                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream()))).toList();
+        var gardeningAreas = gardeningAreaRepository.findAllByDeletedFalseAndAreaIdIn(ids)
+                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId)
+                        .stream()))).toList();
         return gardeningAreas.stream();
     }
 
@@ -56,8 +57,9 @@ public class GardenRepositoryImpl implements GardenRepository {
         var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
                 .collect(Collectors.groupingBy(o -> o.areaId));
 
-        var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAll().spliterator(), false)
-                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId).stream()))).toList();
+        var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAllByDeletedFalse().spliterator(), false)
+                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId)
+                        .stream()))).toList();
         return gardeningAreas.stream();
     }
 
@@ -66,8 +68,11 @@ public class GardenRepositoryImpl implements GardenRepository {
     public GardeningArea save(GardeningArea garden) {
         var gardeningAreaPostgres = GardeningAreaMapper.modelToDao(garden);
 
-        gardeningAreaRepository.findByAreaId(garden.id().value().toString())
-                .ifPresent(areaPostgres -> gardeningAreaPostgres.persistenceId = areaPostgres.persistenceId);
+        gardeningAreaRepository.findByDeletedFalseAndAreaId(garden.id().value().toString())
+                .ifPresent(areaPostgres -> {
+                    gardeningAreaPostgres.persistenceId = areaPostgres.persistenceId;
+                    areaRepository.deleteAllByAreaId(garden.id().value().toString());
+                });
 
         gardeningAreaRepository.save(gardeningAreaPostgres);
 
@@ -75,5 +80,14 @@ public class GardenRepositoryImpl implements GardenRepository {
         areaRepository.saveAll(boundariesDao.collect(Collectors.toList()));
 
         return garden;
+    }
+
+    @Override
+    @Transactional("transactionManagerPostgres")
+    public void delete(GardeningAreaId id) {
+        gardeningAreaRepository.findByAreaId(id.value().toString()).ifPresent(garden -> {
+            garden.deleted = true;
+            gardeningAreaRepository.save(garden);
+        });
     }
 }

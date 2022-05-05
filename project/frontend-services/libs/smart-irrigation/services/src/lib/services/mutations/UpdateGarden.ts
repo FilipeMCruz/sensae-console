@@ -16,8 +16,8 @@ export class UpdateGarden {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  getData(command: UpdateGardeningAreaCommand): Observable<GardeningArea> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:update"]))
+  execute(command: UpdateGardeningAreaCommand): Observable<GardeningArea> {
+    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:edit"]))
       return EMPTY;
 
     const query = gql`

@@ -1,14 +1,24 @@
 import {AfterViewInit, Component, Inject, OnDestroy} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {
   Data,
   DataFilters,
   DeviceType,
-  GardeningArea,
+  GardeningArea, HistoryQueryFilters,
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
 import {Subscription} from "rxjs";
-import {FetchLatestData, SubscribeToData} from "@frontend-services/smart-irrigation/services";
+import {
+  FetchHistory,
+  FetchLatestData,
+  SubscribeToData,
+  SwitchValve
+} from "@frontend-services/smart-irrigation/services";
+import {ValveDialogComponent} from "../valve-dialog/valve-dialog.component";
+import * as mapboxgl from "mapbox-gl";
+import {environment} from "../../../environments/environment";
+import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
+import {DeviceHistoryDialogComponent} from "../device-history-dialog/device-history-dialog.component";
 
 @Component({
   selector: 'frontend-services-garden-dialog',
@@ -25,10 +35,15 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
 
   private subscription!: Subscription;
 
+  private map!: mapboxgl.Map;
+
   constructor(private fetchLatestDataService: FetchLatestData,
+              private fetchHistoryService: FetchHistory,
               private subscribeToDataService: SubscribeToData,
+              private switchValveService: SwitchValve,
               public dialogRef: MatDialogRef<GardenDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: GardeningArea
+              @Inject(MAT_DIALOG_DATA) public data: GardeningArea,
+              public dialog: MatDialog
   ) {
   }
 
@@ -41,7 +56,9 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+
   ngAfterViewInit(): void {
+    this.buildMap();
     this.fetchLatestData();
     this.subscribeToData();
   }
@@ -51,8 +68,32 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
   }
 
+  buildMap(): void {
+    this.map = new mapboxgl.Map({
+      container: 'map-details',
+      style: environment.mapbox.style,
+      center: this.data.center() as LngLatLike,
+      bounds: this.data.bounds() as LngLatBoundsLike,
+      interactive: false
+    });
+    this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.on('load', () =>
+      this.map.resize() &&
+      this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100})
+    );
+  }
+
   onSelect(sensorData: Data) {
-    console.log(sensorData)
+    if (sensorData.device.remoteControl && !sensorData.device.switchQueued && this.switchValveService.canDo()) {
+      const dialogRef = this.dialog.open(ValveDialogComponent, {
+        width: '350px',
+        data: sensorData,
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) this.switchValveService.execute(sensorData.device).subscribe();
+      });
+    }
   }
 
   private fetchLatestData() {
@@ -61,9 +102,44 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       next => {
         this.valvesData.push(...next.filter(d => d.device.type === DeviceType.VALVE));
         this.sensorsData.push(...next.filter(d => d.device.type !== DeviceType.VALVE));
+        this.drawDevices();
+        this.updateDeviceSource();
       },
       error => error,
       () => this.loadingInfo = false);
+  }
+
+  drawDevices() {
+    this.map.on('load', () => {
+      this.map.addSource("devices", {
+        'type': 'geojson',
+        data: {
+          'type': 'FeatureCollection',
+          'features': []
+        }
+      });
+      this.map.addLayer(Data.getDataStyle("devices"));
+      this.map.addLayer(Data.getHoverDataStyle("devices"));
+      this.map.addLayer(Data.getIlluminanceDataStyle("devices"))
+      this.map.addLayer(Data.getTemperatureDataStyle("devices"))
+      this.map.addLayer(Data.getHumidityDataStyle("devices"))
+      this.map.addLayer(Data.getSoilMoistureDataStyle("devices"))
+      this.map.setFilter("hoverDevices", [
+        'match',
+        ['get', 'id'],
+        'none',
+        true,
+        false
+      ])
+    });
+  }
+
+  openDeviceHistory(sensorData: Data) {
+    this.dialog.open(DeviceHistoryDialogComponent, {
+      width: '70%',
+      height: '80%',
+      data: sensorData
+    });
   }
 
   private subscribeToData() {
@@ -74,7 +150,39 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
         } else {
           GardenDialogComponent.onNewData(this.sensorsData, next);
         }
+        this.updateDeviceSource();
       },
       error => error);
+  }
+
+  private updateDeviceSource() {
+    const features = [...this.sensorsData];
+    features.push(...this.valvesData);
+    this.map.on('load', () => {
+      (this.map.getSource("devices") as GeoJSONSource).setData({
+        'type': 'FeatureCollection',
+        'features': features.map(g => g.asFeature())
+      })
+    });
+  }
+
+  onHoverEnter(sensorData: Data) {
+    this.map.setFilter("hoverDevices", [
+      'match',
+      ['get', 'id'],
+      sensorData.device.id.value,
+      true,
+      false
+    ])
+  }
+
+  onHoverLeave(sensorData: Data) {
+    this.map.setFilter("hoverDevices", [
+      'match',
+      ['get', 'id'],
+      'none',
+      true,
+      false
+    ])
   }
 }

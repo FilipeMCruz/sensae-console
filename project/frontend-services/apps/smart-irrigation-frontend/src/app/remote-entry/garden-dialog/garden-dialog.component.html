@@ -10,7 +10,8 @@
     </ng-container>
     <ng-container *ngIf="!loadingInfo && sensorsData.length !== 0">
       <mat-list class="data-list" dense>
-        <mat-list-item (click)="onSelect(sensor)" *ngFor="let sensor of sensorsData">
+        <mat-list-item (mouseenter)="onHoverEnter(sensor)" (mouseleave)="onHoverLeave(sensor)"
+                       (click)="openDeviceHistory(sensor)" *ngFor="let sensor of sensorsData">
           <mat-icon [ngStyle]="sensor.getColor()" mat-list-icon>sensors</mat-icon>
           <div mat-line>
             <strong>{{sensor.device.name.value | truncate : 25}}</strong>
@@ -39,8 +40,8 @@
     </ng-container>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1"
-                 [rowspan]="2"
-                 [style.background]="'lightblue'">Image
+                 [rowspan]="2">
+    <div id="map-details" class="map-details"></div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1"
                  [rowspan]="1">
@@ -51,8 +52,9 @@
       Loading ...
     </ng-container>
     <ng-container *ngIf="!loadingInfo && valvesData.length !== 0">
-      <mat-list dense>
-        <mat-list-item (click)="onSelect(valve)" *ngFor="let valve of valvesData">
+      <mat-list class="data-list" dense>
+        <mat-list-item (mouseenter)="onHoverEnter(valve)" (mouseleave)="onHoverLeave(valve)" (click)="onSelect(valve)"
+                       *ngFor="let valve of valvesData">
           <mat-icon mat-list-icon>water_drop</mat-icon>
           <div mat-line><strong>{{valve.device.name.value | truncate : 25}}</strong></div>
           <div mat-line>

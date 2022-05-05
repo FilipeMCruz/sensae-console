@@ -1,8 +1,10 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import pt.sensae.services.smart.irrigation.backend.domain.exceptions.DatabaseBusyException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
@@ -30,19 +32,26 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public void store(Data data) {
         var dataQuestDB = DataMapperImpl.toDao(data);
-        this.repository.insert(dataQuestDB.dataId,
-                dataQuestDB.deviceId,
-                dataQuestDB.deviceType,
-                dataQuestDB.reportedAt,
-                dataQuestDB.temperature,
-                dataQuestDB.humidity,
-                dataQuestDB.soilMoisture,
-                dataQuestDB.illuminance, 
-                dataQuestDB.valveStatus);
+        try {
+            this.repository.insert(dataQuestDB.dataId,
+                    dataQuestDB.deviceId,
+                    dataQuestDB.deviceType,
+                    dataQuestDB.reportedAt,
+                    dataQuestDB.temperature,
+                    dataQuestDB.humidity,
+                    dataQuestDB.soilMoisture,
+                    dataQuestDB.illuminance,
+                    dataQuestDB.valveStatus);
+        } catch (DataAccessException ex) {
+            throw new DatabaseBusyException("Table busy");
+        }
     }
 
     @Override
     public Stream<Data> fetch(DataQuery query) {
+        if (query.deviceId().isEmpty()) {
+            return Stream.empty();
+        }
         var devices = inConcat(query.deviceId().stream().map(d -> d.value().toString()));
         var open = Timestamp.from(query.open().value()).toString();
         var close = Timestamp.from(query.close().value()).toString();

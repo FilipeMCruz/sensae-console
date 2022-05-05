@@ -1,0 +1,7 @@
+<h1 mat-dialog-title>{{data.device.name.value}} Measures</h1>
+<div mat-dialog-content style="height: calc(100% - 96px);">
+  <div echarts [options]="options"></div>
+</div>
+<div class="to-right" mat-dialog-actions>
+  <button mat-stroked-button (click)="onNoClick()">Back</button>
+</div>

@@ -2,6 +2,7 @@ package pt.sensae.services.device.management.slave.backend.infrastructure.persis
 
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceRepository;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.infrastructure.persistence.postgres.mapper.DeviceMapper;
@@ -20,8 +21,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
 
     @Override
     public Optional<DeviceInformation> findByDeviceId(DeviceId id) {
-        return repositoryPostgres.findByDeviceId(id.value().toString())
-                .map(DeviceMapper::postgresToDomain);
+        return repositoryPostgres.findByDeviceId(id.value().toString()).map(DeviceMapper::postgresToDomain);
     }
 
     @Override
@@ -29,5 +29,13 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         var deviceRecordsPostgres = DeviceMapper.domainToPostgres(domain);
         repositoryPostgres.save(deviceRecordsPostgres);
         return DeviceMapper.postgresToDomain(deviceRecordsPostgres);
+    }
+
+    @Override
+    public void updateDownlink(Device domain) {
+        repositoryPostgres.findByDeviceId(domain.id().value().toString()).ifPresent(dev -> {
+            dev.downlink = domain.downlink().value();
+            repositoryPostgres.save(dev);
+        });
     }
 }

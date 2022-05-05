@@ -14,6 +14,7 @@ public class GardeningAreaMapper {
         var dao = new GardeningAreaPostgres();
         dao.areaId = model.id().value().toString();
         dao.areaName = model.name().value();
+        dao.deleted = false;
         return dao;
     }
 

@@ -3,14 +3,20 @@ import * as mapboxgl from 'mapbox-gl';
 import {Subscription} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {
-  CreateGardeningAreaCommand, Data,
+  CreateGardeningAreaCommand, Data, DeleteGardeningAreaCommand,
   GardeningArea,
-  LatestDataQueryFilters
+  LatestDataQueryFilters, UpdateGardeningAreaCommand
 } from "@frontend-services/smart-irrigation/model";
-import {CreateGarden, FetchGardens, FetchLatestData} from "@frontend-services/smart-irrigation/services";
+import {
+  CreateGarden,
+  DeleteGarden,
+  FetchGardens,
+  FetchLatestData,
+  UpdateGarden
+} from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
-import {Polygon} from "geojson";
-import {LngLatLike} from "mapbox-gl";
+import {Point, Polygon} from "geojson";
+import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
 
@@ -36,11 +42,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   public loadingGardens = true;
 
   public isDrawing = false;
+  public isEditing = false;
+
+  public isSketchValid = false;
 
   public gardenName = "";
 
+  public editing!: GardeningArea;
+
   constructor(private fetchGardensService: FetchGardens,
               private createGardenService: CreateGarden,
+              private deleteGardenService: DeleteGarden,
+              private updateGardenService: UpdateGarden,
               private fetchLatestDataService: FetchLatestData,
               public dialog: MatDialog) {
   }
@@ -80,12 +93,19 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.map.on('mouseenter', 'gardens', () => {
         this.map.getCanvas().style.cursor = 'pointer';
       });
-
       this.map.on('mouseleave', 'gardens', () => {
         this.map.getCanvas().style.cursor = '';
       });
     });
     this.loadingGardens = false;
+  }
+
+  private updateGardensSource() {
+    const source = this.map.getSource("gardens") as GeoJSONSource;
+    source.setData({
+      'type': 'FeatureCollection',
+      'features': this.gardens.map(g => g.asFeature())
+    });
   }
 
   openGardenDetails(id: string) {
@@ -128,16 +148,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.buildMap();
   }
 
-  startDrawGarden() {
+  startGardenSketch() {
     this.draw = new MapboxDraw({
       displayControlsDefault: false,
       defaultMode: 'draw_polygon'
     });
     this.map.addControl(this.draw);
+    this.map.on('draw.create', () => this.checkIfSketchIsValid());
+    this.map.on('draw.update', () => this.checkIfSketchIsValid());
     this.isDrawing = true;
   }
 
-  deleteGarden() {
+  deleteGardenSketch() {
     const data = this.draw.getAll();
     if (data.features.length > 0) {
       const id = data.features[0].id;
@@ -145,6 +167,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
     this.map.removeControl(this.draw);
     this.isDrawing = false;
+    this.gardenName = "";
   }
 
   fetchLatestData() {
@@ -164,24 +187,114 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           'features': this.latestData.map(g => g.asFeature())
         }
       });
+
       this.map.addLayer(Data.getDataStyle("devices"));
+      const popup = new mapboxgl.Popup({
+        maxWidth: 'none',
+        closeButton: false,
+        closeOnClick: false
+      });
+      this.map.on('mouseenter', 'devices', (e) => {
+        this.map.getCanvas().style.cursor = 'pointer';
+
+        if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
+          const cords = e.features[0].geometry as Point;
+          const coordinates = cords.coordinates.slice();
+          const description = e.features[0].properties["description"];
+
+          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+          }
+
+          popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
+        }
+      });
+
+      this.map.on('mouseleave', 'devices', () => {
+        this.map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
     });
+
   }
 
   buildGarden() {
     const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
     const command = CreateGardeningAreaCommand.build(this.gardenName, gardenArea.coordinates[0]);
     this.createGardenService.execute(command).subscribe(
-      next => this.gardens.push(next),
-      error => error,
-      () => this.isDrawing = false);
+      next => {
+        this.isDrawing = false
+        this.map.removeControl(this.draw);
+        this.gardenName = "";
+        this.gardens.push(next);
+        this.updateGardensSource();
+      },
+      error => error);
   }
 
   onSelect(garden: GardeningArea) {
-    this.map.flyTo({
-      center: garden.center() as LngLatLike,
-      zoom: 20,
-      essential: true // this animation is considered essential with respect to prefers-reduced-motion
-    })
+    this.map.fitBounds(garden.bounds() as LngLatBoundsLike, {padding: 100});
+  }
+
+  onDelete(event: MouseEvent, garden: GardeningArea) {
+    event.stopPropagation();
+    this.deleteGardenService.getData(new DeleteGardeningAreaCommand(garden.id)).subscribe(
+      next => {
+        this.gardens = this.gardens.filter(elem => elem.id.value !== next.id.value);
+        this.updateGardensSource();
+      }
+    )
+  }
+
+  onEdit(event: MouseEvent, garden: GardeningArea) {
+    event.stopPropagation();
+
+    this.draw = new MapboxDraw({
+      displayControlsDefault: false,
+      defaultMode: 'simple_select'
+    });
+    this.map.addControl(this.draw);
+    this.map.on('draw.create', () => this.checkIfSketchIsValid());
+    this.map.on('draw.update', () => this.checkIfSketchIsValid());
+    this.editing = garden;
+    this.gardens = this.gardens.filter(elem => elem.id.value !== garden.id.value);
+    this.updateGardensSource();
+    this.isDrawing = true;
+    this.isEditing = true;
+    this.draw.add(garden.asFeature());
+  }
+
+  private checkIfSketchIsValid() {
+    const gardenArea = this.draw.getAll().features[0].geometry as Polygon;
+    if (gardenArea.coordinates[0].length > 2) {
+      this.isSketchValid = true;
+    }
+  }
+
+  deleteGardenEditSketch() {
+    const data = this.draw.getAll();
+    if (data.features.length > 0) {
+      const id = data.features[0].id;
+      if (id) this.draw.delete(id.toLocaleString());
+    }
+    this.map.removeControl(this.draw);
+    this.gardens.push(this.editing);
+    this.updateGardensSource();
+    this.isDrawing = false
+    this.isEditing = false;
+  }
+
+  editGarden() {
+    const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
+    const command = UpdateGardeningAreaCommand.build(this.editing.id.value, this.editing.name.value, gardenArea.coordinates[0]);
+    this.updateGardenService.execute(command).subscribe(
+      next => {
+        this.isDrawing = false
+        this.isEditing = false;
+        this.map.removeControl(this.draw);
+        this.gardens.push(next);
+        this.updateGardensSource();
+      },
+      error => error);
   }
 }

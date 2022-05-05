@@ -11,6 +11,4 @@ public class UpdateGardeningAreaCommandDTOImpl implements UpdateGardeningAreaCom
     public String name;
 
     public List<AreaBoundaryDTOImpl> area;
-
-    public List<String> valves;
 }

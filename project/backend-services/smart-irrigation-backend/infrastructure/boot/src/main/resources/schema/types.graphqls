@@ -144,6 +144,10 @@ input UpdateGardeningAreaCommand {
     area : [AreaBoundaryCommandDetails]
 }
 
+input DeleteGardeningAreaCommand {
+    id : String
+}
+
 input AreaBoundaryCommandDetails {
     position : Int
     longitude : String

@@ -1,6 +1,19 @@
-@startuml logical-view-level2
+@startuml logical-view-level2-color
 
-skinparam Monochrome true
+skinparam class {
+    BackgroundColor Black
+    ArrowColor Black
+    BorderColor Black
+}
+skinparam component {
+    ArrowColor Black
+    BorderColor Black
+}
+skinparam interface {
+    backgroundColor white
+    borderColor black
+}
+
 skinparam sequenceMessageAlign center
 skinparam Shadowing false
 skinparam componentStyle uml2
@@ -14,38 +27,38 @@ interface "Helium Console\nRest API" as OUT_ENDPOINT
 interface "Azure Active Directory API" as AUTH_ENDPOINT
 
 component "Environment" <<System>> {
-    component "UI Aggregator" as UIAG <<Container>> {
-        component "Fleet Management Frontend" as LTF <<Container>> 
-        component "Smart Irrigation Frontend" as SIF <<Container>>
-        component "Device Management Frontend" as DRF <<Container>>
-        component "Data Processor Frontend" as DPF <<Container>>
-        component "Data Decoder Frontend" as DDF <<Container>>
-        component "Identity Management Frontend" as IAMF <<Container>>
+    component "UI Aggregator" as UIAG <<Container>> #c77e21 {
+        component "Fleet Management Frontend" as LTF <<Container>> #d79921
+        component "Smart Irrigation Frontend" as SIF <<Container>> #d79921
+        component "Device Management Frontend" as DRF <<Container>> #d79921
+        component "Data Processor Frontend" as DPF <<Container>> #d79921
+        component "Data Decoder Frontend" as DDF <<Container>> #d79921
+        component "Identity Management Frontend" as IAMF <<Container>> #d79921
     }
-    component "Fleet Management Backend" as LTB <<Container>>
-    component "Smart Irrigation Backend" as SIB <<Container>>
-    component "Message Broker" as MB <<Container>>
-    component "Device Management Master Backend" as DRB <<Container>>
-    component "Device Management Slave Backend" as DRSB <<Container>>
-    component "Data Gateway" as DDG <<Container>>
-    component "Data Relayer" as DR <<Container>>
-    component "Data Processor Slave Backend" as DPSB <<Container>>
-    component "Data Processor Master Backend" as DPB <<Container>>
-    component "Data Decoder Slave Backend" as DDSB <<Container>>
-    component "Data Decoder Master Backend" as DDB <<Container>>
-    component "Data Validator Backend" as DVB <<Container>>
-    component "Device Management Database" as DRDB <<Container>>
-    component "Data Processor Database" as DPDB <<Container>>
-    component "Data Decoder Database" as DDDB <<Container>>
-    component "Identity Management Database" as IAMDB <<Container>>
-    component "Data Store" as DS <<Container>>
-    component "Fleet Management Database" as QUESTDB <<Container>>
-    component "Data Store Database" as MONGODB <<Container>>
-    component "Smart Irrigation Data Database" as SIDDB <<Container>>
-    component "Smart Irrigation Business Database" as SIBDB <<Container>>
-    component "Identity Management Backend" as IAMB <<Container>>
-    component "Identity Management Slave Backend" as IAMSB <<Container>>
-    component "Device Commander Backend" as DCB <<Container>>
+    component "Fleet Management Backend" as LTB <<Container>> #83a598
+    component "Smart Irrigation Backend" as SIB <<Container>> #83a598
+    component "Message Broker" as MB <<Container>> #fb4d34
+    component "Device Management Master Backend" as DRB <<Container>> #83a598
+    component "Device Management Slave Backend" as DRSB <<Container>> #d3869b
+    component "Data Gateway" as DDG <<Container>> #d3869b
+    component "Data Relayer" as DR <<Container>> #d3869b
+    component "Data Processor Slave Backend" as DPSB <<Container>> #d3869b
+    component "Data Processor Master Backend" as DPB <<Container>> #83a598
+    component "Data Decoder Slave Backend" as DDSB <<Container>> #d3869b
+    component "Data Decoder Master Backend" as DDB <<Container>> #83a598
+    component "Data Validator Backend" as DVB <<Container>> #d3869b
+    component "Device Management Database" as DRDB <<Container>> #98971a
+    component "Data Processor Database" as DPDB <<Container>> #98971a
+    component "Data Decoder Database" as DDDB <<Container>> #98971a
+    component "Identity Management Database" as IAMDB <<Container>> #98971a
+    component "Data Store" as DS <<Container>> #d3869b
+    component "Fleet Management Database" as QUESTDB <<Container>> #98971a
+    component "Data Store Database" as MONGODB <<Container>> #98971a
+    component "Smart Irrigation Data Database" as SIDDB <<Container>> #98971a
+    component "Smart Irrigation Business Database" as SIBDB <<Container>> #98971a
+    component "Identity Management Backend" as IAMB <<Container>> #83a598
+    component "Identity Management Slave Backend" as IAMSB <<Container>> #d3869b
+    component "Device Commander Backend" as DCB <<Container>> #d3869b
 
     interface "Message Broker\nAPI" as MB_API
     interface "Fleet Management Backend\nAPI" as LTB_API

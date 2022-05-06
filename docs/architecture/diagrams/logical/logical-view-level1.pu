@@ -11,20 +11,25 @@ skinparam packageStyle rectangle
 [Azure Active Directory] as AAD
 
 () "UI" as UI
-() "Helium Console\nRest API" as IN_ENDPOINT
-note top: Console integratoin\nendpoint
+() "Helium Console\nRest API" as OUT_ENDPOINT
+() "Sensae Console\nRest API" as IN_ENDPOINT
+note bottom: Console integration\nendpoint
 
 () "AAD API" as AUTH_ENDPOINT
 
-actor "Data Admin" as Client
+actor "Manager" as Client
+actor "Tenant" as Tenant
 
 Client --( UI
+Tenant --( UI
 
 UI -- S
-IN_ENDPOINT - S
+S -- IN_ENDPOINT
+HC - OUT_ENDPOINT
 S - AUTH_ENDPOINT
 
-HC -( IN_ENDPOINT
+IN_ENDPOINT )- HC
+OUT_ENDPOINT )- S
 AUTH_ENDPOINT )- AAD
 
 @enduml

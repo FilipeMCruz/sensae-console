@@ -67,7 +67,6 @@ public class SensorDataHandlerService {
                 .withUpdated(data)
                 .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
                 .withOwnership(DomainOwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
-                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .from(keys);
     }
 }

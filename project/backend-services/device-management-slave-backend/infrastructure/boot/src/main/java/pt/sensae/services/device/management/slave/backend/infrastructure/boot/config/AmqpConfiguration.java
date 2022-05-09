@@ -58,7 +58,7 @@ public class AmqpConfiguration {
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
                 .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
-                .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

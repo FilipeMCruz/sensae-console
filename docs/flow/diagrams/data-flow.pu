@@ -11,7 +11,6 @@ state "Data Processor Slave" as Processor
 state "Data Decoder Slave" as Decoder
 state is_processed <<choice>>
 state "Identity Management Slave" as Identity
-state is_valid <<choice>>
 state "Data Validator" as Validator
 state "Device Records Slave" as Records
 state has_gps <<choice>>
@@ -56,15 +55,13 @@ decoded_or_encoded --> Decoder : encoded data
 Decoder --> is_processed
 Processor --> is_processed
 
-is_processed -> Validator : data is processed
+is_processed -> Identity : data is processed
 
-Validator -> is_valid
+Validator -> has_gps : data is valid
 
-is_valid -> Identity : data is valid
+Identity -> Records
 
-Identity --> Records
-
-Records --> has_gps
+Records -> Validator
 
 has_gps --> Fleet : data has\ngps details
 
@@ -72,6 +69,6 @@ has_gps --> Irrigation : data has gps, air humidity and\ntemperature details
 has_gps --> Irrigation : data has gps, illuminance and\nsoil moisture details
 has_gps --> Irrigation : data has gps and\nalarm details
 
-Records --> Validator : each sub device\ndata is sub processed
+Records ---> Identity : each sub device\ndata is sub processed
 
 @enduml

@@ -14,6 +14,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.qu
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.repository.DataRepositoryQuestDB;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -61,7 +62,11 @@ public class DataRepositoryImpl implements DataRepository {
 
     @Override
     public Stream<Data> fetchLatest(Stream<DeviceId> deviceIds) {
-        var devices = inConcat(deviceIds.map(d -> d.value().toString()));
+        var collect = deviceIds.collect(Collectors.toSet());
+        if(collect.isEmpty()) {
+            return Stream.empty();
+        }
+        var devices = inConcat(collect.stream().map(d -> d.value().toString()));
         return fetchLatest(devices).map(DataMapperImpl::toModel);
     }
 

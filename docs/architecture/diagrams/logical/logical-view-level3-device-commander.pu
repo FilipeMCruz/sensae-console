@@ -1,8 +1,8 @@
-@startuml logical-view-level3-device-records-master-backend
+@startuml logical-view-level3-device-commander
 
 skinparam Monochrome true
 
-component "Device Records Master Backend" {
+component "Device Commander Backend" {
     component "Application" as APP
     component "Domain" as DOM
     component "Domain Services" as DOM_SERV
@@ -13,10 +13,12 @@ component "Device Records Master Backend" {
             interface "Postgres API" as POSTG_API
         }
         component "Endpoint" as ENDPOINT {
-            component "Graphql" as GRAPH
-            component "AMQP" as AMQP
-            interface "Graphql API" as GRAPH_API
-            interface "AMQP API" as AMQP_API
+            component "AMQP" as AMQP {
+                component "Ingress" as INGRESS
+                component "Internal" as INTERNAL
+                interface "Ingress API" as INGRESS_API
+                interface "Internal API" as INTERNAL_API
+            }
         }
         interface "Boot API" as BOOT_API
     }
@@ -25,23 +27,25 @@ component "Device Records Master Backend" {
     interface "Domain API" as DOM_API
     interface "Domain Services API" as DOM_SERV_API
 
-    GRAPH_API -- GRAPH
     DOM_API -- DOM
     DOM_SERV_API -- DOM_SERV
 
+    INGRESS_API -- INGRESS
+    INTERNAL_API -- INTERNAL
+
     POSTG_API -- POSTG
-    AMQP_API -- AMQP
+
     APP_API -- APP
     BOOT_API -- BOOT
 
-    AMQP --( APP_API
+    INGRESS --( APP_API
+    INTERNAL --( APP_API
     POSTG --( DOM_API
-    GRAPH --( APP_API
     APP --( DOM_SERV_API
     DOM_SERV --( DOM_API
-    BOOT --( GRAPH_API
+    BOOT --( INTERNAL_API
     BOOT --( POSTG_API
-    BOOT --( AMQP_API
+    BOOT --( INGRESS_API
 }
 
 @enduml

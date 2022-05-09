@@ -14,15 +14,13 @@ participant "Data Decoder Slave\nBackend" as SDD
 participant "Identity Management Slave\nBackend" as SIM
 participant "Message Broker" as MB
 participant "Data Validator\nBackend" as DVB
-participant "Device Records Slave\nBackend" as DRSB
+participant "Device Management Slave\nBackend" as DRSB
+participant "Device Commander" as DC
 participant "Fleet Management\nBackend" as LTB
-participant "Fleet Management\nFrontend" as LTF
+participant "Smart Irrigation\nBackend" as SIB
 
 activate MB
-activate LTF
-activate LTB
 
-== Initialization ==
 DS -> MB :   subscribe to X data
 SDP -> MB :  subscribe to new\nX decoded sensor data
 SDP -> MB :  subscribe to changes\n in transformations
@@ -32,27 +30,11 @@ DVB -> MB :  subscribe to new\nprocessed sensor data
 SIM -> MB :  subscribe to new\nprocessed and validated sensor data
 SIM -> MB :  subscribe to changes\n in devices identity
 DRSB -> MB : subscribe to new\ngps sensor data validated
-DRSB -> MB : subscribe to changes\n in device records
-LTB -> MB :  subscribe to new\nvalidated gps sensor data with records
-
-...
-== UC01 Initialization ==
-autonumber inc A
-LTF <- : user acesses the UI
-LTF -> LTB : fetch last location\n of each sensor
-LTF -> LTB : subscribe to new\ngps sensor data
-...
-== UC02 Initialization ==
-autonumber inc A
-LTF <- : user wants to see\narray of gps sensor data
-LTF -> LTB : unsubscribe from new\ngps sensor data
-LTF -> LTB : subscribe to array of new\ngps sensor data
-
-...
-== UC01 Initialization ==
-autonumber inc A
-LTF <- : user wants to see\nall gps sensor data
-LTF -> LTB : unsubscribe from array of new\ngps sensor data
-LTF -> LTB : subscribe to new\ngps sensor data
+DRSB -> MB : subscribe to changes\n in device management
+DC -> MB : subscribe to device commands
+LTB -> MB :  subscribe to new validated\ngps sensor data\nwith device info
+SIB -> MB :  subscribe to new validated\ngps+trigger sensor data\n with device info
+SIB -> MB :  subscribe to new validated\ngps+temperature+air humidity\n sensor data with device info
+SIB -> MB :  subscribe to new validated\ngps+soil moisture+illuminance\n sensor data with device info
 
 @enduml

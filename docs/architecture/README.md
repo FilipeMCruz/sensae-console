@@ -120,23 +120,35 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-fleet-management-backend](diagrams/logical/logical-view-level3-fleet-management-backend.svg)
 
+### Smart Irrigation Frontend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-smart-irrigation-frontend](diagrams/logical/logical-view-level3-smart-irrigation-frontend.svg)
+
+### Smart Irrigation Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-smart-irrigation-backend](diagrams/logical/logical-view-level3-smart-irrigation-backend.svg)
+
 ### Device Management Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-frontend](diagrams/logical/logical-view-level3-device-records-frontend.svg)
+![logical-view-level3-device-management-frontend](diagrams/logical/logical-view-level3-device-management-frontend.svg)
 
 ### Device Management Master Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-master-backend](diagrams/logical/logical-view-level3-device-records-master-backend.svg)
+![logical-view-level3-device-management-master-backend](diagrams/logical/logical-view-level3-device-management-master-backend.svg)
 
 ### Device Management Slave Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-slave-backend](diagrams/logical/logical-view-level3-device-records-slave-backend.svg)
+![logical-view-level3-device-management-slave-backend](diagrams/logical/logical-view-level3-device-management-slave-backend.svg)
 
 ### Data Processor Slave Backend
 
@@ -209,6 +221,12 @@ The following diagram describes it from a logical view.
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-validator](diagrams/logical/logical-view-level3-data-validator.svg)
+
+### Device Commander
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-commander](diagrams/logical/logical-view-level3-device-commander.svg)
 
 ## Further Discussion
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="706px" preserveAspectRatio="none" style="width:379px;height:706px;background:#FFFFFF;" version="1.1" viewBox="0 0 379 706" width="379px" zoomAndPan="magnify"><defs/><g><!--MD5=[d3454965eb485bc60f0f4ef9a4f57e1a]
+cluster Device Management Frontend--><g id="cluster_Device Management Frontend"><rect height="693" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="366" x="7" y="7"/><rect height="10" style="stroke:#181818;stroke-width:1.0;fill:none;" width="15" x="353" y="12"/><rect height="2" style="stroke:#181818;stroke-width:1.0;fill:none;" width="4" x="351" y="14"/><rect height="2" style="stroke:#181818;stroke-width:1.0;fill:none;" width="4" x="351" y="18"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="219.5" x="80.25" y="34.9659">Device Management Frontend</text></g><!--MD5=[b728f5a8a4e5df9f34c01e5b4763eade]
+entity COMP--><g id="elem_COMP"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="125" x="54.5" y="169"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="159.5" y="174"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="157.5" y="176"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="157.5" y="180"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="69.5" y="203.9659">Components</text></g><!--MD5=[97de1061a0ab8445a0a4bfc3e13b8318]
+entity DTO--><g id="elem_DTO"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="77" x="142.5" y="635"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="199.5" y="640"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="197.5" y="642"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="197.5" y="646"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="37" x="157.5" y="669.9659">DTOS</text></g><!--MD5=[becb97998b7b4af08e2de339e4eb8c19]
+entity MAP--><g id="elem_MAP"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="100" x="256" y="635"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="336" y="640"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="334" y="642"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="334" y="646"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="271" y="669.9659">Mappers</text></g><!--MD5=[b643aff2f6de854ee098fa19746d9d7e]
+entity MOD--><g id="elem_MOD"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="82" x="24" y="635"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="86" y="640"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="84" y="642"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="84" y="646"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="42" x="39" y="669.9659">Model</text></g><!--MD5=[34e8fa806e7835ee7b6461df5000ecf5]
+entity SERV--><g id="elem_SERV"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="95" x="129.5" y="402"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="204.5" y="407"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="202.5" y="409"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="202.5" y="413"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="144.5" y="436.9659">Services</text></g><!--MD5=[26c2ca52e6659ff74bf8b31ef51febf1]
+entity COMP_API--><g id="elem_COMP_API"><ellipse cx="117" cy="77" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="15" x="109.5" y="108.9659">UI</text></g><!--MD5=[03daee95c47d28e2008f8fcdb06be569]
+entity DTO_API--><g id="elem_DTO_API"><ellipse cx="181" cy="543" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="150" y="574.9659">DTOs API</text></g><!--MD5=[38a9b1639d19c51278eb97e5a118e1f1]
+entity MAP_API--><g id="elem_MAP_API"><ellipse cx="306" cy="543" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="86" x="263" y="574.9659">Mappers API</text></g><!--MD5=[fb73fbd093c911a4b8bb52161712f200]
+entity MOD_API--><g id="elem_MOD_API"><ellipse cx="65" cy="543" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="31" y="574.9659">Model API</text></g><!--MD5=[5d8f268093428ba7660bd523078b774e]
+entity SERV_API--><g id="elem_SERV_API"><ellipse cx="161" cy="310" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81" x="120.5" y="341.9659">Services API</text></g><!--MD5=[665323d6b752a8751c259c9b81860fbd]
+link COMP_API to COMP--><g id="link_COMP_API_COMP"><path d="M117,86.23 C117,103.26 117,142.89 117,168.65 " fill="none" id="COMP_API-COMP" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[978c0e1c0a7459d8a1dc4d7de3a4d93f]
+link DTO_API to DTO--><g id="link_DTO_API_DTO"><path d="M181,552.23 C181,569.26 181,608.89 181,634.65 " fill="none" id="DTO_API-DTO" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f9ccec574c9d7d912a785d7186889d54]
+link MAP_API to MAP--><g id="link_MAP_API_MAP"><path d="M306,552.23 C306,569.26 306,608.89 306,634.65 " fill="none" id="MAP_API-MAP" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d02a4d981f32128341fbbf8f8a45165b]
+link MOD_API to MOD--><g id="link_MOD_API_MOD"><path d="M65,552.23 C65,569.26 65,608.89 65,634.65 " fill="none" id="MOD_API-MOD" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e8266c76ed2ad6b443ae2655b4bcbc35]
+link SERV_API to SERV--><g id="link_SERV_API_SERV"><path d="M162.15,319.23 C164.53,336.26 170.07,375.89 173.67,401.65 " fill="none" id="SERV_API-SERV" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[10d4f52130aa1a624c894b7b96680471]
+link SERV to DTO_API--><g id="link_SERV_DTO_API"><path d="M177.83,451.22 C178.58,472.8 179.68,504.18 180.37,523.82 " fill="none" id="SERV-to-DTO_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M189.0618,530.4915 A9,9 0 0 0 172.1581 531.0961" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[7fd19f5cade1c886f17d36ca75ddd44a]
+link COMP to MOD_API--><g id="link_COMP_MOD_API"><path d="M110.2,218.08 C105.62,234.7 99.75,257.56 96,278 C79.2,369.47 69.64,480.53 66.33,523.65 " fill="none" id="COMP-to-MOD_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M74.2425,531.2886 A9,9 0 0 0 57.3748 530.032" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[e7c2a5732f8b038e4d64081698e07c61]
+link SERV to MOD_API--><g id="link_SERV_MOD_API"><path d="M153.79,451.22 C131.7,473.81 99.1,507.13 80.16,526.5 " fill="none" id="SERV-to-MOD_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M81.1485,537.5828 A9,9 0 0 0 69.0561 525.7559" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[7fbaec0b154639f31ca54ad511563330]
+link SERV to MAP_API--><g id="link_SERV_MAP_API"><path d="M203.73,451.22 C229.4,474.01 267.39,507.73 289.12,527.01 " fill="none" id="SERV-to-MAP_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M300.1511,525.5012 A9,9 0 0 0 288.9242 538.1526" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[16db6b5a63a1cfbf8d300951e8f69dbe]
+link COMP to SERV_API--><g id="link_COMP_SERV_API"><path d="M126.12,218.22 C134.48,240 146.69,271.77 154.23,291.37 " fill="none" id="COMP-to-SERV_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M164.6728,294.9659 A9,9 0 0 0 148.8814 301.0265" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[c39baac3463308a00b8088403bb6f94d]
+@startuml logical-view-level3-device-management-frontend
+
+skinparam Monochrome true
+
+component "Device Management Frontend" {
+    component "Components" as COMP
+    component "DTOS" as DTO
+    component "Mappers" as MAP
+    component "Model" as MOD
+    component "Services" as SERV
+
+    interface "UI" as COMP_API
+    interface "DTOs API" as DTO_API
+    interface "Mappers API" as MAP_API
+    interface "Model API" as MOD_API
+    interface "Services API" as SERV_API
+
+    COMP_API - - COMP
+    DTO_API - - DTO
+    MAP_API - - MAP
+    MOD_API - - MOD
+    SERV_API - - SERV
+
+    SERV - -( DTO_API
+
+    COMP - -( MOD_API
+    SERV - -( MOD_API
+    SERV - -( MAP_API
+    COMP - -( SERV_API
+}
+
+@enduml
+
+PlantUML version 1.2022.4(Sat Apr 09 14:29:17 WEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

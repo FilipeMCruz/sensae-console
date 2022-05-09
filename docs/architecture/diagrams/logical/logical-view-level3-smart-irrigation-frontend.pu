@@ -1,8 +1,8 @@
-@startuml logical-view-level3-device-records-frontend
+@startuml logical-view-level3-smart-irrigation-frontend
 
 skinparam Monochrome true
 
-component "Device Records Frontend" {
+component "Smart Irrigation Frontend" {
     component "Components" as COMP
     component "DTOS" as DTO
     component "Mappers" as MAP

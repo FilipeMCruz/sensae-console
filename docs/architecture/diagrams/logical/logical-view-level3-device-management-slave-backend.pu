@@ -1,8 +1,8 @@
-@startuml logical-view-level3-device-records-slave-backend
+@startuml logical-view-level3-device-management-slave-backend
 
 skinparam Monochrome true
 
-component "Device Records Slave Backend" {
+component "Device Management Slave Backend" {
     component "Application" as APP
     component "Domain" as DOM
     component "Domain Services" as DOM_SERV

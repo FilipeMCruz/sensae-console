@@ -1,22 +1,26 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="413px" preserveAspectRatio="none" style="width:610px;height:413px;background:#FFFFFF;" version="1.1" viewBox="0 0 610 413" width="610px" zoomAndPan="magnify"><defs/><g><!--MD5=[8ad42e69c823d91e931492f14bc2a1bb]
-entity S--><rect fill="#F8F8F8" height="49.0679" style="stroke:#383838;stroke-width:1.5;" width="88" x="240.5" y="269.5"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="308.5" y="274.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="306.5" y="276.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="306.5" y="280.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="255.5" y="304.4659">System</text><!--MD5=[fef35d5d86525b69a6366e4548c0ec5e]
-entity HC--><rect fill="#F8F8F8" height="49.0679" style="stroke:#383838;stroke-width:1.5;" width="145" x="7" y="269.5"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="132" y="274.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="130" y="276.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="130" y="280.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="22" y="304.4659">Helium Console</text><!--MD5=[6cb5d63f37a67a4cf04b706d03a77bd8]
-entity AAD--><rect fill="#F8F8F8" height="49.0679" style="stroke:#383838;stroke-width:1.5;" width="188" x="416.5" y="269.5"/><rect fill="#F8F8F8" height="10" style="stroke:#383838;stroke-width:1.5;" width="15" x="584.5" y="274.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="582.5" y="276.5"/><rect fill="#F8F8F8" height="2" style="stroke:#383838;stroke-width:1.5;" width="4" x="582.5" y="280.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="431.5" y="304.4659">Azure Active Directory</text><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
-entity UI--><ellipse cx="284.5" cy="177.5" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="15" x="277" y="209.4659">UI</text><!--MD5=[259fb42cf3d26cb196e8dd6a3316d2da]
-entity IN_ENDPOINT--><ellipse cx="196.5" cy="294" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="144" y="325.9659">Helium Console</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="144" y="345.0339">Rest API</text><path d="M98,378.5 L98,406.206 A0,0 0 0 0 98,406.206 L295,406.206 A0,0 0 0 0 295,406.206 L295,388.5 L285,378.5 L200.5,378.5 L196.5,303.23 L192.5,378.5 L98,378.5 A0,0 0 0 0 98,378.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><path d="M285,378.5 L285,388.5 L295,388.5 L285,378.5 " fill="#EBEBEB" style="stroke:#383838;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="176" x="104" y="397.397">Console integratoin endpoint</text><!--MD5=[afc237a62bcbc223788cf4186cf15a19]
-entity AUTH_ENDPOINT--><ellipse cx="372.5" cy="294" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="345.5" y="325.9659">AAD API</text><!--MD5=[0ba5ee7700168656dc1b457c6fe9fdac]
-entity Client--><ellipse cx="284.5" cy="14" fill="#F8F8F8" rx="8" ry="8" style="stroke:#383838;stroke-width:1.5;"/><path d="M284.5,22 L284.5,49 M271.5,30 L297.5,30 M284.5,49 L271.5,64 M284.5,49 L297.5,64 " fill="none" style="stroke:#383838;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="245" y="81.4659">Data Admin</text><!--MD5=[ef993e5b14a62993190ab9517a0875ce]
-link Client to UI--><path d="M284.5,85.51 C284.5,109.61 284.5,139.3 284.5,158.07 " fill="none" id="Client-to-UI" style="stroke:#383838;stroke-width:1.0;"/><path d="M292.9572,165.1218 A9,9 0 0 0 276.0428 165.1218" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[3e8ab27e271cab250bab3c48ba85ccff]
-link UI to S--><path d="M284.5,186.73 C284.5,203.76 284.5,243.39 284.5,269.15 " fill="none" id="UI-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[22f4cc187e84fb2fb1bd4dd9300a3601]
-link IN_ENDPOINT to S--><path d="M205.78,294 C217.26,294 228.74,294 240.22,294 " fill="none" id="IN_ENDPOINT-S" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[4d10654f2c3857c9b0bdd5c3c364cee0]
-link S to AUTH_ENDPOINT--><path d="M328.84,294 C340.33,294 351.81,294 363.29,294 " fill="none" id="S-AUTH_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><!--MD5=[fa8c142ca78a1b3209a65449c7906a9c]
-link HC to IN_ENDPOINT--><path d="M152.17,294 C160.54,294 168.91,294 177.28,294 " fill="none" id="HC-to-IN_ENDPOINT" style="stroke:#383838;stroke-width:1.0;"/><path d="M184.4218,285.5428 A9,9 0 0 0 184.4218 302.4572" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[6515d9eb3af049bf238eef6d47d4ec03]
-reverse link AUTH_ENDPOINT to AAD--><path d="M391.7,294 C399.93,294 408.16,294 416.39,294 " fill="none" id="AUTH_ENDPOINT-backto-AAD" style="stroke:#383838;stroke-width:1.0;"/><path d="M384.7382,302.4572 A9,9 0 0 0 384.7382 285.5428" style="stroke:#383838;stroke-width:1.5;fill:none;"/><!--MD5=[91ff79604fcd50b0656770eb4f6ae7e2]
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="507px" preserveAspectRatio="none" style="width:610px;height:507px;background:#FFFFFF;" version="1.1" viewBox="0 0 610 507" width="610px" zoomAndPan="magnify"><defs/><g><!--MD5=[8ad42e69c823d91e931492f14bc2a1bb]
+entity S--><g id="elem_S"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="88" x="240.5" y="268.5"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="308.5" y="273.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="306.5" y="275.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="306.5" y="279.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="255.5" y="303.4659">System</text></g><!--MD5=[fef35d5d86525b69a6366e4548c0ec5e]
+entity HC--><g id="elem_HC"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="145" x="7" y="268.5"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="132" y="273.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="130" y="275.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="130" y="279.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="22" y="303.4659">Helium Console</text></g><!--MD5=[6cb5d63f37a67a4cf04b706d03a77bd8]
+entity AAD--><g id="elem_AAD"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="188" x="416.5" y="268.5"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="584.5" y="273.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="582.5" y="275.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="582.5" y="279.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="431.5" y="303.4659">Azure Active Directory</text></g><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
+entity UI--><g id="elem_UI"><ellipse cx="284.5" cy="176.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="15" x="277" y="208.4659">UI</text></g><!--MD5=[4e39252b42436a746f03837e12c70454]
+entity OUT_ENDPOINT--><g id="elem_OUT_ENDPOINT"><ellipse cx="196.5" cy="293" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="144" y="324.9659">Helium Console</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="144" y="344.0339">Rest API</text></g><!--MD5=[259fb42cf3d26cb196e8dd6a3316d2da]
+entity IN_ENDPOINT--><g id="elem_IN_ENDPOINT"><ellipse cx="181.5" cy="386.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="129" y="418.4659">Sensae Console</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="129" y="437.5339">Rest API</text></g><g id="elem_GMN8"><path d="M112,455.5 L112,500.912 A0,0 0 0 0 112,500.912 L251,500.912 A0,0 0 0 0 251,500.912 L251,465.5 L241,455.5 L185.5,455.5 L181.5,395.76 L177.5,455.5 L112,455.5 A0,0 0 0 0 112,455.5 " fill="#FAFAFA" style="stroke:#181818;stroke-width:0.5;"/><path d="M241,455.5 L241,465.5 L251,465.5 L241,455.5 " fill="#FAFAFA" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="118" x="118" y="474.397">Console integration</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="55" x="118" y="492.103">endpoint</text></g><!--MD5=[afc237a62bcbc223788cf4186cf15a19]
+entity AUTH_ENDPOINT--><g id="elem_AUTH_ENDPOINT"><ellipse cx="372.5" cy="293" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="345.5" y="324.9659">AAD API</text></g><!--MD5=[0ba5ee7700168656dc1b457c6fe9fdac]
+entity Client--><g id="elem_Client"><ellipse cx="240.5" cy="14" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M240.5,22 L240.5,49 M227.5,30 L253.5,30 M240.5,49 L227.5,64 M240.5,49 L253.5,64 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="61" x="210" y="80.4659">Manager</text></g><!--MD5=[c2f1a89366393ba9d1417b32d43751eb]
+entity Tenant--><g id="elem_Tenant"><ellipse cx="329.5" cy="14" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M329.5,22 L329.5,49 M316.5,30 L342.5,30 M329.5,49 L316.5,64 M329.5,49 L342.5,64 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47" x="306" y="80.4659">Tenant</text></g><!--MD5=[ef993e5b14a62993190ab9517a0875ce]
+link Client to UI--><g id="link_Client_UI"><path d="M253.58,84.5 C261.84,108.81 272.12,139.06 278.49,157.82 " fill="none" id="Client-to-UI" style="stroke:#181818;stroke-width:1.0;"/><path d="M288.7694,161.7872 A9,9 0 0 0 272.7522 167.223" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[89548d1324f0b7bded630d4afbeecbc3]
+link Tenant to UI--><g id="link_Tenant_UI"><path d="M316.12,84.5 C307.67,108.81 297.16,139.06 290.64,157.82 " fill="none" id="Tenant-to-UI" style="stroke:#181818;stroke-width:1.0;"/><path d="M296.3091,167.2921 A9,9 0 0 0 280.3341 161.7335" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[3e8ab27e271cab250bab3c48ba85ccff]
+link UI to S--><g id="link_UI_S"><path d="M284.5,185.73 C284.5,202.76 284.5,242.39 284.5,268.15 " fill="none" id="UI-S" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[6a36b62b34d47aa063ab5a82c1fccdd4]
+link S to IN_ENDPOINT--><g id="link_S_IN_ENDPOINT"><path d="M257.97,317.56 C235.8,337.26 205.48,364.2 190.55,377.46 " fill="none" id="S-IN_ENDPOINT" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[e9e79d3c35bc224046cb8861d830e464]
+link HC to OUT_ENDPOINT--><g id="link_HC_OUT_ENDPOINT"><path d="M152.17,293 C163.94,293 175.72,293 187.5,293 " fill="none" id="HC-OUT_ENDPOINT" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[4d10654f2c3857c9b0bdd5c3c364cee0]
+link S to AUTH_ENDPOINT--><g id="link_S_AUTH_ENDPOINT"><path d="M328.84,293 C340.33,293 351.81,293 363.29,293 " fill="none" id="S-AUTH_ENDPOINT" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[325ba49fe3754738734d19b3cc8e81cf]
+reverse link IN_ENDPOINT to HC--><g id="link_IN_ENDPOINT_HC"><path d="M165.02,370.72 C149.02,356.36 124.47,334.34 105.77,317.56 " fill="none" id="IN_ENDPOINT-backto-HC" style="stroke:#181818;stroke-width:1.0;"/><path d="M175.8837,369.1082 A9,9 0 0 0 164.5925 381.7022" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[b1f29ae9f75fa5ab0d492150aa0afdf9]
+reverse link OUT_ENDPOINT to S--><g id="link_OUT_ENDPOINT_S"><path d="M216.01,293 C224.08,293 232.15,293 240.22,293 " fill="none" id="OUT_ENDPOINT-backto-S" style="stroke:#181818;stroke-width:1.0;"/><path d="M208.8582,301.4572 A9,9 0 0 0 208.8582 284.5428" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[6515d9eb3af049bf238eef6d47d4ec03]
+reverse link AUTH_ENDPOINT to AAD--><g id="link_AUTH_ENDPOINT_AAD"><path d="M391.7,293 C399.93,293 408.16,293 416.39,293 " fill="none" id="AUTH_ENDPOINT-backto-AAD" style="stroke:#181818;stroke-width:1.0;"/><path d="M384.7382,301.4572 A9,9 0 0 0 384.7382 284.5428" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[4afd3983b49f70c5e143f522767de785]
 @startuml logical-view-level1
 
 skinparam Monochrome true
 skinparam sequenceMessageAlign center
-skinparam Shadowing false
 skinparam componentStyle uml2
 skinparam packageStyle rectangle
 
@@ -26,25 +30,30 @@ skinparam packageStyle rectangle
 [Azure Active Directory] as AAD
 
 () "UI" as UI
-() "Helium Console\nRest API" as IN_ENDPOINT
-note bottom: Console integratoin endpoint
+() "Helium Console\nRest API" as OUT_ENDPOINT
+() "Sensae Console\nRest API" as IN_ENDPOINT
+note bottom: Console integration\nendpoint
 
 () "AAD API" as AUTH_ENDPOINT
 
-actor "Data Admin" as Client
+actor "Manager" as Client
+actor "Tenant" as Tenant
 
 Client - -( UI
+Tenant - -( UI
 
 UI - - S
-IN_ENDPOINT - S
+S - - IN_ENDPOINT
+HC - OUT_ENDPOINT
 S - AUTH_ENDPOINT
 
-HC -( IN_ENDPOINT
+IN_ENDPOINT )- HC
+OUT_ENDPOINT )- S
 AUTH_ENDPOINT )- AAD
 
 @enduml
 
-PlantUML version 1.2021.16(Wed Dec 08 17:25:22 WET 2021)
+PlantUML version 1.2022.4(Sat Apr 09 14:29:17 WEST 2022)
 (GPL source distribution)
 Java Runtime: OpenJDK Runtime Environment
 JVM: OpenJDK 64-Bit Server VM

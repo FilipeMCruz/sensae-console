@@ -1,0 +1,47 @@
+@startuml logical-view-level3-device-management-master-backend
+
+skinparam Monochrome true
+
+component "Device Management Master Backend" {
+    component "Application" as APP
+    component "Domain" as DOM
+    component "Domain Services" as DOM_SERV
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Presistence" as PERSIST {
+            component "Postgres" as POSTG
+            interface "Postgres API" as POSTG_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "Graphql" as GRAPH
+            component "AMQP" as AMQP
+            interface "Graphql API" as GRAPH_API
+            interface "AMQP API" as AMQP_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+    interface "Domain API" as DOM_API
+    interface "Domain Services API" as DOM_SERV_API
+
+    GRAPH_API -- GRAPH
+    DOM_API -- DOM
+    DOM_SERV_API -- DOM_SERV
+
+    POSTG_API -- POSTG
+    AMQP_API -- AMQP
+    APP_API -- APP
+    BOOT_API -- BOOT
+
+    AMQP --( APP_API
+    POSTG --( DOM_API
+    GRAPH --( APP_API
+    APP --( DOM_SERV_API
+    DOM_SERV --( DOM_API
+    BOOT --( GRAPH_API
+    BOOT --( POSTG_API
+    BOOT --( AMQP_API
+}
+
+@enduml

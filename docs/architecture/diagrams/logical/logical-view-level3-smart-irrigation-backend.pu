@@ -1,0 +1,52 @@
+@startuml logical-view-level3-smart-irrigation-backend
+
+skinparam Monochrome true
+
+component "Smart Irrigation Backend" {
+    component "Domain" as DOM
+    component "Domain Services" as SERV
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Persistence" as PERS {
+            component "QuestDB" as QUEST
+            interface "QuestDB API" as QUEST_API
+            component "Postgres" as POST
+            interface "Postgres API" as POST_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "GraphQL" as GRAPH
+            component "AMQP" as AMQP
+            interface "GraphQL API" as GRAPH_API
+            interface "AMQP API" as AMQP_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+    interface "Domain Services API" as SERV_API
+    interface "Domain API" as DOM_API
+    interface "Application API" as APP_API
+
+    DOM_API -- DOM
+    APP_API -- APP
+    BOOT_API -- BOOT
+    AMQP_API -- AMQP
+    GRAPH_API -- GRAPH
+    QUEST_API -- QUEST
+    POST_API -- POST
+    SERV_API -- SERV
+
+    APP --( SERV_API
+    SERV --( DOM_API
+    BOOT --( GRAPH_API
+    BOOT --( AMQP_API
+    BOOT --( QUEST_API
+    BOOT --( POST_API
+
+    GRAPH --( APP_API
+    AMQP   --( APP_API
+    QUEST --( DOM_API
+    POST --( DOM_API
+
+}
+
+@enduml

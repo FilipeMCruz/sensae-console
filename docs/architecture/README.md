@@ -4,7 +4,7 @@ This section represents the system architecture from different views and levels 
 
 Current version:
 
-- `system` : `0.6.0`
+- `system` : `0.7.0`
 
 ## Logical View - System Level
 
@@ -24,10 +24,14 @@ The system is composed by the following containers:
 - **Fleet Management Frontend**: Frontend that displays live information in a map;
 - **Fleet Management Backend**: Backend that receives correct GPS data, stores it and sends it as live information to the frontend;
 - **Fleet Management Database**: Database that stores GPS data received from **Fleet Management Backend**;
-- **Device Records Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
-- **Device Records Master Backend**: Backend that stores device data (records) and notifies slaves about changes to this data;
-- **Device Records Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
-- **Device Records Database**: Database that records information about each device;
+- **Smart Irrigation Frontend**: Frontend that displays sensor live information in a map, gardening areas and valve status;
+- **Smart Irrigation Backend**: Backend that receives correct park/stove/valve sensor data, stores it and sends it as live information to the frontend. This backend also manages gardening areas;
+- **Smart Irrigation Business Database**: Database that stored gardening areas and basic device info;
+- **Smart Irrigation Data Database**: Database that stored sensor data;
+- **Device Management Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
+- **Device Management Master Backend**: Backend that stores device data and notifies slaves about changes to this data;
+- **Device Management Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
+- **Device Management Database**: Database that records information about each device;
 - **Device Validator Backend**: Backend that verifies if the data that goes trough him is valid, (e.g. gps data does not point to the sea, temperature isn't 500 ºC);
 - **Message Broker**: Container responsible for routing messages/events sent by the containers;
 - **Data Processor Frontend**: Frontend that allows the data admin to add, change and see information about a device transformation;
@@ -45,7 +49,19 @@ The system is composed by the following containers:
 - **Identity Management Database**: Database that records information about the structure of the organization;
 - **Data Store**: Backend responsible for recording data in the defined data flow stage, e.g. record every invalid gps data, or, record every data that goes out of data decoder slave;
 - **Data Store Database**: Database that records information given by **Data Store**, has the purpose of acting like a Data Lake;
+- **Device Commander Backend**: Backend that receives internal requests to execute actions and dispatch them to Helium as downlinks;
 - **Data Relayer**: Backend responsible for routing data to **Data Gateway**.
+
+In the following diagram a better idea of what each container responsibilities are is presented:
+
+![logical-view-level2-color](diagrams/logical/logical-view-level2-color.svg)
+
+- **Green**: logical databases;
+- **Pink**: containers involved in the data packet flow;
+- **Blue**: containers that handle information that is added to data packets during the flow;
+- **Yellow**: Frontends that display information;
+- **Orange**: Frontend that provides all other frontends;
+- **Red**: Message Broker;
 
 ## Process View - Container Level
 
@@ -104,23 +120,35 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-fleet-management-backend](diagrams/logical/logical-view-level3-fleet-management-backend.svg)
 
-### Device Records Frontend
+### Smart Irrigation Frontend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-frontend](diagrams/logical/logical-view-level3-device-records-frontend.svg)
+![logical-view-level3-smart-irrigation-frontend](diagrams/logical/logical-view-level3-smart-irrigation-frontend.svg)
 
-### Device Records Master Backend
-
-The following diagram describes it from a logical view.
-
-![logical-view-level3-device-records-master-backend](diagrams/logical/logical-view-level3-device-records-master-backend.svg)
-
-### Device Records Slave Backend
+### Smart Irrigation Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-device-records-slave-backend](diagrams/logical/logical-view-level3-device-records-slave-backend.svg)
+![logical-view-level3-smart-irrigation-backend](diagrams/logical/logical-view-level3-smart-irrigation-backend.svg)
+
+### Device Management Frontend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-management-frontend](diagrams/logical/logical-view-level3-device-management-frontend.svg)
+
+### Device Management Master Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-management-master-backend](diagrams/logical/logical-view-level3-device-management-master-backend.svg)
+
+### Device Management Slave Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-management-slave-backend](diagrams/logical/logical-view-level3-device-management-slave-backend.svg)
 
 ### Data Processor Slave Backend
 
@@ -193,6 +221,12 @@ The following diagram describes it from a logical view.
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-validator](diagrams/logical/logical-view-level3-data-validator.svg)
+
+### Device Commander
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-device-commander](diagrams/logical/logical-view-level3-device-commander.svg)
 
 ## Further Discussion
 

@@ -8,6 +8,10 @@ Current version:
 
 ## Description
 
-Domain:
+Business Domain:
 
 ![model](diagrams/model.svg)
+
+## Further Discussion
+
+As always, changes/improvements to this page and `smart irrigation`s behavior are expected.

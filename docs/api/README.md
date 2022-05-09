@@ -6,7 +6,7 @@ As explained in identity-management [docs](../identity-management/README.md) all
 
 Current version:
 
-- `system` : `0.6.0`
+- `system` : `0.7.0`
 
 ## Data Gateway API
 
@@ -205,52 +205,76 @@ mutation delete($type: DataTypeInput) {
 
 This is the resource used to remove a data transformation from the database and slave cache.
 
-## Device Records Master Backend API
+## Device Management Master Backend API
 
 This section will present every endpoint available in this service.
 Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
 
-### Index a Device Record (new or updated record)
+### Index a Device Information (new or updated device)
 
 ``` graphql
-mutation index($records: DeviceRecordsInput){
-  index(records: $records){
-    device{
+mutation index($records: DeviceRecordsInput) {
+  index(records: $records) {
+    device {
       id
       name
+      downlink
     }
-    entries{
+    entries {
       label
       content
       type
+    }
+    subDevices {
+      id
+      ref
+    }
+    commands {
+      id
+      name
+      ref
+      port
+      payload
     }
   }
 }
 ```
 
-This is the resource used to index a new or edited device record to the database and cache.
+This is the resource used to index a new or edited device information to the database and cache.
 
-### Consult all Device Records
+### Consult all Devices Information
 
 ``` graphql
-query deviceRecords{
-  deviceRecords{
-    device{
+query deviceRecords {
+  deviceRecords {
+    device {
       id
       name
+      downlink
     }
-    entries{
+    entries {
       label
       content
       type
+    }
+    subDevices {
+      id
+      ref
+    }
+    commands {
+      id
+      name
+      ref
+      port
+      payload
     }
   }
 }
 ```
 
-This is the resource used to query all device records in the database.
+This is the resource used to query all device information in the database.
 
-### Erase a Device Record
+### Erase a Device Information
 
 ``` graphql
 mutation delete($device: DeviceInput){
@@ -261,7 +285,7 @@ mutation delete($device: DeviceInput){
 }
 ```
 
-This is the resource used to remove a device record from the cache and database.
+This is the resource used to remove a device information from the cache and database.
 
 ## Fleet Management Backend API
 
@@ -272,8 +296,6 @@ As pointed in the current [problems](../problems/README.md) the JWT token has to
 The value of `Authorization` has to be 'Bearer <Token>'.
 
 ### Consult All GPS sensors live Data
-
-**Endpoint**: `/graphql`
 
 **Query**:
 
@@ -306,8 +328,6 @@ subscription locations($Authorization: String) {
 This is the resource used to subscribe to changes in the gps location of all sensors registered in the network.
 
 ### Consult a Specific GPS Sensor live data
-
-**Endpoint**: `/graphql`
 
 **Query**:
 
@@ -342,6 +362,8 @@ The `$devices` variable expects a list of device ids.
 This is the resource used to subscribe to changes in the gps location of an array of sensors registered in the network.
 
 ### Consult GPS Sensors that match the content sent
+
+**Query**:
 
 ``` graphql
 subscription locationByContent($content: String, $Authorization: String) {
@@ -398,7 +420,7 @@ query history($filters: GPSSensorDataQuery) {
 }
 ```
 
-The filter, GPSSensorDataQuery, has to following structure:
+The filter, GPSSensorDataQuery, has the following structure:
 
 ```ts
 export interface GPSSensorDataQuery {
@@ -476,6 +498,352 @@ The `$devices` variable expects a list of device ids.
 
 This is the resource used to fetch the last location of each sensor.
 
+## Smart Irrigation Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.
+
+As pointed in the current [problems](../problems/README.md) the JWT token has to be sent as a GraphQL Input parameter, Authorization, and not as an usual HTTP Header.
+The value of `Authorization` has to be 'Bearer <Token>'.
+
+### Subscribe to Device Data
+
+**Query**:
+
+``` graphql
+subscription data($filters: LiveDataFilter, $Authorization: String){
+  data(filters: $filters, Authorization: $Authorization){
+    dataId
+    device{
+      id
+      name
+      type
+      remoteControl
+      records{
+        label
+        content
+      }
+    }
+    reportedAt
+    data{
+      gps{
+        longitude
+        latitude
+        altitude
+      }
+      ...on ParkSensorDataDetails {
+        soilMoisture {
+          percentage
+        }
+        illuminance {
+          lux
+        }
+      }
+      ...on StoveSensorDataDetails {
+        temperature {
+          celsius
+        }
+        humidity {
+          gramsPerCubicMeter
+        }
+      }
+      ...on ValveDataDetails {
+        valve {
+          status
+        }
+      }
+    }
+  }
+}
+```
+
+The filter, LiveDataFilter, has the following structure:
+
+```ts
+export interface SubscribeToDataParams {
+  gardens: string[]
+  devices: string[]
+  content: string
+}
+```
+
+The `device` variable expects a list of device ids.
+The `gardens` variable expects a list of garden ids.
+The `content` variable expects a string, related to device management's records.
+All filters are combined with a `AND` operand.
+
+This is the resource used to subscribe to new device data.
+
+### Create a new Gardening Area
+
+**Query**:
+
+``` graphql
+mutation createGarden($instructions: CreateGardeningAreaCommand){
+  createGarden(instructions: $instructions){
+    id
+    name
+    area{
+      position
+      longitude
+      latitude
+      altitude
+    }
+  }
+}
+```
+
+The instructions, CreateGardeningAreaCommand, have the following structure:
+
+```ts
+export interface CreateGardeningAreaCommand {
+  name: string
+  area: AreaBoundary[]
+}
+
+export interface AreaBoundary {
+  position: number
+  longitude: number
+  latitude: number
+  altitude: number
+}
+```
+
+This is the resource used to create a new gardening area.
+
+### Update a new Gardening Area
+
+**Query**:
+
+``` graphql
+mutation updateGarden($instructions: UpdateGardeningAreaCommand){
+  updateGarden(instructions: $instructions){
+    id
+    name
+    area{
+      position
+      longitude
+      latitude
+      altitude
+    }
+  }
+}
+```
+
+The instructions, UpdateGardeningAreaCommand, have the following structure:
+
+```ts
+export interface UpdateGardeningAreaCommand {
+  id: string
+  name: string
+  area: AreaBoundary[]
+}
+
+export interface AreaBoundary {
+  position: number
+  longitude: number
+  latitude: number
+  altitude: number
+}
+```
+
+This is the resource used to update a gardening area information.
+
+### Delete a new Gardening Area
+
+**Query**:
+
+``` graphql
+mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
+  deleteGarden(instructions: $instructions){
+    id
+    name
+    area{
+      position
+      longitude
+      latitude
+      altitude
+    }
+  }
+}
+```
+
+The instructions, DeleteGardeningAreaCommand, have the following structure:
+
+```ts
+export interface DeleteGardeningAreaCommand {
+  id: string
+}
+```
+
+This is the resource used to delete a gardening area information by id.
+
+### Switch Valve from Open/Close to Close/Open
+
+**Query**:
+
+``` graphql
+mutation switchValve($instructions: ValvesToSwitch){
+  switchValve(instructions: $instructions)
+}
+```
+
+The instructions, ValvesToSwitch, have the following structure:
+
+```ts
+export interface ValvesToSwitch {
+  id: string
+}
+```
+
+This is the resource used to open/close a valve.
+
+### Fetch All Gardens
+
+**Query**:
+
+``` graphql
+query fetchGardens{
+  fetchGardens{
+    id
+    name
+    area{
+      position
+      longitude
+      latitude
+      altitude
+    }
+  }
+}
+```
+
+This is the resource used to see all available gardens.
+
+### Fetch Latest Device Data
+
+**Query**:
+
+``` graphql
+query fetchLatestData($filters: LatestDataQueryFilters){
+  fetchLatestData(filters: $filters){
+    dataId
+    device{
+      id
+      name
+      type
+      remoteControl
+      records{
+        label
+        content
+      }
+    }
+    reportedAt
+    data{
+      gps{
+        longitude
+        latitude
+        altitude
+      }
+      ...on ParkSensorDataDetails {
+        soilMoisture {
+          percentage
+        }
+        illuminance {
+          lux
+        }
+      }
+      ...on StoveSensorDataDetails {
+        temperature {
+          celsius
+        }
+        humidity {
+          gramsPerCubicMeter
+        }
+      }
+      ...on ValveDataDetails {
+        valve {
+          status
+        }
+      }
+    }
+  }
+}
+```
+
+The filters, LatestDataQueryFilters, have the following structure:
+
+``` ts
+export interface LatestDataQueryFilters {
+  devices: string[]
+  gardens: string[]
+}
+```
+
+This is the resource used to fetch the latest data for each device that matches the filter.
+
+### Fetch Device History
+
+**Query**:
+
+``` graphql
+query history($filters: HistoryQueryFilters){
+  history(filters: $filters){
+    id
+    type
+    ledger{
+      name
+      gps{
+        longitude
+        latitude
+        altitude
+      }
+      records{
+        label
+        content
+      }
+      data{
+        id
+        reportedAt
+        ...on ParkSensorDataHistoryDetails {
+          soilMoisture {
+            percentage
+          }
+          illuminance {
+            lux
+          }
+        }
+        ...on StoveSensorDataHistoryDetails {
+          temperature {
+            celsius
+          }
+          humidity {
+            gramsPerCubicMeter
+          }
+        }
+        ...on ValveDataHistoryDetails {
+          valve {
+            status
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+The filters, HistoryQueryFilters, have the following structure:
+
+``` ts
+export interface HistoryQueryFilters {
+  devices: string[]
+  gardens: string[]
+  startTime: string
+  endTime: string
+}
+```
+
+This is the resource used to fetch the data for each device that matches the filter in the given time period.
+
 ## Identity Management Backend API
 
 This section will present every endpoint available in this service.
@@ -500,7 +868,7 @@ This is the resource used to add a device to a domain with `read` or `read and w
 The `instructions` data has the following format:
 
 ```ts
-export interface AddDeviceToDomainDTO {
+export interface AddDeviceToDomain {
   deviceOid: string;
   domainOid: string;
   writePermission: boolean;
@@ -528,7 +896,7 @@ This is the resource used to add a tenant to a domain.
 The `instructions` data has the following format:
 
 ```ts
-export interface AddTenantToDomainDTO {
+export interface AddTenantToDomain {
   tenantOid: string;
   domainOid: string;
 }
@@ -555,7 +923,7 @@ This is the resource used to change the domain permissions.
 The `domain` data has the following format:
 
 ```ts
-export interface DomainDTO {
+export interface Domain {
   oid: string;
   name: string;
   path: string[];
@@ -581,7 +949,7 @@ This is the resource used to create a sub-domain.
 The `domain` data has the following format:
 
 ```ts
-export interface CreateDomainDTO {
+export interface CreateDomain {
   parentDomainOid: string;
   newDomainName: string;
 }
@@ -619,7 +987,7 @@ This is the resource used to check all information about child domains (only one
 The `domain` data has the following format:
 
 ```ts
-export interface ViewDomainDTO {
+export interface ViewDomain {
   oid: string;
 }
 ```
@@ -717,7 +1085,7 @@ This is the resource used to remove a device from a domain.
 The `instructions` data has the following format:
 
 ```ts
-export interface RemoveDeviceFromDomainDTO {
+export interface RemoveDeviceFromDomain {
   deviceOid: string;
   domainOid: string;
 }
@@ -740,7 +1108,7 @@ This is the resource used to remove a tenant from a domain.
 The `instructions` data has the following format:
 
 ```ts
-export interface RemoveTenantFromDomainDTO {
+export interface RemoveTenantFromDomain {
   tenantOid: string;
   domainOid: string;
 }

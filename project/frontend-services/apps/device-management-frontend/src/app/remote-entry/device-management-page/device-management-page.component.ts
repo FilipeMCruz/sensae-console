@@ -66,7 +66,7 @@ export class DeviceManagementPageComponent implements OnInit {
       .subscribe(
         (data: Array<DeviceInformation>) => {
           this.groups = DeviceGroup.buildGroups(this.label, data);
-          this.records = data;
+          this.records = data.sort((a, b) => a.device.name.localeCompare(b.device.name));
         },
         error => error,
         () => this.loading = false);
@@ -89,6 +89,7 @@ export class DeviceManagementPageComponent implements OnInit {
     this.indexer.index(event).subscribe((deviceRecord) => {
       this.records = this.records.filter(r => r.device.id != deviceRecord.device.id);
       this.records.push(deviceRecord);
+      this.records = this.records.sort((a, b) => a.device.name.localeCompare(b.device.name));
       this.groups.forEach(g => g.tryAdd(deviceRecord));
     });
   }

@@ -19,6 +19,7 @@ import {Point, Polygon} from "geojson";
 import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
+import {MatRadioChange} from "@angular/material/radio";
 
 @Component({
   selector: 'frontend-services-map',
@@ -50,6 +51,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public editing!: GardeningArea;
 
+  style = 'Light';
+
+  styles: string[] = ['Light', 'Satellite'];
+
   constructor(private fetchGardensService: FetchGardens,
               private createGardenService: CreateGarden,
               private deleteGardenService: DeleteGarden,
@@ -67,35 +72,51 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private fetchGardens() {
     this.loadingGardens = true;
     this.fetchGardensService.getData().subscribe(
-      next => this.drawGardens(next),
+      next => {
+        this.gardens = next;
+        this.map.on('load', () => {
+          this.drawGardens()
+        });
+      },
       error => error,
       () => this.loadingGardens = false
     );
   }
 
-  private drawGardens(next: Array<GardeningArea>) {
-    this.gardens = next;
-    this.map.on('load', () => {
-      this.map.addSource("gardens", {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': this.gardens.map(g => g.asFeature())
-        }
-      })
-      this.map.addLayer(GardeningArea.getBoundaryStyle("gardens"));
-      this.map.addLayer(GardeningArea.getLabelStyle("gardens"));
-      this.map.addLayer(GardeningArea.getAreaStyle("gardens"));
-      this.map.on('click', 'gardens', (e) => {
-        if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
-          this.openGardenDetails(e.features[0].properties["id"]);
-      });
-      this.map.on('mouseenter', 'gardens', () => {
-        this.map.getCanvas().style.cursor = 'pointer';
-      });
-      this.map.on('mouseleave', 'gardens', () => {
-        this.map.getCanvas().style.cursor = '';
-      });
+  private drawGardens() {
+    if (this.map.getLayer('gardens-outline')) {
+      this.map.removeLayer('gardens-outline');
+    }
+    if (this.map.getLayer('gardens-labels')) {
+      this.map.removeLayer('gardens-labels');
+    }
+    if (this.map.getLayer('gardens')) {
+      this.map.removeLayer('gardens');
+    }
+    if (this.map.getSource('gardens')) {
+      this.map.removeSource('gardens');
+    }
+
+    this.map.addSource("gardens", {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': this.gardens.map(g => g.asFeature())
+      }
+    })
+
+    this.map.addLayer(GardeningArea.getBoundaryStyle("gardens"));
+    this.map.addLayer(GardeningArea.getLabelStyle("gardens"));
+    this.map.addLayer(GardeningArea.getAreaStyle("gardens"));
+    this.map.on('click', 'gardens', (e) => {
+      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
+        this.openGardenDetails(e.features[0].properties["id"]);
+    });
+    this.map.on('mouseenter', 'gardens', () => {
+      this.map.getCanvas().style.cursor = 'pointer';
+    });
+    this.map.on('mouseleave', 'gardens', () => {
+      this.map.getCanvas().style.cursor = '';
     });
     this.loadingGardens = false;
   }
@@ -173,49 +194,58 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   fetchLatestData() {
     const filter = new LatestDataQueryFilters([], []);
     this.fetchLatestDataService.getData(filter).subscribe(
-      next => this.drawLatestData(next),
+      next => {
+        this.latestData.push(...next);
+        this.map.on('load', () => {
+          this.drawLatestData();
+        });
+      },
       error => error);
   }
 
-  drawLatestData(data: Array<Data>) {
-    this.latestData.push(...data);
-    this.map.on('load', () => {
-      this.map.addSource("devices", {
-        'type': 'geojson',
-        'data': {
-          'type': 'FeatureCollection',
-          'features': this.latestData.map(g => g.asFeature())
-        }
-      });
+  drawLatestData() {
+    if (this.map.getLayer('devices')) {
+      this.map.removeLayer('devices');
+    }
 
-      this.map.addLayer(Data.getDataStyle("devices"));
-      const popup = new mapboxgl.Popup({
-        maxWidth: 'none',
-        closeButton: false,
-        closeOnClick: false
-      });
-      this.map.on('mouseenter', 'devices', (e) => {
-        this.map.getCanvas().style.cursor = 'pointer';
+    if (this.map.getSource('devices')) {
+      this.map.removeSource('devices');
+    }
 
-        if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
-          const cords = e.features[0].geometry as Point;
-          const coordinates = cords.coordinates.slice();
-          const description = e.features[0].properties["description"];
-
-          while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-          }
-
-          popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
-        }
-      });
-
-      this.map.on('mouseleave', 'devices', () => {
-        this.map.getCanvas().style.cursor = '';
-        popup.remove();
-      });
+    this.map.addSource("devices", {
+      'type': 'geojson',
+      'data': {
+        'type': 'FeatureCollection',
+        'features': this.latestData.map(g => g.asFeature())
+      }
     });
 
+    this.map.addLayer(Data.getDataStyle("devices"));
+    const popup = new mapboxgl.Popup({
+      maxWidth: 'none',
+      closeButton: false,
+      closeOnClick: false
+    });
+    this.map.on('mouseenter', 'devices', (e) => {
+      this.map.getCanvas().style.cursor = 'pointer';
+
+      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
+        const cords = e.features[0].geometry as Point;
+        const coordinates = cords.coordinates.slice();
+        const description = e.features[0].properties["description"];
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
+      }
+    });
+
+    this.map.on('mouseleave', 'devices', () => {
+      this.map.getCanvas().style.cursor = '';
+      popup.remove();
+    });
   }
 
   buildGarden() {
@@ -248,7 +278,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   onEdit(event: MouseEvent, garden: GardeningArea) {
     event.stopPropagation();
-
     this.draw = new MapboxDraw({
       displayControlsDefault: false,
       defaultMode: 'simple_select'
@@ -296,5 +325,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.updateGardensSource();
       },
       error => error);
+  }
+
+  changeStyle($event: MatRadioChange) {
+    this.style = $event.value;
+    if (this.style === "Light") {
+      this.map.setStyle('mapbox://styles/mapbox/light-v10');
+    } else {
+      this.map.setStyle('mapbox://styles/mapbox/satellite-v9');
+    }
+    this.map.on('style.load', () => {
+      this.drawGardens();
+      this.drawLatestData();
+    });
   }
 }

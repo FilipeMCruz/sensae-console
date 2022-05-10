@@ -48,7 +48,7 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   private static onNewData(data: Data[], newData: Data) {
-    const found = data.find(d => d.device.id);
+    const found = data.find(d => d.device.id.value === newData.device.id.value);
     if (found) {
       found.update(newData);
     } else {

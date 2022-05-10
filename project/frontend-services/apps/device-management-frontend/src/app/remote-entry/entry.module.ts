@@ -23,6 +23,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {DeviceComponent} from "./device/device.component";
 import {DeviceDialogComponent} from "./device-dialog/device-dialog.component";
 import {DeviceManagementPageComponent} from "./device-management-page/device-management-page.component";
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -30,35 +31,36 @@ import {DeviceManagementPageComponent} from "./device-management-page/device-man
     DeviceDialogComponent,
     DeviceManagementPageComponent
   ],
-  imports: [
-    MatStepperModule,
-    MatSidenavModule,
-    MatCardModule,
-    MatDialogModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatListModule,
-    MatSnackBarModule,
-    MatExpansionModule,
-    MatRadioModule,
-    MatOptionModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    CommonModule,
-    HttpClientModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: DeviceManagementPageComponent,
-      },
-    ]),
-    MatGridListModule,
-    MatTabsModule,
-  ],
+    imports: [
+        MatStepperModule,
+        MatSidenavModule,
+        MatCardModule,
+        MatDialogModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatListModule,
+        MatSnackBarModule,
+        MatExpansionModule,
+        MatRadioModule,
+        MatOptionModule,
+        MatAutocompleteModule,
+        ReactiveFormsModule,
+        CommonModule,
+        HttpClientModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: DeviceManagementPageComponent,
+            },
+        ]),
+        MatGridListModule,
+        MatTabsModule,
+        MatChipsModule,
+    ],
   providers: [],
 })
 export class RemoteEntryModule {

@@ -37,9 +37,19 @@ public class RecordsRepositoryImpl implements RecordsRepository {
             old.entries.addAll(deviceRecordsPostgres.entries);
             old.entries.forEach(e -> e.records = old);
 
-            old.subSensors.clear();
-            old.subSensors.addAll(deviceRecordsPostgres.subSensors);
-            old.subSensors.forEach(s -> s.controller = old);
+            deviceRecordsPostgres.subSensors.forEach(sub -> {
+                if (!old.subSensors.contains(sub)) {
+                    old.subSensors.add(sub);
+                    sub.controller = old;
+                }
+            });
+
+            old.subSensors.forEach(sub -> {
+                if (!deviceRecordsPostgres.subSensors.contains(sub)) {
+                    old.subSensors.remove(sub);
+                    sub.controller = null;
+                }
+            });
 
             old.commands.clear();
             old.commands.addAll(deviceRecordsPostgres.commands);

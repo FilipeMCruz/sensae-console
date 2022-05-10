@@ -26,15 +26,12 @@ public class DeviceRecordCache {
 
     public DeviceRecordCache(DeviceRepository repository) {
         this.repository = repository;
-        this.cache = Caffeine.newBuilder()
-                .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(50)
-                .build();
+        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(50).build();
     }
 
     public DeviceInformation findByDeviceId(Device device) {
         var deviceInCache = Objects.requireNonNullElseGet(cache.getIfPresent(device.id()), () -> update(device));
-        if (!device.downlink().equals(deviceInCache.device().downlink())) {
+        if (device.downlink().isValid() && !device.downlink().equals(deviceInCache.device().downlink())) {
             this.repository.updateDownlink(device);
         }
         return deviceInCache;

@@ -92,9 +92,10 @@
     <label>Change Styles</label>
     <mat-radio-group
       class="radio-group"
-      (change)="changeStyle($event)"
+
       [value]="style">
-      <mat-radio-button class="radio-button" *ngFor="let stl of styles" [value]="stl">
+      <mat-radio-button (click)="changeStyle($event, stl)" class="radio-button" *ngFor="let stl of styles"
+                        [value]="stl">
         {{stl}}
       </mat-radio-button>
     </mat-radio-group>

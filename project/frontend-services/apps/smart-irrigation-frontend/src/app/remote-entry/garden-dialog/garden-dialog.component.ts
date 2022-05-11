@@ -29,8 +29,6 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
 
   loadingInfo = false;
 
-  loadingMap = true;
-
   valvesData: Data[] = [];
 
   sensorsData: Data[] = [];
@@ -58,8 +56,10 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  //TODO: esta a ser lancado demasiadas vezes
   ngAfterViewInit(): void {
+    const loader = document.getElementById('loader');
+    if (loader) loader.className = '';
+
     this.buildMap();
     this.fetchLatestData();
     this.subscribeToData();
@@ -80,11 +80,15 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     });
     this.map.addControl(new mapboxgl.NavigationControl());
     this.map.on('load', () => {
-      this.loadingMap = false;
+
+      const loader = document.getElementById('loader');
+      if (loader) loader.className = 'done';
+
       setTimeout(() => {
+        if (loader) loader.className = 'hide';
         this.map.resize();
         this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100});
-      }, 1)
+      }, 500)
     });
   }
 

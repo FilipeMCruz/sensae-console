@@ -41,11 +41,9 @@
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1"
                  [rowspan]="2">
-    <div [ngClass]="!this.loadingMap ? 'map-details':'loading'"
+    <div class="map-details"
          id="map-details"></div>
-    <div *ngIf="this.loadingMap">
-      Loading Map...
-    </div>
+    <div id='loader'><span class='message'>loading</span></div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="1"
                  [rowspan]="1">

@@ -19,7 +19,6 @@ import {Point, Polygon} from "geojson";
 import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
 import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
-import {MatRadioChange} from "@angular/material/radio";
 
 @Component({
   selector: 'frontend-services-map',
@@ -130,7 +129,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   openGardenDetails(id: string) {
-    console.log("hi");
     this.dialog.open(GardenDialogComponent, {
       width: '70%',
       height: '80%',

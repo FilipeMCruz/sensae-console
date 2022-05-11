@@ -1,5 +1,7 @@
 package pt.sensae.services.device.commander.backend.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +16,8 @@ public class CommandDispatcherService {
     private final DeviceRecordCache cache;
 
     private final RestTemplate template;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommandDispatcherService.class);
 
     public CommandDispatcherService(DeviceRecordCache cache, RestTemplate template) {
         this.cache = cache;
@@ -31,6 +35,7 @@ public class CommandDispatcherService {
     }
 
     private void send(CommandEntry entry, DeviceDownlink downlink) {
+        LOGGER.info(entry.toCommandRequest().toString());
         template.postForLocation(downlink.value(), new HttpEntity<>(entry.toCommandRequest()));
     }
 }

@@ -75,7 +75,17 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       next => {
         this.gardens = next;
         this.map.on('load', () => {
-          this.drawGardens()
+          this.drawGardens();
+          this.map.on('click', 'gardens', (e) => {
+            if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
+              this.openGardenDetails(e.features[0].properties["id"]);
+          });
+          this.map.on('mouseenter', 'gardens', () => {
+            this.map.getCanvas().style.cursor = 'pointer';
+          });
+          this.map.on('mouseleave', 'gardens', () => {
+            this.map.getCanvas().style.cursor = '';
+          });
         });
       },
       error => error,
@@ -108,16 +118,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.addLayer(GardeningArea.getBoundaryStyle("gardens"));
     this.map.addLayer(GardeningArea.getLabelStyle("gardens"));
     this.map.addLayer(GardeningArea.getAreaStyle("gardens"));
-    this.map.on('click', 'gardens', (e) => {
-      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
-        this.openGardenDetails(e.features[0].properties["id"]);
-    });
-    this.map.on('mouseenter', 'gardens', () => {
-      this.map.getCanvas().style.cursor = 'pointer';
-    });
-    this.map.on('mouseleave', 'gardens', () => {
-      this.map.getCanvas().style.cursor = '';
-    });
     this.loadingGardens = false;
   }
 
@@ -130,11 +130,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   openGardenDetails(id: string) {
+    console.log("hi");
     this.dialog.open(GardenDialogComponent, {
       width: '70%',
       height: '80%',
       data: this.gardens.find(g => g.id.value == id),
-      disableClose: true,
     });
   }
 
@@ -198,6 +198,31 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.latestData.push(...next);
         this.map.on('load', () => {
           this.drawLatestData();
+          const popup = new mapboxgl.Popup({
+            maxWidth: 'none',
+            closeButton: false,
+            closeOnClick: false
+          });
+          this.map.on('mouseenter', 'devices', (e) => {
+            this.map.getCanvas().style.cursor = 'pointer';
+
+            if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
+              const cords = e.features[0].geometry as Point;
+              const coordinates = cords.coordinates.slice();
+              const description = e.features[0].properties["description"];
+
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
+            }
+          });
+
+          this.map.on('mouseleave', 'devices', () => {
+            this.map.getCanvas().style.cursor = '';
+            popup.remove();
+          });
         });
       },
       error => error);
@@ -221,31 +246,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     });
 
     this.map.addLayer(Data.getDataStyle("devices"));
-    const popup = new mapboxgl.Popup({
-      maxWidth: 'none',
-      closeButton: false,
-      closeOnClick: false
-    });
-    this.map.on('mouseenter', 'devices', (e) => {
-      this.map.getCanvas().style.cursor = 'pointer';
-
-      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["description"] && e.features[0].geometry) {
-        const cords = e.features[0].geometry as Point;
-        const coordinates = cords.coordinates.slice();
-        const description = e.features[0].properties["description"];
-
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        popup.setLngLat(coordinates as LngLatLike).setHTML(description).addTo(this.map);
-      }
-    });
-
-    this.map.on('mouseleave', 'devices', () => {
-      this.map.getCanvas().style.cursor = '';
-      popup.remove();
-    });
   }
 
   buildGarden() {
@@ -327,8 +327,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       error => error);
   }
 
-  changeStyle($event: MatRadioChange) {
-    this.style = $event.value;
+  changeStyle(event: MouseEvent, value: string) {
+    event.stopPropagation();
+    this.style = value;
     if (this.style === "Light") {
       this.map.setStyle('mapbox://styles/mapbox/light-v10');
     } else {

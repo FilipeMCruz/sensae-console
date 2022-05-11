@@ -4,7 +4,7 @@ import {
   Data,
   DataFilters,
   DeviceType,
-  GardeningArea, HistoryQueryFilters,
+  GardeningArea,
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
 import {Subscription} from "rxjs";
@@ -28,6 +28,8 @@ import {DeviceHistoryDialogComponent} from "../device-history-dialog/device-hist
 export class GardenDialogComponent implements AfterViewInit, OnDestroy {
 
   loadingInfo = false;
+
+  loadingMap = true;
 
   valvesData: Data[] = [];
 
@@ -56,7 +58,7 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
+  //TODO: esta a ser lancado demasiadas vezes
   ngAfterViewInit(): void {
     this.buildMap();
     this.fetchLatestData();
@@ -77,10 +79,13 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       interactive: false
     });
     this.map.addControl(new mapboxgl.NavigationControl());
-    this.map.on('load', () =>
-      this.map.resize() &&
-      this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100})
-    );
+    this.map.on('load', () => {
+      this.loadingMap = false;
+      setTimeout(() => {
+        this.map.resize();
+        this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100});
+      }, 1)
+    });
   }
 
   onSelect(sensorData: Data) {

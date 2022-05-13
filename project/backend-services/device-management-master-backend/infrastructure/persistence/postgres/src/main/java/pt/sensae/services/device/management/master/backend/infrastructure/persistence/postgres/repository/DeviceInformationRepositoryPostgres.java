@@ -7,7 +7,7 @@ import pt.sensae.services.device.management.master.backend.infrastructure.persis
 import java.util.Optional;
 
 @Repository
-public interface RecordsRepositoryPostgres extends CrudRepository<DeviceInformationPostgres, Long> {
+public interface DeviceInformationRepositoryPostgres extends CrudRepository<DeviceInformationPostgres, Long> {
 
     Optional<DeviceInformationPostgres> findByDeviceId(String deviceId);
 

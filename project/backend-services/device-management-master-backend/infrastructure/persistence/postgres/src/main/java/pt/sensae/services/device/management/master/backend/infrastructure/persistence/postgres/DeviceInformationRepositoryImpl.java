@@ -2,21 +2,22 @@ package pt.sensae.services.device.management.master.backend.infrastructure.persi
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformation;
-import pt.sensae.services.device.management.master.backend.domain.model.records.RecordsRepository;
-import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.mapper.RecordMapper;
-import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.repository.RecordsRepositoryPostgres;
+import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformationRepository;
+import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.mapper.DeviceInformationMapper;
+import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.repository.DeviceInformationRepositoryPostgres;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Repository
-public class RecordsRepositoryImpl implements RecordsRepository {
+public class DeviceInformationRepositoryImpl implements DeviceInformationRepository {
 
-    private final RecordsRepositoryPostgres repositoryPostgres;
+    private final DeviceInformationRepositoryPostgres repositoryPostgres;
 
-    public RecordsRepositoryImpl(RecordsRepositoryPostgres repositoryPostgres) {
+    public DeviceInformationRepositoryImpl(DeviceInformationRepositoryPostgres repositoryPostgres) {
         this.repositoryPostgres = repositoryPostgres;
     }
 
@@ -24,7 +25,7 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     @Transactional
     public DeviceInformation save(DeviceInformation domain) {
         var id = domain.device().id();
-        var deviceRecordsPostgres = RecordMapper.domainToPostgres(domain);
+        var deviceRecordsPostgres = DeviceInformationMapper.domainToPostgres(domain);
 
         var byDeviceId = repositoryPostgres.findByDeviceId(id.value().toString());
         if (byDeviceId.isPresent()) {
@@ -65,7 +66,12 @@ public class RecordsRepositoryImpl implements RecordsRepository {
     @Override
     public Stream<DeviceInformation> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
-                .map(RecordMapper::postgresToDomain);
+                .map(DeviceInformationMapper::postgresToDomain);
+    }
+
+    @Override
+    public Optional<DeviceInformation> findById(DeviceId id) {
+        return repositoryPostgres.findByDeviceId(id.value().toString()).map(DeviceInformationMapper::postgresToDomain);
     }
 
     @Override

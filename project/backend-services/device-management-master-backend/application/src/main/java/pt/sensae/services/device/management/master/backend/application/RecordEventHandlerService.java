@@ -1,40 +1,46 @@
 package pt.sensae.services.device.management.master.backend.application;
 
 import org.springframework.stereotype.Service;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
+import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 
 import javax.annotation.PostConstruct;
 
 @Service
 public class RecordEventHandlerService {
 
-    private FluxSink<DeviceDTO> dataStream;
+    private FluxSink<DeviceNotificationDTO> dataStream;
 
-    private ConnectableFlux<DeviceDTO> dataPublisher;
+    private ConnectableFlux<DeviceNotificationDTO> dataPublisher;
 
-    private final RecordEventMapper mapper;
+    private final DeviceEventMapper mapper;
 
-    public RecordEventHandlerService(RecordEventMapper mapper) {
+    public RecordEventHandlerService(DeviceEventMapper mapper) {
         this.mapper = mapper;
     }
 
     @PostConstruct
     public void init() {
-        Flux<DeviceDTO> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<DeviceNotificationDTO> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<DeviceDTO> getSinglePublisher() {
+    public Flux<DeviceNotificationDTO> getSinglePublisher() {
         return dataPublisher;
     }
 
-    public void publishUpdate(DeviceId data) {
-        var outDTO = mapper.domainToDto(data);
+    public void publishUpdate(DeviceInformation domain) {
+        var outDTO = mapper.domainToUpdatedDto(domain);
+        dataStream.next(outDTO);
+    }
+
+    public void publishDelete(DeviceId domain) {
+        var outDTO = mapper.domainToDeletedDto(domain);
         dataStream.next(outDTO);
     }
 }

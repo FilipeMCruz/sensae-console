@@ -2,8 +2,11 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 
-import java.util.UUID;
+public class DeviceDTOImpl implements DeviceDTO {
 
-public class DeviceIdDTOImpl implements DeviceDTO {
-    public UUID id;
+    public String deviceId;
+
+    public String name;
+
+    public String downlink;
 }

@@ -1,5 +1,6 @@
 package pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.mapper;
 
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class RecordMapper {
+public class DeviceInformationMapper {
     public static DeviceInformationPostgres domainToPostgres(DeviceInformation records) {
         var postgres = new DeviceInformationPostgres();
         postgres.deviceId = records.device().id().value().toString();

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class DeviceMapper implements DeviceEventMapper {
 
+    @Override
     public DeviceDTOImpl domainToDto(Device device) {
         var dto = new DeviceDTOImpl();
         dto.deviceId = device.id().value().toString();

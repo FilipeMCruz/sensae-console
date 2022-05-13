@@ -31,10 +31,10 @@ public class RecordEraserService {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("device_management:device:delete"))
             throw new UnauthorizedException("No Permissions");
-        
+
         var deviceId = mapper.dtoToDomain(dto);
         var erased = eraser.erase(deviceId);
-        publisher.publishUpdate(erased);
+        publisher.publishDelete(erased);
         return mapper.domainToDto(erased);
     }
 }

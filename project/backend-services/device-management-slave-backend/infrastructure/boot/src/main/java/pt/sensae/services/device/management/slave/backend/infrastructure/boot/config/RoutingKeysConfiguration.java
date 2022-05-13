@@ -13,12 +13,12 @@ import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeysFactory;
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
-    public SensorRoutingKeys.SensorRoutingKeysBuilder getSensorTopicBuilder(RoutingKeysBuilderOptions options) {
+    public SensorRoutingKeys.Builder getSensorTopicBuilder(RoutingKeysBuilderOptions options) {
         return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.DEVICE_MANAGEMENT, options);
     }
 
     @Override
-    public InternalRoutingKeys.InternalRoutingKeysBuilder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
+    public InternalRoutingKeys.Builder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
         return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.DEVICE_MANAGEMENT, options);
     }
 }

@@ -6,7 +6,7 @@ import pt.sensae.services.device.management.slave.backend.domainservices.DeviceI
 import pt.sensae.services.device.management.slave.backend.domainservices.UnhandledSensorDataCache;
 
 @Service
-public class DeviceInformationHandlerService {
+public class DeviceInformationNotifierService {
 
     private final DeviceInformationCache cache;
 
@@ -16,10 +16,10 @@ public class DeviceInformationHandlerService {
 
     private final SensorDataPublisherService handler;
 
-    public DeviceInformationHandlerService(DeviceInformationCache cache,
-                                           UnhandledSensorDataCache unhandledSensorDataCache,
-                                           DeviceEventMapper mapper,
-                                           SensorDataPublisherService handler) {
+    public DeviceInformationNotifierService(DeviceInformationCache cache,
+                                            UnhandledSensorDataCache unhandledSensorDataCache,
+                                            DeviceEventMapper mapper,
+                                            SensorDataPublisherService handler) {
         this.cache = cache;
         this.unhandledSensorDataCache = unhandledSensorDataCache;
         this.mapper = mapper;

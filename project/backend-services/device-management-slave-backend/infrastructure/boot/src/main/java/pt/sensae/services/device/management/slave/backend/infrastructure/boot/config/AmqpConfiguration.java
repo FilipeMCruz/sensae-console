@@ -27,7 +27,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(DeviceInformationConsumer.SLAVE_QUEUE)
+        return QueueBuilder.durable(DeviceInformationConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();

@@ -7,9 +7,10 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.application.SensorDataHandlerService;
-import pt.sharespot.iot.core.buf.mapper.MessageMapper;
-import pt.sharespot.iot.core.routing.MessageConsumed;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sensae.services.device.management.slave.backend.application.SensorDataPublisherService;
+import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Service
 public class SensorDataConsumer {
@@ -28,7 +29,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);
-        handler.publish(consumed);
+        handler.info(consumed);
     }
 
     private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {

@@ -25,7 +25,7 @@ public class DataValidatorServiceTest {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
 
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("proce.0.1.15.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
+                .from("proce.0.1.16.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {

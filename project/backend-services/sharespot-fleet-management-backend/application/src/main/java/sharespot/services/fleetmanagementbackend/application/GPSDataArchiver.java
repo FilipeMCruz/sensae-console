@@ -2,9 +2,9 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.types.MotionDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.MotionDataDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 
 @Service

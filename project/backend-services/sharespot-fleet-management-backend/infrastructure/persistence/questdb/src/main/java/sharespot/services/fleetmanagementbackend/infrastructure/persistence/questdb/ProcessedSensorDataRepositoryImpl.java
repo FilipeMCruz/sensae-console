@@ -2,7 +2,7 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.GPSSensorDataFilter;

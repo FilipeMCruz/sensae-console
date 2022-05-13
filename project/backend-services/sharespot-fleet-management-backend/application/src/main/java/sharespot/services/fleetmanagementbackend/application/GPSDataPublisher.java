@@ -1,7 +1,7 @@
 package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.stereotype.Component;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;

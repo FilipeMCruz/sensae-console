@@ -2,7 +2,7 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.application.auth.AccessTokenDTO;
 import sharespot.services.fleetmanagementbackend.application.auth.TokenExtractor;
 import sharespot.services.fleetmanagementbackend.application.auth.UnauthorizedException;

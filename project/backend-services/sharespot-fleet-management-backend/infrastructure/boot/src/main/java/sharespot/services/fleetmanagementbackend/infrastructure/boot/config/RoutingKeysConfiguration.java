@@ -1,17 +1,17 @@
 package sharespot.services.fleetmanagementbackend.infrastructure.boot.config;
 
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.ContainerTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeysFactory;
 import sharespot.services.fleetmanagementbackend.application.RoutingKeysProvider;
 
 @Configuration
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
-    public RoutingKeys.RoutingKeysBuilder getBuilder(RoutingKeysBuilderOptions options) {
-        return new RoutingKeysFactory().getBuilder(ContainerTypeOptions.FLEET_MANAGEMENT, options);
+    public SensorRoutingKeys.Builder getBuilder(RoutingKeysBuilderOptions options) {
+        return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.FLEET_MANAGEMENT, options);
     }
 }

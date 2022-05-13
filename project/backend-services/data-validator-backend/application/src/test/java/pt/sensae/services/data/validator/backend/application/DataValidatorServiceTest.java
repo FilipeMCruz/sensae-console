@@ -1,12 +1,12 @@
 package pt.sensae.services.data.validator.backend.application;
 
 import org.junit.jupiter.api.Test;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import java.time.Instant;
 import java.util.Map;
@@ -19,7 +19,7 @@ public class DataValidatorServiceTest {
 
     private final RoutingKeysProvider internal = new InternalRoutingKeysMock();
 
-    private final RoutingKeys externalKeys;
+    private final SensorRoutingKeys externalKeys;
 
     public DataValidatorServiceTest() {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();

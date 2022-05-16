@@ -3,13 +3,12 @@ package sharespot.services.identitymanagementslavebackend.infrastructure.boot.co
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.routing.keys.DomainOwnershipOptions;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.DomainOwnershipOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
-import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.egress.controller.SensorDataSupplier;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
@@ -47,7 +46,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
     }
 
     @Bean

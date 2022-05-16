@@ -16,4 +16,8 @@ public class DataTransformation {
     public PropertyTransformations getTransform() {
         return transform;
     }
+
+    public SensorTypeId getId() {
+        return id;
+    }
 }

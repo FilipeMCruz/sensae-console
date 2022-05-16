@@ -23,7 +23,7 @@ public class SensorDataMapper {
     }
 
     public Optional<ProcessedSensorDataDTO> inToOut(JsonNode inDto, SensorTypeId typeId) {
-        return cache.findByDeviceId(typeId)
+        return cache.findById(typeId)
                 .flatMap(dt -> mapper.process(dt.getTransform(), inDto));
     }
 }

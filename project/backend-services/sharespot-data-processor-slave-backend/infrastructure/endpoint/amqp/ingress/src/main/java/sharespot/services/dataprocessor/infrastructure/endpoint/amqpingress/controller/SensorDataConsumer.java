@@ -17,7 +17,7 @@ public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
+    public static final String INGRESS_QUEUE = "sensor.data.processor.slave.queue";
 
     private final SensorDataHandlerService handler;
 
@@ -29,7 +29,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException, JsonProcessingException {
         var consumed = MessageMapper.toUnprocessedModel(in.getBody());
         logConsumedMessage(consumed);
-        handler.publish(consumed);
+        handler.info(consumed);
     }
 
     private void logConsumedMessage(MessageConsumed<ObjectNode> in) {

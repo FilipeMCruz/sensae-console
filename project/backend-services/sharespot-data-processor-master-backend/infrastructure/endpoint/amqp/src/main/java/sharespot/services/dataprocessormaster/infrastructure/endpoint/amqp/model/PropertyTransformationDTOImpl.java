@@ -1,4 +1,4 @@
-package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.model;
+package sharespot.services.dataprocessormaster.infrastructure.endpoint.amqp.model;
 
 public class PropertyTransformationDTOImpl {
     

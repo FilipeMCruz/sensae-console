@@ -10,7 +10,7 @@ import reactor.core.publisher.FluxSink;
 import javax.annotation.PostConstruct;
 
 @Service
-public class RecordEventHandlerService {
+public class DeviceInformationEventHandlerService {
 
     private FluxSink<DeviceNotificationDTO> dataStream;
 
@@ -18,7 +18,7 @@ public class RecordEventHandlerService {
 
     private final DeviceEventMapper mapper;
 
-    public RecordEventHandlerService(DeviceEventMapper mapper) {
+    public DeviceInformationEventHandlerService(DeviceEventMapper mapper) {
         this.mapper = mapper;
     }
 

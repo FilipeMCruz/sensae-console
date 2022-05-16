@@ -8,11 +8,11 @@ public class DeviceInformationNotifierService {
 
     private final RecordCollector collector;
 
-    private final RecordEventHandlerService publisher;
+    private final DeviceInformationEventHandlerService publisher;
 
     private final DeviceEventMapper eventMapper;
 
-    public DeviceInformationNotifierService(RecordCollector collector, RecordEventHandlerService publisher, DeviceEventMapper eventMapper) {
+    public DeviceInformationNotifierService(RecordCollector collector, DeviceInformationEventHandlerService publisher, DeviceEventMapper eventMapper) {
         this.collector = collector;
         this.publisher = publisher;
         this.eventMapper = eventMapper;

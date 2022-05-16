@@ -11,7 +11,7 @@ import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
-    public InternalRoutingKeys.InternalRoutingKeysBuilder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
+    public InternalRoutingKeys.Builder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
         return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.DEVICE_MANAGEMENT, options);
     }
 }

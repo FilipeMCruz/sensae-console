@@ -9,4 +9,7 @@ public class DeviceDTOImpl implements DeviceDTO {
     public String name;
 
     public String downlink;
+
+    public DeviceDTOImpl() {
+    }
 }

@@ -36,11 +36,13 @@ public class SensorDataNotificationPublisherService {
                 .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .build();
-        if (ping.isPresent() && request.isPresent()) {
+
+        if (ping.isEmpty() || request.isEmpty()) {
+            throw new RuntimeException("Error creating Routing Keys");
+        } else {
             this.pingKeys = ping.get();
             this.requestKeys = request.get();
         }
-        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @PostConstruct

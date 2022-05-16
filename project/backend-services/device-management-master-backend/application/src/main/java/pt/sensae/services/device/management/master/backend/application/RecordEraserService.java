@@ -13,13 +13,13 @@ public class RecordEraserService {
 
     private final RecordMapper mapper;
 
-    private final RecordEventHandlerService publisher;
+    private final DeviceInformationEventHandlerService publisher;
 
     private final TokenExtractor authHandler;
 
     public RecordEraserService(RecordEraser eraser,
                                RecordMapper mapper,
-                               RecordEventHandlerService publisher,
+                               DeviceInformationEventHandlerService publisher,
                                TokenExtractor authHandler) {
         this.eraser = eraser;
         this.mapper = mapper;

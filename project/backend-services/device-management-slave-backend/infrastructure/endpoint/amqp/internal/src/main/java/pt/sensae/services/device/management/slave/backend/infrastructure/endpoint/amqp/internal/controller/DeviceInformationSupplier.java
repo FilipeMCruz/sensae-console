@@ -4,11 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.application.SensorDataNotificationPublisherService;
 import pt.sensae.services.device.management.slave.backend.infrastructure.endpoint.amqp.internal.mapper.DeviceMapper;
 import pt.sharespot.iot.core.IoTCoreTopic;
 
-@Component
+@Service
 public class DeviceInformationSupplier {
 
     public DeviceInformationSupplier(AmqpTemplate template, SensorDataNotificationPublisherService service, DeviceMapper deviceMapper, ObjectMapper mapper) {

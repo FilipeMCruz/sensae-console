@@ -32,7 +32,6 @@ public class DeviceMapper implements DeviceEventMapper {
                     DeviceRecordEntryTypeDTOImpl.SENSOR_DATA;
             entry.content = e.getContent();
             entry.label = e.getLabel();
-            entry.records = info;
             return entry;
         }).collect(Collectors.toSet());
 
@@ -40,13 +39,11 @@ public class DeviceMapper implements DeviceEventMapper {
             var entry = new DeviceSubSensorDTOImpl();
             entry.subDeviceRef = sub.ref().value();
             entry.subDeviceId = sub.id().value().toString();
-            entry.controller = info;
             return entry;
         }).collect(Collectors.toSet());
 
         info.commands = domain.commands().entries().stream().map(com -> {
             var entry = new DeviceCommandEntryDTOImpl();
-            entry.device = info;
             entry.id = com.id().value();
             entry.name = com.name().value();
             entry.port = com.port().value();

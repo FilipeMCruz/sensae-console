@@ -2,8 +2,8 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationNotifierService;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceDTOImpl;
 
 @Service
 public class DeviceNotificationConsumer {
@@ -17,7 +17,7 @@ public class DeviceNotificationConsumer {
     }
 
     @RabbitListener(queues = MASTER_QUEUE)
-    public void receiveIndexEvent(DeviceDTO dto) {
+    public void receiveIndexEvent(DeviceDTOImpl dto) {
         informer.notify(dto);
     }
 }

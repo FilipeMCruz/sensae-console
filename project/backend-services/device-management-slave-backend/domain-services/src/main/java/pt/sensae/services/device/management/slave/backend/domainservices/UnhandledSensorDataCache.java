@@ -8,11 +8,13 @@ import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UnhandledSensorDataCache {
-    private final Cache<DeviceId, List<MessageConsumed<ProcessedSensorDataDTO>>> cache;
+    private final Cache<DeviceId, Set<MessageConsumed<ProcessedSensorDataDTO>>> cache;
 
     public UnhandledSensorDataCache() {
         this.cache = Caffeine.newBuilder()
@@ -23,7 +25,7 @@ public class UnhandledSensorDataCache {
     public void insert(MessageConsumed<ProcessedSensorDataDTO> data, DeviceId id) {
         var ifPresent = this.cache.getIfPresent(id);
         if (ifPresent == null) {
-            var list = new ArrayList<MessageConsumed<ProcessedSensorDataDTO>>();
+            var list = new HashSet<MessageConsumed<ProcessedSensorDataDTO>>();
             list.add(data);
             this.cache.put(id, list);
         } else {
@@ -31,10 +33,10 @@ public class UnhandledSensorDataCache {
         }
     }
 
-    public List<MessageConsumed<ProcessedSensorDataDTO>> retrieve(DeviceId id) {
+    public Set<MessageConsumed<ProcessedSensorDataDTO>> retrieve(DeviceId id) {
         var ifPresent = this.cache.getIfPresent(id);
         if (ifPresent == null) {
-            return new ArrayList<>();
+            return new HashSet<>();
         } else {
             this.cache.invalidate(id);
             return ifPresent;

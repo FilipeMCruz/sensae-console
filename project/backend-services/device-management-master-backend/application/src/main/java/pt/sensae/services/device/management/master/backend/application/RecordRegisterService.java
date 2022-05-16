@@ -13,13 +13,13 @@ public class RecordRegisterService {
 
     private final RecordMapper mapper;
 
-    private final RecordEventHandlerService publisher;
+    private final DeviceInformationEventHandlerService publisher;
 
     private final TokenExtractor authHandler;
 
     public RecordRegisterService(RecordHoarder hoarder,
                                  RecordMapper mapper,
-                                 RecordEventHandlerService publisher,
+                                 DeviceInformationEventHandlerService publisher,
                                  TokenExtractor authHandler) {
         this.hoarder = hoarder;
         this.mapper = mapper;

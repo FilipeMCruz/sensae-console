@@ -8,8 +8,7 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.proxy.ProxyObject;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import sharespot.services.datadecoder.domain.SensorTypeId;
 import sharespot.services.datadecoder.domainservices.DataDecoderCache;
 

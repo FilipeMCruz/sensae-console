@@ -1,17 +1,12 @@
 package sharespot.services.datadecoder.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import sharespot.services.datadecoder.application.RoutingKeysProvider;
-import sharespot.services.datadecoder.infrastructure.endpoint.amqpegress.controller.SensorDataSupplier;
 import sharespot.services.datadecoder.infrastructure.endpoint.amqpingress.controller.SensorDataConsumer;
 
 @Configuration
@@ -47,7 +42,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
     }
 
     @Bean

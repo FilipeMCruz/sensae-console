@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
-import pt.sharespot.iot.core.buf.mapper.MessageMapper;
-import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
 import sharespot.services.datadecoder.application.SensorDataHandlerService;
 
 @Component
@@ -20,7 +20,7 @@ public class SensorDataSupplier {
         service.getSinglePublisher()
                 .subscribe(outData -> {
                     logSuppliedMessage(outData);
-                    template.send(IoTCoreExchanges.DATA_EXCHANGE,
+                    template.send(IoTCoreTopic.DATA_EXCHANGE,
                             outData.routingKeys.toString(),
                             new Message(MessageMapper.toBuf(outData).toByteArray()));
                 });

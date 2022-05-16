@@ -2,12 +2,11 @@ package sharespot.services.datadecoder.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.routing.MessageConsumed;
-import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.SensorDataDTO;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
+import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -48,11 +47,11 @@ public class SensorDataHandlerService {
         message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
     }
 
-    private Optional<ProcessedSensorDataDTO> inToOutData(ObjectNode node, RoutingKeys keys) {
+    private Optional<ProcessedSensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
         return mapper.decodeData(node, SensorTypeId.of(keys.sensorTypeId));
     }
 
-    private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
+    private Optional<SensorRoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, SensorRoutingKeys keys) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .from(keys);

@@ -1,8 +1,8 @@
 package sharespot.services.dataprocessor.infrastructure.persistence.postgres.mapper;
 
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformation;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformations;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformation;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
 import sharespot.services.dataprocessor.domain.DataTransformation;
 import sharespot.services.dataprocessor.domain.SensorTypeId;
 import sharespot.services.dataprocessor.infrastructure.persistence.postgres.model.DataTransformationPostgres;

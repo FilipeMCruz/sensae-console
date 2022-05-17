@@ -35,6 +35,8 @@ public class DeviceMapper implements DeviceEventMapper {
     @Override
     public DeviceNotification dtoToDomain(DeviceNotificationDTO dto) {
         var notification = (DeviceNotificationDTOImpl) dto;
+        var deviceId = new DeviceId(UUID.fromString(notification.deviceId));
+
         if (notification.type.equals(DeviceNotificationTypeDTOImpl.UPDATE)) {
             var device = notification.information;
 
@@ -42,7 +44,6 @@ public class DeviceMapper implements DeviceEventMapper {
                     .map(e -> e.type.equals(DeviceRecordEntryTypeDTOImpl.SENSOR_DATA) ? new SensorDataRecordEntry(SensorDataRecordLabel.give(e.label), e.content) : new BasicRecordEntry(e.label, e.content))
                     .collect(Collectors.toList());
 
-            var deviceId = new DeviceId(UUID.fromString(device.deviceId));
             var deviceName = new DeviceName(device.name);
             var deviceDownlink = new DeviceDownlink(device.downlink);
 
@@ -57,7 +58,6 @@ public class DeviceMapper implements DeviceEventMapper {
             var info = new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new Records(collect), new SubDevices(subDevices), new DeviceCommands(commands));
             return new DeviceNotification(deviceId, NotificationType.UPDATE, info);
         } else {
-            var deviceId = new DeviceId(UUID.fromString(notification.deviceId));
             return new DeviceNotification(deviceId, NotificationType.DELETE, null);
         }
     }

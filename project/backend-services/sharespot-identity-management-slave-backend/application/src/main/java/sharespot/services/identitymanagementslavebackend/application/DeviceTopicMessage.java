@@ -1,9 +1,7 @@
 package sharespot.services.identitymanagementslavebackend.application;
 
+import pt.sharespot.iot.core.internal.routing.keys.InternalRoutingKeys;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.DeviceId;
 
-public interface RecordEventMapper {
-
-    DeviceId dtoToDomain(DeviceIdDTO dto);
-
+public record DeviceTopicMessage(DeviceId device, InternalRoutingKeys keys) {
 }

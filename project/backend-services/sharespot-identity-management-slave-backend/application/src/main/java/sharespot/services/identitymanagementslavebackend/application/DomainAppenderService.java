@@ -7,6 +7,7 @@ import sharespot.services.identitymanagementslavebackend.domain.model.identity.d
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.domain.DomainId;
 import sharespot.services.identitymanagementslavebackend.domainservices.DeviceDomainCache;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,11 +19,12 @@ public class DomainAppenderService {
         this.cache = cache;
     }
 
-    public ProcessedSensorDataDTO append(ProcessedSensorDataDTO dto) {
-        var domains = cache.findByDeviceId(DeviceId.of(dto.device.id));
-        var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTO();
-        deviceDomainPermissionsDTO.ownership = domains.getOwnerDomains().stream().map(DomainId::value).collect(Collectors.toSet());
-        dto.device.domains = deviceDomainPermissionsDTO;
-        return dto;
+    public Optional<ProcessedSensorDataDTO> tryToAppend(ProcessedSensorDataDTO dto) {
+        return cache.findById(DeviceId.of(dto.device.id)).map(device -> {
+            var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTO();
+            deviceDomainPermissionsDTO.ownership = device.getOwnerDomains().stream().map(DomainId::value).collect(Collectors.toSet());
+            dto.device.domains = deviceDomainPermissionsDTO;
+            return dto;
+        });
     }
 }

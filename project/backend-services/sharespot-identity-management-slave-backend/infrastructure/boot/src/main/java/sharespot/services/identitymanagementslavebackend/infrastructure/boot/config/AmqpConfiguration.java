@@ -4,21 +4,22 @@ import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
+import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
+import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.controller.DeviceDomainsConsumer;
 
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String MASTER_EXCHANGE = "Sharespot Identity Management Master Exchange";
-    public static final String MASTER_QUEUE = "Sharespot Identity Management Master Exchange -> Sharespot Identity Management Slave Queue";
 
     private final RoutingKeysProvider provider;
 
@@ -28,20 +29,28 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(MASTER_QUEUE)
+        return QueueBuilder.durable(DeviceDomainsConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    public FanoutExchange masterExchange() {
-        return new FanoutExchange(MASTER_EXCHANGE);
+    public TopicExchange internalTopic() {
+        return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
     @Bean
-    Binding bindingMaster(Queue slaveQueue, FanoutExchange masterExchange) {
-        return BindingBuilder.bind(slaveQueue).to(masterExchange);
+    Binding bindingMaster(Queue slaveQueue, TopicExchange internalTopic) {
+        var decoded = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
+                .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (decoded.isPresent()) {
+            return BindingBuilder.bind(slaveQueue).to(internalTopic).with(decoded.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean

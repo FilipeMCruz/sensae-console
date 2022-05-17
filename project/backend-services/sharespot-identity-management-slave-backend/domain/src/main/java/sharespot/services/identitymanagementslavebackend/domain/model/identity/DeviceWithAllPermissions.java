@@ -4,14 +4,15 @@ import sharespot.services.identitymanagementslavebackend.domain.model.identity.d
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.domain.DomainId;
 
 import java.util.List;
+import java.util.Set;
 
 public class DeviceWithAllPermissions {
 
     private final DeviceId oid;
 
-    private final List<DomainId> ownerDomains;
+    private final Set<DomainId> ownerDomains;
 
-    public DeviceWithAllPermissions(DeviceId oid, List<DomainId> ownerDomains) {
+    public DeviceWithAllPermissions(DeviceId oid, Set<DomainId> ownerDomains) {
         this.oid = oid;
         this.ownerDomains = ownerDomains;
     }
@@ -20,7 +21,7 @@ public class DeviceWithAllPermissions {
         return oid;
     }
 
-    public List<DomainId> getOwnerDomains() {
+    public Set<DomainId> getOwnerDomains() {
         return ownerDomains;
     }
 }

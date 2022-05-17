@@ -1,23 +1,9 @@
 package sharespot.services.identitymanagementbackend.domain.identity.device;
 
-import java.util.List;
+import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 
-public class Device {
+import java.util.Set;
 
-    private final DeviceId oid;
+public record Device(DeviceId oid, Set<DomainId> domains) {
 
-    private final List<DeviceDomainPermissions> domains;
-
-    public Device(DeviceId oid, List<DeviceDomainPermissions> domains) {
-        this.oid = oid;
-        this.domains = domains;
-    }
-
-    public DeviceId getOid() {
-        return oid;
-    }
-
-    public List<DeviceDomainPermissions> getDomains() {
-        return domains;
-    }
 }

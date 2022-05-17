@@ -23,19 +23,19 @@ public class TenantResultMapper {
 
     public static TenantResult toResult(Tenant tenant) {
         var identityResult = new TenantResult();
-        identityResult.oid = tenant.getOid().value();
-        identityResult.email = tenant.getEmail().value();
-        identityResult.name = tenant.getName().value();
-        identityResult.domains = tenant.getDomains().stream().map(DomainId::value).toList();
+        identityResult.oid = tenant.oid().value();
+        identityResult.email = tenant.email().value();
+        identityResult.name = tenant.name().value();
+        identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
         return identityResult;
     }
 
     public static TenantResult toResult(Tenant tenant, Stream<Domain> domains) {
         var identityResult = new TenantResult();
-        identityResult.email = tenant.getEmail().value();
-        identityResult.name = tenant.getName().value();
-        identityResult.oid = tenant.getOid().value();
-        identityResult.domains = tenant.getDomains().stream().map(DomainId::value).toList();
+        identityResult.email = tenant.email().value();
+        identityResult.name = tenant.name().value();
+        identityResult.oid = tenant.oid().value();
+        identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
 
         identityResult.permissions = domains.map(DomainResultMapper::toResult)
                 .map(d -> d.permissions)

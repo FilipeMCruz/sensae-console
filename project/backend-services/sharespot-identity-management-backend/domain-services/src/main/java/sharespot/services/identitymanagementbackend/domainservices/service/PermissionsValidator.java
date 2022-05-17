@@ -11,7 +11,7 @@ public class PermissionsValidator {
 
     public static void verifyPermissions(TenantIdentity actor, Domain domain, List<PermissionType> neededPermissions) {
         var parentDomainIds = domain.getPath().path();
-        if (actor.tenant().getDomains().stream().noneMatch(parentDomainIds::contains)) {
+        if (actor.tenant().domains().stream().noneMatch(parentDomainIds::contains)) {
             throw new NotValidException("No permissions");
         }
         if (!actor.permissions().values().containsAll(neededPermissions)) {

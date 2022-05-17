@@ -2,9 +2,7 @@ package sharespot.services.identitymanagementbackend.domainservices.service.devi
 
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.domain.exceptions.NotValidException;
-import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceDomainPermissions;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
-import sharespot.services.identitymanagementbackend.domain.identity.device.DevicePermissions;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
@@ -44,7 +42,7 @@ public class MoveDevice {
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
 
-        device.getDomains().add(new DeviceDomainPermissions(domainId, DevicePermissions.READ_WRITE));
+        device.domains().add(domainId);
 
         var relocateDevice = deviceRepo.relocateDevice(device);
         return DeviceResultMapper.toResult(relocateDevice);
@@ -63,11 +61,11 @@ public class MoveDevice {
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
 
-        device.getDomains().removeIf(d -> d.domain().equals(domainId));
+        device.domains().removeIf(d -> d.equals(domainId));
 
-        if (device.getDomains().isEmpty()) {
+        if (device.domains().isEmpty()) {
             var rootDomain = domainRepo.getRootDomain();
-            device.getDomains().add(new DeviceDomainPermissions(rootDomain.getOid(), DevicePermissions.READ_WRITE));
+            device.domains().add(rootDomain.getOid());
         }
 
         var relocateDevice = deviceRepo.relocateDevice(device);

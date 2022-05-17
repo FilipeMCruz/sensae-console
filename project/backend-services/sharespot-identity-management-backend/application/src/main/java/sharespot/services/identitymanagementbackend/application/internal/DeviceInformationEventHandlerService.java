@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllPermissions;
+import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllOwnerDomains;
 
 import javax.annotation.PostConstruct;
 
@@ -33,7 +33,7 @@ public class DeviceInformationEventHandlerService {
         return dataPublisher;
     }
 
-    public void publishUpdate(DeviceWithAllPermissions domain) {
+    public void publishUpdate(DeviceWithAllOwnerDomains domain) {
         var outDTO = mapper.domainToUpdatedDto(domain);
         dataStream.next(outDTO);
     }

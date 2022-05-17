@@ -5,7 +5,7 @@ import sharespot.services.identitymanagementbackend.application.internal.DeviceN
 import sharespot.services.identitymanagementbackend.application.internal.NotificationEventMapper;
 import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
-import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllPermissions;
+import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllOwnerDomains;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceIdDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceNotificationDTOImpl;
@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 public class NotificationEventMapperImpl implements NotificationEventMapper {
 
     @Override
-    public DeviceNotificationDTO domainToUpdatedDto(DeviceWithAllPermissions domain) {
+    public DeviceNotificationDTO domainToUpdatedDto(DeviceWithAllOwnerDomains domain) {
         var info = new DeviceWithOwnershipDTOImpl();
-        info.deviceId = domain.getOid().value().toString();
-        info.owners = domain.getOwnerDomains()
+        info.deviceId = domain.oid().value().toString();
+        info.owners = domain.ownerDomains()
                 .stream()
                 .map(DomainId::value)
                 .map(UUID::toString)

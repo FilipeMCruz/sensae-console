@@ -11,9 +11,6 @@ public class DeviceDomainPermissionsPostgres {
 
     public String domainOid;
 
-    @Embedded
-    public DevicePermissionsPostgres permission;
-
     @ManyToOne
     public DevicePostgres device;
 }

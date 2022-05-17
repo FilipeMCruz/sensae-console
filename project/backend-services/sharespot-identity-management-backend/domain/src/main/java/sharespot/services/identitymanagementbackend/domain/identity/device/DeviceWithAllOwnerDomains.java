@@ -2,5 +2,8 @@ package sharespot.services.identitymanagementbackend.domain.identity.device;
 
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 
-public record DeviceDomainPermissions(DomainId domain, DevicePermissions permissions) {
+import java.util.Set;
+
+public record DeviceWithAllOwnerDomains(DeviceId oid, Set<DomainId> ownerDomains) {
+
 }

@@ -25,62 +25,42 @@ There are certain rules when creating the script:
 
 ## Helper Functions
 
-Since no npm or node packages are available it can be difficult to start writing decoders, to tackle this here are some common functions:
-
-This function, `decodeBase64`, receives a `Base64` encoded string and decodes it. To save bandwidth the sensor payload usually comes as a `Base64` string.
+Since no npm or node packages are available it can be difficult to start writing decoders. To tackle this, and since IoT payload is usually encoded as a base64 string and then read as a hex byte array, here is a function that performs this:
 
 ``` js
-function decodeBase64(s) {
-  var e = {},
-    i,
-    b = 0,
-    c,
-    x,
-    l = 0,
-    a,
-    r = "",
-    w = String.fromCharCode,
-    L = s.length;
-  var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  for (i = 0; i < 64; i++) {
-    e[A.charAt(i)] = i;
-  }
-  for (x = 0; x < L; x++) {
-    c = e[s.charAt(x)];
-    b = (b << 6) + c;
-    l += 6;
-    while (l >= 8) {
-      ((a = (b >>> (l -= 8)) & 0xff) || x < L - 2) && (r += w(a));
+const base64ToHex = (() => {
+  const values = [],
+    output = [];
+
+  return function base64ToHex(txt) {
+    if (output.length <= 0) populateLookups();
+    const result = [];
+    let v1, v2, v3, v4;
+    for (let i = 0, len = txt.length; i < len; i += 4) {
+      v1 = values[txt.charCodeAt(i)];
+      v2 = values[txt.charCodeAt(i + 1)];
+      v3 = values[txt.charCodeAt(i + 2)];
+      v4 = values[txt.charCodeAt(i + 3)];
+      result.push(
+        output[(v1 << 2) | (v2 >> 4)],
+        output[((v2 & 15) << 4) | (v3 >> 2)],
+        output[((v3 & 3) << 6) | v4]
+      );
     }
+    if (v4 === 64) result.splice(v3 === 64 ? -2 : -1);
+    return result;
+  };
+
+  function populateLookups() {
+    const keys =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    for (let i = 0; i < 256; i++) {
+      output.push(("0" + i.toString(16)).slice(-2));
+      values.push(0);
+    }
+    for (let i = 0; i < 65; i++) values[keys.charCodeAt(i)] = i;
   }
-  return r;
-}
-```
-
-This function, `strToUtf16Bytes`, receives a string and returns a Utf16 byte array. Usually sensor payload documentation assumes that you have a byte array.
-
-``` js
-function strToUtf16Bytes(str) {
-  const bytes = [];
-  for (ii = 0; ii < str.length; ii++) {
-    const code = str.charCodeAt(ii); // x00-xFFFF
-    bytes.push(code & 255, code >> 8); // low, high
-  }
-  return bytes;
-}
-```
-
-This function, `toBytes`, receives a `Base64` encoded string, decodes it and transforms it into a sanitized byte array by using the mentioned functions.
-
-``` js
-function toBytes(payload) {
-  const array = [];
-  const buffer = strToUtf16Bytes(decodeBase64(payload));
-  for (let i = 0; i < buffer.length; i++) {
-    if (buffer[i] !== 0) array.push(buffer[i]);
-  }
-  return array;
-}
+})();
 ```
 
 As a full example the current `lgt92` sensor decoder can be seen [here](assets/lgt92.js).

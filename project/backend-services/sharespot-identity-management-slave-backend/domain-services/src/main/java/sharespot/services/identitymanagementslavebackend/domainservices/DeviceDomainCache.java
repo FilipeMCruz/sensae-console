@@ -40,46 +40,22 @@ public class DeviceDomainCache {
 
     private DeviceWithAllPermissions create(DeviceId id) {
         var rootDomain = domainRepository.getRootDomain();
-        var device = new Device(id, List.of(new DeviceDomainPermissions(rootDomain.getOid(), DevicePermissions.READ_WRITE)));
+        var device = new Device(id, List.of(rootDomain.getOid()));
         var add = repository.add(device);
-        return new DeviceWithAllPermissions(add.getOid(), new ArrayList<>(), List.of(rootDomain.getOid()));
+        return new DeviceWithAllPermissions(add.getOid(), List.of(rootDomain.getOid()));
     }
 
     private DeviceWithAllPermissions build(Device device) {
         //fetch all domains from repo
-        var domains = domainRepository.findDomainsById(device.getDomains().stream().map(DeviceDomainPermissions::domain)).toList();
-
-        //get all device domain' ids with write permission
-        var writeDomains = device.getDomains()
-                .stream()
-                .filter(d -> d.permissions().equals(DevicePermissions.READ_WRITE))
-                .map(DeviceDomainPermissions::domain)
-                .toList();
+        var domains = domainRepository.findDomainsById(device.getDomains().stream()).toList();
 
         //get all device write domain's parents
-        var writeDomainIds = domains
+        var ownerDomainIds = domains
                 .stream()
-                .filter(d -> writeDomains.contains(d.getOid()))
                 .flatMap(d -> d.getPath().path().stream())
                 .distinct()
                 .toList();
 
-        //get all device domains with read permission
-        var readDomains = device.getDomains()
-                .stream()
-                .filter(d -> d.permissions().equals(DevicePermissions.READ))
-                .map(DeviceDomainPermissions::domain)
-                .toList();
-
-        //get all device read domain's parents excluding the ones with write permissions
-        var readDomainIds = domains
-                .stream()
-                .filter(d -> readDomains.contains(d.getOid()))
-                .flatMap(d -> d.getPath().path().stream())
-                .filter(d -> !writeDomainIds.contains(d))
-                .distinct()
-                .toList();
-
-        return new DeviceWithAllPermissions(device.getOid(), readDomainIds, writeDomainIds);
+        return new DeviceWithAllPermissions(device.getOid(), ownerDomainIds);
     }
 }

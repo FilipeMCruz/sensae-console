@@ -9,25 +9,18 @@ public class DeviceWithAllPermissions {
 
     private final DeviceId oid;
 
-    private final List<DomainId> readDomains;
+    private final List<DomainId> ownerDomains;
 
-    private final List<DomainId> readWriteDomains;
-
-    public DeviceWithAllPermissions(DeviceId oid, List<DomainId> readDomains, List<DomainId> readWriteDomains) {
+    public DeviceWithAllPermissions(DeviceId oid, List<DomainId> ownerDomains) {
         this.oid = oid;
-        this.readDomains = readDomains;
-        this.readWriteDomains = readWriteDomains;
+        this.ownerDomains = ownerDomains;
     }
 
     public DeviceId getOid() {
         return oid;
     }
 
-    public List<DomainId> getReadDomains() {
-        return readDomains;
-    }
-
-    public List<DomainId> getReadWriteDomains() {
-        return readWriteDomains;
+    public List<DomainId> getOwnerDomains() {
+        return ownerDomains;
     }
 }

@@ -1,8 +1,8 @@
 package sharespot.services.datadecodermaster.domainservices;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.datadecodermaster.domain.SensorDataDecodersRepository;
-import sharespot.services.datadecodermaster.domain.SensorTypeId;
+import sharespot.services.data.decoder.master.domain.SensorDataDecodersRepository;
+import sharespot.services.data.decoder.master.domain.SensorTypeId;
 
 @Service
 public class DataDecoderEraser {

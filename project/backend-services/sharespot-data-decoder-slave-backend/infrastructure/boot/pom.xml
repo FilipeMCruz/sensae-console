@@ -33,11 +33,6 @@
             <artifactId>internal</artifactId>
             <version>0.7.0</version>
         </dependency>
-        <dependency>
-            <groupId>sharespot.services</groupId>
-            <artifactId>postgres</artifactId>
-            <version>0.7.0</version>
-        </dependency>
     </dependencies>
 
     <build>

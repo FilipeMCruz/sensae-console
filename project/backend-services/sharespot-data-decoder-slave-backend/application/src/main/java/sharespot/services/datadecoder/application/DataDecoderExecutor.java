@@ -29,7 +29,7 @@ public class DataDecoderExecutor {
     }
 
     public Optional<ProcessedSensorDataDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
-        var byDeviceId = cache.findByDeviceId(scriptId);
+        var byDeviceId = cache.findById(scriptId);
         if (byDeviceId.isEmpty()) return Optional.empty();
 
         try (var context = Context.create()) {

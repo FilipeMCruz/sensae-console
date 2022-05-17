@@ -9,14 +9,14 @@ import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
 import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
-import sharespot.services.datadecoder.application.SensorDataHandlerService;
+import sharespot.services.datadecoder.application.SensorDataPublisherService;
 
 @Component
 public class SensorDataSupplier {
 
     Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
 
-    public SensorDataSupplier(AmqpTemplate template, SensorDataHandlerService service) {
+    public SensorDataSupplier(AmqpTemplate template, SensorDataPublisherService service) {
         service.getSinglePublisher()
                 .subscribe(outData -> {
                     logSuppliedMessage(outData);

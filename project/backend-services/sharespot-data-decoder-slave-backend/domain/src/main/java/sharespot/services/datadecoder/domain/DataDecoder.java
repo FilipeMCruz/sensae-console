@@ -14,4 +14,8 @@ public class DataDecoder {
     public SensorTypeScript getScript() {
         return script;
     }
+
+    public SensorTypeId getId() {
+        return id;
+    }
 }

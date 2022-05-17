@@ -14,26 +14,24 @@ import java.util.Optional;
 @Service
 public class DataDecoderCache {
 
-    private final Cache<SensorTypeId, Optional<DataDecoder>> cache;
+    private final Cache<SensorTypeId, DataDecoder> cache;
 
-    private final SensorDataDecodersRepository repository;
-
-    public DataDecoderCache(SensorDataDecodersRepository repository) {
-        this.repository = repository;
+    public DataDecoderCache() {
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))
                 .maximumSize(10)
                 .build();
     }
 
-    public Optional<DataDecoder> update(SensorTypeId id) {
-        var deviceType = repository.findByDeviceType(id);
-        cache.invalidate(id);
-        cache.put(id, deviceType);
-        return deviceType;
+    public Optional<DataDecoder> findById(SensorTypeId id) {
+        return Optional.ofNullable(cache.getIfPresent(id));
     }
 
-    public Optional<DataDecoder> findByDeviceId(SensorTypeId id) {
-        return Objects.requireNonNullElseGet(cache.getIfPresent(id), () -> update(id));
+    public void update(DataDecoder info) {
+        cache.put(info.getId(), info);
+    }
+
+    public void delete(SensorTypeId id) {
+        cache.invalidate(id);
     }
 }

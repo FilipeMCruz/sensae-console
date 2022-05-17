@@ -2,8 +2,6 @@ package sharespot.services.dataprocessor.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.buf.Device;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.dataprocessor.domain.SensorTypeId;
 import sharespot.services.dataprocessor.domainservices.DataTransformationCache;

@@ -2,58 +2,40 @@ package sharespot.services.datadecoder.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
-import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
-import reactor.core.publisher.ConnectableFlux;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import sharespot.services.datadecoder.domain.SensorTypeId;
-
-import javax.annotation.PostConstruct;
-import java.util.Optional;
+import sharespot.services.datadecoder.domainservices.DataDecoderCache;
+import sharespot.services.datadecoder.domainservices.UnhandledSensorDataCache;
 
 @Service
 public class SensorDataHandlerService {
 
-    private final DataDecoderExecutor mapper;
+    private final DataDecoderCache cache;
 
-    private FluxSink<MessageSupplied<ProcessedSensorDataDTO>> dataStream;
+    private final UnhandledSensorDataCache unhandledSensorDataCache;
 
-    private ConnectableFlux<MessageSupplied<ProcessedSensorDataDTO>> dataPublisher;
+    private final SensorDataPublisherService dataPublisher;
 
-    private final RoutingKeysProvider provider;
+    private final SensorDataNotificationPublisherService notificationPublisher;
 
-    public SensorDataHandlerService(DataDecoderExecutor mapper, RoutingKeysProvider provider) {
-        this.mapper = mapper;
-        this.provider = provider;
+    public SensorDataHandlerService(DataDecoderCache cache,
+                                    UnhandledSensorDataCache unhandledSensorDataCache,
+                                    SensorDataPublisherService handler,
+                                    SensorDataNotificationPublisherService notificationPublisher) {
+        this.cache = cache;
+        this.unhandledSensorDataCache = unhandledSensorDataCache;
+        this.dataPublisher = handler;
+        this.notificationPublisher = notificationPublisher;
     }
 
-    @PostConstruct
-    public void init() {
-        Flux<MessageSupplied<ProcessedSensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
-
-        dataPublisher = publisher.publish();
-        dataPublisher.connect();
-    }
-
-    public Flux<MessageSupplied<ProcessedSensorDataDTO>> getSinglePublisher() {
-        return dataPublisher;
-    }
-
-    public void publish(MessageConsumed<ObjectNode> message) {
-        message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
-    }
-
-    private Optional<ProcessedSensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
-        return mapper.decodeData(node, SensorTypeId.of(keys.sensorTypeId));
-    }
-
-    private Optional<SensorRoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, SensorRoutingKeys keys) {
-        return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withUpdated(data)
-                .from(keys);
+    public void info(MessageConsumed<ObjectNode> message) {
+        var type = SensorTypeId.of(message.routingKeys.sensorTypeId);
+        if (cache.findById(type).isPresent()) {
+            dataPublisher.publish(message);
+            notificationPublisher.publishPing(type);
+        } else {
+            unhandledSensorDataCache.insert(message, type);
+            notificationPublisher.publishRequest(type);
+        }
     }
 }

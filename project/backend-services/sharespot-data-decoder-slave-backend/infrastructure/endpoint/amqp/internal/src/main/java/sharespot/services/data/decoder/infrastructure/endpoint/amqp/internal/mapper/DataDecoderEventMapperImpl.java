@@ -5,7 +5,6 @@ import sharespot.services.data.decoder.application.DataDecoderEventMapper;
 import sharespot.services.data.decoder.application.DataDecoderNotificationDTO;
 import sharespot.services.data.decoder.application.SensorTypeIdDTO;
 import sharespot.services.data.decoder.domain.*;
-import sharespot.services.datadecoder.domain.*;
 import sharespot.services.data.decoder.infrastructure.endpoint.amqp.internal.model.DataDecoderNotificationDTOImpl;
 import sharespot.services.data.decoder.infrastructure.endpoint.amqp.internal.model.DataDecoderNotificationTypeDTOImpl;
 import sharespot.services.data.decoder.infrastructure.endpoint.amqp.internal.model.SensorTypeIdDTOImpl;

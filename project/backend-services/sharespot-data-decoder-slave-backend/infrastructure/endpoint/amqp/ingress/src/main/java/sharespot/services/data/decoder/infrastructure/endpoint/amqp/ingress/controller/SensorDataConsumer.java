@@ -15,11 +15,10 @@ import sharespot.services.data.decoder.application.SensorDataHandlerService;
 @Service
 public class SensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
-
-    public static final String INGRESS_QUEUE = "sensor.data.decoder.slave.queue";
+    private static final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
     private final SensorDataHandlerService handler;
+    public static final String INGRESS_QUEUE = "sensor.data.decoder.slave.queue";
 
     public SensorDataConsumer(SensorDataHandlerService handler) {
         this.handler = handler;

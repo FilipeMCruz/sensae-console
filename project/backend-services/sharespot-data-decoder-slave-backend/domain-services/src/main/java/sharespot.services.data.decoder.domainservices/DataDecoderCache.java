@@ -1,4 +1,4 @@
-package sharespot.services.datadecoder.domainservices;
+package sharespot.services.data.decoder.domainservices;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -26,7 +26,7 @@ public class DataDecoderCache {
     }
 
     public void update(DataDecoder info) {
-        cache.put(info.getId(), info);
+        cache.put(info.id(), info);
     }
 
     public void delete(SensorTypeId id) {

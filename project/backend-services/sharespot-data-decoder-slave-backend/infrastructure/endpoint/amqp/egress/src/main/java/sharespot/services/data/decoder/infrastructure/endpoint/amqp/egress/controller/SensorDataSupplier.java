@@ -14,7 +14,7 @@ import sharespot.services.data.decoder.application.SensorDataPublisherService;
 @Component
 public class SensorDataSupplier {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
+    private final Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
 
     public SensorDataSupplier(AmqpTemplate template, SensorDataPublisherService service) {
         service.getSinglePublisher()

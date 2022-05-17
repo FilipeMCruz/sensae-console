@@ -5,13 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import sharespot.services.data.decoder.application.DataDecoderEventMapper;
 import sharespot.services.data.decoder.application.SensorDataNotificationPublisherService;
-import sharespot.services.data.decoder.infrastructure.endpoint.amqp.internal.mapper.DataDecoderEventMapperImpl;
 
 @Service
 public class DataDecoderSupplier {
 
-    public DataDecoderSupplier(AmqpTemplate template, SensorDataNotificationPublisherService service, DataDecoderEventMapperImpl deviceMapper, ObjectMapper mapper) {
+    public DataDecoderSupplier(AmqpTemplate template, SensorDataNotificationPublisherService service, DataDecoderEventMapper deviceMapper, ObjectMapper mapper) {
         service.getPublisher().subscribe(outData -> {
             var deviceDTO = deviceMapper.domainToDto(outData.type());
             try {

@@ -10,7 +10,7 @@ import org.graalvm.polyglot.proxy.ProxyObject;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import sharespot.services.data.decoder.domain.SensorTypeId;
-import sharespot.services.datadecoder.domainservices.DataDecoderCache;
+import sharespot.services.data.decoder.domainservices.DataDecoderCache;
 
 import java.io.IOException;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class DataDecoderExecutor {
         if (byDeviceId.isEmpty()) return Optional.empty();
 
         try (var context = Context.create()) {
-            context.eval(Source.newBuilder("js", byDeviceId.get().getScript().getValue(), scriptId.getValue()).build());
+            context.eval(Source.newBuilder("js", byDeviceId.get().script().value(), scriptId.getValue()).build());
             var member = Optional.of(context.getBindings("js").getMember("convert"));
 
             var object = mapper.convertValue(input, new TypeReference<Map<String, Object>>() {

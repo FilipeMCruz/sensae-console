@@ -1,4 +1,4 @@
-package sharespot.services.datadecoder.domainservices;
+package sharespot.services.data.decoder.domainservices;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.benmanes.caffeine.cache.Cache;

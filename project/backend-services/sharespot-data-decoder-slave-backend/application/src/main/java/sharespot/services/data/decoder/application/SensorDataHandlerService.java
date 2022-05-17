@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.data.decoder.domain.SensorTypeId;
-import sharespot.services.datadecoder.domainservices.DataDecoderCache;
-import sharespot.services.datadecoder.domainservices.UnhandledSensorDataCache;
+import sharespot.services.data.decoder.domainservices.DataDecoderCache;
+import sharespot.services.data.decoder.domainservices.UnhandledSensorDataCache;
 
 @Service
 public class SensorDataHandlerService {

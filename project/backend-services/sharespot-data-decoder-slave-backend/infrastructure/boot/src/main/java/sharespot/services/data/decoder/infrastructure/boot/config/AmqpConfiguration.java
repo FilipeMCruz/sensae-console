@@ -16,8 +16,6 @@ import sharespot.services.data.decoder.infrastructure.endpoint.amqp.ingress.cont
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String MASTER_EXCHANGE = "Sharespot Data Decoder Master Exchange";
-
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {

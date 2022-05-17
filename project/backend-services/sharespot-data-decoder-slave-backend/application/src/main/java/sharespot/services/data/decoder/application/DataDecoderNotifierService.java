@@ -2,8 +2,8 @@ package sharespot.services.data.decoder.application;
 
 import org.springframework.stereotype.Service;
 import sharespot.services.data.decoder.domain.NotificationType;
-import sharespot.services.datadecoder.domainservices.DataDecoderCache;
-import sharespot.services.datadecoder.domainservices.UnhandledSensorDataCache;
+import sharespot.services.data.decoder.domainservices.DataDecoderCache;
+import sharespot.services.data.decoder.domainservices.UnhandledSensorDataCache;
 
 @Service
 public class DataDecoderNotifierService {

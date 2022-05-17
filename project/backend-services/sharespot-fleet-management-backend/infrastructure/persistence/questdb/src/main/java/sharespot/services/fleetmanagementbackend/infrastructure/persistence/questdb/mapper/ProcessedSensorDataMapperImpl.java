@@ -30,13 +30,14 @@ public class ProcessedSensorDataMapperImpl {
         dao.deviceName = String.valueOf(in.device.name);
         dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
         dao.motion = toDAO(in);
-        dao.gpsData = GeoHash.withCharacterPrecision(in.getSensorData().gps.latitude, in.getSensorData().gps.longitude, 12).toBase32();
+        dao.gpsData = GeoHash.withCharacterPrecision(in.getSensorData().gps.latitude, in.getSensorData().gps.longitude, 12)
+                .toBase32();
         return dao;
     }
 
     public List<ProcessedSensorDataDAOImpl> dtoToDao(ProcessedSensorDataDTO in) {
         var dao = dtoToSingleDao(in);
-        return Stream.concat(in.device.domains.read.stream(), in.device.domains.readWrite.stream())
+        return in.device.domains.ownership.stream()
                 .map(domain -> dao.cloneWithDomain(domain.toString()))
                 .distinct()
                 .toList();
@@ -61,7 +62,7 @@ public class ProcessedSensorDataMapperImpl {
         device.name = dao.deviceName;
         device.records = new DeviceRecordDTO(new HashSet<>());
         device.domains = new DeviceDomainPermissionsDTO();
-        device.domains.read = Set.of(UUID.fromString(dao.domainId));
+        device.domains.ownership = Set.of(UUID.fromString(dao.domainId));
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
         var details = new SensorDataDetailsDTO()
                 .withGps(GPSDataDTO.ofLatLong(originatingPoint.getLatitude(), originatingPoint.getLongitude()))

@@ -74,8 +74,7 @@ public class DeviceCache {
     }
 
     private LedgerEntry toLedgerEntry(ProcessedSensorDataDTO data) {
-        var owners = Ownership.of(data.device.domains.read.stream().map(DomainId::of))
-                .and(data.device.domains.readWrite.stream().map(DomainId::of));
+        var owners = Ownership.of(data.device.domains.ownership.stream().map(DomainId::of));
 
         var name = DeviceName.of(data.device.name);
 

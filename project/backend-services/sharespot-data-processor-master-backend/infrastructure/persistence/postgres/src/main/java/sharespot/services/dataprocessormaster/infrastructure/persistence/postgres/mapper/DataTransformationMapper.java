@@ -80,8 +80,7 @@ public class DataTransformationMapper {
             case PM2_5 -> PropertyNamePostgres.of(35);
             case PM10 -> PropertyNamePostgres.of(36);
             case DEVICE_DOWNLINK -> PropertyNamePostgres.of(37);
-            case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS, DEVICE_COMMANDS ->
-                    throw new RuntimeException();
+            case DOMAIN_OWNERSHIP, DEVICE_RECORDS, DEVICE_COMMANDS -> throw new RuntimeException();
         };
     }
 

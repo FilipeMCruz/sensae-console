@@ -76,7 +76,6 @@ public class GPSDataPublisher {
     }
 
     private Predicate<? super ProcessedSensorDataDTO> withDomain(List<UUID> domainIds) {
-        return s -> s.device.domains.readWrite.stream().anyMatch(domainIds::contains) ||
-                s.device.domains.read.stream().anyMatch(domainIds::contains);
+        return s -> s.device.domains.ownership.stream().anyMatch(domainIds::contains);
     }
 }

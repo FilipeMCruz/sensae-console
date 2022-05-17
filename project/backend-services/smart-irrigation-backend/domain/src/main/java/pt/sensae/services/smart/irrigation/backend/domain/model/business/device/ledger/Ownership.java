@@ -11,9 +11,4 @@ public record Ownership(Set<DomainId> value) {
     public static Ownership of(Stream<DomainId> value) {
         return new Ownership(value.collect(Collectors.toSet()));
     }
-
-    public Ownership and(Stream<DomainId> value) {
-        this.value.addAll(value.collect(Collectors.toSet()));
-        return this;
-    }
 }

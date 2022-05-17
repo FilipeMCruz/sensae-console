@@ -37,8 +37,7 @@ Internally data is handled using [protobuf](https://github.com/protocolbuffers/p
       }
     ],
     "domains": {
-      "read": ["[uuid]"],
-      "readWrite": ["[uuid]"]
+      "ownership": ["[uuid]"]
     },
     "commands": {
       "[int]": [
@@ -157,8 +156,7 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
       }
     ],
     "domains": {
-      "read": ["[rejected]"],
-      "readWrite": ["[rejected]"]
+      "ownership": ["[rejected]"]
     },
     "commands": {
       "[optional]": [

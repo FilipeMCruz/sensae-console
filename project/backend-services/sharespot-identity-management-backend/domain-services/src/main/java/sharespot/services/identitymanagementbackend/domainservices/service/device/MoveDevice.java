@@ -44,8 +44,7 @@ public class MoveDevice {
         var device = deviceRepo.findDeviceById(deviceId)
                 .orElseThrow(NotValidException.withMessage("Invalid Device"));
 
-        device.getDomains().add(new DeviceDomainPermissions(domainId, command.writePermission ?
-                DevicePermissions.READ_WRITE : DevicePermissions.READ));
+        device.getDomains().add(new DeviceDomainPermissions(domainId, DevicePermissions.READ_WRITE));
 
         var relocateDevice = deviceRepo.relocateDevice(device);
         return DeviceResultMapper.toResult(relocateDevice);

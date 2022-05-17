@@ -54,7 +54,6 @@ export interface AddDeviceQueryDTO {
 export interface AddDeviceToDomainDTO {
   deviceOid: string;
   domainOid: string;
-  writePermission: boolean;
 }
 
 export interface RemoveTenantResultDTO {
@@ -126,10 +125,4 @@ export interface DeviceDTO {
 
 export interface DeviceDomainPermissionDTO {
   oid: string;
-  permission: DevicePermissionDTO;
-}
-
-export enum DevicePermissionDTO {
-  READ,
-  READ_WRITE,
 }

@@ -35,13 +35,11 @@ export class QueryMapper {
   static toAddDevice(
     deviceId: string,
     domainId: string,
-    write: boolean
   ): AddDeviceQueryDTO {
     return {
       instructions: {
         deviceOid: deviceId,
         domainOid: domainId,
-        writePermission: write,
       },
     };
   }

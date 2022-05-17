@@ -21,7 +21,6 @@ public class DeviceMapperImpl implements DeviceMapper {
         var command = new PlaceDeviceInDomainCommand();
         command.newDomain = UUID.fromString(info.domainOid);
         command.device = UUID.fromString(info.deviceOid);
-        command.writePermission = info.writePermission;
         return command;
     }
 
@@ -41,8 +40,6 @@ public class DeviceMapperImpl implements DeviceMapper {
         dto.domains = result.domains.stream().map(d -> {
             var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTOImpl();
             deviceDomainPermissionsDTO.oid = d.oid;
-            deviceDomainPermissionsDTO.permissions = d.permissions.equals(DevicePermissionsResult.READ) ?
-                    DevicePermissionsDTOImpl.READ : DevicePermissionsDTOImpl.READ_WRITE;
             return deviceDomainPermissionsDTO;
         }).toList();
         return dto;

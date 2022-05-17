@@ -2,7 +2,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.device.DeviceMapper;
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.ExpelDeviceFromDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DevicePermissionsResult;
@@ -35,8 +35,8 @@ public class DeviceMapperImpl implements DeviceMapper {
     }
 
     @Override
-    public DeviceDTO resultToDto(DeviceResult result) {
-        var dto = new DeviceDTOImpl();
+    public DeviceIdDTO resultToDto(DeviceResult result) {
+        var dto = new DeviceIdDTOImpl();
         dto.oid = result.oid;
         dto.domains = result.domains.stream().map(d -> {
             var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTOImpl();

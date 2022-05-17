@@ -46,4 +46,11 @@ public class DeviceRepositoryImpl implements DeviceRepository {
                 .stream()
                 .map(DeviceMapper::postgresToDomain);
     }
+
+    @Override
+    public Device add(Device device) {
+        var devicePostgres = DeviceMapper.domainToPostgres(device);
+        var saved = repository.save(devicePostgres);
+        return DeviceMapper.postgresToDomain(saved);
+    }
 }

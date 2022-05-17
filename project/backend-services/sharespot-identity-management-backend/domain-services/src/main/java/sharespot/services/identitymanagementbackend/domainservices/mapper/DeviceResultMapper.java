@@ -16,8 +16,6 @@ public class DeviceResultMapper {
                 .map(d -> {
                     var deviceDomainPermissions = new DeviceDomainPermissionsResult();
                     deviceDomainPermissions.oid = d.domain().value().toString();
-                    deviceDomainPermissions.permissions = d.permissions().equals(DevicePermissions.READ) ?
-                            DevicePermissionsResult.READ : DevicePermissionsResult.READ_WRITE;
                     return deviceDomainPermissions;
                 }).toList();
         return deviceResult;

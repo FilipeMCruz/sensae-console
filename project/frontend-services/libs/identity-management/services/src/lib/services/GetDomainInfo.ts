@@ -32,7 +32,6 @@ export class GetDomainInfo {
             oid
             domains {
               oid
-              permission
             }
           }
           tenants {

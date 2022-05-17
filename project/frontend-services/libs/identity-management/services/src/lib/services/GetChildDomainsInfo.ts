@@ -1,22 +1,23 @@
-import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
-import { AuthService } from '@frontend-services/simple-auth-lib';
-import { filter, map } from 'rxjs/operators';
-import { extract, isNonNull } from '@frontend-services/core';
-import { ViewChildDomainInfoResultDTO } from '@frontend-services/identity-management/dto';
+import {Injectable} from '@angular/core';
+import {Apollo, gql} from 'apollo-angular';
+import {Observable} from 'rxjs';
+import {HttpHeaders} from '@angular/common/http';
+import {AuthService} from '@frontend-services/simple-auth-lib';
+import {filter, map} from 'rxjs/operators';
+import {extract, isNonNull} from '@frontend-services/core';
+import {ViewChildDomainInfoResultDTO} from '@frontend-services/identity-management/dto';
 import {
   DomainMapper,
   QueryMapper,
 } from '@frontend-services/identity-management/mapper';
-import { DomainInfo } from '@frontend-services/identity-management/model';
+import {DomainInfo} from '@frontend-services/identity-management/model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GetChildDomainsInfo {
-  constructor(private apollo: Apollo, private auth: AuthService) {}
+  constructor(private apollo: Apollo, private auth: AuthService) {
+  }
 
   query(domainId: string): Observable<Array<DomainInfo>> {
     const query = gql`
@@ -32,7 +33,6 @@ export class GetChildDomainsInfo {
             oid
             domains {
               oid
-              permission
             }
           }
           tenants {

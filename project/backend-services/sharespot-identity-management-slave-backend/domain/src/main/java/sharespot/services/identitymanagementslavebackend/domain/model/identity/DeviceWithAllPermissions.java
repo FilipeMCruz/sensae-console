@@ -4,30 +4,24 @@ import sharespot.services.identitymanagementslavebackend.domain.model.identity.d
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.domain.DomainId;
 
 import java.util.List;
+import java.util.Set;
 
 public class DeviceWithAllPermissions {
 
     private final DeviceId oid;
 
-    private final List<DomainId> readDomains;
+    private final Set<DomainId> ownerDomains;
 
-    private final List<DomainId> readWriteDomains;
-
-    public DeviceWithAllPermissions(DeviceId oid, List<DomainId> readDomains, List<DomainId> readWriteDomains) {
+    public DeviceWithAllPermissions(DeviceId oid, Set<DomainId> ownerDomains) {
         this.oid = oid;
-        this.readDomains = readDomains;
-        this.readWriteDomains = readWriteDomains;
+        this.ownerDomains = ownerDomains;
     }
 
     public DeviceId getOid() {
         return oid;
     }
 
-    public List<DomainId> getReadDomains() {
-        return readDomains;
-    }
-
-    public List<DomainId> getReadWriteDomains() {
-        return readWriteDomains;
+    public Set<DomainId> getOwnerDomains() {
+        return ownerDomains;
     }
 }

@@ -8,9 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.buf.mapper.MessageMapper;
-import pt.sharespot.iot.core.buf.model.UnprocessedMessage;
-import pt.sharespot.iot.core.routing.MessageConsumed;
+import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
+import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.dataprocessor.application.SensorDataHandlerService;
 
 @Service
@@ -18,7 +17,7 @@ public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
+    public static final String INGRESS_QUEUE = "sensor.data.processor.slave.queue";
 
     private final SensorDataHandlerService handler;
 
@@ -30,7 +29,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException, JsonProcessingException {
         var consumed = MessageMapper.toUnprocessedModel(in.getBody());
         logConsumedMessage(consumed);
-        handler.publish(consumed);
+        handler.info(consumed);
     }
 
     private void logConsumedMessage(MessageConsumed<ObjectNode> in) {

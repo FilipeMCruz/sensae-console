@@ -13,4 +13,6 @@ public interface DeviceRepository {
     Device relocateDevice(Device tenant);
 
     Stream<Device> getDevicesInDomain(DomainId domain);
+
+    Device add(Device device);
 }

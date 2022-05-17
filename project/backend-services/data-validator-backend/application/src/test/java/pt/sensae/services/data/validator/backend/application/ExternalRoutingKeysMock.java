@@ -1,14 +1,14 @@
 package pt.sensae.services.data.validator.backend.application;
 
-import pt.sharespot.iot.core.routing.keys.ContainerTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeysFactory;
 
 public class ExternalRoutingKeysMock implements RoutingKeysProvider {
 
     @Override
-    public RoutingKeys.RoutingKeysBuilder getBuilder(RoutingKeysBuilderOptions options) {
-        return new RoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_PROCESSOR, options);
+    public SensorRoutingKeys.Builder getBuilder(RoutingKeysBuilderOptions options) {
+        return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_PROCESSOR, options);
     }
 }

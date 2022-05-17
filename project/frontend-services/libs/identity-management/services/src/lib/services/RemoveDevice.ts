@@ -23,7 +23,6 @@ export class RemoveDevice {
           oid
           domains {
             oid
-            permission
           }
         }
       }

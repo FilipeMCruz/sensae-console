@@ -1,9 +1,9 @@
 package pt.sensae.services.device.management.master.backend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
+import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.device.management.master.backend.domainservices.RecordHoarder;
 
 @Service
@@ -13,13 +13,13 @@ public class RecordRegisterService {
 
     private final RecordMapper mapper;
 
-    private final RecordEventHandlerService publisher;
+    private final DeviceInformationEventHandlerService publisher;
 
     private final TokenExtractor authHandler;
 
     public RecordRegisterService(RecordHoarder hoarder,
                                  RecordMapper mapper,
-                                 RecordEventHandlerService publisher,
+                                 DeviceInformationEventHandlerService publisher,
                                  TokenExtractor authHandler) {
         this.hoarder = hoarder;
         this.mapper = mapper;
@@ -27,14 +27,13 @@ public class RecordRegisterService {
         this.authHandler = authHandler;
     }
 
-    public DeviceRecordDTO register(DeviceRecordDTO dto, AccessTokenDTO claims) {
+    public DeviceInformationDTO register(DeviceInformationDTO dto, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("device_management:device:edit"))
             throw new UnauthorizedException("No Permissions");
 
-        var deviceRecords = mapper.dtoToDomain(dto);
-        hoarder.hoard(deviceRecords);
-        publisher.publishUpdate(deviceRecords.device().id());
+        var hoard = hoarder.hoard(mapper.dtoToDomain(dto));
+        publisher.publishUpdate(hoard);
         return dto;
     }
 }

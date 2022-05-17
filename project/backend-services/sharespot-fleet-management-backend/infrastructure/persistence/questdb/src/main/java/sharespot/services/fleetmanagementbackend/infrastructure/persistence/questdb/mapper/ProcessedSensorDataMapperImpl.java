@@ -2,14 +2,14 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 
 import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.data.types.MotionDataDTO;
-import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.device.domains.DeviceDomainPermissionsDTO;
-import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.MotionDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.sensor.model.device.domains.DeviceDomainPermissionsDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
 
 import java.sql.ResultSet;
@@ -30,13 +30,14 @@ public class ProcessedSensorDataMapperImpl {
         dao.deviceName = String.valueOf(in.device.name);
         dao.reportedAt = Timestamp.from(Instant.ofEpochMilli(in.reportedAt));
         dao.motion = toDAO(in);
-        dao.gpsData = GeoHash.withCharacterPrecision(in.getSensorData().gps.latitude, in.getSensorData().gps.longitude, 12).toBase32();
+        dao.gpsData = GeoHash.withCharacterPrecision(in.getSensorData().gps.latitude, in.getSensorData().gps.longitude, 12)
+                .toBase32();
         return dao;
     }
 
     public List<ProcessedSensorDataDAOImpl> dtoToDao(ProcessedSensorDataDTO in) {
         var dao = dtoToSingleDao(in);
-        return Stream.concat(in.device.domains.read.stream(), in.device.domains.readWrite.stream())
+        return in.device.domains.ownership.stream()
                 .map(domain -> dao.cloneWithDomain(domain.toString()))
                 .distinct()
                 .toList();
@@ -61,7 +62,7 @@ public class ProcessedSensorDataMapperImpl {
         device.name = dao.deviceName;
         device.records = new DeviceRecordDTO(new HashSet<>());
         device.domains = new DeviceDomainPermissionsDTO();
-        device.domains.read = Set.of(UUID.fromString(dao.domainId));
+        device.domains.ownership = Set.of(UUID.fromString(dao.domainId));
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
         var details = new SensorDataDetailsDTO()
                 .withGps(GPSDataDTO.ofLatLong(originatingPoint.getLatitude(), originatingPoint.getLongitude()))

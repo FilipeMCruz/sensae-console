@@ -2,7 +2,6 @@
 
 skinparam Monochrome true
 hide empty members
-left to right direction
 
 class Domain
 
@@ -10,32 +9,48 @@ class Tenant
 
 class Device
 
-enum OwnershipType {
-    READ
-    READ_WRITE
-}
-
 enum PermissionType {
-    READ_DEVICE_RECORD
-    WRITE_DEVICE_RECORD
+    READ_DEVICE_INFORMATION
+    DELETE_DEVICE_INFORMATION
+    EDIT_DEVICE_INFORMATION
+
     READ_DATA_TRANSFORMATION
-    WRITE_DATA_TRANSFORMATION
+    DELETE_DATA_TRANSFORMATION
+    EDIT_DATA_TRANSFORMATION
+
     READ_DATA_DECODER
-    WRITE_DATA_DECODER
-    READ_FLEET_MANAGEMENT
-    WRITE_DOMAIN
+    EDIT_DATA_DECODER
+    DELETE_DATA_DECODER
+
+    EDIT_DOMAIN
+    CREATE_DOMAIN
     READ_DOMAIN
-    WRITE_DEVICE
+
+    EDIT_DEVICE
     READ_DEVICE
-    WRITE_TENANT
+
+    EDIT_TENANT
     READ_TENANT
+
+    READ_LIVE_DATA_FLEET_MANAGEMENT
+    READ_LATEST_DATA_FLEET_MANAGEMENT
+    READ_PAST_DATA_FLEET_MANAGEMENT
+
+    CREATE_GARDEN_SMART_IRRIGATION
+    EDIT_GARDEN_SMART_IRRIGATION
+    DELETE_GARDEN_SMART_IRRIGATION
+    READ_GARDEN_SMART_IRRIGATION
+
+    READ_LIVE_DATA_SMART_IRRIGATION
+    READ_LATEST_DATA_SMART_IRRIGATION
+    READ_PAST_DATA_SMART_IRRIGATION
+
+    CONTROL_VALVE_SMART_IRRIGATION
 }
 
 Domain "*" -- "1" Tenant: is registered in <
-Device "*" -- "1" Domain: belongs to >
+Domain "1" -- "*" Device: belongs to <
 Domain "1" -- "*" PermissionType: has >
 Domain "1" -- "0..1" Domain: parent >
-
-(Domain, Device) .. OwnershipType
 
 @enduml

@@ -3,10 +3,10 @@ package pt.sensae.services.data.validator.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.data.validator.backend.application.validators.DataValidator;
 import pt.sensae.services.data.validator.backend.application.validators.ValidatorsFactory;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ public class DataValidatorService {
         this.validators = ValidatorsFactory.buildValidators();
     }
 
-    public Optional<RoutingKeys> decide(ProcessedSensorDataDTO data, RoutingKeys keys) {
+    public Optional<SensorRoutingKeys> decide(ProcessedSensorDataDTO data, SensorRoutingKeys keys) {
         var outcomes = validators.stream().map(v -> v.validate(data)).toList();
         if (outcomes.contains(DataLegitimacyOptions.UNDETERMINED)) {
             return keysWith(data, keys, DataLegitimacyOptions.UNDETERMINED);
@@ -34,7 +34,7 @@ public class DataValidatorService {
         }
     }
 
-    private Optional<RoutingKeys> keysWith(ProcessedSensorDataDTO data, RoutingKeys keys, DataLegitimacyOptions legitimacyOptions) {
+    private Optional<SensorRoutingKeys> keysWith(ProcessedSensorDataDTO data, SensorRoutingKeys keys, DataLegitimacyOptions legitimacyOptions) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .withLegitimacyType(legitimacyOptions)

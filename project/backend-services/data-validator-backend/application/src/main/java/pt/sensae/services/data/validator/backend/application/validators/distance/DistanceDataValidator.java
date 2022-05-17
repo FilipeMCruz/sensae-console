@@ -1,9 +1,9 @@
 package pt.sensae.services.data.validator.backend.application.validators.distance;
 
 import pt.sensae.services.data.validator.backend.application.validators.DataValidator;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 
 public class DistanceDataValidator implements DataValidator {
 

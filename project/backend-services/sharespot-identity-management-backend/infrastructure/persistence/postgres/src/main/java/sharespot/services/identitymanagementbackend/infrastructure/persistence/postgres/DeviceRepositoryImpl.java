@@ -31,7 +31,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     @Transactional
     public Device relocateDevice(Device device) {
         var domains = DeviceMapper.domainToPostgres(device).devicePermissions;
-        repository.findByOid(device.getOid().value().toString()).ifPresent(devicePostgres -> {
+        repository.findByOid(device.oid().value().toString()).ifPresent(devicePostgres -> {
             devicePostgres.devicePermissions.clear();
             devicePostgres.devicePermissions.addAll(domains);
             devicePostgres.devicePermissions.forEach(d -> d.device = devicePostgres);
@@ -45,5 +45,12 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         return repository.findByDomainId(domain.value().toString())
                 .stream()
                 .map(DeviceMapper::postgresToDomain);
+    }
+
+    @Override
+    public Device add(Device device) {
+        var devicePostgres = DeviceMapper.domainToPostgres(device);
+        var saved = repository.save(devicePostgres);
+        return DeviceMapper.postgresToDomain(saved);
     }
 }

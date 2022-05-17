@@ -1,72 +1,45 @@
 package pt.sensae.services.device.management.slave.backend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.routing.MessageConsumed;
-import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.*;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import reactor.core.publisher.ConnectableFlux;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
-
-import javax.annotation.PostConstruct;
-import java.util.Optional;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.Device;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceDownlink;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
+import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
+import pt.sensae.services.device.management.slave.backend.domainservices.DeviceInformationCache;
+import pt.sensae.services.device.management.slave.backend.domainservices.UnhandledSensorDataCache;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Service
 public class SensorDataHandlerService {
 
-    private FluxSink<MessageSupplied<ProcessedSensorDataDTO>> dataStream;
+    private final DeviceInformationCache cache;
 
-    private ConnectableFlux<MessageSupplied<ProcessedSensorDataDTO>> dataPublisher;
+    private final UnhandledSensorDataCache unhandledSensorDataCache;
 
-    private final RecordAppenderService appender;
-    private final RoutingKeysProvider provider;
+    private final SensorDataPublisherService dataPublisher;
 
-    public SensorDataHandlerService(RecordAppenderService appender, RoutingKeysProvider provider) {
-        this.appender = appender;
-        this.provider = provider;
+    private final SensorDataNotificationPublisherService notificationPublisher;
+
+    public SensorDataHandlerService(DeviceInformationCache cache,
+                                    UnhandledSensorDataCache unhandledSensorDataCache,
+                                    SensorDataPublisherService handler,
+                                    SensorDataNotificationPublisherService notificationPublisher) {
+        this.cache = cache;
+        this.unhandledSensorDataCache = unhandledSensorDataCache;
+        this.dataPublisher = handler;
+        this.notificationPublisher = notificationPublisher;
     }
 
-    @PostConstruct
-    public void init() {
-        Flux<MessageSupplied<ProcessedSensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
-
-        dataPublisher = publisher.publish();
-        dataPublisher.connect();
-    }
-
-    public Flux<MessageSupplied<ProcessedSensorDataDTO>> getSinglePublisher() {
-        return dataPublisher;
-    }
-
-    public void publish(MessageConsumed<ProcessedSensorDataDTO> message) {
-        message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
-    }
-
-    private Optional<ProcessedSensorDataDTO> inToOutData(ProcessedSensorDataDTO node, RoutingKeys keys) {
-        var deviceWithSubDevices = appender.tryToAppend(node);
-        deviceWithSubDevices.sensors().forEach(sub -> this.publishSubSensor(sub, keys));
-        return Optional.ofNullable(deviceWithSubDevices.controller());
-    }
-
-    public void publishSubSensor(ProcessedSensorDataDTO data, RoutingKeys keys) {
-        subSensorInToOutKeys(data, keys)
-                .map(sub -> MessageSupplied.create(data, sub))
-                .ifPresent(dataStream::next);
-    }
-
-    private Optional<RoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
-        return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withUpdated(data)
-                .withRecords(RecordsOptions.WITH_RECORDS)
-                .from(keys);
-    }
-
-    private Optional<RoutingKeys> subSensorInToOutKeys(ProcessedSensorDataDTO data, RoutingKeys keys) {
-        return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withUpdated(data)
-                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
-                .withOwnership(DomainOwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
-                .from(keys);
+    public void info(MessageConsumed<ProcessedSensorDataDTO> message) {
+        var deviceId = new DeviceId(message.data.device.id);
+        var device = new Device(deviceId, new DeviceName(message.data.device.name), new DeviceDownlink(message.data.device.downlink));
+        if (cache.findById(deviceId).isPresent()) {
+            dataPublisher.publish(message);
+            notificationPublisher.publishPing(device);
+        } else {
+            unhandledSensorDataCache.insert(message, deviceId);
+            notificationPublisher.publishRequest(device);
+        }
     }
 }

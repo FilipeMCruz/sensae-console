@@ -2,8 +2,9 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
-import pt.sensae.services.device.management.master.backend.application.DeviceRecordDTO;
+import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
 import pt.sensae.services.device.management.master.backend.application.RecordMapper;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 public class RecordMapperImpl implements RecordMapper {
 
     @Override
-    public DeviceInformation dtoToDomain(DeviceRecordDTO dto) {
+    public DeviceInformation dtoToDomain(DeviceInformationDTO dto) {
         var deviceDTO = (DeviceRecordDTOImpl) dto;
 
         List<RecordEntry> records = deviceDTO.entries.stream()
@@ -96,7 +97,7 @@ public class RecordMapperImpl implements RecordMapper {
     }
 
     @Override
-    public DeviceRecordDTO domainToDto(DeviceInformation domain) {
+    public DeviceInformationDTO domainToDto(DeviceInformation domain) {
         var dto = new DeviceRecordDTOImpl();
         var deviceDTO = new DeviceDTOImpl();
         deviceDTO.id = domain.device().id().value().toString();

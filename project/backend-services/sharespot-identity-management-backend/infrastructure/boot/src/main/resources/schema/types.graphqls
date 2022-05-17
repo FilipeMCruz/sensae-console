@@ -16,7 +16,6 @@ input ViewDomain {
 input AddDeviceToDomain {
     deviceOid: String
     domainOid: String
-    writePermission: Boolean
 }
 
 input RemoveDeviceFromDomain {
@@ -64,10 +63,4 @@ type Device {
 
 type DeviceDomainPermission {
     oid: String
-    permission: DevicePermission
-}
-
-enum DevicePermission {
-    READ,
-    READ_WRITE
 }

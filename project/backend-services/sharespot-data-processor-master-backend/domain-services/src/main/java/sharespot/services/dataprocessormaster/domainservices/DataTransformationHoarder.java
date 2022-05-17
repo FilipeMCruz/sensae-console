@@ -13,7 +13,7 @@ public class DataTransformationHoarder {
         this.repository = repository;
     }
 
-    public void hoard(DataTransformation records) {
-        this.repository.save(records);
+    public DataTransformation hoard(DataTransformation records) {
+        return this.repository.save(records);
     }
 }

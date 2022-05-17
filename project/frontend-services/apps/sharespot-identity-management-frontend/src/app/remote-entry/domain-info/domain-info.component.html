@@ -83,9 +83,6 @@
         >
           <mat-icon mat-list-icon>sensors</mat-icon>
           <div mat-line><strong>Id: </strong>{{ device.id }}</div>
-          <div mat-line>
-            <strong>Domain Permission: </strong>{{ getPermission(device) }}
-          </div>
           <button
             mat-icon-button
             #trigger="matMenuTrigger"
@@ -102,9 +99,6 @@
         >
           <mat-icon mat-list-icon>sensors</mat-icon>
           <div mat-line><strong>Id: </strong>{{ device.id }}</div>
-          <div mat-line>
-            <strong>Domain Permission: </strong>{{ getPermission(device) }}
-          </div>
         </mat-list-item>
       </mat-nav-list>
       <mat-menu #deviceMenu="matMenu">
@@ -115,14 +109,7 @@
               [matMenuTriggerFor]="domainDeviceReadMenu"
               [matMenuTriggerData]="{ device: device }"
             >
-              Add to other Domain w/ R
-            </button>
-            <button
-              mat-menu-item
-              [matMenuTriggerFor]="domainDeviceWriteMenu"
-              [matMenuTriggerData]="{ device: device }"
-            >
-              Add to other Domain w/ WR
+              Add to other Domain
             </button>
           </ng-container>
           <button mat-menu-item (click)="removeDevice(device)">
@@ -135,18 +122,7 @@
           <button
             mat-menu-item
             *ngFor="let domain of getValidDomainsForDevice(device)"
-            (click)="addDevice(device, domain, false)"
-          >
-            {{ domain.domain.name }}
-          </button>
-        </ng-template>
-      </mat-menu>
-      <mat-menu #domainDeviceWriteMenu="matMenu">
-        <ng-template matMenuContent let-device="device">
-          <button
-            mat-menu-item
-            *ngFor="let domain of getValidDomainsForDevice(device)"
-            (click)="addDevice(device, domain, true)"
+            (click)="addDevice(device, domain)"
           >
             {{ domain.domain.name }}
           </button>

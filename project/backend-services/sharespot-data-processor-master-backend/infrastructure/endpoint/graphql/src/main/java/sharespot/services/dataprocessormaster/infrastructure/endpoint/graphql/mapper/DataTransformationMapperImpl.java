@@ -1,10 +1,10 @@
 package sharespot.services.dataprocessormaster.infrastructure.endpoint.graphql.mapper;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.properties.KnownPropertyTransformation;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformation;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformations;
+import pt.sharespot.iot.core.sensor.model.properties.KnownPropertyTransformation;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformation;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
 import sharespot.services.dataprocessormaster.application.DataTransformationDTO;
 import sharespot.services.dataprocessormaster.application.DataTransformationMapper;
 import sharespot.services.dataprocessormaster.application.SensorTypeIdDTO;

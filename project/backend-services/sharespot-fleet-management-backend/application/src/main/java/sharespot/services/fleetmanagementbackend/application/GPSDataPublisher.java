@@ -1,7 +1,7 @@
 package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.stereotype.Component;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -76,7 +76,6 @@ public class GPSDataPublisher {
     }
 
     private Predicate<? super ProcessedSensorDataDTO> withDomain(List<UUID> domainIds) {
-        return s -> s.device.domains.readWrite.stream().anyMatch(domainIds::contains) ||
-                s.device.domains.read.stream().anyMatch(domainIds::contains);
+        return s -> s.device.domains.ownership.stream().anyMatch(domainIds::contains);
     }
 }

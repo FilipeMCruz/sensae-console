@@ -8,14 +8,14 @@ import pt.sensae.services.device.management.slave.backend.domain.model.records.B
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordEntry;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordLabel;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.device.controls.DeviceCommandDTO;
-import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
-import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.sensor.model.device.controls.DeviceCommandDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 import java.util.*;
 import java.util.stream.Collectors;

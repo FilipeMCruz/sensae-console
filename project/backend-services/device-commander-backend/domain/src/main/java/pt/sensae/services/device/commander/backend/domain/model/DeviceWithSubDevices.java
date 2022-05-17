@@ -1,6 +1,6 @@
 package pt.sensae.services.device.commander.backend.domain.model;
 
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 
 import java.util.List;
 

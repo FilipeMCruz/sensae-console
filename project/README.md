@@ -56,7 +56,7 @@ export const environment = {
   endpoints: {
     fleetManagement: {
       backend: {
-        domain: "localhost:8086",
+        domain: "localhost:8800",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -83,7 +83,7 @@ export const environment = {
   endpoints: {
     smartIrrigation: {
       backend: {
-        domain: "localhost:8098",
+        domain: "localhost:8801",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -110,7 +110,7 @@ export const environment = {
   endpoints: {
     deviceRecords: {
       backend: {
-        domain: "localhost:8085",
+        domain: "localhost:8088",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -129,7 +129,7 @@ export const environment = {
   endpoints: {
     dataProcessor: {
       backend: {
-        domain: "localhost:8083",
+        domain: "localhost:8082",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -148,7 +148,7 @@ export const environment = {
   endpoints: {
     dataDecoder: {
       backend: {
-        domain: "localhost:8092",
+        domain: "localhost:8084",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -167,7 +167,7 @@ export const environment = {
   endpoints: {
     identity: {
       backend: {
-        domain: "localhost:8090",
+        domain: "localhost:8086",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -186,7 +186,7 @@ export const environment = {
   endpoints: {
     deviceRecords: {
       backend: {
-        domain: "localhost:8085",
+        domain: "localhost:8088",
         http: {
           scheme: 'http://',
           path: "/graphql"
@@ -195,7 +195,7 @@ export const environment = {
     },
     dataProcessor: {
       backend: {
-        domain: "localhost:8083",
+        domain: "localhost:8082",
         http: {
           scheme: 'http://',
           path: "/graphql"
@@ -204,7 +204,7 @@ export const environment = {
     },
     dataDecoder: {
       backend: {
-        domain: "localhost:8092",
+        domain: "localhost:8084",
         http: {
           scheme: 'http://',
           path: "/graphql"
@@ -213,7 +213,7 @@ export const environment = {
     },
     fleetManagement: {
       backend: {
-        domain: "localhost:8086",
+        domain: "localhost:8800",
         http: {
           scheme: 'http://',
           path: "/graphql"
@@ -226,7 +226,7 @@ export const environment = {
     },
     identity: {
       backend: {
-        domain: "localhost:8090",
+        domain: "localhost:8086",
         http: {
           scheme: 'http://',
           path: "/graphql"
@@ -235,7 +235,7 @@ export const environment = {
     },
     smartIrrigation: {
       backend: {
-        domain: "localhost:8098",
+        domain: "localhost:8801",
         http: {
           scheme: "http://",
           path: "/graphql"
@@ -255,7 +255,7 @@ File: `project/secrets/dev/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder, smart-irrigation and device-commander backends>
+POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder and smart-irrigation backends>
 ```
 
 File: `project/secrets/dev/sharespot-data-store-database.env`
@@ -279,7 +279,7 @@ db.createUser({
 File: `project/backend-services/sharespot-data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8083
+server.port=8082
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -316,20 +316,12 @@ spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/transformations
-spring.datasource.username=user
-spring.datasource.password=<key to exchange with sharespot-common-database>
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
 File: `project/backend-services/sharespot-data-decoder-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8088
+server.port=8084
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -360,27 +352,18 @@ sensae.auth.audience=<website domain that consumes jwt>
 File: `project/backend-services/sharespot-data-decoder-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8089
+server.port=8083
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/decoder
-spring.datasource.username=user
-spring.datasource.password=<key to exchange with sharespot-common-database>
-
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
 File: `project/backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8087
+server.port=8091
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -400,7 +383,7 @@ spring.data.mongodb.password=<key to exchange with data store database mongodb>
 File: `project/backend-services/device-management-master-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8085
+server.port=8088
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -431,20 +414,12 @@ sensae.auth.audience=<website domain that consumes jwt>
 File: `project/backend-services/device-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8086
+server.port=8087
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/records
-spring.datasource.username=user
-spring.datasource.password=<key to exchange with sharespot-common-database>
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
 File: `project/backend-services/sharespot-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties`
@@ -463,7 +438,7 @@ sharespot.auth.key=<auth key to authenticate requests>
 File: `project/backend-services/data-validator-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8093
+server.port=8089
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -474,7 +449,7 @@ spring.rabbitmq.password=guest
 File: `project/backend-services/sharespot-fleet-management-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8085
+server.port=8800
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -497,7 +472,7 @@ sensae.auth.audience=<website domain that consumes jwt>
 File: `project/backend-services/sharespot-identity-management-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8090
+server.port=8086
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -532,45 +507,29 @@ sensae.auth.external.audience=<registered app id in identity provider service>
 File: `project/backend-services/sharespot-identity-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8091
+server.port=8085
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/identity
-spring.datasource.username=user
-spring.datasource.password=<key to exchange with sharespot-common-database>
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
 File: `project/backend-services/device-commander-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8082
+server.port=8090
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
 spring.rabbitmq.username=guest
 spring.rabbitmq.password=guest
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/records
-spring.datasource.username=user
-spring.datasource.password=<key to exchange with sharespot-common-database>
-spring.jpa.show-sql=true
-spring.jpa.generate-ddl=true
-spring.jpa.hibernate.ddl-auto=validate
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
 ```
 
 File: `project/backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties`
 
 ``` conf
-server.port=8098
+server.port=8801
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -836,12 +795,15 @@ File. `project/secrets/prod/sharespot-common-database.env`
 
 ``` conf
 POSTGRES_USER=user
-POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder, smart-irrigation and device-commander backends>
+POSTGRES_PASSWORD=<key to exchange with device-management, identity-management, data-processor, data-decoder and smart-irrigation backends>
 ```
 
 File. `project/secrets/prod/sharespot-data-decoder-master-backend.env`
 
 ``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/decoder
 SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
@@ -854,14 +816,16 @@ SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 File. `project/secrets/prod/sharespot-data-decoder-slave-backend.env`
 
 ``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/decoder
-SPRING_DATASOURCE_USERNAME=user
-SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```
 
 File. `project/secrets/prod/sharespot-data-processor-master-backend.env`
 
 ``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/transformations
 SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
@@ -874,14 +838,16 @@ SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 File. `project/secrets/prod/sharespot-data-processor-slave-backend.env`
 
 ``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/transformations
-SPRING_DATASOURCE_USERNAME=user
-SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```
 
 File. `project/secrets/prod/sharespot-data-store-backend.env`
 
 ``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
 SPRING_DATA_MONGODB_DATABASE=data
 SPRING_DATA_MONGODB_PORT=27017
 SPRING_DATA_MONGODB_HOST=sharespot-data-store-database
@@ -892,6 +858,9 @@ SPRING_DATA_MONGODB_PASSWORD=<key to exchange with data-store>
 File. `project/secrets/prod/sharespot-data-store-database.env`
 
 ``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
 MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_ROOT_PASSWORD=<key to exchange with data-store>
 MONGO_INITDB_DATABASE=data
@@ -900,6 +869,9 @@ MONGO_INITDB_DATABASE=data
 File. `project/secrets/prod/device-management-master-backend.env`
 
 ``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
 SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
 SPRING_DATASOURCE_USERNAME=user
 SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
@@ -912,17 +884,15 @@ SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 File. `project/secrets/prod/device-management-slave-backend.env`
 
 ``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
-SPRING_DATASOURCE_USERNAME=user
-SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```
 
 File. `project/secrets/prod/device-commander-backend.env`
 
 ``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/records
-SPRING_DATASOURCE_USERNAME=user
-SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```
 
 File. `project/secrets/prod/sharespot-data-gateway.env`
@@ -954,9 +924,8 @@ SENSAE_AUTH_EXTERNAL_AUDIENCE=<registered app id in identity provider service>
 File. `project/secrets/prod/sharespot-identity-management-slave-backend.env`
 
 ``` conf
-SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/identity
-SPRING_DATASOURCE_USERNAME=user
-SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
 ```
 
 File. `project/secrets/prod/data-validator-backend.env`
@@ -981,7 +950,7 @@ SENSAE_AUTH_ISSUER=<website domain that generates jwt>
 SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```
 
-File. `project/secrets/prod/sharespot-fleet-management-backend.env`
+File. `project/secrets/prod/sharespot-smart-irrigation-backend.env`
 
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest

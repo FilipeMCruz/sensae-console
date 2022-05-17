@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.device.DeviceMapper;
 import sharespot.services.identitymanagementbackend.application.mapper.domain.DomainMapper;
 import sharespot.services.identitymanagementbackend.application.mapper.tenant.TenantMapper;
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.application.model.domain.ViewDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.domainservices.service.device.ViewDevicesInDomain;
@@ -29,7 +29,7 @@ public class ViewDevicesInDomainService {
         this.deviceMapper = deviceMapper;
     }
 
-    public Stream<DeviceDTO> fetch(ViewDomainDTO dto, AccessTokenDTO claims) {
+    public Stream<DeviceIdDTO> fetch(ViewDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var createDomainCommand = domainMapper.dtoToCommand(dto);
         return service.fetch(createDomainCommand, identityCommand)

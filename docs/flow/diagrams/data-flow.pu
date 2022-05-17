@@ -12,7 +12,7 @@ state "Data Decoder Slave" as Decoder
 state is_processed <<choice>>
 state "Identity Management Slave" as Identity
 state "Data Validator" as Validator
-state "Device Records Slave" as Records
+state "Device Management Slave" as Records
 state has_gps <<choice>>
 state "Fleet Management" as Fleet
 state "Smart Irrigation" as Irrigation

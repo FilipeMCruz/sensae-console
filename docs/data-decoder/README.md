@@ -4,7 +4,7 @@ This document describes how to create `data decoder`s according to the latest ve
 
 Current version:
 
-- `iot-core` : `0.1.15`
+- `iot-core` : `0.1.16`
 - `system` : `0.7.0`
 
 ## Introduction

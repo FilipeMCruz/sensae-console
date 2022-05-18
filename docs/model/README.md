@@ -4,7 +4,7 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.15`
+- `iot-core` : `0.1.16`
 - `system` : `0.7.0`
 
 ## Introduction

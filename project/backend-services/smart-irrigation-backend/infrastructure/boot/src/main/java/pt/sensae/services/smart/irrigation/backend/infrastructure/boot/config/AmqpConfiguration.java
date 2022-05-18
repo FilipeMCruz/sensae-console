@@ -59,7 +59,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange commandExchange() {
-        return new TopicExchange(DeviceCommandSupplier.COMMANDS_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.COMMAND_EXCHANGE);
     }
 
     @Bean

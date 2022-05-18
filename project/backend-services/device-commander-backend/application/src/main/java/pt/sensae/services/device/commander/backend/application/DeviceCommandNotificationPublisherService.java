@@ -28,10 +28,10 @@ public class DeviceCommandNotificationPublisherService {
                 .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .build();
-        if (request.isPresent()) {
-            this.requestKeys = request.get();
+        if (request.isEmpty()) {
+            throw new RuntimeException("Error creating Routing Keys");
         }
-        throw new RuntimeException("Error creating Routing Keys");
+        this.requestKeys = request.get();
     }
 
     @PostConstruct

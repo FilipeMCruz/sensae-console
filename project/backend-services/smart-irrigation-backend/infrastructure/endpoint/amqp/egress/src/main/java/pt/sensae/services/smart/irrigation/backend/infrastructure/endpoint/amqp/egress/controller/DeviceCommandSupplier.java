@@ -9,18 +9,17 @@ import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.smart.irrigation.backend.application.services.command.DeviceCommandPublisher;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.egress.model.DeviceCommandDTOImpl;
+import pt.sharespot.iot.core.IoTCoreTopic;
 
 @Component
 public class DeviceCommandSupplier {
-
-    public static final String COMMANDS_EXCHANGE = "commands.topic";
 
     Logger logger = LoggerFactory.getLogger(DeviceCommandSupplier.class);
 
     public DeviceCommandSupplier(AmqpTemplate template, ObjectMapper mapper, DeviceCommandPublisher service) {
         service.getPublisher().subscribe(command -> {
             try {
-                template.send(COMMANDS_EXCHANGE, "valve", new Message(mapper.writeValueAsBytes(command)));
+                template.convertAndSend(IoTCoreTopic.COMMAND_EXCHANGE, "valve", mapper.writeValueAsBytes(command));
                 logSuppliedCommand((DeviceCommandDTOImpl) command);
             } catch (JsonProcessingException ignore) {
             }

@@ -27,7 +27,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8079:8080
+      - 8080:8080
   sharespot-data-processor-slave-backend:
     build: backend-services/sharespot-data-processor-slave-backend
     image: sharespot-data-processor-slave-backend
@@ -38,7 +38,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8082:8080
+      - 8081:8080
   sharespot-data-processor-master-backend:
     build: backend-services/sharespot-data-processor-master-backend
     image: sharespot-data-processor-master-backend
@@ -51,7 +51,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8083:8080
+      - 8082:8080
   device-management-slave-backend:
     build: backend-services/device-management-slave-backend
     image: device-management-slave-backend
@@ -62,7 +62,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8084:8080
+      - 8087:8080
   device-commander-backend:
     build: backend-services/device-commander-backend
     image: device-commander-backend
@@ -73,7 +73,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8088:8080
+      - 8090:8080
   data-validator-backend:
     build: backend-services/data-validator-backend
     image: data-validator-backend
@@ -84,7 +84,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8095:8080
+      - 8089:8080
   device-management-master-backend:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend
@@ -97,7 +97,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8085:8080
+      - 8088:8080
   sharespot-fleet-management-backend:
     build: backend-services/sharespot-fleet-management-backend
     image: sharespot-fleet-management-backend
@@ -110,7 +110,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8086:8080
+      - 8800:8080
   smart-irrigation-backend:
     build: backend-services/smart-irrigation-backend
     container_name: smart-irrigation-backend
@@ -124,7 +124,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8098:8080
+      - 8801:8080
   sharespot-identity-management-backend:
     build: backend-services/sharespot-identity-management-backend
     image: sharespot-identity-management-backend
@@ -137,7 +137,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8090:8080
+      - 8086:8080
   sharespot-identity-management-slave-backend:
     build: backend-services/sharespot-identity-management-slave-backend
     image: sharespot-identity-management-slave-backend
@@ -148,7 +148,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8091:8080
+      - 8085:8080
   sharespot-data-decoder-master-backend:
     build: backend-services/sharespot-data-decoder-master-backend
     image: sharespot-data-decoder-master-backend
@@ -161,7 +161,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8092:8080
+      - 8084:8080
   sharespot-data-decoder-slave-backend:
     build: backend-services/sharespot-data-decoder-slave-backend
     image: sharespot-data-decoder-slave-backend
@@ -172,7 +172,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8093:8080
+      - 8083:8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -217,7 +217,7 @@ services:
   #   networks:
   #     - sharespot-network
   #   ports:
-  #     - 8087:8080
+  #     - 8091:8080
   # sharespot-data-store-database:
   #   image: mongo:latest
   #   container_name: sharespot-data-store-database

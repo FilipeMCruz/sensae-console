@@ -8,10 +8,6 @@ component "Device Commander Backend" {
     component "Domain Services" as DOM_SERV
     component "Infrastructure" as INFRA {
         component "Boot" as BOOT
-        component "Presistence" as PERSIST {
-            component "Postgres" as POSTG
-            interface "Postgres API" as POSTG_API
-        }
         component "Endpoint" as ENDPOINT {
             component "AMQP" as AMQP {
                 component "Ingress" as INGRESS
@@ -33,18 +29,14 @@ component "Device Commander Backend" {
     INGRESS_API -- INGRESS
     INTERNAL_API -- INTERNAL
 
-    POSTG_API -- POSTG
-
     APP_API -- APP
     BOOT_API -- BOOT
 
     INGRESS --( APP_API
     INTERNAL --( APP_API
-    POSTG --( DOM_API
     APP --( DOM_SERV_API
     DOM_SERV --( DOM_API
     BOOT --( INTERNAL_API
-    BOOT --( POSTG_API
     BOOT --( INGRESS_API
 }
 

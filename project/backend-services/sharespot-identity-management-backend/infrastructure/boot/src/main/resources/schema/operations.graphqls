@@ -5,6 +5,8 @@ type Query {
     viewChildDomainsInfo(domain: ViewDomain): [DomainInfo]
     viewDevicesInDomain(domain: ViewDomain): [Device]
     viewTenantsInDomain(domain: ViewDomain): [Tenant]
+    viewTenantDevices: [Device]
+    viewTenantParentDomains: [DomainId]
 }
 
 type Mutation {

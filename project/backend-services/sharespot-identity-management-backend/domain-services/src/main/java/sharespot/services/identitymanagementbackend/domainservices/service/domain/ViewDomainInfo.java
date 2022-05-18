@@ -16,6 +16,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.domainservices.service.PermissionsValidator;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class ViewDomainInfo {
@@ -50,7 +51,7 @@ public class ViewDomainInfo {
                 .toList();
 
         var deviceResults = deviceRepo
-                .getDevicesInDomain(top.getOid())
+                .getDevicesInDomains(Stream.of(top.getOid()))
                 .map(DeviceResultMapper::toResult)
                 .toList();
 

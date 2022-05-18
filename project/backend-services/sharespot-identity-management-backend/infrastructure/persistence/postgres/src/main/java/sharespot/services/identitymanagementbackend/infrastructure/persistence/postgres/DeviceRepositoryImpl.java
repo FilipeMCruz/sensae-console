@@ -10,6 +10,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -41,8 +42,8 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public Stream<Device> getDevicesInDomain(DomainId domain) {
-        return repository.findByDomainId(domain.value().toString())
+    public Stream<Device> getDevicesInDomains(Stream<DomainId> domains) {
+        return repository.findByDomainIds(domains.map(d -> d.value().toString()).collect(Collectors.toList()))
                 .stream()
                 .map(DeviceMapper::postgresToDomain);
     }

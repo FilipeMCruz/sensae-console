@@ -2,20 +2,16 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.domain.DomainMapper;
-import sharespot.services.identitymanagementbackend.application.model.domain.ChangeDomainDTO;
-import sharespot.services.identitymanagementbackend.application.model.domain.CreateDomainDTO;
-import sharespot.services.identitymanagementbackend.application.model.domain.DomainDTO;
-import sharespot.services.identitymanagementbackend.application.model.domain.ViewDomainDTO;
+import sharespot.services.identitymanagementbackend.application.model.domain.*;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ChangeDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.CreateDomainCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.domain.ViewDomainQuery;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.ChangeDomainDTOImpl;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.CreateDomainDTOImpl;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.DomainDTOImpl;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.ViewDomainDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.domain.*;
 
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 public class DomainMapperImpl implements DomainMapper {
@@ -56,5 +52,14 @@ public class DomainMapperImpl implements DomainMapper {
         domainDTO.path = result.path;
         domainDTO.permissions = result.permissions;
         return domainDTO;
+    }
+
+    @Override
+    public Stream<DomainIdDTO> resultToSimpleDto(DomainResult result) {
+        return result.path.stream().map(d -> {
+            var domainIdDTO = new DomainIdDTOImpl();
+            domainIdDTO.oid = d;
+            return domainIdDTO;
+        });
     }
 }

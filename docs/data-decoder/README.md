@@ -42,9 +42,9 @@ const base64ToHex = (() => {
       v3 = values[txt.charCodeAt(i + 2)];
       v4 = values[txt.charCodeAt(i + 3)];
       result.push(
-        output[(v1 << 2) | (v2 >> 4)],
-        output[((v2 & 15) << 4) | (v3 >> 2)],
-        output[((v3 & 3) << 6) | v4]
+        parseInt(output[(v1 << 2) | (v2 >> 4)],16),
+        parseInt(output[((v2 & 15) << 4) | (v3 >> 2)],16),
+        parseInt(output[((v3 & 3) << 6) | v4],16)
       );
     }
     if (v4 === 64) result.splice(v3 === 64 ? -2 : -1);

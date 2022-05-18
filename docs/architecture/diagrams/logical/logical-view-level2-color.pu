@@ -79,7 +79,7 @@ component "Environment" <<System>> {
 
     LTB --( QUESTDB_API
     SIB --( SIDDB_API
-    SIB --( SIBDB_API
+    SIBDB_API )- SIB
     DS --( MONGODB_API
     DDG -- DDG_API
     DPB_API -- DPB
@@ -97,15 +97,15 @@ component "Environment" <<System>> {
     MONGODB_API - MONGODB
     QUESTDB_API - QUESTDB
     SIDDB_API - SIDDB
-    SIBDB - SIBDB_API
+    SIBDB_API -- SIBDB
     DRB --( DRDB_API
-    DRDB_API )-- DRSB
+    DRDB_API )-[hidden]- DRSB
     DPB --( DPDB_API
     DDB --( DDDB_API
-    DPDB_API )-- DPSB
-    DDDB_API )-- DDSB
+    DPDB_API )-[hidden]- DPSB
+    DDDB_API )-[hidden]- DDSB
     IAMB --( IAMDB_API
-    IAMDB_API )-- IAMSB
+    IAMDB_API )-[hidden]- IAMSB
     LTF --( LTB_API
     SIF --( SIB_API
     DPF --( DPB_API
@@ -145,7 +145,6 @@ component "Environment" <<System>> {
     SIB -[hidden] LTB
 
     DRDB -[hidden] MB
-
 }
 
 @enduml

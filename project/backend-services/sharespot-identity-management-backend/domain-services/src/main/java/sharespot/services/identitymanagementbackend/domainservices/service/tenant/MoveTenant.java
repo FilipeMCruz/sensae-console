@@ -36,7 +36,7 @@ public class MoveTenant {
         var tenantToPlace = tenantRepo.findTenantById(TenantId.of(command.tenant))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
-        tenantToPlace.getDomains().add(domain.getOid());
+        tenantToPlace.domains().add(domain.getOid());
 
         var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);
         return TenantResultMapper.toResult(relocateTenant);
@@ -53,9 +53,9 @@ public class MoveTenant {
         var tenantToPlace = tenantRepo.findTenantById(TenantId.of(command.tenant))
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
-        tenantToPlace.getDomains().removeIf(d -> d.equals(domain.getOid()));
+        tenantToPlace.domains().removeIf(d -> d.equals(domain.getOid()));
 
-        if (tenantToPlace.getDomains().isEmpty()) {
+        if (tenantToPlace.domains().isEmpty()) {
             throw new NotValidException("Tenant has to belong to at least one Domain");
         }
 

@@ -3,7 +3,7 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
 import org.springframework.web.bind.annotation.RequestHeader;
-import pt.sensae.services.device.management.master.backend.application.DeviceRecordDTO;
+import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
 import pt.sensae.services.device.management.master.backend.application.RecordCollectorService;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 
@@ -19,7 +19,7 @@ public class RecordCollectorController {
     }
 
     @DgsQuery(field = "deviceRecords")
-    public List<DeviceRecordDTO> collect(@RequestHeader("Authorization") String auth) {
+    public List<DeviceInformationDTO> collect(@RequestHeader("Authorization") String auth) {
         return service.catalog(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

@@ -10,8 +10,8 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.*;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -74,8 +74,7 @@ public class DeviceCache {
     }
 
     private LedgerEntry toLedgerEntry(ProcessedSensorDataDTO data) {
-        var owners = Ownership.of(data.device.domains.read.stream().map(DomainId::of))
-                .and(data.device.domains.readWrite.stream().map(DomainId::of));
+        var owners = Ownership.of(data.device.domains.ownership.stream().map(DomainId::of));
 
         var name = DeviceName.of(data.device.name);
 

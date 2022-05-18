@@ -28,11 +28,6 @@
             <artifactId>ingress</artifactId>
             <version>0.7.0</version>
         </dependency>
-        <dependency>
-            <groupId>pt.sensae.services</groupId>
-            <artifactId>postgres</artifactId>
-            <version>0.7.0</version>
-        </dependency>
     </dependencies>
 
     <build>

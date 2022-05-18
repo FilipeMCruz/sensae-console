@@ -8,6 +8,7 @@ import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.mapper.DataTransformationMapper;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.repository.SensorDataTransformationsRepositoryPostgres;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -51,5 +52,12 @@ public class SensorDataTransformationsRepositoryImpl implements SensorDataTransf
     public SensorTypeId delete(SensorTypeId id) {
         repositoryPostgres.deleteByDeviceType(id.getValue());
         return id;
+    }
+
+    @Override
+    @Transactional
+    public Optional<DataTransformation> findById(SensorTypeId id) {
+        return repositoryPostgres.findByDeviceType(id.getValue())
+                .map(DataTransformationMapper::postgresToDomain);
     }
 }

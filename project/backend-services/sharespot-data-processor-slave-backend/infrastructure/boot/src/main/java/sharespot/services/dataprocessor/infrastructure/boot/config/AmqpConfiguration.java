@@ -1,28 +1,23 @@
 package sharespot.services.dataprocessor.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
+import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import sharespot.services.dataprocessor.application.RoutingKeysProvider;
+import sharespot.services.dataprocessor.infrastructure.endpoint.amqp.internal.controller.DataTransformationConsumer;
+import sharespot.services.dataprocessor.infrastructure.endpoint.amqpingress.controller.SensorDataConsumer;
 
 import static sharespot.services.dataprocessor.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.dataprocessor.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String INGRESS_QUEUE = "Sharespot Data Processor Slave Queue";
-
-    public static final String MASTER_EXCHANGE = "Sharespot Data Processor Master Exchange";
-
-    public static final String MASTER_QUEUE = "Sharespot Data Processor Master Exchange -> Sharespot Data Processor Slave Queue";
 
     private final RoutingKeysProvider provider;
 
@@ -32,30 +27,38 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(MASTER_QUEUE)
+        return QueueBuilder.durable(DataTransformationConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    public FanoutExchange masterExchange() {
-        return new FanoutExchange(MASTER_EXCHANGE);
+    public TopicExchange internalTopic() {
+        return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
     @Bean
-    Binding bindingMaster(Queue slaveQueue, FanoutExchange masterExchange) {
-        return BindingBuilder.bind(slaveQueue).to(masterExchange);
+    Binding bindingMaster(Queue slaveQueue, TopicExchange internalTopic) {
+        var decoded = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DATA_PROCESSOR)
+                .withContainerType(ContainerTypeOptions.DATA_PROCESSOR)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (decoded.isPresent()) {
+            return BindingBuilder.bind(slaveQueue).to(internalTopic).with(decoded.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
     }
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(INGRESS_QUEUE)
+        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -63,7 +66,7 @@ public class AmqpConfiguration {
 
     @Bean
     Binding binding(Queue queue, TopicExchange topic) {
-        var decoded = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+        var decoded = provider.getSensorTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.DECODED)
                 .missingAsAny();
         if (decoded.isPresent()) {

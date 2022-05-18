@@ -3,7 +3,9 @@ package sharespot.services.dataprocessormaster.domainservices;
 import org.springframework.stereotype.Service;
 import sharespot.services.dataprocessormaster.domain.DataTransformation;
 import sharespot.services.dataprocessormaster.domain.SensorDataTransformationsRepository;
+import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -18,5 +20,9 @@ public class DataTransformationCollector {
 
     public Stream<DataTransformation> collect() {
         return repository.findAll();
+    }
+
+    public Optional<DataTransformation> collect(SensorTypeId type) {
+        return repository.findById(type);
     }
 }

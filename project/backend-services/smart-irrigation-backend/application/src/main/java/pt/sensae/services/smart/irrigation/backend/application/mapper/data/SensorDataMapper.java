@@ -2,7 +2,7 @@ package pt.sensae.services.smart.irrigation.backend.application.mapper.data;
 
 import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 
 public interface SensorDataMapper {
 

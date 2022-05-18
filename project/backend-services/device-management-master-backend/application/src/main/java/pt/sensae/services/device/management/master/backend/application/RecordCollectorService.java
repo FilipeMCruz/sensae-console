@@ -23,7 +23,7 @@ public class RecordCollectorService {
         this.authHandler = authHandler;
     }
 
-    public Stream<DeviceRecordDTO> catalog(AccessTokenDTO claims) {
+    public Stream<DeviceInformationDTO> catalog(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("device_management:device:read"))
             throw new UnauthorizedException("No Permissions");

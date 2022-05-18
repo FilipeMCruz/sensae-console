@@ -2,7 +2,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.device.DeviceMapper;
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.ExpelDeviceFromDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DevicePermissionsResult;
@@ -21,7 +21,6 @@ public class DeviceMapperImpl implements DeviceMapper {
         var command = new PlaceDeviceInDomainCommand();
         command.newDomain = UUID.fromString(info.domainOid);
         command.device = UUID.fromString(info.deviceOid);
-        command.writePermission = info.writePermission;
         return command;
     }
 
@@ -35,14 +34,12 @@ public class DeviceMapperImpl implements DeviceMapper {
     }
 
     @Override
-    public DeviceDTO resultToDto(DeviceResult result) {
-        var dto = new DeviceDTOImpl();
+    public DeviceIdDTO resultToDto(DeviceResult result) {
+        var dto = new DeviceIdDTOImpl();
         dto.oid = result.oid;
         dto.domains = result.domains.stream().map(d -> {
             var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTOImpl();
             deviceDomainPermissionsDTO.oid = d.oid;
-            deviceDomainPermissionsDTO.permissions = d.permissions.equals(DevicePermissionsResult.READ) ?
-                    DevicePermissionsDTOImpl.READ : DevicePermissionsDTOImpl.READ_WRITE;
             return deviceDomainPermissionsDTO;
         }).toList();
         return dto;

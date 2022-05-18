@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output,} from '@angular/core';
 import {
   DeviceInfo,
-  DevicePermissionType,
   DomainInfo,
   DomainPermissionType,
   TenantInfo,
@@ -95,17 +94,6 @@ export class DomainInfoComponent implements OnChanges, OnInit {
     );
   }
 
-  getPermission(device: DeviceInfo): DevicePermissionType {
-    const deviceDomainPermission = device.domains.find(
-      (d) => d.domainId == this.entry.item.domain.id
-    );
-    if (deviceDomainPermission) {
-      return deviceDomainPermission.permission;
-    } else {
-      return DevicePermissionType.READ;
-    }
-  }
-
   computePermissions() {
     const hasParent = this.entry.item.domain.path.length > 1;
     if (hasParent) {
@@ -167,9 +155,9 @@ export class DomainInfoComponent implements OnChanges, OnInit {
       });
   }
 
-  addDevice(device: DeviceInfo, domain: DomainInfo, b: boolean) {
+  addDevice(device: DeviceInfo, domain: DomainInfo) {
     this.addDeviceService
-      .mutate(device.id, domain.domain.id, b)
+      .mutate(device.id, domain.domain.id)
       .subscribe((next) =>
         this.emmitNewDeviceInDomain.emit({domain, device: next})
       );

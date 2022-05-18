@@ -20,8 +20,7 @@ export class AddDevice {
 
   mutate(
     deviceId: string,
-    domainId: string,
-    permission: boolean
+    domainId: string
   ): Observable<DeviceInfo> {
     const mutation = gql`
       mutation addDevice($instructions: AddDeviceToDomain) {
@@ -29,7 +28,6 @@ export class AddDevice {
           oid
           domains {
             oid
-            permission
           }
         }
       }
@@ -44,7 +42,7 @@ export class AddDevice {
             'Bearer ' + this.auth.getToken()
           ),
         },
-        variables: QueryMapper.toAddDevice(deviceId, domainId, permission),
+        variables: QueryMapper.toAddDevice(deviceId, domainId),
       })
       .pipe(
         map(extract),

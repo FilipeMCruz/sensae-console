@@ -8,24 +8,24 @@ import org.springframework.web.client.RestTemplate;
 import pt.sensae.services.device.commander.backend.domain.model.commands.CommandEntry;
 import pt.sensae.services.device.commander.backend.domain.model.commands.DeviceCommandReceived;
 import pt.sensae.services.device.commander.backend.domain.model.device.DeviceDownlink;
-import pt.sensae.services.device.commander.backend.domainservices.DeviceRecordCache;
+import pt.sensae.services.device.commander.backend.domainservices.DeviceInformationCache;
 
 @Service
 public class CommandDispatcherService {
 
-    private final DeviceRecordCache cache;
+    private final DeviceInformationCache cache;
 
     private final RestTemplate template;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandDispatcherService.class);
 
-    public CommandDispatcherService(DeviceRecordCache cache, RestTemplate template) {
+    public CommandDispatcherService(DeviceInformationCache cache, RestTemplate template) {
         this.cache = cache;
         this.template = template;
     }
 
     public void tryToSend(DeviceCommandReceived command) {
-        cache.findByDeviceId(command.deviceId())
+        cache.findById(command.deviceId())
                 .ifPresent(device -> device.commands()
                         .entries()
                         .stream()

@@ -7,9 +7,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.smart.irrigation.backend.application.services.data.DataHandlerService;
-import pt.sharespot.iot.core.buf.mapper.MessageMapper;
-import pt.sharespot.iot.core.routing.MessageConsumed;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Component
 public class StoveSensorDataConsumer {

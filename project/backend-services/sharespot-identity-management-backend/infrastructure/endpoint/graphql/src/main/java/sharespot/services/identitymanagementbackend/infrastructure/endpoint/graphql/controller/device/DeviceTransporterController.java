@@ -4,9 +4,7 @@ import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
-import sharespot.services.identitymanagementbackend.application.model.device.ExpelDeviceFromDomainDTO;
-import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.application.service.device.PlaceDeviceInDomainService;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthMiddleware;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.device.ExpelDeviceFromDomainDTOImpl;
@@ -22,12 +20,12 @@ public class DeviceTransporterController {
     }
 
     @DgsMutation(field = "addDevice")
-    public DeviceDTO addDevice(@InputArgument(value = "instructions") PlaceDeviceInDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
+    public DeviceIdDTO addDevice(@InputArgument(value = "instructions") PlaceDeviceInDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
         return service.place(info, AuthMiddleware.buildAccessToken(auth));
     }
 
     @DgsMutation(field = "removeDevice")
-    public DeviceDTO removeDevice(@InputArgument(value = "instructions") ExpelDeviceFromDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
+    public DeviceIdDTO removeDevice(@InputArgument(value = "instructions") ExpelDeviceFromDomainDTOImpl info, @RequestHeader("Authorization") String auth) {
         return service.expel(info, AuthMiddleware.buildAccessToken(auth));
     }
 }

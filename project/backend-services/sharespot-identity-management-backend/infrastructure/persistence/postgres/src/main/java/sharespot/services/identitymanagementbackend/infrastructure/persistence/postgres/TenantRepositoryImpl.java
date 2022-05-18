@@ -38,7 +38,7 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Transactional
     public Tenant relocateTenant(Tenant tenant) {
         var newDomains = TenantMapper.domainToPostgres(tenant).domains;
-        repository.findByOid(tenant.getOid().value().toString()).ifPresent(tenantPostgres -> {
+        repository.findByOid(tenant.oid().value().toString()).ifPresent(tenantPostgres -> {
             tenantPostgres.domains = newDomains;
             repository.save(tenantPostgres);
         });

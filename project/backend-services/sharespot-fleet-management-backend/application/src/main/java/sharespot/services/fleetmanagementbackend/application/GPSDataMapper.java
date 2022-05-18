@@ -1,6 +1,6 @@
 package sharespot.services.fleetmanagementbackend.application;
 
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import sharespot.services.fleetmanagementbackend.domain.model.GPSDataDetails;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.*;
 

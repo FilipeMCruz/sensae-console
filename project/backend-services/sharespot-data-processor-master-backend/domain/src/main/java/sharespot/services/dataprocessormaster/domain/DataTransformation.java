@@ -1,6 +1,7 @@
 package sharespot.services.dataprocessormaster.domain;
 
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformations;
+
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
 
 public class DataTransformation {
 

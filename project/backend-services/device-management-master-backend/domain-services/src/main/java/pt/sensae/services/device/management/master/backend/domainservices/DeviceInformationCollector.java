@@ -11,11 +11,11 @@ import pt.sensae.services.device.management.master.backend.domain.model.subDevic
 import java.util.stream.Stream;
 
 @Service
-public class RecordCollector {
+public class DeviceInformationCollector {
 
     private final DeviceInformationRepository repository;
 
-    public RecordCollector(DeviceInformationRepository repository) {
+    public DeviceInformationCollector(DeviceInformationRepository repository) {
         this.repository = repository;
     }
 

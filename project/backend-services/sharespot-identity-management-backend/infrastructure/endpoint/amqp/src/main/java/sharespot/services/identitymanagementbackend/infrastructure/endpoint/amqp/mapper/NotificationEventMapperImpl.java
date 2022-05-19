@@ -34,10 +34,4 @@ public class NotificationEventMapperImpl implements NotificationEventMapper {
         notification.information = info;
         return notification;
     }
-
-    @Override
-    public DeviceId dtoToDomain(DeviceIdDTO dto) {
-        var device = (DeviceIdDTOImpl) dto;
-        return new DeviceId(UUID.fromString(device.id));
-    }
 }

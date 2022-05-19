@@ -5,14 +5,14 @@ import pt.sensae.services.device.management.master.backend.application.auth.Acce
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.device.management.master.backend.application.ownership.DeviceDomainCheckerService;
-import pt.sensae.services.device.management.master.backend.domainservices.RecordCollector;
+import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationCollector;
 
 import java.util.stream.Stream;
 
 @Service
-public class RecordCollectorService {
+public class DeviceInformationCollectorService {
 
-    private final RecordCollector collector;
+    private final DeviceInformationCollector collector;
 
     private final RecordMapper mapper;
 
@@ -20,7 +20,7 @@ public class RecordCollectorService {
 
     private final DeviceDomainCheckerService ownerChecker;
 
-    public RecordCollectorService(RecordCollector collector, RecordMapper mapper, TokenExtractor authHandler, DeviceDomainCheckerService deviceDomainCheckerService) {
+    public DeviceInformationCollectorService(DeviceInformationCollector collector, RecordMapper mapper, TokenExtractor authHandler, DeviceDomainCheckerService deviceDomainCheckerService) {
         this.collector = collector;
         this.mapper = mapper;
         this.authHandler = authHandler;

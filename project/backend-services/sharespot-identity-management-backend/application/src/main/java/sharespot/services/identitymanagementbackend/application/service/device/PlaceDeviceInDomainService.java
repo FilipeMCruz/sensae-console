@@ -9,7 +9,10 @@ import sharespot.services.identitymanagementbackend.application.model.device.Exp
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
+import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
 import sharespot.services.identitymanagementbackend.domainservices.service.device.MoveDevice;
+
+import java.util.UUID;
 
 @Service
 public class PlaceDeviceInDomainService {
@@ -35,16 +38,16 @@ public class PlaceDeviceInDomainService {
     public DeviceIdDTO place(PlaceDeviceInDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var command = deviceMapper.dtoToCommand(dto);
-        var result = deviceMapper.resultToDto(service.execute(command, identityCommand));
-        emitter.notify(result);
-        return result;
+        var result = service.execute(command, identityCommand);
+        emitter.notify(new DeviceId(UUID.fromString(result.oid)));
+        return deviceMapper.resultToDto(result);
     }
 
     public DeviceIdDTO expel(ExpelDeviceFromDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var command = deviceMapper.dtoToCommand(dto);
-        var result = deviceMapper.resultToDto(service.execute(command, identityCommand));
-        emitter.notify(result);
-        return result;
+        var result = service.execute(command, identityCommand);
+        emitter.notify(new DeviceId(UUID.fromString(result.oid)));
+        return deviceMapper.resultToDto(result);
     }
 }

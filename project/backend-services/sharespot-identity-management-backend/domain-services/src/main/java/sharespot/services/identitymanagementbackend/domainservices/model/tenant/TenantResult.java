@@ -11,8 +11,10 @@ public class TenantResult {
     public String email;
     
     public String name;
-    
+
     public List<UUID> domains;
+    
+    public List<UUID> parentDomains;
     
     public List<String> permissions;
 
@@ -22,6 +24,7 @@ public class TenantResult {
         claims.put("email", email);
         claims.put("name", name);
         claims.put("domains", domains);
+        claims.put("parentDomains", parentDomains);
         claims.put("permissions", permissions);
         return claims;
     }

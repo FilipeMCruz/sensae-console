@@ -36,7 +36,7 @@ public class ViewDevicesInDomain {
 
         PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DEVICE));
 
-        return deviceRepo.getDevicesInDomain(top.getOid())
+        return deviceRepo.getDevicesInDomains(Stream.of(top.getOid()))
                 .map(DeviceResultMapper::toResult);
     }
 }

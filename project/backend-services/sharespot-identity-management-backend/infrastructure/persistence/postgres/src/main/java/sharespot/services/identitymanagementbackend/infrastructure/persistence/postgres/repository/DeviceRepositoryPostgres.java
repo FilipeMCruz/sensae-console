@@ -8,6 +8,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface DeviceRepositoryPostgres extends CrudRepository<DevicePostgres, Long> {
@@ -16,6 +17,6 @@ public interface DeviceRepositoryPostgres extends CrudRepository<DevicePostgres,
 
     Optional<DevicePostgres> findByOid(String deviceId);
 
-    @Query(value = "select d from device d join d.devicePermissions a where (a.domainOid = :domainId)")
-    List<DevicePostgres> findByDomainId(@Param("domainId") String domain);
+    @Query(value = "select d from device d join d.devicePermissions a where (a.domainOid IN :domainId)")
+    Set<DevicePostgres> findByDomainIds(@Param("domainId") List<String> domain);
 }

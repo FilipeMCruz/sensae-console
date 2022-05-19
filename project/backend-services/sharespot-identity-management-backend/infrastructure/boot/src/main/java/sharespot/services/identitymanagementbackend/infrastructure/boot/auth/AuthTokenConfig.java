@@ -3,11 +3,11 @@ package sharespot.services.identitymanagementbackend.infrastructure.boot.auth;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import sharespot.services.identitymanagementbackend.application.auth.AccessTokenDTOImpl;
+import sharespot.services.identitymanagementbackend.application.auth.AuthTokenHandler;
+import sharespot.services.identitymanagementbackend.application.auth.IdentityTokenDTOImpl;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.IdentityTokenDTO;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthTokenHandler;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AccessTokenDTOImpl;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.IdentityTokenDTOImpl;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql;
+package sharespot.services.identitymanagementbackend.application.auth;
 
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.IdentityTokenDTO;

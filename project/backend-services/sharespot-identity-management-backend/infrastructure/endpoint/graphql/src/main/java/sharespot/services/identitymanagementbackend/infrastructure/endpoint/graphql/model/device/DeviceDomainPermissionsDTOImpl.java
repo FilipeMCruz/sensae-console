@@ -2,5 +2,4 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 public class DeviceDomainPermissionsDTOImpl {
     public String oid;
-    public DevicePermissionsDTOImpl permissions;
 }

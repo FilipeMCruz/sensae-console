@@ -14,6 +14,7 @@
     <modules>
         <module>graphql</module>
         <module>amqp</module>
+        <module>rest</module>
     </modules>
 
     <properties>

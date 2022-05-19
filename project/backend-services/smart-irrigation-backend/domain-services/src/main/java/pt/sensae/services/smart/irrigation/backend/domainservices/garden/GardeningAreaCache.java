@@ -3,11 +3,13 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.garden;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 
 import java.time.Duration;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,8 +28,8 @@ public class GardeningAreaCache {
                 .build();
     }
 
-    public Stream<GardeningArea> fetchAll() {
-        return repository.fetchAll();
+    public Stream<GardeningArea> fetchAll(Stream<DomainId> tenantDomains) {
+        return repository.fetchAll(tenantDomains);
     }
 
     public Stream<GardeningArea> fetchByIds(Stream<GardeningAreaId> ids) {

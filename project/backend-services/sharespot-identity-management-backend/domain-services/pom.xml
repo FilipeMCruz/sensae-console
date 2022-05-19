@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>sharespot-device-records-master-backend</artifactId>
+        <artifactId>sharespot-identity-management-backend</artifactId>
         <groupId>sharespot.services</groupId>
         <version>0.7.0</version>
     </parent>

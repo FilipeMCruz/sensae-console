@@ -2,10 +2,10 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import sharespot.services.identitymanagementbackend.application.auth.AuthTokenHandler;
 import sharespot.services.identitymanagementbackend.application.mapper.tenant.TenantMapper;
 import sharespot.services.identitymanagementbackend.application.model.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.*;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.AuthTokenHandler;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.ExpelTenantFromDomainDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.PlaceTenantInDomainDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.TenantDTOImpl;

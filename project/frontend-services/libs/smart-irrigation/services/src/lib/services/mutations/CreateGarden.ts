@@ -19,8 +19,12 @@ export class CreateGarden {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["smart_irrigation:garden:create"]);
+  }
+
   execute(command: CreateGardeningAreaCommand): Observable<GardeningArea> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:create"]))
+    if (!this.canDo())
       return EMPTY;
 
     const query = gql`

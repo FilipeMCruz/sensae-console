@@ -338,4 +338,16 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.drawLatestData();
     });
   }
+
+  canDelete() {
+    return this.deleteGardenService.canDo();
+  }
+
+  canEdit() {
+    return this.createGardenService.canDo();
+  }
+
+  canCreate() {
+    return this.createGardenService.canDo();
+  }
 }

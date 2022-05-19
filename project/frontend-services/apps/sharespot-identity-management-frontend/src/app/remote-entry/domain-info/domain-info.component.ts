@@ -106,7 +106,7 @@ export class DomainInfoComponent implements OnChanges, OnInit {
           } else {
             return {perm: p, checked: false}
           }
-        });
+        }).sort((n1, n2) => n1.perm.localeCompare(n2.perm));
       }
     }
     return this.entry.item.domain.permissions.map(p => {

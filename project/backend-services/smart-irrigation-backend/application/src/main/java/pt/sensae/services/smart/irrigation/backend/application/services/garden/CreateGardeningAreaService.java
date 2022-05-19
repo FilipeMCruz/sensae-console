@@ -36,7 +36,7 @@ public class CreateGardeningAreaService {
         if (!extract.permissions.contains("smart_irrigation:garden:create"))
             throw new UnauthorizedException("No Permissions");
 
-        var gardeningArea = service.create(commandMapper.toCommand(dto));
+        var gardeningArea = service.create(commandMapper.toCommand(dto), extract);
         return mapper.toDto(gardeningArea);
     }
 }

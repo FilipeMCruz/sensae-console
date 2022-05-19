@@ -16,9 +16,9 @@ public class GardenMapper {
         return getGardeningArea(updateCommand.area, of, updateCommand.name);
     }
 
-    public static GardeningArea toModel(CreateGardeningAreaCommand updateCommand) {
+    public static GardeningArea toModel(CreateGardeningAreaCommand createCommand) {
         var of = GardeningAreaId.create();
-        return getGardeningArea(updateCommand.area, of, updateCommand.name);
+        return getGardeningArea(createCommand.area, of, createCommand.name);
     }
 
     private static GardeningArea getGardeningArea(List<BoundaryCommandDetails> boundaryCommands, GardeningAreaId of, String name) {
@@ -27,6 +27,6 @@ public class GardenMapper {
             return new BoundaryPoint(b.position, gps);
         }).collect(Collectors.toSet()));
 
-        return new GardeningArea(of, GardenName.of(name), area);
+        return new GardeningArea(of, GardenName.of(name), area, Owners.empty());
     }
 }

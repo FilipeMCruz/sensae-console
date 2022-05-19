@@ -14,7 +14,6 @@
     <modules>
         <module>amqp</module>
         <module>graphql</module>
-        <module>graphql-client</module>
     </modules>
 
     <properties>

@@ -30,6 +30,6 @@ public class FetchGardeningAreasService {
         if (!extract.permissions.contains("smart_irrigation:garden:read"))
             throw new UnauthorizedException("No Permissions");
 
-        return cache.fetchAll().map(mapper::toDto);
+        return cache.fetchAll(extract).map(mapper::toDto);
     }
 }

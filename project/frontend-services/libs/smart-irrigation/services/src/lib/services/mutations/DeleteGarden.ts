@@ -19,8 +19,12 @@ export class DeleteGarden {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["smart_irrigation:garden:delete"]);
+  }
+
   getData(command: DeleteGardeningAreaCommand): Observable<GardeningArea> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["smart_irrigation:garden:delete"]))
+    if (!this.canDo())
       return EMPTY;
 
     const query = gql`

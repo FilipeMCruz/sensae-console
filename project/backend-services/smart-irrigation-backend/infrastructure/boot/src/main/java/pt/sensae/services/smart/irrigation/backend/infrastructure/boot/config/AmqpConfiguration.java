@@ -4,7 +4,6 @@ import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.egress.controller.DeviceCommandSupplier;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ParkSensorDataConsumer;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.StoveSensorDataConsumer;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ValveSensorDataConsumer;

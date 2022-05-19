@@ -4,10 +4,12 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.permissions.DomainPermissions;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.*;
+import sharespot.services.identitymanagementbackend.domainservices.model.domain.DomainResult;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,7 +39,15 @@ public class TenantResultMapper {
         identityResult.oid = tenant.oid().value();
         identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
 
-        identityResult.permissions = domains.map(DomainResultMapper::toResult)
+        var domainResults = domains.map(DomainResultMapper::toResult).toList();
+
+        identityResult.parentDomains = domainResults.stream()
+                .map(d -> d.path)
+                .flatMap(Collection::stream)
+                .map(UUID::fromString).filter(d -> !identityResult.domains.contains(d))
+                .toList();
+
+        identityResult.permissions = domainResults.stream()
                 .map(d -> d.permissions)
                 .flatMap(Collection::stream)
                 .distinct()

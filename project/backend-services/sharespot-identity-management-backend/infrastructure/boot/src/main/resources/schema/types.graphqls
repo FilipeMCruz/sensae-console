@@ -64,7 +64,3 @@ type Device {
 type DeviceDomainPermission {
     oid: String
 }
-
-type DomainId {
-    oid: String,
-}

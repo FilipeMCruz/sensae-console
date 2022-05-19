@@ -25,6 +25,11 @@
         </dependency>
         <dependency>
             <groupId>sharespot.services</groupId>
+            <artifactId>rest</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>sharespot.services</groupId>
             <artifactId>postgres</artifactId>
             <version>0.7.0</version>
         </dependency>

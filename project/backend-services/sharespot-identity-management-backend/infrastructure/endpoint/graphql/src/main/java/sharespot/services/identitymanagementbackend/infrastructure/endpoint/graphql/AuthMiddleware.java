@@ -1,7 +1,7 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql;
 
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.AccessTokenDTOImpl;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.IdentityTokenDTOImpl;
+import sharespot.services.identitymanagementbackend.application.auth.AccessTokenDTOImpl;
+import sharespot.services.identitymanagementbackend.application.auth.IdentityTokenDTOImpl;
 
 public class AuthMiddleware {
 

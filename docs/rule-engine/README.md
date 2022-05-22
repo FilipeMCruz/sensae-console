@@ -23,6 +23,8 @@ This rule can be categorized with:
 Facts are inserted in a rule engine.
 If this facts match a condition, the condition's action is triggered.
 
+This new concept, the rules engine, is tailored to the `manager` or `developers` and not for the final clients since it can be hard to create meaningfully rules without side effects.
+
 ## Technology
 
 [Drools](https://www.drools.org/) is an open-source rule engine widely used in the industry. It has support for sliding windows of time, integrates with `iot-core` package with ease since it is written in `java`, can be embedded in a server running java and supports dynamic loading rules at runtime.
@@ -48,6 +50,19 @@ rule "Create new valve device if it belongs to Project #003 and is new"
                           .createAlarm());
 end
 ```
+
+## Rules
+
+In order to create `rules` there are certain rules to follow:
+
+- Rules must be written according to the drools syntax;
+- `SensorDataDto` is inserted in drools every time a new `valid` data is published in the system;
+- To sen alerts/alarms based on rules that have match, the `then` section must use the `dispatcher` class to send a newly created `Alarm`;
+- An alarm must have a `name`, a `description`, and a severity level, `INFO`, `WARNING` and `CRITICAL`.
+- An alarm can be associated with a `DeviceId` (this association helps applications like `Smart Irrigation` to know what Valve must be turned on or off).
+- A rule can import and create new classes/events when needed.
+
+To test new rules it is advised to set the severity to `INFO` and wait for notifications to arrive to the UI.
 
 ## Architecture
 

@@ -72,7 +72,7 @@ rule "Collect valve device data that belongs to Project #003"
                           .createAlarm());
 end
 
-rule "Dispatch Valve Alarm Test 2 - Senario - Project #003"
+rule "Dispatch Valve Alarm - Senario 1 - Project #003"
     when
         $v : ValveDevice()
         $data: ValveDeviceData(deviceId == $v.deviceId, on == true)

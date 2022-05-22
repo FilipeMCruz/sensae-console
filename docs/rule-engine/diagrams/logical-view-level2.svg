@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="703px" preserveAspectRatio="none" style="width:480px;height:703px;background:#FFFFFF;" version="1.1" viewBox="0 0 480 703" width="480px" zoomAndPan="magnify"><defs/><g><!--MD5=[9b3d231274dc12a2303d6d728c07e549]
+entity RULE_FRONT--><g id="elem_RULE_FRONT"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="186" x="256" y="106"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="422" y="111"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="420" y="113"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="420" y="117"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146" x="271" y="140.9659">Rule Engine Frontend</text></g><!--MD5=[5cb4377a9c1d37822da01f5d48b95fe6]
+entity RULE_BACK--><g id="elem_RULE_BACK"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="182" x="258" y="377"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="420" y="382"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="418" y="384"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="418" y="388"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="273" y="411.9659">Rule Engine Backend</text></g><!--MD5=[4122bc890d9129df5a79dda113982fb0]
+entity RULE_SLAVE--><g id="elem_RULE_SLAVE"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="160" x="103" y="512.5"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="243" y="517.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="241" y="519.5"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="241" y="523.5"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="118" y="547.4659">Rule Engine Slave</text></g><!--MD5=[c12e3cb6a4e01365f29d964d9fb95b81]
+entity RULE_DB--><g id="elem_RULE_DB"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="188" x="286" y="648"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="454" y="653"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="452" y="655"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="452" y="659"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="301" y="682.9659">Rule Engine Database</text></g><!--MD5=[a0057a427bb946b6b6542fc90b0dfa97]
+entity BROKER--><g id="elem_BROKER"><rect fill="#F1F1F1" height="49.0679" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="148" x="7" y="377"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="135" y="382"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="133" y="384"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="133" y="388"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="22" y="411.9659">Message Broker</text></g><!--MD5=[c42ed81cef7fdd2e33758127945b9a5b]
+entity UI--><g id="elem_UI"><ellipse cx="349" cy="14" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="15" x="341.5" y="45.9659">UI</text></g><!--MD5=[645d8587175d8f7ad110cd370775931d]
+entity API--><g id="elem_API"><ellipse cx="349" cy="266" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142" x="278" y="297.9659">Rule Engine Backend</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="22" x="278" y="317.0339">API</text></g><!--MD5=[24da4f0cccf22a991f0145478fcc4ec7]
+entity DB_API--><g id="elem_DB_API"><ellipse cx="380" cy="537" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148" x="306" y="568.9659">Rule Engine Database</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="22" x="306" y="588.0339">API</text></g><!--MD5=[6a1752e4b1aac100f2a0474022bc8584]
+entity BROKER_API--><g id="elem_BROKER_API"><ellipse cx="199" cy="401.5" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="132" y="433.4659">Message Broker API</text></g><!--MD5=[9456035340fd4bda2100ef3d626f8582]
+link UI to RULE_FRONT--><g id="link_UI_RULE_FRONT"><path d="M349,23.23 C349,40.26 349,79.89 349,105.65 " fill="none" id="UI-RULE_FRONT" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[32dbbc5b9771f9a24559bf3d24b47ec6]
+link API to RULE_BACK--><g id="link_API_RULE_BACK"><path d="M349,275.35 C349,295.33 349,346.48 349,376.84 " fill="none" id="API-RULE_BACK" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a2534571ccdbe8475a81ad94f32f3d83]
+link BROKER to BROKER_API--><g id="link_BROKER_BROKER_API"><path d="M155.21,401.5 C166.73,401.5 178.25,401.5 189.76,401.5 " fill="none" id="BROKER-BROKER_API" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8130c4ec6285113fe73e1e2e3222ed55]
+link RULE_FRONT to API--><g id="link_RULE_FRONT_API"><path d="M349,155.06 C349,181.18 349,222.75 349,246.59 " fill="none" id="RULE_FRONT-to-API" style="stroke:#181818;stroke-width:1.0;"/><path d="M357.4572,253.6418 A9,9 0 0 0 340.5428 253.6418" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[f899eb860593f424363f4055d4c30c97]
+link DB_API to RULE_DB--><g id="link_DB_API_RULE_DB"><path d="M380,546.35 C380,566.33 380,617.48 380,647.84 " fill="none" id="DB_API-RULE_DB" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[85ccd2c0c8ca6b7ef8cba721e831e139]
+reverse link BROKER_API to RULE_BACK--><g id="link_BROKER_API_RULE_BACK"><path d="M218.2,401.5 C231.43,401.5 244.67,401.5 257.9,401.5 " fill="none" id="BROKER_API-backto-RULE_BACK" style="stroke:#181818;stroke-width:1.0;"/><path d="M211.1582,409.9572 A9,9 0 0 0 211.1582 393.0428" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[8c3049d41b4e7db719b26327c07aa35e]
+reverse link BROKER_API to RULE_SLAVE--><g id="link_BROKER_API_RULE_SLAVE"><path d="M196.78,420.98 C193.93,444.8 188.96,486.25 185.84,512.34 " fill="none" id="BROKER_API-backto-RULE_SLAVE" style="stroke:#181818;stroke-width:1.0;"/><path d="M189.2345,412.8912 A9,9 0 0 0 206.0268 414.9207" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[fe602f02b31171b9e28937b367c60d1a]
+link RULE_BACK to DB_API--><g id="link_RULE_BACK_DB_API"><path d="M354.47,426.06 C360.56,452.3 370.28,494.13 375.8,517.91 " fill="none" id="RULE_BACK-to-DB_API" style="stroke:#181818;stroke-width:1.0;"/><path d="M385.6243,522.8125 A9,9 0 0 0 369.1463 526.63" fill="none" style="stroke:#181818;stroke-width:1.5;"/></g><!--MD5=[17f6f65754f88b8dfed0b834285b5c92]
+@startuml logical-view-level2
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam Shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+component "Rule Engine Frontend" as RULE_FRONT
+component "Rule Engine Backend" as RULE_BACK
+component "Rule Engine Slave" as RULE_SLAVE
+component "Rule Engine Database" as RULE_DB
+component "Message Broker" as BROKER
+
+interface "UI" as UI
+interface "Rule Engine Backend\nAPI" as API
+interface "Rule Engine Database\nAPI" as DB_API
+interface "Rule Engine Database\nAPI" as DB_API
+interface "Message Broker API" as BROKER_API
+
+UI - - RULE_FRONT
+API - - RULE_BACK
+
+BROKER - BROKER_API
+
+RULE_FRONT - -( API
+
+DB_API - - RULE_DB
+
+BROKER_API )- RULE_BACK
+BROKER_API )- - RULE_SLAVE
+
+RULE_BACK - -( DB_API
+
+@enduml
+
+PlantUML version 1.2022.4(Sat Apr 09 14:29:17 WEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

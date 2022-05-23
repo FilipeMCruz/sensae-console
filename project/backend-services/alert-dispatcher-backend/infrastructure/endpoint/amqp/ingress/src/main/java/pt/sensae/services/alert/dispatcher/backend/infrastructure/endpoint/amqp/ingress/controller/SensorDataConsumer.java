@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.alert.dispatcher.backend.application.SensorDataHandlerService;
+import pt.sensae.services.alert.dispatcher.backend.application.RuleEvaluatorService;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
@@ -18,9 +18,9 @@ public class SensorDataConsumer {
 
     public static final String INGRESS_QUEUE = "sensor.alert.dispatcher.queue";
 
-    private final SensorDataHandlerService handler;
+    private final RuleEvaluatorService handler;
 
-    public SensorDataConsumer(SensorDataHandlerService handler) {
+    public SensorDataConsumer(RuleEvaluatorService handler) {
         this.handler = handler;
     }
 
@@ -28,7 +28,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);
-        handler.publish(consumed.data);
+        handler.insertData(consumed.data);
     }
 
     private void logConsumedMessage(MessageConsumed<SensorDataDTO> in) {

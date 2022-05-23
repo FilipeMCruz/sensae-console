@@ -28,6 +28,11 @@
             <artifactId>ingress</artifactId>
             <version>0.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>pt.sensae.services</groupId>
+            <artifactId>internal</artifactId>
+            <version>0.7.0</version>
+        </dependency>
     </dependencies>
 
     <build>

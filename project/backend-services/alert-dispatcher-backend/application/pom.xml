@@ -28,5 +28,15 @@
             <version>0.7.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.drools</groupId>
+            <artifactId>drools-core</artifactId>
+            <version>7.69.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kie</groupId>
+            <artifactId>kie-spring</artifactId>
+            <version>7.69.0.Final</version>
+        </dependency>
     </dependencies>
 </project>

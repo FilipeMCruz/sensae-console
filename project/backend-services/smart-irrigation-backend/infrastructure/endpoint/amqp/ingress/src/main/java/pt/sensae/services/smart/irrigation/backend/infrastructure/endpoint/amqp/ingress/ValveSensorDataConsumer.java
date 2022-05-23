@@ -8,7 +8,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.smart.irrigation.backend.application.services.data.DataHandlerService;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Component
@@ -16,7 +16,7 @@ public class ValveSensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(ValveSensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "Sharespot Smart Irrigation Queue (valve)";
+    public static final String INGRESS_QUEUE = "sensor.smart.irrigation.valve.queue";
 
     private final DataHandlerService handler;
 
@@ -31,7 +31,7 @@ public class ValveSensorDataConsumer {
         handler.handle(consumed.data);
     }
 
-    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
+    private void logConsumedMessage(MessageConsumed<SensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

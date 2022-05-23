@@ -2,8 +2,8 @@ package sharespot.services.fleetmanagementbackend.infrastructure.persistence.que
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
-import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import sharespot.services.fleetmanagementbackend.domain.SensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.pastdata.GPSSensorDataFilter;
 import sharespot.services.fleetmanagementbackend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository
-public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRepository {
+public class SensorDataRepositoryImpl implements SensorDataRepository {
 
     private final ProcessedSensorDataRepositoryJDBC repository;
 
@@ -26,9 +26,9 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ProcessedSensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository,
-                                             ProcessedSensorDataMapperImpl mapper,
-                                             JdbcTemplate jdbcTemplate) {
+    public SensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository,
+                                    ProcessedSensorDataMapperImpl mapper,
+                                    JdbcTemplate jdbcTemplate) {
         this.repository = repository;
         this.mapper = mapper;
         this.jdbcTemplate = jdbcTemplate;
@@ -36,7 +36,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
 
     //TODO change this to a bulk insert with batchUpdate https://www.baeldung.com/spring-jdbc-jdbctemplate
     @Override
-    public void insert(ProcessedSensorDataDTO dao) {
+    public void insert(SensorDataDTO dao) {
         mapper.dtoToDao(dao).forEach(data ->
                 this.repository.insert(data.dataId,
                         data.deviceName,
@@ -50,7 +50,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public Stream<ProcessedSensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
+    public Stream<SensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
         var domainValues = inConcat(domains.map(d -> d.value().toString()));
         var deviceValues = inConcat(filters.devices.stream().map(UUID::toString));
         var query = String.format("SELECT * FROM data WHERE device_id IN %s AND domain IN %s AND ts BETWEEN '%s' AND '%s';", deviceValues, domainValues, filters.startTime.toString(), filters.endTime.toString());
@@ -64,7 +64,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public Stream<ProcessedSensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
+    public Stream<SensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
         var values = inConcat(domains.map(d -> d.value().toString()));
         var query = String.format("SELECT * FROM data LATEST BY device_id WHERE domain IN %s;", values);
 
@@ -75,7 +75,7 @@ public class ProcessedSensorDataRepositoryImpl implements ProcessedSensorDataRep
     }
 
     @Override
-    public Stream<ProcessedSensorDataDTO> queryPastData(ProcessedSensorDataDTO dao, Integer timeSpanMinutes) {
+    public Stream<SensorDataDTO> queryPastData(SensorDataDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToSingleDao(dao);
 
         return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)

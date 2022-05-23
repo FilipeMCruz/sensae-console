@@ -2,7 +2,7 @@ package pt.sensae.services.data.validator.backend.application.validators.gps;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.data.validator.backend.application.validators.DataValidator;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
@@ -21,7 +21,7 @@ public class GPSDataValidator implements DataValidator {
     }
 
     @Override
-    public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
+    public DataLegitimacyOptions validate(SensorDataDTO data) {
         var legitimacy = DataLegitimacyOptions.CORRECT;
 
         if (data.hasAllProperties(PropertyName.LATITUDE, PropertyName.LONGITUDE)) {

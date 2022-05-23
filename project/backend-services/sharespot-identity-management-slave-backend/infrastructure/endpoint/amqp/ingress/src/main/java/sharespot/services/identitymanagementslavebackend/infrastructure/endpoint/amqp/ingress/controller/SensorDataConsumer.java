@@ -7,10 +7,9 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.identitymanagementslavebackend.application.SensorDataHandlerService;
-import sharespot.services.identitymanagementslavebackend.application.SensorDataPublisherService;
 
 @Service
 public class SensorDataConsumer {
@@ -32,7 +31,7 @@ public class SensorDataConsumer {
         handler.info(consumed);
     }
 
-    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
+    private void logConsumedMessage(MessageConsumed<SensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

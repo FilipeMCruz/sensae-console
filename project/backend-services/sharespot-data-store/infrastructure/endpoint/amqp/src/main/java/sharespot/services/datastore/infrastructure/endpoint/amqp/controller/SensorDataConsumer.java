@@ -17,7 +17,7 @@ public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String QUEUE = "Sharespot Data Store Queue";
+    public static final String QUEUE = "sensor.data.store.queue";
 
     private final SensorDataHandlerService handler;
 

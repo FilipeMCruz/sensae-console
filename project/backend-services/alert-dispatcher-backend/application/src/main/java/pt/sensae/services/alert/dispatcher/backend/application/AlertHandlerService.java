@@ -6,7 +6,7 @@ import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSeverityOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
-import pt.sharespot.iot.core.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -46,7 +46,7 @@ public class AlertHandlerService {
 
     private Optional<AlertMessage> buildAlertRoutingKeys(AlertDTO alert) {
         var keys = routingKeysProvider.getAlertBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withLegitimacyType(DataLegitimacyOptions.UNDETERMINED)
+                .withOwnershipType(OwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
                 .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
                 .withSeverityType(AlertSeverityOptions.extract(alert.level))
                 .withCategoryType(AlertCategoryOptions.of(alert.category))

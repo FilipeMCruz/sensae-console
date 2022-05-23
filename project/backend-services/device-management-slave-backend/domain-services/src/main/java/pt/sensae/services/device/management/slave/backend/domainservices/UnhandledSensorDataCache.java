@@ -4,7 +4,7 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 @Service
 public class UnhandledSensorDataCache {
-    private final Cache<DeviceId, Set<MessageConsumed<ProcessedSensorDataDTO>>> cache;
+    private final Cache<DeviceId, Set<MessageConsumed<SensorDataDTO>>> cache;
 
     public UnhandledSensorDataCache() {
         this.cache = Caffeine.newBuilder()
@@ -22,10 +22,10 @@ public class UnhandledSensorDataCache {
                 .build();
     }
 
-    public void insert(MessageConsumed<ProcessedSensorDataDTO> data, DeviceId id) {
+    public void insert(MessageConsumed<SensorDataDTO> data, DeviceId id) {
         var ifPresent = this.cache.getIfPresent(id);
         if (ifPresent == null) {
-            var list = new HashSet<MessageConsumed<ProcessedSensorDataDTO>>();
+            var list = new HashSet<MessageConsumed<SensorDataDTO>>();
             list.add(data);
             this.cache.put(id, list);
         } else {
@@ -33,7 +33,7 @@ public class UnhandledSensorDataCache {
         }
     }
 
-    public Set<MessageConsumed<ProcessedSensorDataDTO>> retrieve(DeviceId id) {
+    public Set<MessageConsumed<SensorDataDTO>> retrieve(DeviceId id) {
         var ifPresent = this.cache.getIfPresent(id);
         if (ifPresent == null) {
             return new HashSet<>();

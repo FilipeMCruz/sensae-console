@@ -10,7 +10,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.*;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 import java.time.Duration;
@@ -29,7 +29,7 @@ public class DeviceCache {
         this.repository = repository;
     }
 
-    public void updateIfNeeded(ProcessedSensorDataDTO dto) {
+    public void updateIfNeeded(SensorDataDTO dto) {
         var deviceId = DeviceId.of(dto.device.id);
         var newEntry = toLedgerEntry(dto);
         var oldEntry = get(deviceId);
@@ -52,7 +52,7 @@ public class DeviceCache {
     }
 
     @NotNull
-    private DeviceType getDeviceType(ProcessedSensorDataDTO dto) {
+    private DeviceType getDeviceType(SensorDataDTO dto) {
         DeviceType type;
         if (dto.hasProperty(PropertyName.TRIGGER)) {
             type = DeviceType.VALVE;
@@ -73,8 +73,8 @@ public class DeviceCache {
         cache.put(id, newEntry);
     }
 
-    private LedgerEntry toLedgerEntry(ProcessedSensorDataDTO data) {
-        var owners = Ownership.of(data.device.domains.ownership.stream().map(DomainId::of));
+    private LedgerEntry toLedgerEntry(SensorDataDTO data) {
+        var owners = Ownership.of(data.device.domains.stream().map(DomainId::of));
 
         var name = DeviceName.of(data.device.name);
 
@@ -95,7 +95,7 @@ public class DeviceCache {
                 RemoteControl.of(true) :
                 RemoteControl.of(false);
 
-        var records = new DeviceRecords(data.device.records.entry.stream()
+        var records = new DeviceRecords(data.device.records.stream()
                 .map(e -> RecordEntry.of(e.label, e.content))
                 .collect(Collectors.toSet()));
 

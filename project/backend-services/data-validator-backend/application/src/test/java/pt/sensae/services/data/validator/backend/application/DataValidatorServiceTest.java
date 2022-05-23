@@ -2,7 +2,7 @@ package pt.sensae.services.data.validator.backend.application;
 
 import org.junit.jupiter.api.Test;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
@@ -25,7 +25,7 @@ public class DataValidatorServiceTest {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
 
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("proce.0.1.16.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
+                .from("proce.0.1.17.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {
@@ -84,11 +84,11 @@ public class DataValidatorServiceTest {
         assertEquals("i", decide.get().legitimacy.value());
     }
 
-    private ProcessedSensorDataDTO randomWithGPSData(GPSDataDTO gps) {
+    private SensorDataDTO randomWithGPSData(GPSDataDTO gps) {
         var device = new DeviceInformationDTO();
         device.id = UUID.randomUUID();
         device.name = "Test";
         var sensor = new SensorDataDetailsDTO().withGps(gps);
-        return new ProcessedSensorDataDTO(UUID.randomUUID(), device, Instant.now().toEpochMilli(), Map.of(0, sensor));
+        return new SensorDataDTO(UUID.randomUUID(), device, Instant.now().toEpochMilli(), Map.of(0, sensor));
     }
 }

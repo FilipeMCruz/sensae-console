@@ -8,7 +8,7 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.proxy.ProxyObject;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import sharespot.services.data.decoder.domain.SensorTypeId;
 import sharespot.services.data.decoder.domainservices.DataDecoderCache;
 
@@ -28,7 +28,7 @@ public class DataDecoderExecutor {
         this.cache = cache;
     }
 
-    public Optional<ProcessedSensorDataDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
+    public Optional<SensorDataDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
         var byDeviceId = cache.findById(scriptId);
         if (byDeviceId.isEmpty()) return Optional.empty();
 
@@ -39,7 +39,7 @@ public class DataDecoderExecutor {
             var object = mapper.convertValue(input, new TypeReference<Map<String, Object>>() {
             });
             return member.map(s -> s.execute(ProxyObject.fromMap(object)).as(Map.class))
-                    .map(r -> mapper.convertValue(r, ProcessedSensorDataDTO.class));
+                    .map(r -> mapper.convertValue(r, SensorDataDTO.class));
         } catch (IOException e) {
             e.printStackTrace();
         }

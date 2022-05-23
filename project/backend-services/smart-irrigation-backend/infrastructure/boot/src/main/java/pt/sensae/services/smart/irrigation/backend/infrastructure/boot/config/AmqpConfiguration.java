@@ -8,9 +8,9 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.StoveSensorDataConsumer;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.data.*;
@@ -70,7 +70,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withSoilMoisture(SoilMoistureDataOptions.WITH_SOIL_MOISTURE_DATA)
                 .withIlluminance(IlluminanceDataOptions.WITH_ILLUMINANCE_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -88,7 +88,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withAirHumidity(AirHumidityDataOptions.WITH_AIR_HUMIDITY_DATA)
                 .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -105,7 +105,7 @@ public class AmqpConfiguration {
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withTrigger(TriggerDataOptions.WITH_TRIGGER_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {

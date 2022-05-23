@@ -8,7 +8,7 @@ import pt.sensae.services.device.management.slave.backend.domain.model.device.De
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.slave.backend.domainservices.DeviceInformationCache;
 import pt.sensae.services.device.management.slave.backend.domainservices.UnhandledSensorDataCache;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 
 import java.util.Optional;
 
@@ -24,7 +24,7 @@ public class RecordAppenderService {
         this.dataWithRecordMapper = dataWithRecordMapper;
     }
 
-    public Optional<DeviceWithSubDevices> tryToAppend(ProcessedSensorDataDTO dto) {
+    public Optional<DeviceWithSubDevices> tryToAppend(SensorDataDTO dto) {
         return cache.findById(new DeviceId(dto.device.id))
                 .map(deviceInformation -> dataWithRecordMapper.domainToDto(dto, deviceInformation));
     }

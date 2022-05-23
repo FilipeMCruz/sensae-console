@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.dataprocessor.domain.SensorTypeId;
 

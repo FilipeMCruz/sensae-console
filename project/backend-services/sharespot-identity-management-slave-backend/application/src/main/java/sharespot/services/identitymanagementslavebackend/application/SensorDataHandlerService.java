@@ -1,7 +1,7 @@
 package sharespot.services.identitymanagementslavebackend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.DeviceId;
 import sharespot.services.identitymanagementslavebackend.domainservices.DeviceDomainCache;
@@ -28,7 +28,7 @@ public class SensorDataHandlerService {
         this.notificationPublisher = notificationPublisher;
     }
 
-    public void info(MessageConsumed<ProcessedSensorDataDTO> message) {
+    public void info(MessageConsumed<SensorDataDTO> message) {
         var deviceId = new DeviceId(message.data.device.id);
         if (cache.findById(deviceId).isPresent()) {
             dataPublisher.publish(message);

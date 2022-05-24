@@ -1,0 +1,15 @@
+package rules;
+
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.AlertLevelDTO;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
+import java.util.List;
+import java.util.UUID;
+
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
+
+dialect "mvel"

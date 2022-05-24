@@ -3,6 +3,7 @@ package pt.sensae.services.alert.dispatcher.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.alert.dispatcher.backend.domain.AlertMessage;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
+import pt.sharespot.iot.core.alert.model.AlertDispatcherService;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSeverityOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
@@ -16,7 +17,7 @@ import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 @Service
-public class AlertHandlerService {
+public class AlertHandlerService implements AlertDispatcherService {
 
     private FluxSink<AlertMessage> dataStream;
 

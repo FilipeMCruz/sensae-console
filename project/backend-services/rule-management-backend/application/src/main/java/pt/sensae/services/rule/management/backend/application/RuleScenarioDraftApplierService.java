@@ -32,15 +32,15 @@ public class RuleScenarioDraftApplierService {
                         mapper.domainToUpdatedDto(draft))
                 .collect(Collectors.toSet());
 
-        if (!notifications.isEmpty()) publisher.publish(RuleScenarioNotificationGroupDTO.of(notifications));
+        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications));
     }
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        var collect = this.collector.collect()
+        var notifications = this.collector.collect()
                 .filter(scenario -> scenario.isApplied().value())
                 .map(mapper::domainToUpdatedDto)
                 .collect(Collectors.toSet());
-        publisher.publish(RuleScenarioNotificationGroupDTO.of(collect));
+        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications));
     }
 }

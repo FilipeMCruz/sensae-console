@@ -8,9 +8,13 @@ import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.alert.dispatcher.backend.domain.RuleScenario;
+import pt.sensae.services.alert.dispatcher.backend.domain.RuleScenarioNotificationType;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Service
 public class RulesContainer {
@@ -32,25 +36,28 @@ public class RulesContainer {
         init();
     }
 
-//    public boolean removeRule(Rule rule) {
-//        kieFileSystem.delete("src/main/resources/" + rule.name + ".drl");
-//        return reload();
-//    }
-//
-//    public boolean updateRule(Rule rule) {
-//        kieFileSystem.delete("src/main/resources/" + rule.name + ".drl");
-//        kieFileSystem.write("src/main/resources/" + rule.name + ".drl", kieServices.getResources()
-//                .newReaderResource(new StringReader(rule.ruleContent)));
-//        return reload();
-//    }
+    public KieSession getSession() {
+        return this.session;
+    }
 
-    private boolean reload() {
+    public void updateEnvironment(Stream<RuleScenario> rules) {
+        rules.forEach(rule -> {
+            kieFileSystem.delete("src/main/resources/" + rule.id().getValue() + ".drl");
+            if (rule.notificationType().equals(RuleScenarioNotificationType.UPDATE)) {
+                kieFileSystem.write("src/main/resources/" + rule.id().getValue() + ".drl", kieServices.getResources()
+                        .newReaderResource(new StringReader(rule.content().value())));
+            }
+        });
+        reload();
+    }
+
+    private void reload() {
         try {
             var kieBuilder = kieServices.newKieBuilder(kieFileSystem);
             kieBuilder.buildAll();
 
             if (kieBuilder.getResults().hasMessages(Message.Level.ERROR)) {
-                return false;
+                return;
             }
             var kieContainer = kieServices.newKieContainer(kieBuilder.getKieModule().getReleaseId());
             if (this.session != null) {
@@ -67,9 +74,7 @@ public class RulesContainer {
             this.session.setGlobal("dispatcher", publisherService);
             this.engine = new Thread(new RuleEngineRunnable(this.session));
             this.engine.start();
-            return true;
-        } catch (Exception ex) {
-            return false;
+        } catch (Exception ignore) {
         }
     }
 
@@ -82,9 +87,5 @@ public class RulesContainer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public KieSession getSession() {
-        return this.session;
     }
 }

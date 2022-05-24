@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/rule-management/mapper",
+  "sourceRoot": "libs/rule-management/mapper/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rule-management/mapper"],
+      "options": {
+        "jestConfig": "libs/rule-management/mapper/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/rule-management/mapper/src/**/*.ts",
+          "libs/rule-management/mapper/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

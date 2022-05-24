@@ -10,12 +10,17 @@
     "importHelpers": true,
     "target": "es2020",
     "module": "esnext",
-    "lib": ["es2019", "dom"],
+    "lib": [
+      "es2019",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@frontend-services/core": ["libs/core/src/index.ts"],
+      "@frontend-services/core": [
+        "libs/core/src/index.ts"
+      ],
       "@frontend-services/data-decoder/dto": [
         "libs/data-decoder/dto/src/index.ts"
       ],
@@ -76,7 +81,9 @@
       "@frontend-services/identity-management/services": [
         "libs/identity-management/services/src/index.ts"
       ],
-      "@frontend-services/mutual": ["libs/mutual/src/index.ts"],
+      "@frontend-services/mutual": [
+        "libs/mutual/src/index.ts"
+      ],
       "@frontend-services/simple-auth-lib": [
         "libs/simple-auth-lib/src/index.ts"
       ],
@@ -91,8 +98,23 @@
       ],
       "@frontend-services/smart-irrigation/services": [
         "libs/smart-irrigation/services/src/index.ts"
+      ],
+      "@frontend-services/rule-management/dto": [
+        "libs/rule-management/dto/src/index.ts"
+      ],
+      "@frontend-services/rule-management/mapper": [
+        "libs/rule-management/mapper/src/index.ts"
+      ],
+      "@frontend-services/rule-management/model": [
+        "libs/rule-management/model/src/index.ts"
+      ],
+      "@frontend-services/rule-management/services": [
+        "libs/rule-management/services/src/index.ts"
       ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

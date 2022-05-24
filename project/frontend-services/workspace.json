@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "core": "libs/core",
+    "mutual": "libs/mutual",
     "data-decoder-dto": "libs/data-decoder/dto",
     "data-decoder-mapper": "libs/data-decoder/mapper",
     "data-decoder-model": "libs/data-decoder/model",
@@ -24,7 +25,6 @@
     "identity-management-mapper": "libs/identity-management/mapper",
     "identity-management-model": "libs/identity-management/model",
     "identity-management-services": "libs/identity-management/services",
-    "mutual": "libs/mutual",
     "sharespot-data-decoder-frontend": "apps/sharespot-data-decoder-frontend",
     "sharespot-data-decoder-frontend-e2e": "apps/sharespot-data-decoder-frontend-e2e",
     "sharespot-data-processor-frontend": "apps/sharespot-data-processor-frontend",
@@ -41,6 +41,10 @@
     "smart-irrigation-model": "libs/smart-irrigation/model",
     "smart-irrigation-services": "libs/smart-irrigation/services",
     "ui-aggregator": "apps/ui-aggregator",
-    "ui-aggregator-e2e": "apps/ui-aggregator-e2e"
+    "ui-aggregator-e2e": "apps/ui-aggregator-e2e",
+    "rule-management-dto": "libs/rule-management/dto",
+    "rule-management-mapper": "libs/rule-management/mapper",
+    "rule-management-model": "libs/rule-management/model",
+    "rule-management-services": "libs/rule-management/services"
   }
 }

@@ -6,6 +6,7 @@ import pt.sensae.services.rule.management.application.auth.TokenExtractor;
 import pt.sensae.services.rule.management.application.auth.UnauthorizedException;
 import pt.sensae.services.rule.management.domainservices.RuleScenarioHoarder;
 import pt.sensae.services.rule.management.domainservices.RuleScenarioSelector;
+import pt.sensae.services.rule.management.domainservices.RuleScenarioValidator;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -16,6 +17,8 @@ public class RuleScenarioRegisterService {
 
     private final RuleScenarioHoarder hoarder;
 
+    private final RuleScenarioValidator validator;
+
     private final RuleScenarioSelector selector;
 
     private final RuleScenarioMapper mapper;
@@ -25,10 +28,13 @@ public class RuleScenarioRegisterService {
     private final TokenExtractor authHandler;
 
     public RuleScenarioRegisterService(RuleScenarioHoarder hoarder,
-                                       RuleScenarioSelector selector, RuleScenarioMapper mapper,
+                                       RuleScenarioValidator validator,
+                                       RuleScenarioSelector selector,
+                                       RuleScenarioMapper mapper,
                                        RuleScenarioHandlerService publisher,
                                        TokenExtractor authHandler) {
         this.hoarder = hoarder;
+        this.validator = validator;
         this.selector = selector;
         this.mapper = mapper;
         this.publisher = publisher;
@@ -54,6 +60,9 @@ public class RuleScenarioRegisterService {
             }
             ruleScenario = old.withContent(ruleScenario.content());
         }
+
+        validator.validateIndex(ruleScenario);
+        
         var hoard = hoarder.hoard(ruleScenario);
         publisher.publishUpdate(hoard);
 

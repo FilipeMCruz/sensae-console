@@ -13,7 +13,4 @@ public interface RuleScenarioMapper {
     RuleScenarioDTO domainToDto(RuleScenario domain);
 
     RuleScenarioId dtoToDomain(RuleScenarioIdDTO dto);
-
-    RuleScenarioIdDTO domainToDto(RuleScenarioId domain);
-
 }

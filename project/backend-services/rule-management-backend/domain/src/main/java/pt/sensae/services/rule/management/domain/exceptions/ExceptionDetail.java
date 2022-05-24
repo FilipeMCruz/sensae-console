@@ -1,4 +1,4 @@
-package pt.sensae.services.rule.management.application.auth;
+package pt.sensae.services.rule.management.domain.exceptions;
 
 public class ExceptionDetail {
 

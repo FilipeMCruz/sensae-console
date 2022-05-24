@@ -1,5 +1,7 @@
 package pt.sensae.services.rule.management.application.auth;
 
+import pt.sensae.services.rule.management.domain.exceptions.ExceptionDetail;
+
 public class UnauthorizedException extends RuntimeException {
 
     private final ExceptionDetail error;

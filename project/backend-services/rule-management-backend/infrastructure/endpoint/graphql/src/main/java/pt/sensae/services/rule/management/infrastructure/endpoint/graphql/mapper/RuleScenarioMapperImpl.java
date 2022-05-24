@@ -38,11 +38,4 @@ public class RuleScenarioMapperImpl implements RuleScenarioMapper {
         var scenarioIdDTO = (RuleScenarioIdDTOImpl) dto;
         return RuleScenarioId.of(scenarioIdDTO.value);
     }
-
-    @Override
-    public RuleScenarioIdDTO domainToDto(RuleScenarioId domain) {
-        var scenarioIdDTO = new RuleScenarioIdDTOImpl();
-        scenarioIdDTO.value = domain.getValue();
-        return scenarioIdDTO;
-    }
 }

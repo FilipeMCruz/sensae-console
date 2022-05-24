@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {RuleManagementDialogComponent} from "../data-decoder-dialog/rule-management-dialog.component";
 import {
   RuleScenario,
   RuleScenarioId,
@@ -8,6 +7,7 @@ import {
   RuleScenarioViewType
 } from "@frontend-services/rule-management/model";
 import {DeleteRuleScenario, GetAllRuleScenario, IndexRuleScenario} from "@frontend-services/rule-management/services";
+import {RuleManagementDialogComponent} from "../rule-management-dialog/rule-management-dialog.component";
 
 @Component({
   selector: 'frontend-services-data-decoders-page',
@@ -93,6 +93,16 @@ export class RuleManagementPageComponent implements OnInit {
         (r) => r.id.value != data.value
       );
     });
+  }
+
+  getNextRulePublishTime() {
+    const current = new Date();
+    if (current.getMinutes() < 30) {
+      current.setMinutes(30, 0, 0);
+    } else {
+      current.setHours(current.getHours() + 1, 0, 0, 0);
+    }
+    return current;
   }
 
   canEdit() {

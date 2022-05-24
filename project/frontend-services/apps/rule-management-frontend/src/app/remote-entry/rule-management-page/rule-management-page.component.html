@@ -12,7 +12,15 @@
       *ngFor="let scenario of this.ruleScenarios"
       class="item"
     >
-      <mat-card-title>Rule Scenario</mat-card-title>
+      <mat-card-title-group>
+        <mat-card-title>Rule Scenario</mat-card-title>
+        <mat-chip-list *ngIf="scenario.isDraft">
+          <mat-chip color="warn" selected>draft</mat-chip>
+        </mat-chip-list>
+        <mat-card-subtitle *ngIf="scenario.isDraft">Changes will only be applied
+          at {{getNextRulePublishTime() | date:'shortTime'}}
+        </mat-card-subtitle>
+      </mat-card-title-group>
       <mat-card-content>
         <frontend-services-rule-management
           [entry]="scenario"
@@ -25,7 +33,15 @@
       </mat-card-content>
     </mat-card>
     <mat-card *ngIf="canEdit()" class="item">
-      <mat-card-title>New Rule Scenario</mat-card-title>
+      <mat-card-title-group>
+        <mat-card-title>New Rule Scenario</mat-card-title>
+        <mat-chip-list>
+          <mat-chip color="warn" selected>draft</mat-chip>
+        </mat-chip-list>
+        <mat-card-subtitle>Changes will only be applied
+          at {{getNextRulePublishTime() | date:'shortTime'}}
+        </mat-card-subtitle>
+      </mat-card-title-group>
       <mat-card-content>
         <frontend-services-rule-management
           (newRuleScenarioEvent)="addItem($event)"

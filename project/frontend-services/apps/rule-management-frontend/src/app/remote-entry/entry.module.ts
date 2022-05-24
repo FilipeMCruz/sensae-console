@@ -21,6 +21,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {RuleManagementPageComponent} from "./rule-management-page/rule-management-page.component";
 import {RuleManagementComponent} from "./rule-management/rule-management.component";
 import {RuleManagementDialogComponent} from "./rule-management-dialog/rule-management-dialog.component";
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {RuleManagementDialogComponent} from "./rule-management-dialog/rule-manag
         component: RuleManagementPageComponent,
       },
     ]),
+    MatChipsModule,
   ],
   providers: [],
 })

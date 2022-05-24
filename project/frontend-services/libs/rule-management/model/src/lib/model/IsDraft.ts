@@ -3,6 +3,6 @@ export class IsDraft {
   }
 
   static default() {
-    return new IsDraft(false);
+    return new IsDraft(true);
   }
 }

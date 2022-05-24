@@ -21,7 +21,7 @@ public class RuleScenarioCollectorController {
 
     @DgsQuery(field = "scenario")
     public Set<RuleScenarioDTO> collect(@RequestHeader("Authorization") String auth) {
-        return service.transformations(AuthMiddleware.buildAccessToken(auth))
+        return service.ruleScenarios(AuthMiddleware.buildAccessToken(auth))
                 .collect(Collectors.toSet());
     }
 }

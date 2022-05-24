@@ -46,10 +46,13 @@ public class RuleScenarioRepositoryImpl implements RuleScenarioRepository {
     }
 
     @Override
+    @Transactional
     public Stream<RuleScenario> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
                 .filter(rule -> !rule.deleted)
-                .map(RuleScenarioMapper::postgresToDomain);
+                .map(RuleScenarioMapper::postgresToDomain)
+                .toList()
+                .stream();
     }
 
     @Override
@@ -72,6 +75,7 @@ public class RuleScenarioRepositoryImpl implements RuleScenarioRepository {
     }
 
     @Override
+    @Transactional
     public Stream<RuleScenario> findOwned(RuleScenarioOwners owners) {
         var ownersString = PostgresArrayMapper.toArray(owners.domains()
                 .stream()
@@ -79,15 +83,19 @@ public class RuleScenarioRepositoryImpl implements RuleScenarioRepository {
                 .collect(Collectors.toList()));
         return repositoryPostgres.findScenarioOwned(ownersString)
                 .filter(rule -> !rule.deleted)
-                .map(RuleScenarioMapper::postgresToDomain);
+                .map(RuleScenarioMapper::postgresToDomain)
+                .toList()
+                .stream();
     }
 
     @Override
+    @Transactional
     public Stream<RuleScenario> findDrafts() {
         var oldDrafts = repositoryPostgres.findByAppliedFalse()
                 .peek(scenario -> scenario.applied = true)
                 .collect(Collectors.toSet());
         repositoryPostgres.saveAll(oldDrafts);
-        return oldDrafts.stream().map(RuleScenarioMapper::postgresToDomain);
+        return oldDrafts.stream()
+                .map(RuleScenarioMapper::postgresToDomain);
     }
 }

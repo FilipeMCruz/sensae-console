@@ -13,8 +13,8 @@ import {ApolloClientOptions, InMemoryCache} from "@apollo/client/core";
 import {createLink} from "@frontend-services/mutual";
 import {environment} from "../environments/environment";
 import {APOLLO_NAMED_OPTIONS, ApolloModule} from "apollo-angular";
-import {RemoteEntryModule} from "../../../sharespot-data-decoder-frontend/src/app/remote-entry/entry.module";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {RemoteEntryModule} from "./remote-entry/entry.module";
 
 export function createNamedApollo(
   httpLink: HttpLink

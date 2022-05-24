@@ -28,7 +28,7 @@ public class RuleScenarioCollectorService {
         this.authHandler = authHandler;
     }
 
-    public Stream<RuleScenarioDTO> transformations(AccessTokenDTO claims) {
+    public Stream<RuleScenarioDTO> ruleScenarios(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("rule_management:rules:read"))
             throw new UnauthorizedException("No Permissions");

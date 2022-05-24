@@ -24,7 +24,7 @@ public class RuleScenarioDraftApplierService {
         this.mapper = mapper;
     }
 
-    @Scheduled(cron = "0 0/30 * * * * ?")
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void publishDrafts() {
         var notifications = this.collector.collectDrafts()
                 .map(draft -> draft.isDeleted().value() ?

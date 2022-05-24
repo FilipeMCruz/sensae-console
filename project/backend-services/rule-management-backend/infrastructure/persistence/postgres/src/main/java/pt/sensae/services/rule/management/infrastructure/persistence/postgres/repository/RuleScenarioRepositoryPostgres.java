@@ -16,6 +16,6 @@ public interface RuleScenarioRepositoryPostgres extends CrudRepository<RuleScena
     
     Stream<RuleScenarioPostgres> findByAppliedFalse();
 
-    @Query(value = "SELECT * FROM rule WHERE Cast(owners AS text[]) && Cast(:domains AS text[]) AND close_at IS NULL")
+    @Query(value = "SELECT * FROM rule WHERE Cast(owners AS text[]) && Cast(:domains AS text[])", nativeQuery = true)
     Stream<RuleScenarioPostgres> findScenarioOwned(@Param("domains") String domains);
 }

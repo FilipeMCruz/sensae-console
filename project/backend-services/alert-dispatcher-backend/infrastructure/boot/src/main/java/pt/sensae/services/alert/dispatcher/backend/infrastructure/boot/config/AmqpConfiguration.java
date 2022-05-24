@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.alert.dispatcher.backend.application.RoutingKeysProvider;
 import pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
-import pt.sharespot.iot.core.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;

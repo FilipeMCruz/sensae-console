@@ -6,7 +6,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.rule.management.domainservices.RuleScenarioCollector;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -27,15 +26,13 @@ public class RuleScenarioDraftApplierService {
 
     @Scheduled(cron = "0 0/30 * * * * ?")
     public void publishDrafts() {
-        var drafts = this.collector.collectDrafts().collect(Collectors.toSet());
-        var notifications = drafts.stream().map(draft -> {
-            if (draft.isDeleted().value()) {
-                return mapper.domainToDeletedDto(draft.id());
-            } else {
-                return mapper.domainToUpdatedDto(draft);
-            }
-        }).collect(Collectors.toSet());
-        publisher.publish(RuleScenarioNotificationGroupDTO.of(notifications));
+        var notifications = this.collector.collectDrafts()
+                .map(draft -> draft.isDeleted().value() ?
+                        mapper.domainToDeletedDto(draft.id()) :
+                        mapper.domainToUpdatedDto(draft))
+                .collect(Collectors.toSet());
+
+        if (!notifications.isEmpty()) publisher.publish(RuleScenarioNotificationGroupDTO.of(notifications));
     }
 
     @EventListener

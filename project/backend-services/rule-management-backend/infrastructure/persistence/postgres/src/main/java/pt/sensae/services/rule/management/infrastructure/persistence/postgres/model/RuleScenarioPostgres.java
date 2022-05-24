@@ -14,6 +14,12 @@ public class RuleScenarioPostgres {
     @Column(name = "id", unique = true)
     public String scenarioId;
 
+    @Column(name = "applied")
+    public boolean applied;
+
+    @Column(name = "deleted")
+    public boolean deleted;
+
     @Column(name = "content", columnDefinition = "TEXT")
     public String scenarioContent;
 

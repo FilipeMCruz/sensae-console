@@ -25,4 +25,8 @@ public class RuleScenarioCollector {
     public Stream<RuleScenario> collect(RuleScenarioOwners owners) {
         return repository.findOwned(owners);
     }
+
+    public Stream<RuleScenario> collectDrafts() {
+        return repository.findDrafts();
+    }
 }

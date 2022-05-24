@@ -14,4 +14,6 @@ public interface RuleScenarioRepository {
     Optional<RuleScenario> findById(RuleScenarioId id);
 
     Stream<RuleScenario> findOwned(RuleScenarioOwners owners);
+
+    Stream<RuleScenario> findDrafts();
 }

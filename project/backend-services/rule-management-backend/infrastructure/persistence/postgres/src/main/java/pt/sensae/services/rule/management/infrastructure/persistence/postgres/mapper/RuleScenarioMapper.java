@@ -1,9 +1,6 @@
 package pt.sensae.services.rule.management.infrastructure.persistence.postgres.mapper;
 
-import pt.sensae.services.rule.management.domain.RuleScenario;
-import pt.sensae.services.rule.management.domain.RuleScenarioId;
-import pt.sensae.services.rule.management.domain.RuleScenarioContent;
-import pt.sensae.services.rule.management.domain.RuleScenarioOwners;
+import pt.sensae.services.rule.management.domain.*;
 import pt.sensae.services.rule.management.infrastructure.persistence.postgres.model.RuleScenarioPostgres;
 
 import java.util.Arrays;
@@ -18,7 +15,7 @@ public class RuleScenarioMapper {
         var domains = RuleScenarioOwners.of(Arrays.stream(postgres.scenarioOwners)
                 .map(UUID::fromString)
                 .collect(Collectors.toSet()));
-        return new RuleScenario(scenarioId, content, domains);
+        return new RuleScenario(scenarioId, content, domains, new RuleApplied(postgres.applied), new RuleDeleted(postgres.deleted));
     }
 
     public static RuleScenarioPostgres domainToPostgres(RuleScenario domain) {
@@ -31,6 +28,7 @@ public class RuleScenarioMapper {
                 .map(UUID::toString)
                 .toList()
                 .toArray(new String[0]);
+        ruleScenario.applied = domain.isApplied().value();
         return ruleScenario;
     }
 }

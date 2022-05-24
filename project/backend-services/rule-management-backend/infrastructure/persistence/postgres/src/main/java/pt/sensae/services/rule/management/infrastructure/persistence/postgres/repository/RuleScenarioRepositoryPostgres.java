@@ -13,9 +13,9 @@ import java.util.stream.Stream;
 public interface RuleScenarioRepositoryPostgres extends CrudRepository<RuleScenarioPostgres, Long> {
 
     Optional<RuleScenarioPostgres> findByScenarioId(String scenarioId);
+    
+    Stream<RuleScenarioPostgres> findByAppliedFalse();
 
     @Query(value = "SELECT * FROM rule WHERE Cast(owners AS text[]) && Cast(:domains AS text[]) AND close_at IS NULL")
     Stream<RuleScenarioPostgres> findScenarioOwned(@Param("domains") String domains);
-    
-    void deleteByScenarioId(String scenarioId);
 }

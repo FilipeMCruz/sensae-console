@@ -5,11 +5,10 @@ import java.util.stream.Collectors;
 
 public class PostgresArrayMapper {
 
-    public static String toArray(String value) {
-        return "{" + value + "}";
-    }
-
     public static String toArray(List<String> value) {
+        if (value.size() == 1) {
+            return "{" + value.get(0) + "}";
+        }
         return value.stream().collect(Collectors.joining(",", "{", "}"));
     }
 }

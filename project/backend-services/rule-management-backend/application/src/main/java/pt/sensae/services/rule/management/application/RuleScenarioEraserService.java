@@ -19,21 +19,17 @@ public class RuleScenarioEraserService {
 
     private final RuleScenarioMapper mapper;
 
-    private final RuleScenarioHandlerService publisher;
-
     private final TokenExtractor authHandler;
 
     public RuleScenarioEraserService(RuleScenarioEraser eraser,
                                      RuleScenarioSelector selector,
                                      RuleScenarioValidator validator,
                                      RuleScenarioMapper mapper,
-                                     RuleScenarioHandlerService publisher,
                                      TokenExtractor authHandler) {
         this.eraser = eraser;
         this.selector = selector;
         this.validator = validator;
         this.mapper = mapper;
-        this.publisher = publisher;
         this.authHandler = authHandler;
     }
 
@@ -51,9 +47,7 @@ public class RuleScenarioEraserService {
                 throw new UnauthorizedException("No Permissions");
             } else {
                 validator.validateDelete(scenarioId);
-
-                var erased = eraser.erase(scenarioId);
-                publisher.publishDelete(erased);
+                eraser.erase(scenarioId);
             }
         }
         return dto;

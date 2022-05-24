@@ -1,6 +1,7 @@
 type RuleScenario {
     id : ScenarioId
     content : String
+    applied : Boolean
 }
 
 type ScenarioId {
@@ -8,8 +9,8 @@ type ScenarioId {
 }
 
 input RuleScenarioInput {
-    data : ScenarioIdInput
-    script : String
+    id : ScenarioIdInput
+    content : String
 }
 
 input ScenarioIdInput {

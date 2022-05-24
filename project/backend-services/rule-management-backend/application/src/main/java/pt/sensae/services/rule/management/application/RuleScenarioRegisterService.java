@@ -23,21 +23,17 @@ public class RuleScenarioRegisterService {
 
     private final RuleScenarioMapper mapper;
 
-    private final RuleScenarioHandlerService publisher;
-
     private final TokenExtractor authHandler;
 
     public RuleScenarioRegisterService(RuleScenarioHoarder hoarder,
                                        RuleScenarioValidator validator,
                                        RuleScenarioSelector selector,
                                        RuleScenarioMapper mapper,
-                                       RuleScenarioHandlerService publisher,
                                        TokenExtractor authHandler) {
         this.hoarder = hoarder;
         this.validator = validator;
         this.selector = selector;
         this.mapper = mapper;
-        this.publisher = publisher;
         this.authHandler = authHandler;
     }
 
@@ -62,10 +58,8 @@ public class RuleScenarioRegisterService {
         }
 
         validator.validateIndex(ruleScenario);
-        
-        var hoard = hoarder.hoard(ruleScenario);
-        publisher.publishUpdate(hoard);
 
-        return dto;
+        var hoard = hoarder.hoard(ruleScenario);
+        return mapper.domainToDto(hoard);
     }
 }

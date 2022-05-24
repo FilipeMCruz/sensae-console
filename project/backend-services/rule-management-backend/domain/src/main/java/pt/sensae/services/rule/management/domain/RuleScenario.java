@@ -2,10 +2,11 @@ package pt.sensae.services.rule.management.domain;
 
 import java.util.Objects;
 
-public record RuleScenario(RuleScenarioId id, RuleScenarioContent content, RuleScenarioOwners owners) {
+public record RuleScenario(RuleScenarioId id, RuleScenarioContent content, RuleScenarioOwners owners,
+                           RuleApplied isApplied, RuleDeleted isDeleted) {
 
     public RuleScenario withContent(RuleScenarioContent content) {
-        return new RuleScenario(id, content, owners);
+        return new RuleScenario(id, content, owners, isApplied, isDeleted);
     }
 
     @Override
@@ -22,4 +23,5 @@ public record RuleScenario(RuleScenarioId id, RuleScenarioContent content, RuleS
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
+
 }

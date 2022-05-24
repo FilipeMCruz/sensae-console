@@ -32,7 +32,7 @@ export class IndexRuleScenario {
       }
     `;
     return this.apollo
-      .use('dataDecoder')
+      .use('ruleManagement')
       .mutate<RuleScenarioResult>({
         mutation,
         context: {

@@ -32,7 +32,7 @@ export class GetAllRuleScenario {
       }
     `;
     return this.apollo
-      .use('dataDecoder')
+      .use('ruleManagement')
       .query<RuleScenarioQuery>({
         query,
         context: {

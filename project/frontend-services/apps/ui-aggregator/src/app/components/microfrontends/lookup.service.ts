@@ -38,6 +38,12 @@ const SMART_IRRIGATION_FRONTEND_URL = environment.production
   '/micro-frontends/smart-irrigation-frontend/remoteEntry.js'
   : 'http://localhost:4298/remoteEntry.js';
 
+const RULE_MANAGEMENT_FRONTEND_URL = environment.production
+  ? 'https://' +
+  environment.domain +
+  '/micro-frontends/rule-management-frontend/remoteEntry.js'
+  : 'http://localhost:4294/remoteEntry.js';
+
 @Injectable({providedIn: 'root'})
 export class LookupService {
   lookup(): Promise<Microfrontend[]> {
@@ -133,6 +139,23 @@ export class LookupService {
             'identity_management:domains:read',
             'identity_management:tenant:read',
             'identity_management:device:read'
+          ),
+        },
+      },
+      {
+        // For Loading
+        remoteEntry: RULE_MANAGEMENT_FRONTEND_URL,
+        exposedModule: './Module',
+        type: 'module',
+
+        // For Routing
+        displayName: 'Rule Management',
+        routePath: 'rule-management',
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.TOOL,
+          permissions: Array.of(
+            'rule_management:rules:read',
           ),
         },
       },

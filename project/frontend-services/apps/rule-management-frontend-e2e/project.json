@@ -1,0 +1,28 @@
+{
+  "root": "apps/rule-management-frontend-e2e",
+  "sourceRoot": "apps/rule-management-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/rule-management-frontend-e2e/cypress.json",
+        "devServerTarget": "rule-management-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "rule-management-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/rule-management-frontend-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["rule-management-frontend"]
+}

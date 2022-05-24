@@ -28,7 +28,7 @@ export class DeleteRuleScenario {
       }
     `;
     return this.apollo
-      .use('dataDecoder')
+      .use('ruleManagement')
       .mutate<RuleScenarioDelete>({
         mutation,
         context: {

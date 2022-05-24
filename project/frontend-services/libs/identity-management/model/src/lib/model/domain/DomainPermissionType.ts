@@ -11,6 +11,10 @@ export enum DomainPermissionType {
   EDIT_DATA_DECODER = 'Data Decoder | Edit Scripts',
   DELETE_DATA_DECODER = 'Data Decoder | Delete Scripts',
 
+  READ_RULE_SCENARIO = 'Rule Management | See Scenarios',
+  DELETE_RULE_SCENARIO = 'Rule Management | Delete Scenarios',
+  EDIT_RULE_SCENARIO = 'Rule Management | Edit Scenarios',
+
   READ_LIVE_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Live Data',
   READ_LATEST_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Latest Data',
   READ_PAST_DATA_FLEET_MANAGEMENT = 'Fleet Management | See Past Data',

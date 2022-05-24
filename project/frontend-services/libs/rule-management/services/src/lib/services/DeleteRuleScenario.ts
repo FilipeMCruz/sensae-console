@@ -16,8 +16,12 @@ export class DeleteRuleScenario {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["rule_management:rules:delete"]);
+  }
+
   delete(event: RuleScenario): Observable<RuleScenarioId> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["rule_management:rules:delete"]))
+    if (!this.canDo())
       return EMPTY;
 
     const mutation = gql`

@@ -13,11 +13,16 @@ import {RuleScenarioResult} from "@frontend-services/rule-management/dto";
   providedIn: 'root',
 })
 export class IndexRuleScenario {
+
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["rule_management:rules:edit"])
+  }
+
   index(event: RuleScenario): Observable<RuleScenario> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["rule_management:rules:edit"]))
+    if (!this.canDo())
       return EMPTY;
 
     const mutation = gql`

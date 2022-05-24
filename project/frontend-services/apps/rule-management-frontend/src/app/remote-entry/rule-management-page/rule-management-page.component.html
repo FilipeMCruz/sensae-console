@@ -1,0 +1,47 @@
+<div class="container">
+  <button
+    class="bottom"
+    mat-stroked-button
+    color="primary"
+    (click)="fetchAllRuleScenarios()"
+  >
+    Reload Rule Scenarios
+  </button>
+  <div class="list" *ngIf="!this.loading">
+    <mat-card
+      *ngFor="let scenario of this.ruleScenarios"
+      class="item"
+    >
+      <mat-card-title>Rule Scenario</mat-card-title>
+      <mat-card-content>
+        <frontend-services-rule-management
+          [entry]="scenario"
+          [ruleScenarioViewType]="ruleScenarioViewType.Edit"
+          [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
+          (newRuleScenarioEvent)="updateItem($event)"
+          (deleteRuleScenarioEvent)="deleteItem($event)"
+        ></frontend-services-rule-management>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngIf="canEdit()" class="item">
+      <mat-card-title>New Rule Scenario</mat-card-title>
+      <mat-card-content>
+        <frontend-services-rule-management
+          (newRuleScenarioEvent)="addItem($event)"
+          [ruleScenarioViewType]="ruleScenarioViewType.New"
+          [canEdit]="canEdit()"
+          [canDelete]="canDelete()"
+        ></frontend-services-rule-management>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div *ngIf="this.loading" class="wrapper">
+    <div class="notfound">
+      <h1>!</h1>
+    </div>
+    <div>
+      Loading Data
+    </div>
+  </div>
+</div>

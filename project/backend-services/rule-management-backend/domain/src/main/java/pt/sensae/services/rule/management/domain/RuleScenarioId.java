@@ -9,13 +9,9 @@ public class RuleScenarioId {
     private final String value;
 
     private RuleScenarioId(String value) {
-        if (value.trim().isBlank() || value.matches("^[0-9A-Za-z\\\\s-]+$"))
+        if (value.trim().isBlank() || value.matches("^[#0-9A-Za-z\\\\s-]+$"))
             throw new InvalidSenarioException("Invalid Rule Scenario Id");
         this.value = value;
-    }
-
-    public boolean same(RuleScenarioId id) {
-        return id.value.equals(value);
     }
 
     public static RuleScenarioId of(String value) {

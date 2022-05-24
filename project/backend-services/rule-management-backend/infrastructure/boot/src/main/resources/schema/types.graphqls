@@ -1,0 +1,17 @@
+type RuleScenario {
+    id : ScenarioId
+    content : String
+}
+
+type ScenarioId {
+    value: String
+}
+
+input RuleScenarioInput {
+    data : ScenarioIdInput
+    script : String
+}
+
+input ScenarioIdInput {
+    value: String
+}

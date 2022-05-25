@@ -11,7 +11,7 @@ import pt.sensae.services.rule.management.backend.application.RoutingKeysProvide
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
-    public InternalRoutingKeys.Builder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
+    public InternalRoutingKeys.Builder getInternalBuilder(RoutingKeysBuilderOptions options) {
         return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.RULE_MANAGEMENT, options);
     }
 }

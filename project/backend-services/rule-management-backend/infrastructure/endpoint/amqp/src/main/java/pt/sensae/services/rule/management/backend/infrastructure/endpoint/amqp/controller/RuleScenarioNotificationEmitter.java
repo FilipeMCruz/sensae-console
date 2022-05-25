@@ -15,7 +15,7 @@ import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 public class RuleScenarioNotificationEmitter {
 
     public RuleScenarioNotificationEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, RuleScenarioHandlerService service, RoutingKeysProvider provider) {
-        var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+        var info = provider.getInternalBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.RULE_MANAGEMENT)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INFO)

@@ -35,8 +35,7 @@ public class RuleScenarioDraftApplierService {
         if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications));
     }
 
-    @EventListener
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void publishCurrentState() {
         var notifications = this.collector.collect()
                 .filter(scenario -> scenario.isApplied().value())
                 .map(mapper::domainToUpdatedDto)

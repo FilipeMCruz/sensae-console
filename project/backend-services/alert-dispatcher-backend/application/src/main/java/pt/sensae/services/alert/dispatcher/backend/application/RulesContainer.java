@@ -6,6 +6,7 @@ import org.kie.api.builder.Message;
 import org.kie.api.conf.EventProcessingOption;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.alert.dispatcher.backend.domain.RuleScenario;
@@ -64,7 +65,7 @@ public class RulesContainer {
                 this.session.dispose();
             }
             if (this.engine != null) {
-                this.engine.join();
+                this.engine.join(1000);
             }
 
             var config = kieServices.newKieBaseConfiguration();

@@ -26,6 +26,7 @@ export class DeviceGroup {
   }
 
   public tryAdd(device: DeviceInformation) {
+    this.devices = this.devices.filter(r => r.device.id != device.device.id);
     if (this.entry.label === "") {
       this.devices.push(device);
     } else {

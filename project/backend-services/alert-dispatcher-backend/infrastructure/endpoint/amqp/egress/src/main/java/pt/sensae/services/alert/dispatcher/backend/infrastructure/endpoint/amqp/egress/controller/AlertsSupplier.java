@@ -29,7 +29,7 @@ public class AlertsSupplier {
     }
 
     private void logSuppliedMessage(AlertMessage in) {
-        logger.info("Alert Context: {}", in.alert().context);
+        logger.info("Alert Category: {}", in.alert().category);
         logger.info("RoutingKeys: {}", in.routingKeys().details());
     }
 }

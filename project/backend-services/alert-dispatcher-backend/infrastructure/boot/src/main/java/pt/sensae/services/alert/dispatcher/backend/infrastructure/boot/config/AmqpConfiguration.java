@@ -10,8 +10,11 @@ import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -67,6 +70,9 @@ public class AmqpConfiguration {
     Binding binding(Queue queue, TopicExchange topic) {
         var keys = provider.getSensorBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withRecords(RecordsOptions.WITH_RECORDS)
+                .withInfoType(InfoTypeOptions.PROCESSED)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

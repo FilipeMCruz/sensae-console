@@ -6,7 +6,7 @@ export class RuleScenarioMapper {
   static dtoToModel(dto: RuleScenarioDTO): RuleScenario {
     const ruleScenarioId = RuleScenarioIdMapper.dtoToModel(dto.id);
     const content = new RuleScenarioContent(dto.content);
-    const isDraft = new IsDraft(dto.applied);
+    const isDraft = new IsDraft(!dto.applied);
     return new RuleScenario(ruleScenarioId, content, isDraft);
   }
 

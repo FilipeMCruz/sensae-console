@@ -3,10 +3,15 @@ package sharespot.services.identitymanagementslavebackend.domainservices;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.alert.model.AlertDTO;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.DeviceWithAllPermissions;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DeviceDomainCache {
@@ -29,5 +34,21 @@ public class DeviceDomainCache {
 
     public void delete(DeviceId id) {
         cache.invalidate(id);
+    }
+
+    public Optional<List<DeviceWithAllPermissions>> findAllById(Stream<DeviceId> devices) {
+        var possibleDevices = devices.map(this::findById).toList();
+        if (possibleDevices.isEmpty()) {
+            return this.findById(DeviceId.root()).map(List::of);
+        }
+
+        if (possibleDevices.stream().anyMatch(Optional::isEmpty)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(possibleDevices.stream()
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList()));
+        }
     }
 }

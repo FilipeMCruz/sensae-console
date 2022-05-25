@@ -3,6 +3,7 @@ package sharespot.services.identitymanagementslavebackend.application;
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.notification.NotificationType;
 import sharespot.services.identitymanagementslavebackend.domainservices.DeviceDomainCache;
+import sharespot.services.identitymanagementslavebackend.domainservices.UnhandledAlertCache;
 import sharespot.services.identitymanagementslavebackend.domainservices.UnhandledSensorDataCache;
 
 @Service
@@ -15,15 +16,22 @@ public class DeviceOwnershipNotifierService {
     private final DeviceNotificationEventMapper mapper;
 
     private final SensorDataPublisherService handler;
+    private final AlertPublisherService alertHandler;
+
+    private final UnhandledAlertCache unhandledAlertCache;
 
     public DeviceOwnershipNotifierService(DeviceDomainCache cache,
-                                          UnhandledSensorDataCache unhandledSensorDataCache,
                                           DeviceNotificationEventMapper mapper,
-                                          SensorDataPublisherService handler) {
+                                          SensorDataPublisherService handler,
+                                          AlertPublisherService alertHandler,
+                                          UnhandledSensorDataCache unhandledSensorDataCache,
+                                          UnhandledAlertCache unhandledAlertCache) {
         this.cache = cache;
-        this.unhandledSensorDataCache = unhandledSensorDataCache;
         this.mapper = mapper;
         this.handler = handler;
+        this.alertHandler = alertHandler;
+        this.unhandledAlertCache = unhandledAlertCache;
+        this.unhandledSensorDataCache = unhandledSensorDataCache;
     }
 
     public void info(OwnershipNotificationDTO dto) {
@@ -33,6 +41,7 @@ public class DeviceOwnershipNotifierService {
         } else {
             cache.update(notification.info());
             unhandledSensorDataCache.retrieve(notification.id()).forEach(handler::publish);
+            unhandledAlertCache.retrieve(notification.id()).forEach(alertHandler::publish);
         }
     }
 }

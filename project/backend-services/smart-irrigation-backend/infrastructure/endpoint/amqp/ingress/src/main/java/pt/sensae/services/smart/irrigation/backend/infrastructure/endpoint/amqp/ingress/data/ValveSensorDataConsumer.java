@@ -1,4 +1,4 @@
-package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress;
+package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.slf4j.Logger;
@@ -12,15 +12,15 @@ import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Component
-public class StoveSensorDataConsumer {
+public class ValveSensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(StoveSensorDataConsumer.class);
+    Logger logger = LoggerFactory.getLogger(ValveSensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "sensor.smart.irrigation.stove.queue";
+    public static final String INGRESS_QUEUE = "sensor.smart.irrigation.valve.queue";
 
     private final DataHandlerService handler;
 
-    public StoveSensorDataConsumer(DataHandlerService handler) {
+    public ValveSensorDataConsumer(DataHandlerService handler) {
         this.handler = handler;
     }
 

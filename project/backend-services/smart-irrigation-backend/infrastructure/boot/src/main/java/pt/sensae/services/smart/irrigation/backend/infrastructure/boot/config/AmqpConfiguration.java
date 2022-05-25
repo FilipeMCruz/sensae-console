@@ -4,9 +4,9 @@ import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ParkSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.StoveSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ValveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.ParkSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.StoveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
@@ -29,7 +29,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue parkQueue() {
-        return QueueBuilder.durable(ParkSensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.durable(ParkSensorDataConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

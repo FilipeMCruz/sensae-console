@@ -3,12 +3,10 @@ package pt.sensae.services.rule.management.backend.infrastructure.endpoint.graph
 import org.springframework.stereotype.Service;
 import pt.sensae.services.rule.management.backend.domain.*;
 import pt.sensae.services.rule.management.backend.infrastructure.endpoint.graphql.model.RuleScenarioIdDTOImpl;
-import pt.sensae.services.rule.management.domain.*;
 import pt.sensae.services.rule.management.backend.infrastructure.endpoint.graphql.model.RuleScenarioDTOImpl;
 import pt.sensae.services.rule.management.backend.application.RuleScenarioDTO;
 import pt.sensae.services.rule.management.backend.application.RuleScenarioMapper;
 import pt.sensae.services.rule.management.backend.application.RuleScenarioIdDTO;
-import pt.sensae.services.rules.management.backend.domain.*;
 
 import java.util.Set;
 import java.util.UUID;

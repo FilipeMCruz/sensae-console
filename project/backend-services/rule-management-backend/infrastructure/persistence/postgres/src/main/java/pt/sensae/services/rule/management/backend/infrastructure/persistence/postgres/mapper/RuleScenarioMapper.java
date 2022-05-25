@@ -1,9 +1,7 @@
 package pt.sensae.services.rule.management.backend.infrastructure.persistence.postgres.mapper;
 
 import pt.sensae.services.rule.management.backend.domain.*;
-import pt.sensae.services.rule.management.domain.*;
 import pt.sensae.services.rule.management.backend.infrastructure.persistence.postgres.model.RuleScenarioPostgres;
-import pt.sensae.services.rules.management.backend.domain.*;
 
 import java.util.Arrays;
 import java.util.UUID;

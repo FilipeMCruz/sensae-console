@@ -5,7 +5,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 5672:5672
+      - 5672
       - 15672
   ui-aggregator:
     build:
@@ -306,6 +306,8 @@ services:
       - ./secrets/prod/alert-dispatcher-backend.env
     networks:
       - sharespot-network
+    depends_on:
+      - rule-management-backend
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

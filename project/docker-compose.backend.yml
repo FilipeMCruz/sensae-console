@@ -200,6 +200,8 @@ services:
       - sharespot-network
     ports:
       - 8093:8080
+    depends_on:
+      - rule-management-backend
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

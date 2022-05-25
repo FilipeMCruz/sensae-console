@@ -37,6 +37,6 @@ public class OpenValveAlertConsumer {
 
     private void logConsumedMessage(AlertDTO in) {
         logger.info("Alert Id: {}", in.id);
-        logger.info("Alert Context: {}", in.context);
+        logger.info("Alert Category: {}", in.category);
     }
 }

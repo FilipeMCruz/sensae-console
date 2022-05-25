@@ -6,7 +6,7 @@ public record RuleScenario(RuleScenarioId id, RuleScenarioContent content, RuleS
                            RuleApplied isApplied, RuleDeleted isDeleted) {
 
     public RuleScenario withContent(RuleScenarioContent content) {
-        return new RuleScenario(id, content, owners, isApplied, isDeleted);
+        return new RuleScenario(id, content, owners, new RuleApplied(false), isDeleted);
     }
 
     @Override

@@ -297,9 +297,9 @@ services:
     ports:
       - 8080
   alert-dispatcher-backend:
-    build: backend-services/rule-management-backend
+    build: backend-services/alert-dispatcher-backend
     container_name: alert-dispatcher-backend
-    image: rule-management-backend
+    image: alert-dispatcher-backend
     environment:
       spring_profiles_active: prod
     env_file:

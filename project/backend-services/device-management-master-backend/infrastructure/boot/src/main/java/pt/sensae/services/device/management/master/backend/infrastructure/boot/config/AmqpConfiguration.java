@@ -46,7 +46,6 @@ public class AmqpConfiguration {
     Binding bindingMaster(Queue slaveQueue, TopicExchange masterExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .missingAsAny();
         if (keys.isPresent()) {

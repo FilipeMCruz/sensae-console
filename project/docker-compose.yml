@@ -135,6 +135,8 @@ services:
       - sharespot-network
     ports:
       - 8443:443
+    depends_on:
+      - sharespot-data-gateway
   sharespot-data-gateway:
     build: backend-services/sharespot-data-gateway
     image: sharespot-data-gateway

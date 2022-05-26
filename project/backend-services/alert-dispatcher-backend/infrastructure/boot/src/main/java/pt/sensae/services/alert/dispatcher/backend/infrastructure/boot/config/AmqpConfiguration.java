@@ -92,14 +92,14 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding ruleBinding(Queue internalQueue, TopicExchange internalTopic) {
+    Binding ruleBinding(Queue ruleQueue, TopicExchange internalTopic) {
         var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .missingAsAny();
         if (keys.isPresent()) {
-            return BindingBuilder.bind(internalQueue).to(internalTopic).with(keys.get().toString());
+            return BindingBuilder.bind(ruleQueue).to(internalTopic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

@@ -6,7 +6,7 @@ As explained in identity-management [docs](../identity-management/README.md) all
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Data Gateway API
 
@@ -204,6 +204,55 @@ mutation delete($type: DataTypeInput) {
 ```
 
 This is the resource used to remove a data transformation from the database and slave cache.
+
+## Rule Management Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL, and there are no `subscriptions` the only endpoint is `/graphql`.
+
+### Index a Rule Scenario (new or updated scenario)
+
+``` graphql
+mutation index($scenario: RuleScenarioInput) {
+  index(scenario: $scenario) {
+    id {
+      value
+    }
+    content
+    applied
+  }
+}
+```
+
+This is the resource used to index a new or edited rule scenario to the database and eventually the alert dispatcher.
+
+### Consult all Rule Scenarios
+
+``` graphql
+query scenario {
+  scenario {
+    id {
+      value
+    }
+    content
+    applied
+  }
+}
+```
+
+This is the resource used to query all rule scenarios in the database.
+
+### Erase a Rule Scenario
+
+``` graphql
+mutation delete($id: ScenarioIdInput) {
+  delete(id: $id) {
+    value
+  }
+}
+```
+
+This is the resource used to remove a rule scenario from the database and eventually the alert dispatcher.
 
 ## Device Management Master Backend API
 

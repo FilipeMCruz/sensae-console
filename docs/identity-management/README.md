@@ -4,7 +4,7 @@ This document describes how `identity management` functions inside the system, a
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Introduction
 

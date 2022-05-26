@@ -4,7 +4,7 @@ This section represents the system architecture from different views and levels 
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Logical View - System Level
 
@@ -26,8 +26,8 @@ The system is composed by the following containers:
 - **Fleet Management Database**: Database that stores GPS data received from **Fleet Management Backend**;
 - **Smart Irrigation Frontend**: Frontend that displays sensor live information in a map, gardening areas and valve status;
 - **Smart Irrigation Backend**: Backend that receives correct park/stove/valve sensor data, stores it and sends it as live information to the frontend. This backend also manages gardening areas;
-- **Smart Irrigation Business Database**: Database that stored gardening areas and basic device info;
-- **Smart Irrigation Data Database**: Database that stored sensor data;
+- **Smart Irrigation Business Database**: Database that stores gardening areas and basic device info;
+- **Smart Irrigation Data Database**: Database that stores sensor data;
 - **Device Management Frontend**: Frontend that allows the data admin to add, change and see information about a specific device;
 - **Device Management Master Backend**: Backend that stores device data and notifies slaves about changes to this data;
 - **Device Management Slave Backend**: Backend that changes the data that goes trough him by adding specific device information;
@@ -51,6 +51,10 @@ The system is composed by the following containers:
 - **Data Store Database**: Database that records information given by **Data Store**, has the purpose of acting like a Data Lake;
 - **Device Commander Backend**: Backend that receives internal requests to execute actions and dispatch them to Helium as downlinks;
 - **Data Relayer**: Backend responsible for routing data to **Data Gateway**.
+- **Rule Engine Frontend**: Frontend responsible for interacting with managers. Users can see, create, edit and delete rule scenarios using the UI.
+- **Rule Engine Backend**: Backend responsible for verifying that the submitted rule scenarios can be compiled, if so it notifies that a rule was updated, deleted or added.
+- **Alert Dispatcher**: Backend that is responsible for executing rules when new sensor data arrives to it from the message broker. When facts match a rule condition alarms are produced. This alarms are send to the message broker so that others are notified about them.
+- **Rule Engine Database**: Database that stores all rules.
 
 In the following diagram a better idea of what each container responsibilities are is presented:
 
@@ -227,6 +231,24 @@ The following diagram describes it from a logical view.
 The following diagram describes it from a logical view.
 
 ![logical-view-level3-device-commander](diagrams/logical/logical-view-level3-device-commander.svg)
+
+### Rule Management Frontend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-rule-management-frontend](diagrams/logical/logical-view-level3-rule-management-frontend.svg)
+
+### Rule Management Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-rule-management-backend](diagrams/logical/logical-view-level3-rule-management-backend.svg)
+
+### Alert Dispatcher
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-alert-dispatcher](diagrams/logical/logical-view-level3-alert-dispatcher.svg)
 
 ## Further Discussion
 

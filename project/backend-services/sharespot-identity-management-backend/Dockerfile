@@ -1,4 +1,4 @@
-FROM maven:3.6.3-openjdk-17 AS build
+FROM maven:3.8.5-openjdk-18 AS build
 WORKDIR /app
 # get all pom.xml to pull only external dependencies
 COPY application/pom.xml application/pom.xml

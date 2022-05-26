@@ -61,10 +61,15 @@ public class QuestDBDataSourceConfiguration {
             JdbcConverter jdbcConverter,
             JdbcMappingContext context
     ) {
+        var dialect = DialectResolver.getDialect(operations.getJdbcOperations());
         return new DefaultDataAccessStrategy(
                 new SqlGeneratorSource(context, jdbcConverter,
                         DialectResolver.getDialect(operations.getJdbcOperations())),
-                context, jdbcConverter, operations);
+                context,
+                jdbcConverter,
+                operations,
+                new SqlParametersFactory(context, jdbcConverter, dialect),
+                new InsertStrategyFactory(operations, new BatchJdbcOperations(operations.getJdbcOperations()), dialect));
     }
 
     @Bean

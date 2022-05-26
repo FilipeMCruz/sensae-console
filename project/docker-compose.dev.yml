@@ -1,6 +1,6 @@
 services:
   message-broker:
-    image: rabbitmq:management
+    image: rabbitmq:3.10
     container_name: message-broker
     ports:
       - 5672:5672
@@ -16,7 +16,7 @@ services:
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:
-    image: questdb/questdb:6.2
+    image: questdb/questdb:6.3.1
     ports:
       - 8812:8812
       - 9000:9000
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
   irrigation-database:
-    image: questdb/questdb:6.2
+    image: questdb/questdb:6.3.1
     container_name: irrigation-database
     ports:
       - 8898:8812

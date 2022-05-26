@@ -4,7 +4,7 @@ This section defines the functionalities and operations that the system supports
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Actors
 
@@ -14,7 +14,7 @@ The system actors are:
 - **Tenant**: has control over the devices, employees and sub-domains registered in an
 Environment under his/her own domain;
 - **Anonymous User**: has access to information about defined devices in an Environment;
-- **System Worker**: dispatches alarms and assembles reports in an Environment.
+- **System Worker**: dispatches alarms in an Environment.
 
 ## Use cases
 
@@ -48,6 +48,9 @@ This are the currently implemented use cases.
 | **UC24**  | As a tenant I want to open/close a valve                                             | Smart Irrigation    |
 | **UC25**  | As a tenant I want to see the latest data of each device inside a garden             | Smart Irrigation    |
 | **UC26**  | As a tenant I want to see the past data of a specific device                         | Smart Irrigation    |
+| **UC27**  | As a manager I want to define a rule scenario so that alerts are sent                | Rule Management     |
+| **UC28**  | As a manager I want to see the rule scenarios registered in the system               | Rule Management     |
+| **UC29**  | As a manager I want to delete a rule scenario i've added                             | Rule Management     |
 
 ## Further Discussion
 

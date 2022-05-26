@@ -86,4 +86,4 @@ Some [examples](assets) of possible rules are provided.
 
 ## Further Discussion
 
-As always, changes/improvements to this data model are expected.
+As always, changes/improvements to the rule engine are expected.

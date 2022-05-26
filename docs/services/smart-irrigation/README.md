@@ -4,7 +4,7 @@ This section describes the **Smart Irrigation** service according to the latest 
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Description
 

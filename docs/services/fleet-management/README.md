@@ -4,7 +4,7 @@ This section describes the **Fleet Management** service according to the latest 
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## Further Discussion
 

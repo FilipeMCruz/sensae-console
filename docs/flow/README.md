@@ -4,8 +4,8 @@ This section represents how data flows according to the latest version of the sy
 
 Current version:
 
-- `system` : `0.7.0`
-- `iot-core` : `0.1.16`
+- `system` : `0.8.0`
+- `iot-core` : `0.1.17`
 
 ## Description
 

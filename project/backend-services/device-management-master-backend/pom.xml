@@ -7,7 +7,7 @@
     <groupId>pt.sensae.services</groupId>
     <artifactId>device-management-master-backend</artifactId>
     <packaging>pom</packaging>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <modules>
         <module>infrastructure</module>
         <module>application</module>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.7</version>
+            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>pt.sharespot</groupId>
@@ -36,22 +36,22 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.3.19</version>
+            <version>5.3.20</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.2.2</version>
+            <version>2.13.3</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
         <!--        here so that we can use javax.persistence-->
         <dependency>

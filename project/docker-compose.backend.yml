@@ -1,6 +1,6 @@
 services:
   message-broker:
-    image: rabbitmq:management
+    image: rabbitmq:3.10
     container_name: message-broker
     networks:
       - sharespot-network
@@ -27,7 +27,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8079:8080
+      - 8080:8080
   sharespot-data-processor-slave-backend:
     build: backend-services/sharespot-data-processor-slave-backend
     image: sharespot-data-processor-slave-backend
@@ -38,20 +38,20 @@ services:
     networks:
       - sharespot-network
     ports:
+      - 8081:8080
+  sharespot-data-processor-master-backend:
+    build: backend-services/sharespot-data-processor-master-backend
+    image: sharespot-data-processor-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-processor-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
       - 8082:8080
-  # sharespot-data-processor-master-backend:
-  #   build: backend-services/sharespot-data-processor-master-backend
-  #   image: sharespot-data-processor-master-backend
-  #   volumes:
-  #     - ./secrets/keys:/etc/ssh/app
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/prod/sharespot-data-processor-master-backend.env
-  #   networks:
-  #     - sharespot-network
-  #   ports:
-  #     - 8083:8080
   device-management-slave-backend:
     build: backend-services/device-management-slave-backend
     image: device-management-slave-backend
@@ -62,7 +62,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8084:8080
+      - 8087:8080
   device-commander-backend:
     build: backend-services/device-commander-backend
     image: device-commander-backend
@@ -73,7 +73,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8088:8080
+      - 8090:8080
   data-validator-backend:
     build: backend-services/data-validator-backend
     image: data-validator-backend
@@ -84,20 +84,20 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8095:8080
-  # device-management-master-backend:
-  #   build: backend-services/device-management-master-backend
-  #   image: device-management-master-backend
-  #   volumes:
-  #     - ./secrets/keys:/etc/ssh/app
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/prod/device-management-master-backend.env
-  #   networks:
-  #     - sharespot-network
-  #   ports:
-  #     - 8085:8080
+      - 8089:8080
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-management-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8088:8080
   sharespot-fleet-management-backend:
     build: backend-services/sharespot-fleet-management-backend
     image: sharespot-fleet-management-backend
@@ -110,7 +110,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8086:8080
+      - 8800:8080
   smart-irrigation-backend:
     build: backend-services/smart-irrigation-backend
     container_name: smart-irrigation-backend
@@ -124,9 +124,10 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8098:8080
+      - 8801:8080
   sharespot-identity-management-backend:
     build: backend-services/sharespot-identity-management-backend
+    container_name: sharespot-identity-management-backend
     image: sharespot-identity-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
@@ -137,7 +138,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8090:8080
+      - 8086:8080
   sharespot-identity-management-slave-backend:
     build: backend-services/sharespot-identity-management-slave-backend
     image: sharespot-identity-management-slave-backend
@@ -148,20 +149,20 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8091:8080
-  # sharespot-data-decoder-master-backend:
-  #   build: backend-services/sharespot-data-decoder-master-backend
-  #   image: sharespot-data-decoder-master-backend
-  #   volumes:
-  #     - ./secrets/keys:/etc/ssh/app
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/prod/sharespot-data-decoder-master-backend.env
-  #   networks:
-  #     - sharespot-network
-  #   ports:
-  #     - 8092:8080
+      - 8085:8080
+  sharespot-data-decoder-master-backend:
+    build: backend-services/sharespot-data-decoder-master-backend
+    image: sharespot-data-decoder-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/sharespot-data-decoder-master-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8084:8080
   sharespot-data-decoder-slave-backend:
     build: backend-services/sharespot-data-decoder-slave-backend
     image: sharespot-data-decoder-slave-backend
@@ -172,7 +173,35 @@ services:
     networks:
       - sharespot-network
     ports:
+      - 8083:8080
+  rule-management-backend:
+    build: backend-services/rule-management-backend
+    container_name: rule-management-backend
+    image: rule-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/rule-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8094:8080  
+  alert-dispatcher-backend:
+    build: backend-services/alert-dispatcher-backend
+    container_name: alert-dispatcher-backend
+    image: alert-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/alert-dispatcher-backend.env
+    networks:
+      - sharespot-network
+    ports:
       - 8093:8080
+    depends_on:
+      - rule-management-backend
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -186,7 +215,7 @@ services:
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
   questdb:
-    image: questdb/questdb:6.2
+    image: questdb/questdb:6.3.1
     container_name: questdb
     networks:
       - sharespot-network
@@ -197,7 +226,7 @@ services:
     volumes:
       - ./databases-data/prod/questdb:/root/.questdb/
   irrigation-database:
-    image: questdb/questdb:6.2
+    image: questdb/questdb:6.3.1
     container_name: irrigation-database
     networks:
       - sharespot-network
@@ -217,7 +246,7 @@ services:
   #   networks:
   #     - sharespot-network
   #   ports:
-  #     - 8087:8080
+  #     - 8091:8080
   # sharespot-data-store-database:
   #   image: mongo:latest
   #   container_name: sharespot-data-store-database

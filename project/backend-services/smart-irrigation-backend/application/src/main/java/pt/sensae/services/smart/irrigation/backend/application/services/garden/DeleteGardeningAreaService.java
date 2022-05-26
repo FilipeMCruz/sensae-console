@@ -39,7 +39,7 @@ public class DeleteGardeningAreaService {
         if (!extract.permissions.contains("smart_irrigation:garden:delete"))
             throw new UnauthorizedException("No Permissions");
 
-        var deleted = service.delete(commandMapper.toCommand(dto));
+        var deleted = service.delete(commandMapper.toCommand(dto), extract);
         return mapper.toDto(deleted);
 
     }

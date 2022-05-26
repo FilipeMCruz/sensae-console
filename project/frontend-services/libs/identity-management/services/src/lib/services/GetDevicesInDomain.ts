@@ -25,7 +25,6 @@ export class GetDevicesInDomain {
           oid
           domains {
             oid
-            permission
           }
         }
       }

@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/ui-aggregator",
         "index": "apps/ui-aggregator/src/index.html",
@@ -20,9 +18,7 @@
           "apps/ui-aggregator/src/favicon.ico",
           "apps/ui-aggregator/src/assets"
         ],
-        "styles": [
-          "apps/ui-aggregator/src/styles.scss"
-        ],
+        "styles": ["apps/ui-aggregator/src/styles.scss"],
         "scripts": [],
         "customWebpackConfig": {
           "path": "apps/ui-aggregator/webpack.config.js"
@@ -94,9 +90,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/ui-aggregator"
-      ],
+      "outputs": ["coverage/apps/ui-aggregator"],
       "options": {
         "jestConfig": "apps/ui-aggregator/jest.config.js",
         "passWithNoTests": true
@@ -106,6 +100,7 @@
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "commands": [
+          "nx serve rule-management-frontend",
           "nx serve smart-irrigation-frontend",
           "nx serve sharespot-data-decoder-frontend",
           "nx serve sharespot-identity-management-frontend",

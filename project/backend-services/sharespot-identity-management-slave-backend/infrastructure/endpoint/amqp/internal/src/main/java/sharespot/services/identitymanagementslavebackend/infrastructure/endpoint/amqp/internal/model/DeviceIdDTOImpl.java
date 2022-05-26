@@ -5,5 +5,5 @@ import sharespot.services.identitymanagementslavebackend.application.DeviceIdDTO
 import java.util.UUID;
 
 public class DeviceIdDTOImpl implements DeviceIdDTO {
-    public UUID id;
+    public String id;
 }

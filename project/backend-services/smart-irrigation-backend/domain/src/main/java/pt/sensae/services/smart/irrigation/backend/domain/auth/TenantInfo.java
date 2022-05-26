@@ -8,6 +8,8 @@ public class TenantInfo {
     public String name;
     public UUID oid;
     public List<String> domains;
+
+    public List<String> parentDomains;
     public List<String> permissions;
 
 }

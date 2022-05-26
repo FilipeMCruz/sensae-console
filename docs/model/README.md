@@ -4,14 +4,14 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.15`
-- `system` : `0.7.0`
+- `iot-core` : `0.1.17`
+- `system` : `0.8.0`
 
 ## Introduction
 
 This model comes into play once the IoT sensor/controller data is processed, either by a `Data Processor Slave` or by a `Data Decoder Slave` container.
 
-Containers such as `Device Management Slave`, `Identity Management`, `Data Validator`, `Fleet Management Backend` and `Smart Irrigation Backend` expect this specific data structure and semantics.
+Containers such as `Device Management Slave`, `Identity Management`, `Data Validator`, `Fleet Management Backend`, `Smart Irrigation Backend` and `Alert Dispatcher` expect this specific data structure and semantics.
 
 This model is described by the [iot-core](https://github.com/ShareSpotPT/iot-core) package.
 
@@ -30,16 +30,11 @@ Internally data is handled using [protobuf](https://github.com/protocolbuffers/p
     "downlink": "[string]",
     "records": [
       {
-        "entry": {
-          "label": "[string]",
-          "content": "[string]"
-        }
+        "label": "[string]",
+        "content": "[string]"
       }
     ],
-    "domains": {
-      "read": ["[uuid]"],
-      "readWrite": ["[uuid]"]
-    },
+    "domains":  ["[uuid]"],
     "commands": {
       "[int]": [
         {
@@ -150,16 +145,11 @@ At the time of data processing, though `Data Processor Slave` or `Data Decoder S
     "downlink": "[optional]",
     "records": [
       {
-        "entry": {
-          "label": "[optional]",
-          "content": "[optional]"
-        }
+        "label": "[optional]",
+        "content": "[optional]"
       }
     ],
-    "domains": {
-      "read": ["[rejected]"],
-      "readWrite": ["[rejected]"]
-    },
+    "domains": ["[rejected]"],
     "commands": {
       "[optional]": [
         {

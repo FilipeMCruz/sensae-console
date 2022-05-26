@@ -4,8 +4,8 @@ This section represents how data flows according to the latest version of the sy
 
 Current version:
 
-- `system` : `0.7.0`
-- `iot-core` : `0.1.15`
+- `system` : `0.8.0`
+- `iot-core` : `0.1.17`
 
 ## Description
 
@@ -53,7 +53,7 @@ Each sensor data received is wrapped in a `Message` with an unique id to prevent
 
 As an example this are the routing key of a sensor data that was accepted by `fleet management`:
 
-`device_management.0.1.15.data.processed.lgt92.default.with_domain_ownership.with_records.correct.with_gps_data.without_temperature_data.without_aqi_data.without_air_humidity_data.without_motion_data.without_velocity_data.without_air_pressure_data.without_soil_moisture_data.without_illuminance_data.without_trigger_data.without_battery_data.without_water_pressure_data.without_ph_data.without_distance_data.without_occupation_data.without_soil_conductivity_data.without_co2_data.without_co_data.without_nh3_data.without_no2_data.without_o3_data.without_voc_data.without_pm2_5_data.without_pm10_data.#`
+`device_management.0.1.17.data.processed.lgt92.default.with_domain_ownership.with_records.correct.with_gps_data.without_temperature_data.without_aqi_data.without_air_humidity_data.without_motion_data.without_velocity_data.without_air_pressure_data.without_soil_moisture_data.without_illuminance_data.without_trigger_data.without_battery_data.without_water_pressure_data.without_ph_data.without_distance_data.without_occupation_data.without_soil_conductivity_data.without_co2_data.without_co_data.without_nh3_data.without_no2_data.without_o3_data.without_voc_data.without_pm2_5_data.without_pm10_data.#`
 
 On a Higher level sensor data flows in the system as represented in here:
 

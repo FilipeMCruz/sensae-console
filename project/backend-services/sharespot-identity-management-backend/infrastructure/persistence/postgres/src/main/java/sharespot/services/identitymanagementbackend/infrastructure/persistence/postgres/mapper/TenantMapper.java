@@ -15,10 +15,10 @@ public class TenantMapper {
 
     public static TenantPostgres domainToPostgres(Tenant tenant) {
         var tenantPostgres = new TenantPostgres();
-        tenantPostgres.email = tenant.getEmail().value();
-        tenantPostgres.name = tenant.getName().value();
-        tenantPostgres.oid = tenant.getOid().value().toString();
-        tenantPostgres.domains = tenant.getDomains().stream().map(d -> d.value().toString()).toList().toArray(new String[0]);
+        tenantPostgres.email = tenant.email().value();
+        tenantPostgres.name = tenant.name().value();
+        tenantPostgres.oid = tenant.oid().value().toString();
+        tenantPostgres.domains = tenant.domains().stream().map(d -> d.value().toString()).toList().toArray(new String[0]);
         return tenantPostgres;
     }
 

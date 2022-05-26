@@ -4,7 +4,7 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.auth.AccessTokenDTOImpl;
+import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTOImpl;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.auth.AuthTokenHandler;
 
 import javax.annotation.PostConstruct;

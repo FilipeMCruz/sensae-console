@@ -1,0 +1,30 @@
+.big-input {
+  min-width: 80%;
+}
+
+.long-input {
+  min-height: 500px;
+}
+
+.medium-input {
+  min-width: 70%;
+}
+
+.space {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 20px;
+}
+
+.item-list {
+  margin-top: 10px;
+  border-radius: 10px;
+  box-shadow: #0c1821 0px 2px 3px -1px;
+  max-width: 100%;
+}
+
+.to-right {
+  float: right;
+}

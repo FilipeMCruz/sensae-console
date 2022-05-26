@@ -21,6 +21,7 @@ component "Environment" <<System>> {
         component "Data Processor Frontend" as DPF <<Container>>
         component "Data Decoder Frontend" as DDF <<Container>>
         component "Identity Management Frontend" as IAMF <<Container>>
+        component "Rule Management Frontend" as RULE_MAN_FRONT <<Container>>
     }
     component "Fleet Management Backend" as LTB <<Container>>
     component "Smart Irrigation Backend" as SIB <<Container>>
@@ -46,6 +47,9 @@ component "Environment" <<System>> {
     component "Identity Management Backend" as IAMB <<Container>>
     component "Identity Management Slave Backend" as IAMSB <<Container>>
     component "Device Commander Backend" as DCB <<Container>>
+    component "Rule Management Backend" as RULE_MAN_BACK <<Container>>
+    component "Rule Management Database" as RULE_MAN_DB <<Container>>
+    component "Alert Dispatcher Backend" as ALERT_BACK <<Container>>
 
     interface "Message Broker\nAPI" as MB_API
     interface "Fleet Management Backend\nAPI" as LTB_API
@@ -63,10 +67,13 @@ component "Environment" <<System>> {
     interface "Smart Irrigation Business\nDatabase API" as SIBDB_API
     interface "Data Gateway\nAPI" as DDG_API
     interface "Identity Management Backend\nAPI" as IAMB_API
+    interface "Rule Management Backend\nAPI" as RULE_MAN_BACK_API
+    interface "Rule Management Database\nAPI" as RULE_MAN_DB_API
 
     LTB --( QUESTDB_API
+    RULE_MAN_BACK --( RULE_MAN_DB_API
     SIB --( SIDDB_API
-    SIB --( SIBDB_API
+    SIBDB_API )- SIB
     DS --( MONGODB_API
     DDG -- DDG_API
     DPB_API -- DPB
@@ -80,32 +87,36 @@ component "Environment" <<System>> {
     LTB_API -- LTB
     SIB_API -- SIB
     IAMB_API -- IAMB
+    RULE_MAN_BACK_API -- RULE_MAN_BACK
     UI -- UIAG
     MONGODB_API - MONGODB
     QUESTDB_API - QUESTDB
+    RULE_MAN_DB_API - RULE_MAN_DB
     SIDDB_API - SIDDB
-    SIBDB - SIBDB_API
+    SIBDB_API -- SIBDB
     DRB --( DRDB_API
-    DRDB_API )-- DRSB
+    DRDB_API )-[hidden]- DRSB
     DPB --( DPDB_API
     DDB --( DDDB_API
-    DPDB_API )-- DPSB
-    DDDB_API )-- DDSB
+    DPDB_API )-[hidden]- DPSB
+    DDDB_API )-[hidden]- DDSB
     IAMB --( IAMDB_API
-    IAMDB_API )-- IAMSB
+    IAMDB_API )-[hidden]- IAMSB
     LTF --( LTB_API
     SIF --( SIB_API
     DPF --( DPB_API
     DDF --( DDMB_API
     DRF --( DRB_API
     IAMF --( IAMB_API
-
+    RULE_MAN_FRONT --( RULE_MAN_BACK_API
+    
     LTB ---( MB_API
     SIB ---( MB_API
     DRB ---( MB_API
     DPB ---( MB_API
     DDB ---( MB_API
     IAMB ---( MB_API
+    RULE_MAN_BACK ---( MB_API
     MB_API )--- DS
     MB_API )--- DDG
     MB_API )--- DVB
@@ -114,6 +125,7 @@ component "Environment" <<System>> {
     MB_API )--- DDSB
     MB_API )--- IAMSB
     MB_API )--- DCB
+    MB_API )--- ALERT_BACK
 
     DR -- IN_ENDPOINT
     DDG_API )-- DR

@@ -8,14 +8,13 @@ import pt.sensae.services.device.management.slave.backend.domain.model.records.B
 import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordEntry;
 import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordLabel;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.device.controls.DeviceCommandDTO;
-import pt.sharespot.iot.core.sensor.device.records.DeviceRecordBasicEntryDTO;
-import pt.sharespot.iot.core.sensor.device.records.DeviceRecordDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.sensor.model.device.controls.DeviceCommandDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorDataWithRecordMapper {
 
     @Override
-    public DeviceWithSubDevices domainToDto(ProcessedSensorDataDTO domain, DeviceInformation records) {
+    public DeviceWithSubDevices domainToDto(SensorDataDTO domain, DeviceInformation records) {
         var sensorDataToUpdate = records.records()
                 .entries()
                 .stream()
@@ -51,16 +50,16 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
                 .stream()
                 .filter(e -> e instanceof BasicRecordEntry)
                 .map(e -> (BasicRecordEntry) e)
-                .map(e -> new DeviceRecordBasicEntryDTO(e.label(), e.content()))
+                .map(e -> new DeviceRecordEntryDTO(e.label(), e.content()))
                 .collect(Collectors.toSet());
 
         if (domain.hasProperty(PropertyName.DEVICE_RECORDS)) {
-            domain.device.records.entry.stream()
+            domain.device.records.stream()
                     .filter(entry -> newRecords.stream().noneMatch(e -> Objects.equals(entry.label, e.label)))
                     .forEach(newRecords::add);
         }
 
-        domain.device.records = new DeviceRecordDTO(newRecords);
+        domain.device.records = newRecords;
 
         domain.device.name = records.device().name().value();
 
@@ -96,8 +95,8 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
         return command;
     }
 
-    private List<ProcessedSensorDataDTO> processSubSensors(ProcessedSensorDataDTO domain, DeviceInformation records) {
-        var subDevices = new ArrayList<ProcessedSensorDataDTO>();
+    private List<SensorDataDTO> processSubSensors(SensorDataDTO domain, DeviceInformation records) {
+        var subDevices = new ArrayList<SensorDataDTO>();
 
         records.subDevices().entries().forEach(sub -> {
             var subSensorMeasures = domain.measures.get(sub.ref().value());
@@ -113,7 +112,7 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
             deviceInformationDTO.id = sub.id().value();
             deviceInformationDTO.downlink = domain.device.downlink;
 
-            var processedSensorDataDTO = new ProcessedSensorDataDTO();
+            var processedSensorDataDTO = new SensorDataDTO();
             processedSensorDataDTO.device = deviceInformationDTO;
             processedSensorDataDTO.reportedAt = domain.reportedAt;
             processedSensorDataDTO.dataId = UUID.randomUUID();

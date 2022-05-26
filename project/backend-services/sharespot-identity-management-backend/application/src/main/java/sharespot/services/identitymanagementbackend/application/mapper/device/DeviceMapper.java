@@ -1,6 +1,6 @@
 package sharespot.services.identitymanagementbackend.application.mapper.device;
 
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.ExpelDeviceFromDomainDTO;
 import sharespot.services.identitymanagementbackend.application.model.device.PlaceDeviceInDomainDTO;
 import sharespot.services.identitymanagementbackend.domainservices.model.device.DeviceResult;
@@ -13,5 +13,5 @@ public interface DeviceMapper {
     
     RemoveDeviceFromDomainCommand dtoToCommand(ExpelDeviceFromDomainDTO dto);
     
-    DeviceDTO resultToDto(DeviceResult result);
+    DeviceIdDTO resultToDto(DeviceResult result);
 }

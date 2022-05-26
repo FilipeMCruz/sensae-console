@@ -9,4 +9,5 @@ export * from './lib/model/SensorDataRecordLabel';
 export * from './lib/model/RecordEntry';
 export * from './lib/model/RecordEntryType';
 export * from './lib/model/SubDevice';
-export * from './lib/model/DeviceCommand'
+export * from './lib/model/DeviceCommand';
+export * from './lib/model/DeviceGroup';

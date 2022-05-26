@@ -5,7 +5,7 @@ import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 import org.reactivestreams.Publisher;
 import pt.sensae.services.smart.irrigation.backend.application.services.data.SensorDataPublisher;
-import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.LiveDataFilterDTOImpl;
 
@@ -19,7 +19,7 @@ public class SensorDataSubscription {
     }
 
     @DgsSubscription
-    public Publisher<SensorDataDTO> data(@InputArgument("filters") LiveDataFilterDTOImpl filters, @InputArgument("Authorization") String auth) {
+    public Publisher<SensorReadingDTO> data(@InputArgument("filters") LiveDataFilterDTOImpl filters, @InputArgument("Authorization") String auth) {
         return publisher.getFilteredPublisher(filters, AuthMiddleware.buildAccessToken(auth));
     }
 }

@@ -32,47 +32,49 @@ import {MatChipsModule} from "@angular/material/chips";
 import {ValveDialogComponent} from "./valve-dialog/valve-dialog.component";
 import {DeviceHistoryDialogComponent} from "./device-history-dialog/device-history-dialog.component";
 import {NgxEchartsModule} from "ngx-echarts";
+import {MatRadioModule} from "@angular/material/radio";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
   declarations: [MapComponent, GardenDialogComponent, TruncatePipe, ValveDialogComponent, DeviceHistoryDialogComponent],
-  imports: [
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatSidenavModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatButtonModule,
-    HttpClientModule,
-    CommonModule,
-    MatTabsModule,
-    MatButtonToggleModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: MapComponent,
-      },
-    ]),
-    MatListModule,
-    MatDialogModule,
-    MatGridListModule,
-    MatChipsModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    })
-  ],
+    imports: [
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatSidenavModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FormsModule,
+        MatExpansionModule,
+        MatInputModule,
+        MatButtonModule,
+        HttpClientModule,
+        CommonModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: MapComponent,
+            },
+        ]),
+        MatListModule,
+        MatDialogModule,
+        MatGridListModule,
+        MatChipsModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        }),
+        MatRadioModule
+    ],
   providers: [],
 })
 export class RemoteEntryModule {

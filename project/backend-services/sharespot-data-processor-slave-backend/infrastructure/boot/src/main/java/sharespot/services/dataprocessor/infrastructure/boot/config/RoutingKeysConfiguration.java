@@ -1,17 +1,24 @@
 package sharespot.services.dataprocessor.infrastructure.boot.config;
 
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.keys.ContainerTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeys;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysFactory;
+import pt.sharespot.iot.core.internal.routing.keys.InternalRoutingKeys;
+import pt.sharespot.iot.core.internal.routing.keys.InternalRoutingKeysFactory;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeysFactory;
 import sharespot.services.dataprocessor.application.RoutingKeysProvider;
 
 @Configuration
 public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
-    public RoutingKeys.RoutingKeysBuilder getBuilder(RoutingKeysBuilderOptions options) {
-        return new RoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_PROCESSOR, options);
+    public SensorRoutingKeys.Builder getSensorTopicBuilder(RoutingKeysBuilderOptions options) {
+        return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_PROCESSOR, options);
+    }
+
+    @Override
+    public InternalRoutingKeys.Builder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
+        return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_PROCESSOR, options);
     }
 }

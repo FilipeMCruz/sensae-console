@@ -2,10 +2,10 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.data.types.MotionDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
-import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.MotionDataDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import sharespot.services.fleetmanagementbackend.domain.SensorDataRepository;
 
 @Service
 public class GPSDataArchiver {
@@ -16,15 +16,15 @@ public class GPSDataArchiver {
     @Value("${sharespot.location.heuristic.motion.detection.distance}")
     public double DISTANCE_IN_KM;
 
-    private final ProcessedSensorDataRepository repository;
+    private final SensorDataRepository repository;
     private final GPSDataPublisher publisher;
 
-    public GPSDataArchiver(ProcessedSensorDataRepository repository, GPSDataPublisher publisher) {
+    public GPSDataArchiver(SensorDataRepository repository, GPSDataPublisher publisher) {
         this.repository = repository;
         this.publisher = publisher;
     }
 
-    public void publish(ProcessedSensorDataDTO data) {
+    public void publish(SensorDataDTO data) {
         // if data received has no info about motion try to guess it
         if (!data.getSensorData().hasProperty(PropertyName.MOTION)) {
             var lastTenMinutesData = repository.queryPastData(data, TIME_SPAN_IN_MINUTES).toList();

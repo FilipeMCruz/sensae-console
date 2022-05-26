@@ -6,24 +6,26 @@ import pt.sensae.services.device.management.slave.backend.domain.model.device.De
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
-import pt.sensae.services.device.management.slave.backend.domainservices.DeviceRecordCache;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sensae.services.device.management.slave.backend.domainservices.DeviceInformationCache;
+import pt.sensae.services.device.management.slave.backend.domainservices.UnhandledSensorDataCache;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+
+import java.util.Optional;
 
 @Service
 public class RecordAppenderService {
 
-    private final DeviceRecordCache cache;
+    private final DeviceInformationCache cache;
     private final ProcessedSensorDataWithRecordMapper dataWithRecordMapper;
 
-    public RecordAppenderService(DeviceRecordCache cache,
+    public RecordAppenderService(DeviceInformationCache cache,
                                  ProcessedSensorDataWithRecordMapper dataWithRecordMapper) {
         this.cache = cache;
         this.dataWithRecordMapper = dataWithRecordMapper;
     }
 
-    public DeviceWithSubDevices tryToAppend(ProcessedSensorDataDTO dto) {
-        var device = new Device(new DeviceId(dto.device.id), new DeviceName(dto.device.name), new DeviceDownlink(dto.device.downlink));
-        var byDeviceId = cache.findByDeviceId(device);
-        return dataWithRecordMapper.domainToDto(dto, byDeviceId);
+    public Optional<DeviceWithSubDevices> tryToAppend(SensorDataDTO dto) {
+        return cache.findById(new DeviceId(dto.device.id))
+                .map(deviceInformation -> dataWithRecordMapper.domainToDto(dto, deviceInformation));
     }
 }

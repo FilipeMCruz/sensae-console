@@ -1,8 +1,8 @@
 package sharespot.services.datadecodermaster.domainservices;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.datadecodermaster.domain.DataDecoder;
-import sharespot.services.datadecodermaster.domain.SensorDataDecodersRepository;
+import sharespot.services.data.decoder.master.domain.DataDecoder;
+import sharespot.services.data.decoder.master.domain.SensorDataDecodersRepository;
 
 @Service
 public class DataDecoderHoarder {
@@ -13,7 +13,7 @@ public class DataDecoderHoarder {
         this.repository = repository;
     }
 
-    public void hoard(DataDecoder records) {
-        this.repository.save(records);
+    public DataDecoder hoard(DataDecoder records) {
+        return this.repository.save(records);
     }
 }

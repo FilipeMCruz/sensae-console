@@ -5,5 +5,4 @@ import sharespot.services.identitymanagementbackend.application.model.device.Pla
 public class PlaceDeviceInDomainDTOImpl implements PlaceDeviceInDomainDTO {
     public String deviceOid;
     public String domainOid;
-    public boolean writePermission;
 }

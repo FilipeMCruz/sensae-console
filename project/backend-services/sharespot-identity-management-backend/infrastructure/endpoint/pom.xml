@@ -5,7 +5,7 @@
     <parent>
         <artifactId>infrastructure</artifactId>
         <groupId>sharespot.services</groupId>
-        <version>0.7.0</version>
+        <version>0.8.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,6 +14,7 @@
     <modules>
         <module>graphql</module>
         <module>amqp</module>
+        <module>rest</module>
     </modules>
 
     <properties>

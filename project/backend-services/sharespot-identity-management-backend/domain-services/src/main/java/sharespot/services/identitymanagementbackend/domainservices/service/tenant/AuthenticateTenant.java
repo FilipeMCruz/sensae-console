@@ -25,7 +25,7 @@ public class AuthenticateTenant {
     public TenantResult execute(IdentityQuery command) {
         var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
                 .orElseGet(() -> newTenant(command));
-        var domains = domainRepo.getDomains(tenant.getDomains().stream());
+        var domains = domainRepo.getDomains(tenant.domains().stream());
         return TenantResultMapper.toResult(tenant, domains);
     }
 

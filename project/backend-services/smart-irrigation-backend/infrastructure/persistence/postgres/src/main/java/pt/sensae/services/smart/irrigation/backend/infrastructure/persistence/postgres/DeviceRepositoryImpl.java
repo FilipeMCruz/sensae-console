@@ -45,7 +45,11 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         var devicePostgres = DeviceMapper.modelToDao(device);
         var saved = deviceRepository.save(devicePostgres);
 
-        var ledgerEntry = device.ledger().entries().stream().findFirst().orElseThrow(() -> new NotValidException("A device must be started with a ledger entry"));
+        var ledgerEntry = device.ledger()
+                .entries()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new NotValidException("A device must be started with a ledger entry"));
         saveLedger(ledgerEntry, saved.deviceId);
 
         return device;
@@ -78,16 +82,22 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     @Override
     @Transactional("transactionManagerPostgres")
     public Stream<Device> fetchLatest(Ownership ownership) {
-        var collect = buildQuery(ownership);
-        var latestWithOwnership = ledgerRepository.findLatestWithOwnership(collect);
-        return doWorkOnFoundLedgerEntries(latestWithOwnership);
+        if (ownership.isSystem()) {
+            var latest = ledgerRepository.findLatest();
+            return doWorkOnFoundLedgerEntries(latest);
+        } else {
+            var collect = buildQuery(ownership);
+            var latestWithOwnership = ledgerRepository.findLatestWithOwnership(collect);
+            return doWorkOnFoundLedgerEntries(latestWithOwnership);
+        }
     }
 
     @Override
     @Transactional("transactionManagerPostgres")
     public Stream<Device> fetch(DeviceQuery query) {
         var ownership = buildQuery(query.ownership());
-        var latestWithOwnership = ledgerRepository.findOldWithOwnership(ownership, Timestamp.from(query.open().value()), Timestamp.from(query.close().value()));
+        var latestWithOwnership = ledgerRepository.findOldWithOwnership(ownership, Timestamp.from(query.open()
+                .value()), Timestamp.from(query.close().value()));
         return doWorkOnFoundLedgerEntries(latestWithOwnership);
     }
 
@@ -98,7 +108,9 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     private Stream<Device> doWorkOnFoundLedgerEntries(Stream<LedgerEntryPostgres> latestWithOwnership) {
         var collect = latestWithOwnership.collect(Collectors.toSet());
 
-        var records = recordsRepository.getAllByEntryPersistenceIdIsIn(collect.stream().map(e -> e.persistenceId).toList())
+        var records = recordsRepository.getAllByEntryPersistenceIdIsIn(collect.stream()
+                        .map(e -> e.persistenceId)
+                        .toList())
                 .collect(Collectors.groupingBy(name -> name.entryPersistenceId));
 
         var map = new HashMap<String, Set<LedgerEntry>>();

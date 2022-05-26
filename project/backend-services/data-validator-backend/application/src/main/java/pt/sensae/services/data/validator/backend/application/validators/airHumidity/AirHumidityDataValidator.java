@@ -1,9 +1,9 @@
 package pt.sensae.services.data.validator.backend.application.validators.airHumidity;
 
 import pt.sensae.services.data.validator.backend.application.validators.DataValidator;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 
 public class AirHumidityDataValidator implements DataValidator {
 
@@ -12,7 +12,7 @@ public class AirHumidityDataValidator implements DataValidator {
      * Taken from @see <a href="https://www.engineeringtoolbox.com/maximum-moisture-content-air-d_1403.html">maximum moisture in air</a>
      */
     @Override
-    public DataLegitimacyOptions validate(ProcessedSensorDataDTO data) {
+    public DataLegitimacyOptions validate(SensorDataDTO data) {
         if (data.hasProperty(PropertyName.AIR_HUMIDITY_GRAMS_PER_CUBIC_METER)) {
             if (data.getSensorData().airHumidity.gramsPerCubicMeter < 0 || data.getSensorData().airHumidity.gramsPerCubicMeter > 30)
                 return DataLegitimacyOptions.INCORRECT;

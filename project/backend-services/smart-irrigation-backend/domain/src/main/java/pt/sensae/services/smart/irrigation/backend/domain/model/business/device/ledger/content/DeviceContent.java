@@ -1,6 +1,5 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content;
 
-import org.slf4j.LoggerFactory;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 
 import java.time.Instant;

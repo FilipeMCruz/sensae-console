@@ -10,6 +10,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 
 import javax.transaction.Transactional;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -31,7 +32,7 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     @Transactional
     public Device relocateDevice(Device device) {
         var domains = DeviceMapper.domainToPostgres(device).devicePermissions;
-        repository.findByOid(device.getOid().value().toString()).ifPresent(devicePostgres -> {
+        repository.findByOid(device.oid().value().toString()).ifPresent(devicePostgres -> {
             devicePostgres.devicePermissions.clear();
             devicePostgres.devicePermissions.addAll(domains);
             devicePostgres.devicePermissions.forEach(d -> d.device = devicePostgres);
@@ -41,9 +42,16 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
-    public Stream<Device> getDevicesInDomain(DomainId domain) {
-        return repository.findByDomainId(domain.value().toString())
+    public Stream<Device> getDevicesInDomains(Stream<DomainId> domains) {
+        return repository.findByDomainIds(domains.map(d -> d.value().toString()).collect(Collectors.toList()))
                 .stream()
                 .map(DeviceMapper::postgresToDomain);
+    }
+
+    @Override
+    public Device add(Device device) {
+        var devicePostgres = DeviceMapper.domainToPostgres(device);
+        var saved = repository.save(devicePostgres);
+        return DeviceMapper.postgresToDomain(saved);
     }
 }

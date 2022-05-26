@@ -3,13 +3,13 @@ package pt.sensae.services.data.validator.backend.infrastructure.boot.config;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pt.sharespot.iot.core.routing.exchanges.IoTCoreExchanges;
-import pt.sharespot.iot.core.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.data.validator.backend.application.RoutingKeysProvider;
-import pt.sensae.services.data.validator.backend.infrastructure.endpoint.amqpegress.controller.SensorDataSupplier;
 import pt.sensae.services.data.validator.backend.infrastructure.endpoint.amqpingress.controller.SensorDataConsumer;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import static pt.sensae.services.data.validator.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.data.validator.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -24,7 +24,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreExchanges.DATA_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
     }
 
     @Bean
@@ -40,6 +40,7 @@ public class AmqpConfiguration {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+                .withRecords(RecordsOptions.WITH_RECORDS)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());

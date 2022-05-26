@@ -2,10 +2,10 @@ package sharespot.services.datagateway.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.routing.MessageSupplied;
-import pt.sharespot.iot.core.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.routing.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
+import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
+import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 @Service
 public class SensorDataPublisherService {

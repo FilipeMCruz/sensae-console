@@ -2,21 +2,20 @@
 'left to right direction
 skinparam Monochrome true
 
-note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' so that data can be accessed. Then, once\nthe work is done the message is 'sealed', routing\nkeys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
+note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' in each container so that data can be accessed.\n Then, once the work is done the message is 'sealed',\n routing keys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
 
 state "Data Relayer" as DataRelayer
 state "Data Gateway" as DataGateway
 state decoded_or_encoded <<choice>>
 state "Data Processor Slave" as Processor
 state "Data Decoder Slave" as Decoder
-state is_processed <<choice>>
 state "Identity Management Slave" as Identity
-state is_valid <<choice>>
 state "Data Validator" as Validator
-state "Device Records Slave" as Records
-state has_gps <<choice>>
+state "Device Management Slave" as Records
+state data_type <<choice>>
 state "Fleet Management" as Fleet
 state "Smart Irrigation" as Irrigation
+state "Alert Dispatcher" as Alert
 
 DataRelayer : Any data can be received
 DataRelayer : as the body of an HTTP POST
@@ -48,30 +47,32 @@ Fleet : and sent to Frontend
 Irrigation: Data is stored
 Irrigation: and sent to Frontend
 
+Alert: Data is analised and
+Alert: alerts are produced
+Alert: based on rules
+
 [*] --> DataRelayer
 DataRelayer -> DataGateway
 DataGateway -> decoded_or_encoded
 decoded_or_encoded --> Processor : decoded data
 decoded_or_encoded --> Decoder : encoded data
-Decoder --> is_processed
-Processor --> is_processed
+Decoder --> Identity
+Processor --> Identity
 
-is_processed -> Validator : data is processed
+Identity -> Records
 
-Validator -> is_valid
+Records --> Validator
 
-is_valid -> Identity : data is valid
+Records ---> Identity : each sub device\ndata is sub processed
 
-Identity --> Records
+Validator --> data_type
 
-Records --> has_gps
+data_type --> Fleet : data is valid, has\ngps details
 
-has_gps --> Fleet : data has\ngps details
+data_type --> Irrigation : data is valid, has gps, air humidity and\ntemperature details
+data_type --> Irrigation : data is valid, has gps, illuminance and\nsoil moisture details
+data_type --> Irrigation : data is valid, has gps and\ntrigger details
 
-has_gps --> Irrigation : data has gps, air humidity and\ntemperature details
-has_gps --> Irrigation : data has gps, illuminance and\nsoil moisture details
-has_gps --> Irrigation : data has gps and\nalarm details
-
-Records --> Validator : each sub device\ndata is sub processed
+data_type -> Alert : data is valid
 
 @enduml

@@ -1,13 +1,13 @@
 package pt.sensae.services.device.management.master.backend.application;
 
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformation;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 
 public interface RecordMapper {
 
-    DeviceInformation dtoToDomain(DeviceRecordDTO dto);
+    DeviceInformation dtoToDomain(DeviceInformationDTO dto);
 
-    DeviceRecordDTO domainToDto(DeviceInformation domain);
+    DeviceInformationDTO domainToDto(DeviceInformation domain);
 
     DeviceId dtoToDomain(DeviceDTO dto);
 

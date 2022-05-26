@@ -36,7 +36,7 @@ public class UpdateGardeningAreaService {
         if (!extract.permissions.contains("smart_irrigation:garden:edit"))
             throw new UnauthorizedException("No Permissions");
 
-        var update = service.update(commandMapper.toCommand(dto));
+        var update = service.update(commandMapper.toCommand(dto), extract);
         return mapper.toDto(update);
     }
 }

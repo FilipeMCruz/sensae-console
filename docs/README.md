@@ -12,6 +12,7 @@ It's intended mostly for developers and stakeholders.
 - [Internal Data Flow](flow/README.md)
 - [Data Decoder](data-decoder/README.md)
 - [Identity Management](identity-management/README.md)
+- [Rule Engine](rule-engine/README.md)
 - [Know Problems](problems/README.md)
 - [Service - Fleet Management](services/fleet-management/README.md)
 - [Service - Smart Irrigation](services/smart-irrigation/README.md)

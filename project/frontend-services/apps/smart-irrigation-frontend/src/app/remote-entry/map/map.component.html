@@ -26,10 +26,10 @@
                 </div>
               </div>
               <div>
-                <button mat-icon-button (click)="onEdit($event, garden)">
+                <button *ngIf="canEdit()" mat-icon-button (click)="onEdit($event, garden)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="onDelete($event, garden)">
+                <button *ngIf="canDelete()" mat-icon-button (click)="onDelete($event, garden)">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -42,7 +42,7 @@
       </ng-container>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button (click)="startGardenSketch()">Create Garden</button>
+      <button mat-stroked-button *ngIf="canCreate()" (click)="startGardenSketch()">Create Garden</button>
     </mat-card-actions>
   </mat-card>
   <mat-card *ngIf="isDrawing && !isEditing" class="garden-card">
@@ -81,10 +81,23 @@
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button [disabled]="!isSketchValid || editing.name.value.trim().length === 0" (click)="editGarden()">
+      <button mat-stroked-button [disabled]="!isSketchValid || editing.name.value.trim().length === 0"
+              (click)="editGarden()">
         Save
       </button>
       <button mat-stroked-button (click)="deleteGardenEditSketch()">Cancel</button>
     </mat-card-actions>
+  </mat-card>
+  <mat-card class="styles-card">
+    <label>Change Styles</label>
+    <mat-radio-group
+      class="radio-group"
+
+      [value]="style">
+      <mat-radio-button (click)="changeStyle($event, stl)" class="radio-button" *ngFor="let stl of styles"
+                        [value]="stl">
+        {{stl}}
+      </mat-radio-button>
+    </mat-radio-group>
   </mat-card>
 </div>

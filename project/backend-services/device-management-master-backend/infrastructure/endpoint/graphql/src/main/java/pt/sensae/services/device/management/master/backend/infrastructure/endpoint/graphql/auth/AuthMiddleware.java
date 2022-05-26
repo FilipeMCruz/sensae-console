@@ -1,5 +1,7 @@
 package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.auth;
 
+import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTOImpl;
+
 public class AuthMiddleware {
 
     public static AccessTokenDTOImpl buildAccessToken(String authHeader) {

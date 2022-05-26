@@ -5,13 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.device.commander.backend.application.RoutingKeysProvider;
 import pt.sensae.services.device.commander.backend.infrastructure.endpoint.amqp.ingress.controller.controller.DeviceCommandConsumer;
-import pt.sensae.services.device.commander.backend.infrastructure.endpoint.amqp.internal.controller.DeviceRecordConsumer;
+import pt.sensae.services.device.commander.backend.infrastructure.endpoint.amqp.internal.controller.DeviceInformationConsumer;
+import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
+import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 
 @Configuration
 public class AmqpConfiguration {
-
-    public static final String MASTER_EXCHANGE = "Sharespot Device Records Master Exchange";
-    public static final String COMMANDS_EXCHANGE = "commands.topic";
 
     private final RoutingKeysProvider provider;
 
@@ -21,20 +23,28 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(DeviceRecordConsumer.MASTER_QUEUE)
+        return QueueBuilder.durable(DeviceInformationConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    Binding bindingMaster(Queue slaveQueue, FanoutExchange masterExchange) {
-        return BindingBuilder.bind(slaveQueue).to(masterExchange);
+    Binding bindingMaster(Queue slaveQueue, TopicExchange masterExchange) {
+        var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(slaveQueue).to(masterExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
     }
 
     @Bean
-    public FanoutExchange masterExchange() {
-        return new FanoutExchange(MASTER_EXCHANGE);
+    public TopicExchange masterExchange() {
+        return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
     @Bean
@@ -47,7 +57,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange commandExchange() {
-        return new TopicExchange(COMMANDS_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.COMMAND_EXCHANGE);
     }
 
     @Bean

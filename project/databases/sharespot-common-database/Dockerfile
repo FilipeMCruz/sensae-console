@@ -1,4 +1,4 @@
-FROM  postgres:14.1
+FROM  postgres:14.3
 
 ADD ./scripts/*.sql /docker-entrypoint-initdb.d/
 ENTRYPOINT ["docker-entrypoint.sh"]

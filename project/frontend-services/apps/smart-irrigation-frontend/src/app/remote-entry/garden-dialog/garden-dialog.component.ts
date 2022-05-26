@@ -4,7 +4,7 @@ import {
   Data,
   DataFilters,
   DeviceType,
-  GardeningArea, HistoryQueryFilters,
+  GardeningArea,
   LatestDataQueryFilters
 } from "@frontend-services/smart-irrigation/model";
 import {Subscription} from "rxjs";
@@ -48,7 +48,7 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
   }
 
   private static onNewData(data: Data[], newData: Data) {
-    const found = data.find(d => d.device.id);
+    const found = data.find(d => d.device.id.value === newData.device.id.value);
     if (found) {
       found.update(newData);
     } else {
@@ -56,8 +56,10 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-
   ngAfterViewInit(): void {
+    const loader = document.getElementById('loader');
+    if (loader) loader.className = '';
+
     this.buildMap();
     this.fetchLatestData();
     this.subscribeToData();
@@ -77,10 +79,17 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
       interactive: false
     });
     this.map.addControl(new mapboxgl.NavigationControl());
-    this.map.on('load', () =>
-      this.map.resize() &&
-      this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100})
-    );
+    this.map.on('load', () => {
+
+      const loader = document.getElementById('loader');
+      if (loader) loader.className = 'done';
+
+      setTimeout(() => {
+        if (loader) loader.className = 'hide';
+        this.map.resize();
+        this.map.fitBounds(this.data.bounds() as LngLatBoundsLike, {padding: 100});
+      }, 500)
+    });
   }
 
   onSelect(sensorData: Data) {

@@ -1,50 +1,40 @@
 function decodePayload(payload, port) {
-  return decoder(toBytes(payload), port);
+  return decoder(base64ToHex(payload), port);
 }
 
-function decodeBase64(s) {
-  var e = {},
-    i,
-    b = 0,
-    c,
-    x,
-    l = 0,
-    a,
-    r = "",
-    w = String.fromCharCode,
-    L = s.length;
-  var A = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  for (i = 0; i < 64; i++) {
-    e[A.charAt(i)] = i;
-  }
-  for (x = 0; x < L; x++) {
-    c = e[s.charAt(x)];
-    b = (b << 6) + c;
-    l += 6;
-    while (l >= 8) {
-      ((a = (b >>> (l -= 8)) & 0xff) || x < L - 2) && (r += w(a));
+const base64ToHex = (() => {
+  const values = [],
+    output = [];
+
+  return function base64ToHex(txt) {
+    if (output.length <= 0) populateLookups();
+    const result = [];
+    let v1, v2, v3, v4;
+    for (let i = 0, len = txt.length; i < len; i += 4) {
+      v1 = values[txt.charCodeAt(i)];
+      v2 = values[txt.charCodeAt(i + 1)];
+      v3 = values[txt.charCodeAt(i + 2)];
+      v4 = values[txt.charCodeAt(i + 3)];
+      result.push(
+        parseInt(output[(v1 << 2) | (v2 >> 4)],16),
+        parseInt(output[((v2 & 15) << 4) | (v3 >> 2)],16),
+        parseInt(output[((v3 & 3) << 6) | v4],16)
+      );
     }
-  }
-  return r;
-}
+    if (v4 === 64) result.splice(v3 === 64 ? -2 : -1);
+    return result;
+  };
 
-function strToUtf16Bytes(str) {
-  const bytes = [];
-  for (ii = 0; ii < str.length; ii++) {
-    const code = str.charCodeAt(ii); // x00-xFFFF
-    bytes.push(code & 255, code >> 8); // low, high
+  function populateLookups() {
+    const keys =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    for (let i = 0; i < 256; i++) {
+      output.push(("0" + i.toString(16)).slice(-2));
+      values.push(0);
+    }
+    for (let i = 0; i < 65; i++) values[keys.charCodeAt(i)] = i;
   }
-  return bytes;
-}
-
-function toBytes(payload) {
-  const array = [];
-  const buffer = strToUtf16Bytes(decodeBase64(payload));
-  for (let i = 0; i < buffer.length; i++) {
-    if (buffer[i] !== 0) array.push(buffer[i]);
-  }
-  return array;
-}
+})();
 
 function decoder(bytes, port) {
   let latitude =

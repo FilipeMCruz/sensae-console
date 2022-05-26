@@ -1,9 +1,8 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model;
 
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceDTO;
 
-import java.util.UUID;
+import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 
-public class DeviceIdDTOImpl implements DeviceDTO {
-    public UUID id;
+public class DeviceIdDTOImpl implements DeviceIdDTO {
+    public String id;
 }

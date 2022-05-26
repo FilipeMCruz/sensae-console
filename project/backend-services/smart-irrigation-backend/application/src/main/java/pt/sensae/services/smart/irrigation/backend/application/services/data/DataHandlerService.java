@@ -3,7 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.application.services.data;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domainservices.data.DataArchiver;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.DeviceCache;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 
 @Service
 public class DataHandlerService {
@@ -18,7 +18,7 @@ public class DataHandlerService {
         this.publisher = publisher;
     }
 
-    public void handle(ProcessedSensorDataDTO data) {
+    public void handle(SensorDataDTO data) {
         this.publisher.publish(data);
         this.archiver.save(data);
         this.deviceCache.updateIfNeeded(data);

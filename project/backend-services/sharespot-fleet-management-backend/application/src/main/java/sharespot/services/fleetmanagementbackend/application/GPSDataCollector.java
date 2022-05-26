@@ -2,11 +2,11 @@ package sharespot.services.fleetmanagementbackend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import sharespot.services.fleetmanagementbackend.application.auth.AccessTokenDTO;
 import sharespot.services.fleetmanagementbackend.application.auth.TokenExtractor;
 import sharespot.services.fleetmanagementbackend.application.auth.UnauthorizedException;
-import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
+import sharespot.services.fleetmanagementbackend.domain.SensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.exceptions.NotValidException;
 import sharespot.services.fleetmanagementbackend.domain.model.GPSDataDetails;
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @Service
 public class GPSDataCollector {
 
-    private final ProcessedSensorDataRepository repository;
+    private final SensorDataRepository repository;
 
     private final TokenExtractor authHandler;
 
@@ -34,7 +34,7 @@ public class GPSDataCollector {
     @Value("${sharespot.location.heuristic.complete.history.maxtime.window}")
     public int MAX_TIME_BETWEEN_INFO_IN_SECONDS;
 
-    public GPSDataCollector(ProcessedSensorDataRepository repository, TokenExtractor authHandler) {
+    public GPSDataCollector(SensorDataRepository repository, TokenExtractor authHandler) {
         this.repository = repository;
         this.authHandler = authHandler;
     }
@@ -54,7 +54,7 @@ public class GPSDataCollector {
         return createHistories(filters, data);
     }
 
-    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, Stream<ProcessedSensorDataDTO> dto) {
+    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, Stream<SensorDataDTO> dto) {
         return dto.collect(Collectors.groupingBy(x -> x.device.id))
                 .values()
                 .parallelStream()
@@ -62,7 +62,7 @@ public class GPSDataCollector {
                 .collect(Collectors.toList());
     }
 
-    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<ProcessedSensorDataDTO> dto) {
+    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<SensorDataDTO> dto) {
         var history = new GPSSensorDataHistory();
         history.startTime = filters.startTime.getTime();
         history.endTime = filters.endTime.getTime();

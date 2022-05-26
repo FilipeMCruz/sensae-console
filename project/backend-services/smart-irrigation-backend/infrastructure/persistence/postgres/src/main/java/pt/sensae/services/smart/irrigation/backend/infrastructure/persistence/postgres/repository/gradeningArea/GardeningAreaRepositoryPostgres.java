@@ -6,6 +6,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.po
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @Repository
@@ -15,7 +16,7 @@ public interface GardeningAreaRepositoryPostgres extends CrudRepository<Gardenin
 
     Optional<GardeningAreaPostgres> findByAreaId(String areaId);
 
-    Stream<GardeningAreaPostgres> findAllByDeletedFalseAndAreaIdIn(List<String> areaId);
+    Stream<GardeningAreaPostgres> findAllByDeletedFalseAndAreaIdIn(Set<String> areaId);
 
     Stream<GardeningAreaPostgres> findAllByDeletedFalse();
 

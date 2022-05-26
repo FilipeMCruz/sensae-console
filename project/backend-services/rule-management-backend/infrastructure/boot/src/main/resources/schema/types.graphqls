@@ -1,0 +1,18 @@
+type RuleScenario {
+    id : ScenarioId
+    content : String
+    applied : Boolean
+}
+
+type ScenarioId {
+    value: String
+}
+
+input RuleScenarioInput {
+    id : ScenarioIdInput
+    content : String
+}
+
+input ScenarioIdInput {
+    value: String
+}

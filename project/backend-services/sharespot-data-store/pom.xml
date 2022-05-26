@@ -6,7 +6,7 @@
 
     <groupId>sharespot.services</groupId>
     <artifactId>sharespot-data-store</artifactId>
-    <version>0.7.0</version>
+    <version>0.8.0</version>
     <modules>
         <module>infrastructure</module>
         <module>application</module>
@@ -23,12 +23,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.6.7</version>
+            <version>2.7.0</version>
         </dependency>
         <dependency>
             <groupId>pt.sharespot</groupId>
             <artifactId>iot-core</artifactId>
-            <version>0.1.15</version>
+            <version>0.1.17</version>
         </dependency>
     </dependencies>
 </project>

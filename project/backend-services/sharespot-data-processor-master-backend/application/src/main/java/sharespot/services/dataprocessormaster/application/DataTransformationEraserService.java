@@ -13,13 +13,13 @@ public class DataTransformationEraserService {
 
     private final DataTransformationMapper mapper;
 
-    private final DataTransformationHandlerService publisher;
+    private final DataTransformationEventHandlerService publisher;
 
     private final TokenExtractor authHandler;
 
     public DataTransformationEraserService(DataTransformationEraser eraser,
                                            DataTransformationMapper mapper,
-                                           DataTransformationHandlerService publisher,
+                                           DataTransformationEventHandlerService publisher,
                                            TokenExtractor authHandler) {
         this.eraser = eraser;
         this.mapper = mapper;
@@ -34,7 +34,7 @@ public class DataTransformationEraserService {
 
         var deviceId = mapper.dtoToDomain(dto);
         var erased = eraser.erase(deviceId);
-        publisher.publishUpdate(erased);
+        publisher.publishDelete(erased);
         return mapper.domainToDto(erased);
     }
 }

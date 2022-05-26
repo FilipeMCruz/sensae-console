@@ -1,9 +1,9 @@
 package sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.mapper;
 
-import pt.sharespot.iot.core.sensor.properties.KnownPropertyTransformation;
-import pt.sharespot.iot.core.sensor.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformation;
-import pt.sharespot.iot.core.sensor.properties.PropertyTransformations;
+import pt.sharespot.iot.core.sensor.model.properties.KnownPropertyTransformation;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformation;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
 import sharespot.services.dataprocessormaster.domain.DataTransformation;
 import sharespot.services.dataprocessormaster.domain.SensorTypeId;
 import sharespot.services.dataprocessormaster.infrastructure.persistence.postgres.model.DataTransformationPostgres;
@@ -80,8 +80,7 @@ public class DataTransformationMapper {
             case PM2_5 -> PropertyNamePostgres.of(35);
             case PM10 -> PropertyNamePostgres.of(36);
             case DEVICE_DOWNLINK -> PropertyNamePostgres.of(37);
-            case READ_PERMISSIONS, READ_WRITE_PERMISSIONS, DEVICE_RECORDS, DEVICE_COMMANDS ->
-                    throw new RuntimeException();
+            case DOMAIN_OWNERSHIP, DEVICE_RECORDS, DEVICE_COMMANDS -> throw new RuntimeException();
         };
     }
 

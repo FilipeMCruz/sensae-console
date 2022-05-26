@@ -1,8 +1,9 @@
 package pt.sensae.services.device.management.slave.backend.domain.model;
 
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 
 import java.util.List;
 
-public record DeviceWithSubDevices(ProcessedSensorDataDTO controller, List<ProcessedSensorDataDTO> sensors) {
+public record DeviceWithSubDevices(SensorDataDTO controller, List<SensorDataDTO> sensors) {
 }

@@ -8,12 +8,12 @@ import pt.sensae.services.smart.irrigation.backend.application.mapper.data.LiveD
 import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilter;
 import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilterDTO;
-import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
-import pt.sharespot.iot.core.sensor.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -28,9 +28,9 @@ import java.util.function.Predicate;
 @Service
 public class SensorDataPublisher {
 
-    private FluxSink<ProcessedSensorDataDTO> dataStream;
+    private FluxSink<SensorDataDTO> dataStream;
 
-    private ConnectableFlux<ProcessedSensorDataDTO> dataPublisher;
+    private ConnectableFlux<SensorDataDTO> dataPublisher;
 
     private final TokenExtractor authHandler;
 
@@ -49,31 +49,31 @@ public class SensorDataPublisher {
 
     @PostConstruct
     public void init() {
-        Flux<ProcessedSensorDataDTO> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<SensorDataDTO> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<SensorDataDTO> getFilteredPublisher(LiveDataFilterDTO filter, AccessTokenDTO claims) {
+    public Flux<SensorReadingDTO> getFilteredPublisher(LiveDataFilterDTO filter, AccessTokenDTO claims) {
         var liveDataFilter = filterMapper.dtoToModel(filter);
         return dataPublisher
                 .filter(withFilter(liveDataFilter, claims))
                 .map(mapper::toDto);
     }
 
-    public void publish(ProcessedSensorDataDTO data) {
+    public void publish(SensorDataDTO data) {
         dataStream.next(data);
     }
 
-    private Predicate<ProcessedSensorDataDTO> withFilter(LiveDataFilter filter, AccessTokenDTO claims) {
+    private Predicate<SensorDataDTO> withFilter(LiveDataFilter filter, AccessTokenDTO claims) {
         return getDeviceDomainFilter(claims)
                 .and(withContent(filter.content()))
                 .and(insideGardeningArea(filter.gardens()))
                 .and(withDeviceId(filter.devices()));
     }
 
-    private Predicate<ProcessedSensorDataDTO> insideGardeningArea(Set<GardeningAreaId> gardenIds) {
+    private Predicate<SensorDataDTO> insideGardeningArea(Set<GardeningAreaId> gardenIds) {
         if (gardenIds.isEmpty()) {
             return data -> true;
         }
@@ -81,23 +81,23 @@ public class SensorDataPublisher {
                 .anyMatch(g -> g.area().contains(GPSPoint.from(data.getSensorData().gps)));
     }
 
-    private Predicate<ProcessedSensorDataDTO> withContent(String content) {
+    private Predicate<SensorDataDTO> withContent(String content) {
         if (content.isEmpty()) {
             return data -> true;
         }
-        return data -> data.device.records.entry
+        return data -> data.device.records
                 .stream()
                 .anyMatch(e -> e.content.contains(content));
     }
 
-    private Predicate<ProcessedSensorDataDTO> withDeviceId(Set<DeviceId> ids) {
+    private Predicate<SensorDataDTO> withDeviceId(Set<DeviceId> ids) {
         if (ids.isEmpty()) {
             return data -> true;
         }
         return data -> ids.stream().anyMatch(id -> Objects.equals(id.value(), data.device.id));
     }
 
-    private Predicate<ProcessedSensorDataDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
+    private Predicate<SensorDataDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("fleet_management:live_data:read"))
             throw new UnauthorizedException("No Permissions");
@@ -105,8 +105,7 @@ public class SensorDataPublisher {
         return withDomain(extract.domains.stream().map(UUID::fromString).toList());
     }
 
-    private Predicate<ProcessedSensorDataDTO> withDomain(List<UUID> domainIds) {
-        return s -> s.device.domains.readWrite.stream().anyMatch(domainIds::contains) ||
-                s.device.domains.read.stream().anyMatch(domainIds::contains);
+    private Predicate<SensorDataDTO> withDomain(List<UUID> domainIds) {
+        return s -> s.device.domains.stream().anyMatch(domainIds::contains);
     }
 }

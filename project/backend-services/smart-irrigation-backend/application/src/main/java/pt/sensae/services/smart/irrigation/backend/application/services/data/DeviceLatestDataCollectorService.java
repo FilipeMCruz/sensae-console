@@ -5,13 +5,14 @@ import pt.sensae.services.smart.irrigation.backend.application.auth.AccessTokenD
 import pt.sensae.services.smart.irrigation.backend.application.auth.TokenExtractor;
 import pt.sensae.services.smart.irrigation.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.LatestDataCollector;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.LatestDataQuery;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class DeviceLatestDataCollectorService {
         this.mapper = mapper;
     }
 
-    public Stream<SensorDataDTO> fetch(Stream<String> gardenIds, Stream<String> deviceIds, AccessTokenDTO claims) {
+    public Stream<SensorReadingDTO> fetch(Stream<String> gardenIds, Stream<String> deviceIds, AccessTokenDTO claims) {
         var domainFilter = Ownership.of(getDomainFilter(claims));
 
         var deviceFilter = deviceIds.map(UUID::fromString).map(DeviceId::new).collect(Collectors.toSet());

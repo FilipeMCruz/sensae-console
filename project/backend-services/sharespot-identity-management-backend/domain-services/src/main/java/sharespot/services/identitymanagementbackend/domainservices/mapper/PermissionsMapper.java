@@ -17,6 +17,10 @@ public class PermissionsMapper {
                     case EDIT_DATA_TRANSFORMATION -> "data_transformations:transformations:edit";
                     case DELETE_DATA_TRANSFORMATION -> "data_transformations:transformations:delete";
 
+                    case READ_RULE_SCENARIO -> "rule_management:rules:read";
+                    case EDIT_RULE_SCENARIO -> "rule_management:rules:edit";
+                    case DELETE_RULE_SCENARIO -> "rule_management:rules:delete";
+
                     case READ_DATA_DECODER -> "data_decoders:decoders:read";
                     case EDIT_DATA_DECODER -> "data_decoders:decoders:edit";
                     case DELETE_DATA_DECODER -> "data_decoders:decoders:delete";
@@ -62,6 +66,10 @@ public class PermissionsMapper {
                     case "data_decoders:decoders:read" -> PermissionType.READ_DATA_DECODER;
                     case "data_decoders:decoders:edit" -> PermissionType.EDIT_DATA_DECODER;
                     case "data_decoders:decoders:delete" -> PermissionType.DELETE_DATA_DECODER;
+
+                    case "rule_management:rules:read" -> PermissionType.READ_RULE_SCENARIO;
+                    case "rule_management:rules:edit" -> PermissionType.EDIT_RULE_SCENARIO;
+                    case "rule_management:rules:delete" -> PermissionType.DELETE_RULE_SCENARIO;
 
                     case "identity_management:domains:create" -> PermissionType.CREATE_DOMAIN;
                     case "identity_management:domains:edit" -> PermissionType.EDIT_DOMAIN;

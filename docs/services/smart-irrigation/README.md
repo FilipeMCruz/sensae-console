@@ -12,6 +12,21 @@ Business Domain:
 
 ![model](diagrams/model.svg)
 
+## Internal System Inputs/Outputs
+
+This service inputs are:
+
+- **Sensor Topic**: valid data with `gps` and `trigger` readings (for valves);
+- **Sensor Topic**: valid data with `gps`, `temperature` and `air humidity` readings (for stoves);
+- **Sensor Topic**: valid data with `gps`, `illuminance` and `soil moisture` readings (for parks);
+
+- **Alert Topic**: alerts with the category `drySoil` (to open all valves in a garden);
+- **Alert Topic**: alerts with the category `valveOpenForLengthyPeriod` or `moistSoil` (to close all valves in a garden);
+
+This service outputs are:
+
+- **Command Topic**: command to close/open a single valve;
+
 ## Further Discussion
 
 As always, changes/improvements to this page and `smart irrigation`s behavior are expected.

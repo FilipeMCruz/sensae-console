@@ -6,6 +6,12 @@ Current version:
 
 - `system` : `0.8.0`
 
+## Internal System Inputs/Outputs
+
+This service inputs are:
+
+- **Sensor Topic**: valid data with gps coordinates;
+
 ## Further Discussion
 
 As always, changes/improvements to this page and `fleet management`s behavior are expected.

@@ -21,6 +21,9 @@ import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.co
 
 @Configuration
 public class AmqpConfiguration {
+    
+    public static final String RULE_MANAGEMENT_QUEUE = "internal.rule.management.queue";
+
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -76,6 +79,27 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(queue).to(topic).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue ruleQueue() {
+        return QueueBuilder.durable(RULE_MANAGEMENT_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding ruleBinding(Queue internalQueue, TopicExchange internalTopic) {
+        var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
+                .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.REQUEST)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(internalQueue).to(internalTopic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

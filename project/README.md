@@ -5,7 +5,7 @@ Both of this environments need docker to run and docker-compose to orchestrate t
 
 Current version:
 
-- `system` : `0.7.0`
+- `system` : `0.8.0`
 
 ## DEV Environment
 
@@ -178,6 +178,25 @@ export const environment = {
 };
 ```
 
+File: `project/frontend-services/apps/rule-management-frontend/src/environments/environment.ts`
+
+```ts
+export const environment = {
+  production: false,
+  endpoints: {
+    ruleManagement: {
+      backend: {
+        domain: "localhost:8094",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
 File: `project/frontend-services/apps/ui-aggregator/src/environments/environment.ts`
 
 ```ts
@@ -243,6 +262,15 @@ export const environment = {
         websocket: {
           scheme: "ws://",
           path: "/subscriptions"
+        }
+      }
+    },
+    ruleManagement: {
+      backend: {
+        domain: "localhost:8094",
+        http: {
+          scheme: "http://",
+          path: "/graphql"
         }
       }
     }
@@ -415,6 +443,48 @@ File: `project/backend-services/device-management-slave-backend/infrastructure/b
 
 ``` conf
 server.port=8087
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+```
+
+File: `project/backend-services/rule-management-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8094
+
+spring.rabbitmq.host=localhost
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=guest
+spring.rabbitmq.password=guest
+
+logging.level.org.springframework.web=DEBUG
+logging.level.web=DEBUG
+logging.level.com.netflix.graphql.dgs=TRACE
+
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/rules
+spring.datasource.username=user
+spring.datasource.password=<key to exchange with sharespot-common-database>
+spring.jpa.show-sql=true
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+dgs.graphql.graphiql.enabled=true
+dgs.graphql.graphiql.path=/graphiql
+
+sensae.auth.pub.key.path=<path to X509 public key>
+sensae.auth.issuer=<website domain that generates jwt>
+sensae.auth.audience=<website domain that consumes jwt>
+```
+
+File: `project/backend-services/alert-dispatcher-backend/infrastructure/boot/src/main/resources/application-dev.properties`
+
+``` conf
+server.port=8093
 
 spring.rabbitmq.host=localhost
 spring.rabbitmq.port=5672
@@ -708,6 +778,25 @@ export const environment = {
 };
 ```
 
+File: `project/frontend-services/apps/rule-management-frontend/src/environments/environment.prod.ts`
+
+```ts
+export const environment = {
+  production: true,
+  endpoints: {
+    ruleManagement: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/rule-management/graphql"
+        }
+      }
+    }
+  }
+};
+```
+
 File: `project/frontend-services/apps/ui-aggregator/src/environments/environment.prod.ts`
 
 ```ts
@@ -773,6 +862,15 @@ export const environment = {
         websocket: {
           scheme: "wss://",
           path: "/smart-irrigation/subscriptions"
+        }
+      }
+    },
+    ruleManagement: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/rule-management/graphql"
         }
       }
     }
@@ -882,6 +980,28 @@ SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
 ```
 
 File. `project/secrets/prod/device-management-slave-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+```
+
+File. `project/secrets/prod/rule-management-backend.env`
+
+``` conf
+SPRING_RABBITMQ_USERNAME=guest
+SPRING_RABBITMQ_PASSWORD=guest
+
+SPRING_DATASOURCE_URL=jdbc:postgresql://sharespot-common-database:5432/rules
+SPRING_DATASOURCE_USERNAME=user
+SPRING_DATASOURCE_PASSWORD=<key to exchange with sharespot-common-database>
+
+SENSAE_AUTH_PUB_KEY_PATH=<path to X509 public key>
+SENSAE_AUTH_ISSUER=<website domain that generates jwt>
+SENSAE_AUTH_AUDIENCE=<website domain that consumes jwt>
+```
+
+File. `project/secrets/prod/alert-dispatcher-backend.env`
 
 ``` conf
 SPRING_RABBITMQ_USERNAME=guest

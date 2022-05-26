@@ -74,11 +74,11 @@ The following diagram represents the idealized architecture:
 
 ![logical-level2](diagrams/logical-view-level2.svg)
 
-- **Rule Engine Frontend**: this container is responsible for interacting with managers. Users can see, create, edit and delete rules using the UI.
-- **Rule Engine Backend**: this container is responsible for verifying that the submitted rules can be compiled, if so it notifies the slaves that a rule was updated, deleted or added.
+- **Rule Engine Frontend**: this container is responsible for interacting with managers. Users can see, create, edit and delete rule scenarios using the UI.
+- **Rule Engine Backend**: this container is responsible for verifying that the submitted rule scenarios can be compiled, if so it notifies that a rule was updated, deleted or added.
 - **Alert Dispatcher**: this container is responsible for executing rules when new sensor data arrives to it from the message broker. When facts match a rule condition alarms are produced. This alarms are send to the message broker so that other containers are notified about them.
 - **Rule Engine Database**: this container is responsible for storing all rules.
-- **Message Broker**: this container is responsible for sending new sensor data to **Rule Engine Slave** trough `sensor.topic`, send updates about rules to **Rule Engine Slave** trough `internal.topic`, let **Rule Engine Backend** publish new updates about rules in `internal.topic` and let **Rule Engine Slave** publish new alerts in `alerts.topic`.
+- **Message Broker**: this container is responsible for sending new sensor data to **Alert Dispatcher** trough `sensor.topic`, send updates about rules to **Alert Dispatcher** trough `internal.topic`, let **Rule Engine Backend** publish new updates about rules in `internal.topic` and let **Alert Dispatcher** publish new alerts in `alerts.topic`.
 
 ## Rules examples
 

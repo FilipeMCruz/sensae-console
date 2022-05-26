@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.services.command.DeviceCommandPublisher;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.command.DeviceCommand;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntry;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
+import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
+import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
@@ -24,12 +25,18 @@ public class AlertHandlerService {
 
     private final DeviceRepository deviceRepository;
 
+    private final DataRepository dataRepository;
+
     private final DeviceCommandPublisher publisher;
 
     private final GardeningAreaCache gardenCache;
 
-    public AlertHandlerService(DeviceRepository deviceRepository, DeviceCommandPublisher publisher, GardeningAreaCache gardenCache) {
+    public AlertHandlerService(DeviceRepository deviceRepository,
+                               DataRepository dataRepository,
+                               DeviceCommandPublisher publisher,
+                               GardeningAreaCache gardenCache) {
         this.deviceRepository = deviceRepository;
+        this.dataRepository = dataRepository;
         this.publisher = publisher;
         this.gardenCache = gardenCache;
     }
@@ -83,8 +90,9 @@ public class AlertHandlerService {
                 }
             }
         }
-        valvesToTrigger.forEach(valve -> {
-            publisher.publish(new DeviceCommand(ValveCommand.from(toOpenValve), valve.id()));
-        });
+        dataRepository.fetchLatest(valvesToTrigger.stream().map(Device::id))
+                .filter(reading -> reading.payload() instanceof ValvePayload)
+                .filter(valvePayload -> ((ValvePayload) valvePayload.payload()).status().value() != toOpenValve)
+                .forEach(valve -> publisher.publish(new DeviceCommand(ValveCommand.from(toOpenValve), valve.deviceId())));
     }
 }

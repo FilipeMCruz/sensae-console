@@ -19,9 +19,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/device-management-frontend-e2e/**/*.{js,ts}"
-        ]
+        "lintFilePatterns": ["apps/device-management-frontend-e2e/**/*.{js,ts}"]
       }
     }
   },

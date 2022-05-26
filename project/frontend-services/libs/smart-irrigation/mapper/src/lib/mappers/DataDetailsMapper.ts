@@ -49,7 +49,7 @@ export class DataDetailsMapper {
       case ValveStatusDataDetailsTypeDTO.CLOSE:
         return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
       case ValveStatusDataDetailsTypeDTO.OPEN:
-        return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
+        return new ValveStatusDataDetails(ValveStatusDataDetailsType.OPEN);
       default:
         return new ValveStatusDataDetails(ValveStatusDataDetailsType.CLOSED);
     }

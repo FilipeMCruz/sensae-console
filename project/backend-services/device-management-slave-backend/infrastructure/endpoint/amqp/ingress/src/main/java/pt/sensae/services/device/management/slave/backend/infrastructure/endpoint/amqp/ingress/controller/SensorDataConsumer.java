@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.slave.backend.application.SensorDataHandlerService;
 import pt.sensae.services.device.management.slave.backend.application.SensorDataPublisherService;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 
 @Service
@@ -32,7 +32,7 @@ public class SensorDataConsumer {
         handler.info(consumed);
     }
 
-    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
+    private void logConsumedMessage(MessageConsumed<SensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

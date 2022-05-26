@@ -1,25 +1,39 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.smart.irrigation.backend.application.RoutingKeysProvider;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ParkSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.StoveSensorDataConsumer;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.ValveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.alert.CloseValveAlertConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.alert.OpenValveAlertConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.ParkSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.StoveSensorDataConsumer;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
+import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DomainOwnershipOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.data.*;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
+
+    @Value("#{'${sensae.alert.categories.open.valve}'.split(',')}")
+    private List<String> openValveCategories;
+
+    @Value("#{'${sensae.alert.categories.close.valve}'.split(',')}")
+    private List<String> closeValveCategories;
 
     private final RoutingKeysProvider provider;
 
@@ -29,7 +43,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue parkQueue() {
-        return QueueBuilder.durable(ParkSensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.durable(ParkSensorDataConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -70,7 +84,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withSoilMoisture(SoilMoistureDataOptions.WITH_SOIL_MOISTURE_DATA)
                 .withIlluminance(IlluminanceDataOptions.WITH_ILLUMINANCE_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -88,7 +102,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withAirHumidity(AirHumidityDataOptions.WITH_AIR_HUMIDITY_DATA)
                 .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -105,12 +119,65 @@ public class AmqpConfiguration {
                 .withLegitimacyType(DataLegitimacyOptions.CORRECT)
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withTrigger(TriggerDataOptions.WITH_TRIGGER_DATA)
-                .withOwnership(DomainOwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .missingAsAny();
 
         if (keys.isPresent()) {
             return BindingBuilder.bind(valveQueue).to(topic).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public TopicExchange alertExchange() {
+        return new TopicExchange(IoTCoreTopic.ALERT_EXCHANGE);
+    }
+
+    @Bean
+    public Queue openValveQueue() {
+        return QueueBuilder.durable(OpenValveAlertConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    public Queue closeValveQueue() {
+        return QueueBuilder.durable(CloseValveAlertConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Declarables openValveBinding(Queue openValveQueue, TopicExchange alertExchange) {
+        var bindings = openValveCategories.stream().map(category -> {
+            var keys = provider.getAlertBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                    .withOwnershipType(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                    .withCategoryType(AlertCategoryOptions.of(category))
+                    .missingAsAny();
+
+            if (keys.isPresent()) {
+                return BindingBuilder.bind(openValveQueue).to(alertExchange).with(keys.get().toString());
+            }
+            throw new RuntimeException("Error creating Routing Keys");
+        }).collect(Collectors.toSet());
+        return new Declarables(bindings);
+    }
+
+    @Bean
+    Declarables closeValveBinding(Queue closeValveQueue, TopicExchange alertExchange) {
+        var bindings = closeValveCategories.stream().map(category -> {
+            var keys = provider.getAlertBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                    .withOwnershipType(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                    .withCategoryType(AlertCategoryOptions.of(category))
+                    .missingAsAny();
+
+            if (keys.isPresent()) {
+                return BindingBuilder.bind(closeValveQueue).to(alertExchange).with(keys.get().toString());
+            }
+            throw new RuntimeException("Error creating Routing Keys");
+        }).collect(Collectors.toSet());
+        return new Declarables(bindings);
     }
 }

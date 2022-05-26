@@ -6,12 +6,12 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.ReportTime;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.*;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 public class DataMapper {
 
-    public static Data dtoToModel(ProcessedSensorDataDTO dto) {
+    public static Data dtoToModel(SensorDataDTO dto) {
         var id = DataId.of(dto.dataId);
         var deviceId = DeviceId.of(dto.device.id);
         var reportedAt = ReportTime.of(dto.reportedAt);

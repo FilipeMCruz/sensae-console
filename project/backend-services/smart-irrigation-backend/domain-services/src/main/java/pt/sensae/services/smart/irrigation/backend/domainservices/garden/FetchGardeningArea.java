@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.garden;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.auth.TenantInfo;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
 
 import java.util.UUID;
@@ -20,6 +21,6 @@ public class FetchGardeningArea {
 
     public Stream<GardeningArea> fetchAll(TenantInfo info) {
         var tenantDomains = info.domains.stream().map(UUID::fromString).map(DomainId::new);
-        return this.cache.fetchAll(tenantDomains);
+        return this.cache.fetchAll(Ownership.of(tenantDomains));
     }
 }

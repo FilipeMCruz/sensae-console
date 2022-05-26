@@ -2,7 +2,7 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.grap
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
-import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorDataDTO;
+import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ValveCommand;
@@ -14,7 +14,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graph
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceTypeDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntryDTOImpl;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 import java.util.Optional;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 public class SensorDataMapperImpl implements SensorDataMapper {
 
     @Override
-    public SensorDataDTO toDto(ProcessedSensorDataDTO dto) {
-        var entries = dto.device.records.entry.stream()
+    public SensorReadingDTO toDto(SensorDataDTO dto) {
+        var entries = dto.device.records.stream()
                 .map(e -> new RecordEntryDTOImpl(e.label, e.content))
                 .collect(Collectors.toSet());
 
@@ -70,11 +70,11 @@ public class SensorDataMapperImpl implements SensorDataMapper {
 
         var device = new DeviceDTOImpl(dto.device.name, type, dto.device.id, entries, control);
 
-        return new SensorDataDTOImpl(dto.dataId, device, dto.reportedAt, payload);
+        return new SensorReadingDTOImpl(dto.dataId, device, dto.reportedAt, payload);
     }
 
     @Override
-    public SensorDataDTO toDto(DeviceWithData dto) {
+    public SensorReadingDTO toDto(DeviceWithData dto) {
         var any = dto.ledger().entries().stream().findFirst();
 
         if (any.isEmpty()) {
@@ -128,7 +128,7 @@ public class SensorDataMapperImpl implements SensorDataMapper {
         } else {
             throw new RuntimeException("Error processing device data");
         }
-        return new SensorDataDTOImpl(singleData.get().id().value(),
+        return new SensorReadingDTOImpl(singleData.get().id().value(),
                 device, singleData.get().reportedAt().value().toEpochMilli(), payload);
     }
 }

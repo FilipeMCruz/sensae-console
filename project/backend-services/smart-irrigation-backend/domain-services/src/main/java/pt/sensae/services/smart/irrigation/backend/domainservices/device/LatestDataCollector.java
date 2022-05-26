@@ -10,6 +10,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataReposit
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.LatestDataQuery;
 import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;

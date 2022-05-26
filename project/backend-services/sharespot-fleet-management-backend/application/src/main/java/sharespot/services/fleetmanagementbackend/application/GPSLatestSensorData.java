@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.fleetmanagementbackend.application.auth.AccessTokenDTO;
 import sharespot.services.fleetmanagementbackend.application.auth.TokenExtractor;
 import sharespot.services.fleetmanagementbackend.application.auth.UnauthorizedException;
-import sharespot.services.fleetmanagementbackend.domain.ProcessedSensorDataRepository;
+import sharespot.services.fleetmanagementbackend.domain.SensorDataRepository;
 import sharespot.services.fleetmanagementbackend.domain.model.domain.DomainId;
 import sharespot.services.fleetmanagementbackend.domain.model.livedata.SensorData;
 
@@ -15,11 +15,11 @@ import java.util.stream.Stream;
 @Service
 public class GPSLatestSensorData {
 
-    private final ProcessedSensorDataRepository repository;
+    private final SensorDataRepository repository;
 
     private final TokenExtractor authHandler;
 
-    public GPSLatestSensorData(ProcessedSensorDataRepository repository, TokenExtractor authHandler) {
+    public GPSLatestSensorData(SensorDataRepository repository, TokenExtractor authHandler) {
         this.repository = repository;
         this.authHandler = authHandler;
     }

@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.p
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardenRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
@@ -61,23 +62,37 @@ public class GardenRepositoryImpl implements GardenRepository {
 
     @Override
     @Transactional("transactionManagerPostgres")
-    public Stream<GardeningArea> fetchAll(Stream<DomainId> owners) {
-        var ownerAreas = areaOwnerRepositoryPostgres.findAllByDomainIdIn(owners.map(DomainId::value)
-                        .map(UUID::toString)
-                        .collect(Collectors.toList()))
-                .collect(Collectors.groupingBy(o -> o.areaId));
+    public Stream<GardeningArea> fetchAll(Ownership owners) {
+        if (owners.isSystem()) {
+            var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
+                    .collect(Collectors.groupingBy(o -> o.areaId));
 
-        var ownerAreaIds = ownerAreas.keySet();
+            var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAllByDeletedFalse()
+                            .spliterator(), false)
+                    .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId)
+                            .stream()), GardeningAreaOwnerMapper.daoToModel(Stream.empty())))
+                    .toList();
+            return gardeningAreas.stream();
+        } else {
+            var ownerAreas = areaOwnerRepositoryPostgres.findAllByDomainIdIn(owners.value()
+                            .stream()
+                            .map(DomainId::value)
+                            .map(UUID::toString)
+                            .collect(Collectors.toList()))
+                    .collect(Collectors.groupingBy(o -> o.areaId));
 
-        var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
-                .collect(Collectors.groupingBy(o -> o.areaId));
+            var ownerAreaIds = ownerAreas.keySet();
 
-        var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAllByDeletedFalseAndAreaIdIn(ownerAreaIds)
-                        .spliterator(), false)
-                .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId)
-                        .stream()), GardeningAreaOwnerMapper.daoToModel(ownerAreas.get(dao.areaId).stream())))
-                .toList();
-        return gardeningAreas.stream();
+            var boundaries = StreamSupport.stream(areaRepository.findAll().spliterator(), false)
+                    .collect(Collectors.groupingBy(o -> o.areaId));
+
+            var gardeningAreas = StreamSupport.stream(gardeningAreaRepository.findAllByDeletedFalseAndAreaIdIn(ownerAreaIds)
+                            .spliterator(), false)
+                    .map(dao -> GardeningAreaMapper.daoToModel(dao, AreaBoundariesMapper.daoToModel(boundaries.get(dao.areaId)
+                            .stream()), GardeningAreaOwnerMapper.daoToModel(ownerAreas.get(dao.areaId).stream())))
+                    .toList();
+            return gardeningAreas.stream();
+        }
     }
 
     @Override

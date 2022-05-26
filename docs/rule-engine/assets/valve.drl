@@ -1,0 +1,92 @@
+package org.example.services
+
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import org.example.model.AlarmBuilder;
+import java.util.List;
+import java.util.UUID;
+
+global org.example.model.Dispatcher dispatcher;
+
+dialect "mvel"
+
+declare ValveDevice
+    @role( event )
+    deviceId : UUID
+end
+
+declare ValveDeviceData
+    @role( event )
+    deviceId : UUID
+    dataId : UUID
+    on : Boolean    
+end
+
+rule "Valve Alarm - Guard Scenario"
+    when
+        ProcessedSensorDataDTO(
+            !getSensorData().hasProperty(PropertyName.TRIGGER)
+        )
+    then
+end
+
+//to ensure that only one alarm per valve is sent
+rule "Create new valve device that belongs to Project #003"
+    when
+        data : ProcessedSensorDataDTO(
+            getSensorData().hasProperty(PropertyName.TRIGGER)
+        )
+        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        not(ValveDevice(deviceId == data.device.id))
+    then
+        ValveDevice valve = new ValveDevice();
+        valve.setDeviceId(data.device.id);
+        insert(valve)
+        dispatcher.send(AlarmBuilder.create()
+                          .setName("valve")
+                          .setDescription("New Valve")
+                          .setDeviceId(data.device.id)
+                          .createAlarm());
+end
+
+//if the data is from a valve device and is not duplicated add it
+rule "Collect valve device data that belongs to Project #003"
+    when
+        data : ProcessedSensorDataDTO(
+            getSensorData().hasProperty(PropertyName.TRIGGER)
+        )
+        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        not(ValveDeviceData(dataId == data.dataId))
+    then
+        ValveDeviceData reading = new ValveDeviceData();
+        reading.setDeviceId(data.device.id);
+        reading.setDataId(data.dataId);
+        reading.setOn(data.getSensorData().trigger.value);
+        insert(reading)
+        dispatcher.send(AlarmBuilder.create()
+                          .setName("valveData")
+                          .setDescription("DataId: " + data.dataId + " - On: " + data.getSensorData().trigger.value)
+                          .setDeviceId(data.device.id)
+                          .createAlarm());
+end
+
+rule "Dispatch Valve Alarm - Senario 1 - Project #003"
+    when
+        $v : ValveDevice()
+        $data: ValveDeviceData(deviceId == $v.deviceId, on == true)
+        not(
+            ValveDeviceData(
+                this != $data, 
+                on == false,
+                this after[0s,10m] $data
+            )
+        )
+    then
+        dispatcher.send(AlarmBuilder.create()
+                          .setName("closeValve")
+                          .setDescription("Project #003 - Valve has been open for more than 10 minutes, needs to be closed")
+                          .setDeviceId($v.deviceId)
+                          .createAlarm());
+end

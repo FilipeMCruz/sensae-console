@@ -1,0 +1,35 @@
+@startuml logical-view-level2
+
+skinparam Monochrome true
+skinparam sequenceMessageAlign center
+skinparam Shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+
+component "Rule Engine Frontend" as RULE_FRONT
+component "Rule Engine Backend" as RULE_BACK
+component "Rule Engine Slave" as RULE_SLAVE
+component "Rule Engine Database" as RULE_DB
+component "Message Broker" as BROKER
+
+interface "UI" as UI
+interface "Rule Engine Backend\nAPI" as API
+interface "Rule Engine Database\nAPI" as DB_API
+interface "Rule Engine Database\nAPI" as DB_API
+interface "Message Broker API" as BROKER_API
+
+UI -- RULE_FRONT
+API -- RULE_BACK
+
+BROKER - BROKER_API
+
+RULE_FRONT --( API
+
+DB_API -- RULE_DB
+
+BROKER_API )- RULE_BACK
+BROKER_API )-- RULE_SLAVE
+
+RULE_BACK --( DB_API
+
+@enduml

@@ -20,6 +20,9 @@ public class ViewDeviceDomainOwners {
     }
 
     public DeviceWithAllOwnerDomains collect(DeviceId id) {
+        if (id.belongsToRoot()) {
+            return new DeviceWithAllOwnerDomains(id, Set.of(domainRepo.getRootDomain().getOid()));
+        }
         var optionalDevice = deviceRepo.findDeviceById(id);
         if (optionalDevice.isPresent()) {
             var collect = domainRepo.getDomains(optionalDevice.get().domains().stream())

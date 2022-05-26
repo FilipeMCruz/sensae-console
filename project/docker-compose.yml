@@ -5,7 +5,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 5672:5672
+      - 5672
       - 15672
   ui-aggregator:
     build:
@@ -26,6 +26,7 @@ services:
       - sharespot-fleet-management-frontend
       - sharespot-identity-management-frontend
       - smart-irrigation-frontend
+      - rule-management-frontend
   device-management-frontend:
     build:
       dockerfile: docker/device-management-frontend/Dockerfile
@@ -96,6 +97,20 @@ services:
       - 443
     depends_on:
       - sharespot-identity-management-backend
+  rule-management-frontend:
+    build:
+      dockerfile: docker/rule-management-frontend/Dockerfile
+      context: frontend-services
+    image: rule-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sharespot-network
+    ports:
+      - 443
+    depends_on:
+      - rule-management-backend
   smart-irrigation-frontend:
     build:
       dockerfile: docker/smart-irrigation-frontend/Dockerfile
@@ -120,6 +135,8 @@ services:
       - sharespot-network
     ports:
       - 8443:443
+    depends_on:
+      - sharespot-data-gateway
   sharespot-data-gateway:
     build: backend-services/sharespot-data-gateway
     image: sharespot-data-gateway
@@ -267,6 +284,32 @@ services:
       - ./secrets/prod/sharespot-identity-management-slave-backend.env
     networks:
       - sharespot-network
+  rule-management-backend:
+    build: backend-services/rule-management-backend
+    container_name: rule-management-backend
+    image: rule-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/rule-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  alert-dispatcher-backend:
+    build: backend-services/alert-dispatcher-backend
+    container_name: alert-dispatcher-backend
+    image: alert-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/alert-dispatcher-backend.env
+    networks:
+      - sharespot-network
+    depends_on:
+      - rule-management-backend
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

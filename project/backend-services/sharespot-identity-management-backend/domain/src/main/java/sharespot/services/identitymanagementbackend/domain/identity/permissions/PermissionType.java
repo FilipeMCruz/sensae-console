@@ -39,7 +39,13 @@ public enum PermissionType {
     READ_LATEST_DATA_SMART_IRRIGATION,
     READ_PAST_DATA_SMART_IRRIGATION,
 
-    CONTROL_VALVE_SMART_IRRIGATION;
+    CONTROL_VALVE_SMART_IRRIGATION,
+
+    READ_RULE_SCENARIO,
+
+    DELETE_RULE_SCENARIO,
+
+    EDIT_RULE_SCENARIO;
 
     public static void reviewPermissions(Set<PermissionType> permissions) {
 
@@ -48,6 +54,8 @@ public enum PermissionType {
         reviewDataDecoderPermissions(permissions);
 
         reviewDataTransformationPermissions(permissions);
+
+        reviewRuleManagementPermissions(permissions);
 
         reviewIdentityManagementDevicePermissions(permissions);
 
@@ -119,6 +127,16 @@ public enum PermissionType {
 
         if (permissions.contains(PermissionType.EDIT_DATA_TRANSFORMATION)) {
             permissions.add(PermissionType.READ_DATA_TRANSFORMATION);
+        }
+    }
+
+    private static void reviewRuleManagementPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.DELETE_RULE_SCENARIO)) {
+            permissions.add(PermissionType.EDIT_RULE_SCENARIO);
+        }
+
+        if (permissions.contains(PermissionType.EDIT_RULE_SCENARIO)) {
+            permissions.add(PermissionType.READ_RULE_SCENARIO);
         }
     }
 

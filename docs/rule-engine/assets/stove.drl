@@ -1,0 +1,92 @@
+package org.example.services
+
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import org.example.model.AlarmBuilder;
+import java.util.List;
+import java.util.UUID;
+
+global org.example.model.Dispatcher dispatcher;
+
+dialect "mvel"
+
+declare StoveSensor
+    @role( event )
+    deviceId : UUID
+end
+
+declare StoveSensorData
+    @role( event )
+    deviceId : UUID
+    dataId : UUID
+    temperature : Double
+    humidity : Double
+end
+
+rule "Stove Alarm - Guard Scenario"
+    when        
+        ProcessedSensorDataDTO(
+            !getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)
+            || !getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+    then
+end
+
+
+//to ensure that only one alarm per device is sent
+rule "Create new stove sensor devices that belongs to Project #003"
+    when
+        data : ProcessedSensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        not(StoveSensor(deviceId == data.device.id))
+    then 
+        StoveSensor sensor = new StoveSensor();
+        sensor.setDeviceId(data.device.id);
+        insert(sensor)
+end
+
+//if the data is from a stove sensor and is not duplicated add it
+rule "Collect stove sensor data that belongs to Project #003"
+    when
+        data : ProcessedSensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        not(StoveSensorData(dataId == data.dataId))
+    then
+        StoveSensorData reading = new StoveSensorData();
+        reading.setDeviceId(data.device.id);
+        reading.setDataId(data.dataId);
+        reading.setTemperature(data.getSensorData().temperature.celsius);
+        reading.setHumidity(data.getSensorData().airHumidity.relativePercentage);
+        insert(reading)
+end
+
+//if we can find any stove sensor with
+// - more that one reading,
+// - an humidity average of 20,
+// - a max temperature of 40,
+// - an average tempearture of 30
+// then fire an alarm 
+rule "Dispatch Stove Alarm - Scenario - Project #003"
+    when
+        $s : StoveSensor()
+        accumulate( StoveSensorData($temp : temperature, $humi : humidity, deviceId == $s.deviceId);
+                        $count: count($temp),
+                        $maxTemp : max( $temp ),
+                        $avgTemp : average( $temp ),
+                        $avgHumi : average( $humi );
+                        $count != 1 && ($avgHumi < 20 && $maxTemp > 40 && $avgTemp > 30))
+    then 
+        dispatcher.send(AlarmBuilder.create()
+                            .setName("drySoilDetected")
+                            .setDescription("Project #003 - Stove environment has low humidity and should be watered")
+                            .setDeviceId($s.deviceId)
+                            .createAlarm());
+end

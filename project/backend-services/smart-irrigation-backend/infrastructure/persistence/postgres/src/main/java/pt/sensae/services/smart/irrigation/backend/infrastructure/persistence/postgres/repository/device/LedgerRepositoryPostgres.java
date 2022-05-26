@@ -18,6 +18,8 @@ public interface LedgerRepositoryPostgres extends CrudRepository<LedgerEntryPost
     @Query(value = "SELECT * FROM ledger_entries WHERE Cast(ownership AS text[]) && Cast(:ownership AS text[]) AND close_at IS NULL")
     Stream<LedgerEntryPostgres> findLatestWithOwnership(@Param("ownership") String ownership);
 
+    @Query(value = "SELECT * FROM ledger_entries WHERE close_at IS NULL")
+    Stream<LedgerEntryPostgres> findLatest();
 
     @Query(value = "SELECT * FROM ledger_entries WHERE Cast(ownership AS text[]) && Cast(:ownership AS text[]) AND (open_at <= :closeDate AND (close_at IS NULL OR :openDate <= close_at))")
     Stream<LedgerEntryPostgres> findOldWithOwnership(@Param("ownership") String ownership, @Param("openDate") Timestamp openDate, @Param("closeDate") Timestamp closeDate);

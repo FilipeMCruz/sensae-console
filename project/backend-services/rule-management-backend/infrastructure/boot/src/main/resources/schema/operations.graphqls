@@ -1,0 +1,8 @@
+type Query {
+    scenario: [RuleScenario]
+}
+
+type Mutation {
+    index(scenario : RuleScenarioInput): RuleScenario
+    delete(id: ScenarioIdInput): ScenarioId
+}

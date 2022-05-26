@@ -7,17 +7,16 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.identitymanagementslavebackend.application.SensorDataHandlerService;
-import sharespot.services.identitymanagementslavebackend.application.SensorDataPublisherService;
 
 @Service
 public class SensorDataConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String INGRESS_QUEUE = "sensor.identity.management.slave.queue";
+    public static final String QUEUE = "sensor.identity.management.slave.queue";
 
     private final SensorDataHandlerService handler;
 
@@ -25,14 +24,14 @@ public class SensorDataConsumer {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = INGRESS_QUEUE)
+    @RabbitListener(queues = QUEUE)
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);
         handler.info(consumed);
     }
 
-    private void logConsumedMessage(MessageConsumed<ProcessedSensorDataDTO> in) {
+    private void logConsumedMessage(MessageConsumed<SensorDataDTO> in) {
         logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

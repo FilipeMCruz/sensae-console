@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/rule-management/services",
+  "sourceRoot": "libs/rule-management/services/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rule-management/services"],
+      "options": {
+        "jestConfig": "libs/rule-management/services/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/rule-management/services/src/**/*.ts",
+          "libs/rule-management/services/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/rule-management/dto",
+  "sourceRoot": "libs/rule-management/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/rule-management/dto"],
+      "options": {
+        "jestConfig": "libs/rule-management/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/rule-management/dto/src/**/*.ts",
+          "libs/rule-management/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

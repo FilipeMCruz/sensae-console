@@ -76,6 +76,9 @@ public class DomainPermissionTypePostgres {
             case READ_PAST_DATA_SMART_IRRIGATION -> new DomainPermissionTypePostgres(26);
             case CONTROL_VALVE_SMART_IRRIGATION -> new DomainPermissionTypePostgres(27);
             case CREATE_DOMAIN -> new DomainPermissionTypePostgres(14);
+            case READ_RULE_SCENARIO -> new DomainPermissionTypePostgres(28);
+            case EDIT_RULE_SCENARIO -> new DomainPermissionTypePostgres(29);
+            case DELETE_RULE_SCENARIO -> new DomainPermissionTypePostgres(30);
         };
     }
 
@@ -108,6 +111,9 @@ public class DomainPermissionTypePostgres {
             case 25 -> PermissionType.READ_LIVE_DATA_SMART_IRRIGATION;
             case 26 -> PermissionType.READ_PAST_DATA_SMART_IRRIGATION;
             case 27 -> PermissionType.CONTROL_VALVE_SMART_IRRIGATION;
+            case 28 -> PermissionType.READ_RULE_SCENARIO;
+            case 29 -> PermissionType.EDIT_RULE_SCENARIO;
+            case 30 -> PermissionType.DELETE_RULE_SCENARIO;
             default -> throw new RuntimeException("Invalid Value");
         };
     }

@@ -3,7 +3,7 @@ package sharespot.services.dataprocessor.application;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
 import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
@@ -20,9 +20,9 @@ public class SensorDataPublisherService {
 
     private final SensorDataMapper mapper;
 
-    private FluxSink<MessageSupplied<ProcessedSensorDataDTO>> dataStream;
+    private FluxSink<MessageSupplied<SensorDataDTO>> dataStream;
 
-    private ConnectableFlux<MessageSupplied<ProcessedSensorDataDTO>> dataPublisher;
+    private ConnectableFlux<MessageSupplied<SensorDataDTO>> dataPublisher;
 
     private final RoutingKeysProvider provider;
 
@@ -33,13 +33,13 @@ public class SensorDataPublisherService {
 
     @PostConstruct
     public void init() {
-        Flux<MessageSupplied<ProcessedSensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<MessageSupplied<SensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<MessageSupplied<ProcessedSensorDataDTO>> getSinglePublisher() {
+    public Flux<MessageSupplied<SensorDataDTO>> getSinglePublisher() {
         return dataPublisher;
     }
 
@@ -47,11 +47,11 @@ public class SensorDataPublisherService {
         message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
     }
 
-    private Optional<ProcessedSensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
+    private Optional<SensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
         return mapper.inToOut(node, SensorTypeId.of(keys.sensorTypeId));
     }
 
-    private Optional<SensorRoutingKeys> inToOutKeys(ProcessedSensorDataDTO data, SensorRoutingKeys keys) {
+    private Optional<SensorRoutingKeys> inToOutKeys(SensorDataDTO data, SensorRoutingKeys keys) {
         return provider.getSensorTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withUpdated(data)
                 .from(keys);

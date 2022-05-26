@@ -294,7 +294,7 @@ MONGO_INITDB_ROOT_PASSWORD=<root database password>
 MONGO_INITDB_DATABASE=data
 ```
 
-File: `project/secrets/dev/init-sharespot-data-store-database.env`
+File: `project/secrets/dev/init-sharespot-data-store-database.js`
 
 ``` js
 db.createUser({
@@ -655,7 +655,7 @@ export const environment = {
   endpoints: {
     fleetManagement: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/fleet-management/graphql"
@@ -682,7 +682,7 @@ export const environment = {
   endpoints: {
     smartIrrigation: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/smart-irrigation/graphql"
@@ -709,7 +709,7 @@ export const environment = {
   endpoints: {
     deviceRecords: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/device-records/graphql"
@@ -729,7 +729,7 @@ export const environment = {
   endpoints: {
     dataProcessor: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/data-processor/graphql"
@@ -748,7 +748,7 @@ export const environment = {
   endpoints: {
     dataDecoder: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/data-decoder/graphql"
@@ -767,7 +767,7 @@ export const environment = {
   endpoints: {
     identity: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/identity-management/graphql"
@@ -786,7 +786,7 @@ export const environment = {
   endpoints: {
     ruleManagement: {
       backend: {
-        domain: "localhost",
+        domain: "<public domain>",
         http: {
           scheme: "https://",
           path: "/rule-management/graphql"

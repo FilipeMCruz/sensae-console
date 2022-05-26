@@ -30,7 +30,7 @@ export class DeviceGroup {
     if (this.entry.label === "") {
       this.devices.push(device);
     } else {
-      const recordContent = device.entries.find(e => e.label === this.entry.label)?.content;
+      const recordContent = device.entries.find(e => e.label === this.entry.label)?.content.toLowerCase();
       if (recordContent && recordContent === this.entry.content) {
         this.devices.push(device);
       } else if (!recordContent && this.entry.content === "Missing Label") {

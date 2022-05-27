@@ -1,0 +1,50 @@
+type Alert {
+    id : ID
+    reportedAt : String
+    contentType : ContentType
+    description : String
+}
+
+enum AlertLevel {
+    INFORMATION,
+    WATCH,
+    ADVISORY,
+    WARNING,
+    CRITICAL
+}
+
+type ContentType {
+    category : String
+    subCategory : String
+    level: AlertLevel
+}
+
+type AddresseeConfig {
+    deliveryType : DeliveryType
+    contentType : ContentType
+    mute : Boolean
+}
+
+enum DeliveryType {
+    SMS
+    EMAIL
+    NOTIFICATION
+}
+
+input ContentTypeInput {
+    category : String
+    subCategory : String
+    level: AlertLevel
+}
+
+input AddresseeConfigInput {
+    deliveryType : DeliveryType
+    contentType : ContentTypeInput
+    mute : Boolean
+}
+
+input HistoryQuery {
+    content: [ContentTypeInput]
+    startTime : String
+    endTime : String
+}

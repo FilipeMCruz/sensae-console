@@ -310,6 +310,20 @@ services:
       - sharespot-network
     depends_on:
       - rule-management-backend
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

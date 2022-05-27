@@ -1,0 +1,11 @@
+type Subscription {
+    alerts(Authorization: String): Alert
+}
+
+type Query {
+    history(filters: HistoryQuery): [Alert]
+}
+
+type Mutation {
+    config(instructions: [AddresseeConfigInput]): [AddresseeConfig]
+}

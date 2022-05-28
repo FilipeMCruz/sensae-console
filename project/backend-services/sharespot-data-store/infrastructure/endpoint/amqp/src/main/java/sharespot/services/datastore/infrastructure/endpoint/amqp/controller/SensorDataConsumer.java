@@ -8,8 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 import sharespot.services.datastore.application.SensorDataHandlerService;
 
 @Service
@@ -32,7 +33,7 @@ public class SensorDataConsumer {
         handler.publish(consumed);
     }
 
-    private void logConsumedMessage(MessageConsumed<ObjectNode> in) {
+    private void logConsumedMessage(MessageConsumed<ObjectNode, SensorRoutingKeys> in) {
         logger.info("Data Consumed: Unknown");
         logger.info("RoutingKeys: {}", in.routingKeys.details());
     }

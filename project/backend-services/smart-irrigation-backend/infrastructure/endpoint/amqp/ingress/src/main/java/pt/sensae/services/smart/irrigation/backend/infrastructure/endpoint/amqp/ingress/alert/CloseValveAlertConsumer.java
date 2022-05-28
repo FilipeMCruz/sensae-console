@@ -1,5 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.alert;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Component;
 import pt.sensae.services.smart.irrigation.backend.application.services.alert.AlertHandlerService;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
+import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 
 import java.io.IOException;
 
@@ -30,13 +33,15 @@ public class CloseValveAlertConsumer {
 
     @RabbitListener(queues = QUEUE)
     public void receiveUpdate(Message in) throws IOException {
-        var consumed = mapper.readValue(in.getBody(), AlertDTO.class);
+        var consumed = mapper.readValue(in.getBody(), new TypeReference<MessageConsumed<AlertDTO, AlertRoutingKeys>>() {
+        });
         logConsumedMessage(consumed);
-        handler.handle(consumed, ValveStatusType.CLOSE);
+        handler.handle(consumed.data, ValveStatusType.CLOSE);
     }
 
-    private void logConsumedMessage(AlertDTO in) {
-        logger.info("Alert Id: {}", in.id);
-        logger.info("Alert Category: {}", in.category);
+    private void logConsumedMessage(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {
+        logger.info("Alert Id Consumer: {}", in.data.id);
+        logger.info("Category: {}", in.data.category);
+        logger.info("Sub Category: {}", in.data.subCategory);
     }
 }

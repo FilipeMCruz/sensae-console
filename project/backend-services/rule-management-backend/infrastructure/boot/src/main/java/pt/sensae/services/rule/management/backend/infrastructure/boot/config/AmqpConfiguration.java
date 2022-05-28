@@ -50,7 +50,7 @@ public class AmqpConfiguration {
         var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(internalQueue).to(internalTopic).with(keys.get().toString());

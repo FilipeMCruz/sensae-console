@@ -11,5 +11,5 @@ public interface RuleScenarioEventMapper {
 
     RuleScenarioNotificationDTO domainToDeletedDto(RuleScenarioId domain);
 
-    RuleScenarioNotificationGroupDTO domainToDto(Set<RuleScenarioNotificationDTO> notifications);
+    RuleScenarioNotificationGroupDTO domainToDto(Set<RuleScenarioNotificationDTO> notifications, boolean staleData);
 }

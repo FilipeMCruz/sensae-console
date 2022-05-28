@@ -45,7 +45,7 @@ public class AmqpConfiguration {
     @Bean
     Binding bindingMaster(Queue internalQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_IDENTITY) //TODO: change to TENANT_IDENTITY com nova versao do iot-core
+                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INFO)
                 .missingAsAny();

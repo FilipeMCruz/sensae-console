@@ -5,8 +5,11 @@ import pt.sensae.services.alert.dispatcher.backend.domain.AlertMessage;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.model.AlertDispatcherService;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
+import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSeverityOptions;
+import pt.sharespot.iot.core.alert.routing.keys.AlertSubCategoryOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.MessageSupplied;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import reactor.core.publisher.ConnectableFlux;
@@ -19,9 +22,9 @@ import java.util.Optional;
 @Service
 public class AlertHandlerService implements AlertDispatcherService {
 
-    private FluxSink<AlertMessage> dataStream;
+    private FluxSink<MessageSupplied<AlertDTO, AlertRoutingKeys>> dataStream;
 
-    private ConnectableFlux<AlertMessage> dataPublisher;
+    private ConnectableFlux<MessageSupplied<AlertDTO, AlertRoutingKeys>> dataPublisher;
 
     private final RoutingKeysProvider routingKeysProvider;
 
@@ -31,13 +34,13 @@ public class AlertHandlerService implements AlertDispatcherService {
 
     @PostConstruct
     public void init() {
-        Flux<AlertMessage> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<MessageSupplied<AlertDTO, AlertRoutingKeys>> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<AlertMessage> getSinglePublisher() {
+    public Flux<MessageSupplied<AlertDTO, AlertRoutingKeys>> getSinglePublisher() {
         return dataPublisher;
     }
 
@@ -45,13 +48,14 @@ public class AlertHandlerService implements AlertDispatcherService {
         buildAlertRoutingKeys(alert).ifPresent(dataStream::next);
     }
 
-    private Optional<AlertMessage> buildAlertRoutingKeys(AlertDTO alert) {
+    private Optional<MessageSupplied<AlertDTO, AlertRoutingKeys>> buildAlertRoutingKeys(AlertDTO alert) {
         var keys = routingKeysProvider.getAlertBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withOwnershipType(OwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
                 .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
                 .withSeverityType(AlertSeverityOptions.extract(alert.level))
                 .withCategoryType(AlertCategoryOptions.of(alert.category))
+                .withSubCategoryType(AlertSubCategoryOptions.of(alert.subCategory))
                 .build();
-        return keys.map(routingKeys -> new AlertMessage(alert, routingKeys));
+        return keys.map(routingKeys -> MessageSupplied.create(alert, routingKeys));
     }
 }

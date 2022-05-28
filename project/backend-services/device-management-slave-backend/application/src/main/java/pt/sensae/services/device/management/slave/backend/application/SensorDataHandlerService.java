@@ -7,8 +7,9 @@ import pt.sensae.services.device.management.slave.backend.domain.model.device.De
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.slave.backend.domainservices.DeviceInformationCache;
 import pt.sensae.services.device.management.slave.backend.domainservices.UnhandledSensorDataCache;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 @Service
 public class SensorDataHandlerService {
@@ -31,7 +32,7 @@ public class SensorDataHandlerService {
         this.notificationPublisher = notificationPublisher;
     }
 
-    public void info(MessageConsumed<SensorDataDTO> message) {
+    public void info(MessageConsumed<SensorDataDTO, SensorRoutingKeys> message) {
         var deviceId = new DeviceId(message.data.device.id);
         var device = new Device(deviceId, new DeviceName(message.data.device.name), new DeviceDownlink(message.data.device.downlink));
         if (cache.findById(deviceId).isPresent()) {

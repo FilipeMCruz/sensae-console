@@ -32,7 +32,7 @@ public class RuleScenarioDraftApplierService {
                         mapper.domainToUpdatedDto(draft))
                 .collect(Collectors.toSet());
 
-        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications));
+        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications, false));
     }
 
     public void publishCurrentState() {
@@ -40,6 +40,7 @@ public class RuleScenarioDraftApplierService {
                 .filter(scenario -> scenario.isApplied().value())
                 .map(mapper::domainToUpdatedDto)
                 .collect(Collectors.toSet());
-        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications));
+
+        if (!notifications.isEmpty()) publisher.publish(mapper.domainToDto(notifications, true));
     }
 }

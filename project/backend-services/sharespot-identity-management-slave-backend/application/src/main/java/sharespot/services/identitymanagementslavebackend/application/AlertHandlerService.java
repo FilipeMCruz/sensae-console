@@ -2,8 +2,9 @@ package sharespot.services.identitymanagementslavebackend.application;
 
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
+import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.DeviceId;
 import sharespot.services.identitymanagementslavebackend.domainservices.DeviceDomainCache;
 import sharespot.services.identitymanagementslavebackend.domainservices.UnhandledAlertCache;
@@ -32,8 +33,8 @@ public class AlertHandlerService {
         this.notificationPublisher = notificationPublisher;
     }
 
-    public void info(AlertDTO message) {
-        var deviceIds = message.context.deviceIds.stream().map(DeviceId::of).toList();
+    public void info(MessageConsumed<AlertDTO, AlertRoutingKeys> message) {
+        var deviceIds = message.data.context.deviceIds.stream().map(DeviceId::of).toList();
         if (cache.findAllById(deviceIds.stream()).isPresent()) {
             dataPublisher.publish(message);
             deviceIds.forEach(notificationPublisher::publishPing);

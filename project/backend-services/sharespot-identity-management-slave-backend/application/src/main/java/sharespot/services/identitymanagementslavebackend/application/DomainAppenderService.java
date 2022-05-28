@@ -2,7 +2,6 @@ package sharespot.services.identitymanagementslavebackend.application;
 
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
-import pt.sharespot.iot.core.alert.model.AlertLevelDTO;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.DeviceWithAllPermissions;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.DeviceId;
@@ -10,7 +9,6 @@ import sharespot.services.identitymanagementslavebackend.domain.model.identity.d
 import sharespot.services.identitymanagementslavebackend.domainservices.DeviceDomainCache;
 
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service

@@ -14,11 +14,11 @@ public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
     public InternalRoutingKeys.Builder getInternalTopicBuilder(RoutingKeysBuilderOptions options) {
-        return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.ALERT_DISPATCHER, options);//TODO: change to NOTIFICATION_MANAGEMENT com nova versao do iot-core
+        return new InternalRoutingKeysFactory().getBuilder(ContainerTypeOptions.NOTIFICATION_MANAGEMENT, options);
     }
 
     @Override
     public AlertRoutingKeys.Builder getAlertTopicBuilder(RoutingKeysBuilderOptions options) {
-        return new AlertRoutingKeysFactory().getBuilder(ContainerTypeOptions.ALERT_DISPATCHER, options);//TODO: change to NOTIFICATION_MANAGEMENT com nova versao do iot-core
+        return new AlertRoutingKeysFactory().getBuilder(ContainerTypeOptions.ALERT_DISPATCHER, options);
     }
 }

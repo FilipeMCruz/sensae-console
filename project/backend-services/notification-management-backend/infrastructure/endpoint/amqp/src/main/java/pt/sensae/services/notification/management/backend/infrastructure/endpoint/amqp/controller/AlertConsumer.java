@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.notification.service.NotificationPublisher;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.mapper.AlertNotificationMapperImpl;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
+import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 
 @Service
 public class AlertConsumer {
@@ -22,14 +24,14 @@ public class AlertConsumer {
     }
 
     @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(AlertDTO in) {
+    public void receiveUpdate(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {
         logConsumedMessage(in);
-        publisher.publish(AlertNotificationMapperImpl.dtoToDomain(in));
+        publisher.publish(AlertNotificationMapperImpl.dtoToDomain(in.data));
     }
 
-    private void logConsumedMessage(AlertDTO in) {
-        logger.info("Alert Id Consumer: {}", in.id);
-        logger.info("Category: {}", in.category);
-        logger.info("Sub Category: {}", "TODO");
+    private void logConsumedMessage(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {
+        logger.info("Alert Id Consumer: {}", in.data.id);
+        logger.info("Category: {}", in.data.category);
+        logger.info("Sub Category: {}", in.data.subCategory);
     }
 }

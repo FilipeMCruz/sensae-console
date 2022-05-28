@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.notification.management.backend.application.auth.TokenExtractor;
 import pt.sensae.services.notification.management.backend.application.auth.UnauthorizedException;
+import pt.sensae.services.notification.management.backend.application.notification.mapper.NotificationMapper;
+import pt.sensae.services.notification.management.backend.application.notification.model.NotificationDTO;
 import pt.sensae.services.notification.management.backend.domain.FullNotification;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeId;
 import pt.sensae.services.notification.management.backend.domain.notification.Notification;
@@ -17,13 +19,17 @@ import java.util.function.Predicate;
 @Service
 public class UINotificationPublisher {
 
+
     private FluxSink<FullNotification> dataStream;
 
     private ConnectableFlux<FullNotification> dataPublisher;
 
+    private final NotificationMapper mapper;
+
     private final TokenExtractor authHandler;
 
-    public UINotificationPublisher(TokenExtractor authHandler) {
+    public UINotificationPublisher(NotificationMapper mapper, TokenExtractor authHandler) {
+        this.mapper = mapper;
         this.authHandler = authHandler;
     }
 
@@ -35,9 +41,9 @@ public class UINotificationPublisher {
         dataPublisher.connect();
     }
 
-    public Flux<Notification> getSinglePublisher(AccessTokenDTO claims) {
+    public Flux<NotificationDTO> getSinglePublisher(AccessTokenDTO claims) {
         return dataPublisher.filter(byTenantId(claims))
-                .map(FullNotification::notification);
+                .map(fullNotification -> mapper.toDto(fullNotification.notification()));
     }
 
     public void send(FullNotification notification) {

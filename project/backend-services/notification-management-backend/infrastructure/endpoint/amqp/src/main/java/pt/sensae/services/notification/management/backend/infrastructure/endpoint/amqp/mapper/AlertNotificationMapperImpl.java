@@ -9,6 +9,7 @@ import pt.sensae.services.notification.management.backend.domain.notification.No
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.model.AlertLevelDTO;
 
+import java.time.Instant;
 import java.util.stream.Collectors;
 
 public class AlertNotificationMapperImpl {
@@ -17,7 +18,7 @@ public class AlertNotificationMapperImpl {
         var collect = dto.context.domainIds.stream().map(DomainId::of).collect(Collectors.toSet());
         var context = new NotificationContext(dto.context.dataIds, dto.context.deviceIds, Domains.of(collect), dto.context.other);
         var contentType = new ContentType(dto.category, "subcat", extract(dto.level));//TODO
-        return new Notification(dto.id, contentType, dto.description, dto.reportedAt, context);
+        return new Notification(dto.id, contentType, dto.description, Instant.ofEpochMilli(dto.reportedAt), context);
     }
 
     private static NotificationLevel extract(AlertLevelDTO dto) {

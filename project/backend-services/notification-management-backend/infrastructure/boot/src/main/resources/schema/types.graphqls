@@ -1,11 +1,11 @@
-type Alert {
+type Notification {
     id : ID
     reportedAt : String
     contentType : ContentType
     description : String
 }
 
-enum AlertLevel {
+enum NotificationLevel {
     INFORMATION,
     WATCH,
     ADVISORY,
@@ -16,7 +16,11 @@ enum AlertLevel {
 type ContentType {
     category : String
     subCategory : String
-    level: AlertLevel
+    level: NotificationLevel
+}
+
+type Addressee {
+    entries : [AddresseeConfig]
 }
 
 type AddresseeConfig {
@@ -26,15 +30,19 @@ type AddresseeConfig {
 }
 
 enum DeliveryType {
-    SMS
-    EMAIL
+    SMS,
+    EMAIL,
     NOTIFICATION
 }
 
 input ContentTypeInput {
     category : String
     subCategory : String
-    level: AlertLevel
+    level: NotificationLevel
+}
+
+input AddresseeConfigCommandInput {
+    entries : [AddresseeConfigInput]
 }
 
 input AddresseeConfigInput {

@@ -3,7 +3,7 @@ package pt.sensae.services.notification.management.backend.application.addressee
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.addressee.mapper.AddresseeCommandMapper;
 import pt.sensae.services.notification.management.backend.application.addressee.mapper.AddresseeDTOMapper;
-import pt.sensae.services.notification.management.backend.application.addressee.model.AddresseeConfigUpdateCommand;
+import pt.sensae.services.notification.management.backend.application.addressee.model.AddresseeConfigUpdateCommandDTO;
 import pt.sensae.services.notification.management.backend.application.addressee.model.AddresseeDTO;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.notification.management.backend.application.auth.TokenExtractor;
@@ -32,7 +32,7 @@ public class AddresseeArchiver {
         this.commandMapper = commandMapper;
     }
 
-    public AddresseeDTO edit(AddresseeConfigUpdateCommand command, AccessTokenDTO claims) {
+    public AddresseeDTO edit(AddresseeConfigUpdateCommandDTO command, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("alert_management:config:edit"))
             throw new UnauthorizedException("No Permissions");

@@ -45,7 +45,7 @@ public class NotificationCollector {
         this.mapper = mapper;
     }
 
-    public Stream<NotificationDTO> fetch(AccessTokenDTO claims, NotificationHistoryQueryCommandDTO command) {
+    public Stream<NotificationDTO> fetch(NotificationHistoryQueryCommandDTO command, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("alert_management:old_data:read"))
             throw new UnauthorizedException("No Permissions");

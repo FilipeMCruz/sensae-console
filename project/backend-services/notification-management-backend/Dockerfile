@@ -10,10 +10,12 @@ COPY infrastructure/persistence/pom.xml infrastructure/persistence/pom.xml
 COPY infrastructure/persistence/postgres/pom.xml infrastructure/persistence/postgres/pom.xml
 COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
 COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
+COPY infrastructure/endpoint/sms/pom.xml infrastructure/endpoint/sms/pom.xml
+COPY infrastructure/endpoint/email/pom.xml infrastructure/endpoint/email/pom.xml
 COPY infrastructure/pom.xml infrastructure/pom.xml
 COPY pom.xml pom.xml
 # build all external dependencies
-RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=notification-management-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,postgres,domain-services
+RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=notification-management-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,postgres,domain-services,email,sms
 
 COPY . .
 RUN mvn clean package

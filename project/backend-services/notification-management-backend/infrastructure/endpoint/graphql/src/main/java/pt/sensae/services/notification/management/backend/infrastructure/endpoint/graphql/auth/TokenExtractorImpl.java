@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.notification.management.backend.application.auth.TokenExtractor;
-import pt.sensae.services.notification.management.backend.domainservices.auth.TenantInfo;
+import pt.sensae.services.notification.management.backend.application.auth.TenantInfo;
 
 @Service
 public class TokenExtractorImpl implements TokenExtractor {

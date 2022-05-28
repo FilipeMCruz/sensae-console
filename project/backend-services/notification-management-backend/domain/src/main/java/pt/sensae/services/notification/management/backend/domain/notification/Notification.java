@@ -1,5 +1,7 @@
 package pt.sensae.services.notification.management.backend.domain.notification;
 
+import pt.sensae.services.notification.management.backend.domain.contentType.ContentType;
+
 import java.util.UUID;
 
 public record Notification(UUID id, ContentType type, String description, Long reportedAt,

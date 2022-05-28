@@ -1,4 +1,4 @@
-package pt.sensae.services.notification.management.backend.domainservices.auth;
+package pt.sensae.services.notification.management.backend.application.auth;
 
 import java.util.List;
 import java.util.UUID;
@@ -9,5 +9,4 @@ public class TenantInfo {
     public UUID oid;
     public List<String> domains;
     public List<String> permissions;
-
 }

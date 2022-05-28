@@ -3,13 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>notification-management-backend</artifactId>
+        <artifactId>infrastructure</artifactId>
         <groupId>pt.sensae.services</groupId>
         <version>0.8.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>domain-services</artifactId>
+    <artifactId>sms</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -20,9 +21,10 @@
     <dependencies>
         <dependency>
             <groupId>pt.sensae.services</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>application</artifactId>
             <version>0.8.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
 </project>

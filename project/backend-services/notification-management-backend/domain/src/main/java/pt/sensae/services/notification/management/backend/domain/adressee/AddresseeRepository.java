@@ -1,8 +1,10 @@
 package pt.sensae.services.notification.management.backend.domain.adressee;
 
-import java.util.stream.Stream;
+import java.util.Optional;
 
 public interface AddresseeRepository {
 
-    Stream<Addressee> findById(Stream<AddresseeId> id);
+    Optional<Addressee> findById(AddresseeId id);
+
+    Optional<Addressee> index(Addressee addressee);
 }

@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>pt.sensae.services</groupId>
-            <artifactId>domain-services</artifactId>
+            <artifactId>domain</artifactId>
             <version>0.8.0</version>
             <scope>compile</scope>
         </dependency>

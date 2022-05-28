@@ -3,7 +3,7 @@ package pt.sensae.services.notification.management.backend.infrastructure.endpoi
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.notification.management.backend.application.EmailNotificationService;
+import pt.sensae.services.notification.management.backend.application.notification.service.EmailNotificationService;
 import pt.sensae.services.notification.management.backend.domain.FullNotification;
 
 @Service

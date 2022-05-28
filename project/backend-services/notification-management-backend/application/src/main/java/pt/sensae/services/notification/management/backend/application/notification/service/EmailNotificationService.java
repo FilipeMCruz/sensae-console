@@ -1,4 +1,4 @@
-package pt.sensae.services.notification.management.backend.application;
+package pt.sensae.services.notification.management.backend.application.notification.service;
 
 import pt.sensae.services.notification.management.backend.domain.FullNotification;
 

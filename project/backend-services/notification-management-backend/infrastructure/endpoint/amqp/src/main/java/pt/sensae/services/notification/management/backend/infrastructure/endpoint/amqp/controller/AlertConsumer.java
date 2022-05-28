@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.notification.management.backend.application.NotificationPublisher;
+import pt.sensae.services.notification.management.backend.application.notification.service.NotificationPublisher;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.mapper.AlertNotificationMapperImpl;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 

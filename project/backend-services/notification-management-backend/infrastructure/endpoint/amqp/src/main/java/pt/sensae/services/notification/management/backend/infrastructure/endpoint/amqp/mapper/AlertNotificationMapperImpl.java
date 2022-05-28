@@ -3,7 +3,6 @@ package pt.sensae.services.notification.management.backend.infrastructure.endpoi
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.Domains;
 import pt.sensae.services.notification.management.backend.domain.contentType.ContentType;
-import pt.sensae.services.notification.management.backend.domain.contentType.ContentTypeId;
 import pt.sensae.services.notification.management.backend.domain.notification.Notification;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationContext;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationLevel;
@@ -17,7 +16,7 @@ public class AlertNotificationMapperImpl {
     public static Notification dtoToDomain(AlertDTO dto) {
         var collect = dto.context.domainIds.stream().map(DomainId::of).collect(Collectors.toSet());
         var context = new NotificationContext(dto.context.dataIds, dto.context.deviceIds, Domains.of(collect), dto.context.other);
-        var contentType = new ContentType(ContentTypeId.create(), dto.category, "subcat", extract(dto.level));//TODO
+        var contentType = new ContentType(dto.category, "subcat", extract(dto.level));//TODO
         return new Notification(dto.id, contentType, dto.description, dto.reportedAt, context);
     }
 

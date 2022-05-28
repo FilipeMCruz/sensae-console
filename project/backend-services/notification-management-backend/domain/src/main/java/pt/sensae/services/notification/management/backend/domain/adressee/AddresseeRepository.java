@@ -6,5 +6,5 @@ public interface AddresseeRepository {
 
     Optional<Addressee> findById(AddresseeId id);
 
-    Optional<Addressee> index(Addressee addressee);
+    Addressee index(Addressee addressee);
 }

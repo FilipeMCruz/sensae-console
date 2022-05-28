@@ -1,4 +1,4 @@
-package pt.sensae.services.notification.management.backend.application;
+package pt.sensae.services.notification.management.backend.application.notification.service;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.domain.FullNotification;
@@ -51,17 +51,17 @@ public class NotificationBroadcasterService {
                     .collect(Collectors.toSet());
 
             var smsRecipients = tenantsInDomains.stream()
-                    .filter(recipient -> recipient.addressee().sendVia(notification, DeliveryType.SMS))
+                    .filter(recipient -> recipient.addressee().canSendVia(notification, DeliveryType.SMS))
                     .map(Recipient::tenant)
                     .collect(Collectors.toSet());
 
             var emailRecipients = tenantsInDomains.stream()
-                    .filter(recipient -> recipient.addressee().sendVia(notification, DeliveryType.EMAIL))
+                    .filter(recipient -> recipient.addressee().canSendVia(notification, DeliveryType.EMAIL))
                     .map(Recipient::tenant)
                     .collect(Collectors.toSet());
 
             var uiRecipients = tenantsInDomains.stream()
-                    .filter(recipient -> recipient.addressee().sendVia(notification, DeliveryType.NOTIFICATION))
+                    .filter(recipient -> recipient.addressee().canSendVia(notification, DeliveryType.NOTIFICATION))
                     .map(Recipient::tenant)
                     .collect(Collectors.toSet());
 

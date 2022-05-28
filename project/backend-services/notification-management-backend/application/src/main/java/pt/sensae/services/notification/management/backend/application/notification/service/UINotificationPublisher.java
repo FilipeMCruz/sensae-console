@@ -1,4 +1,4 @@
-package pt.sensae.services.notification.management.backend.application;
+package pt.sensae.services.notification.management.backend.application.notification.service;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;

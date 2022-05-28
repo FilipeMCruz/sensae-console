@@ -44,7 +44,6 @@ input AddresseeConfigInput {
 }
 
 input HistoryQuery {
-    content: [ContentTypeInput]
     startTime : String
     endTime : String
 }

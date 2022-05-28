@@ -34,8 +34,6 @@ public class AddresseeCollector {
 
         var id = AddresseeId.of(extract.oid);
         var addressee = repository.findById(id);
-        return addressee.isEmpty() ?
-                mapper.toDto(repository.index(Addressee.of(id, new HashSet<>()))) :
-                mapper.toDto(addressee.get());
+        return mapper.toDto(addressee);
     }
 }

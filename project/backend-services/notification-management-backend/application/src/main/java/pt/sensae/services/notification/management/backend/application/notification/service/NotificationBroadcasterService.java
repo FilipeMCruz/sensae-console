@@ -44,10 +44,7 @@ public class NotificationBroadcasterService {
     private void init() {
         publisher.getSinglePublisher().subscribe(notification -> {
             var tenantsInDomains = repository.findTenantsInDomains(notification.context().domains())
-                    .map(tenant -> addresseeRepository.findById(tenant.id())
-                            .map(addressee -> new Recipient(tenant, addressee)))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+                    .map(tenant -> new Recipient(tenant, addresseeRepository.findById(tenant.id())))
                     .collect(Collectors.toSet());
 
             var smsRecipients = tenantsInDomains.stream()

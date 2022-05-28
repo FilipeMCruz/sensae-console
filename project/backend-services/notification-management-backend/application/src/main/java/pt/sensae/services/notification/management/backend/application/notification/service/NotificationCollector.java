@@ -61,8 +61,7 @@ public class NotificationCollector {
 
         var addressee = addresseeRepository.findById(AddresseeId.of(extract.oid));
 
-        return addressee.map(exists -> notificationStream.filter(notification -> exists
-                        .canSendVia(notification, DeliveryType.NOTIFICATION)).map(mapper::toDto))
-                .orElseGet(() -> notificationStream.map(mapper::toDto));
+        return notificationStream.filter(notification -> addressee.canSendVia(notification, DeliveryType.NOTIFICATION))
+                .map(mapper::toDto);
     }
 }

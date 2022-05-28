@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.notification.management.backend.application.RoutingKeysProvider;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.controller.AlertConsumer;
-import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.controller.TenantIdentityNotificationConsumer;
+import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.controller.TenantIdentityInfoConsumer;
+import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.controller.TenantIdentitySyncConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
@@ -23,6 +24,8 @@ import static pt.sensae.services.notification.management.backend.infrastructure.
 @Configuration
 public class AmqpConfiguration {
 
+    public static final String IDENTITY_MANAGEMENT_QUEUE = "internal.identity.management.tenant.queue";
+
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -35,22 +38,43 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public Queue internalQueue() {
-        return QueueBuilder.durable(TenantIdentityNotificationConsumer.QUEUE)
+    public Queue internalInfoQueue() {
+        return QueueBuilder.durable(TenantIdentityInfoConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    Binding bindingMaster(Queue internalQueue, TopicExchange internalExchange) {
+    Binding bindingMaster(Queue internalInfoQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.TENANT_IDENTITY)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INFO)
                 .missingAsAny();
         if (keys.isPresent()) {
-            return BindingBuilder.bind(internalQueue).to(internalExchange).with(keys.get().toString());
+            return BindingBuilder.bind(internalInfoQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue internalSyncQueue() {
+        return QueueBuilder.durable(TenantIdentitySyncConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingSyncMaster(Queue internalSyncQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
+                .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.SYNC)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(internalSyncQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }
@@ -75,6 +99,26 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(alertQueue).to(alertExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue syncQueue() {
+        return QueueBuilder.durable(IDENTITY_MANAGEMENT_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding syncBinding(Queue syncQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
+                .withOperationType(OperationTypeOptions.INIT)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(syncQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

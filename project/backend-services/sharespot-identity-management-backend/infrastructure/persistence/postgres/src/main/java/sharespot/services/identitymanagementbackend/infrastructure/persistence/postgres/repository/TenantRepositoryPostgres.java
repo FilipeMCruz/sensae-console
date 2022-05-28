@@ -8,12 +8,13 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public interface TenantRepositoryPostgres extends CrudRepository<TenantPostgres, Long> {
 
     Optional<TenantPostgres> findByOid(String tenantId);
-    
+
     Optional<TenantPostgres> findByEmail(String tenantEmail);
 
     void deleteByOid(String tenantId);

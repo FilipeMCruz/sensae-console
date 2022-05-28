@@ -12,7 +12,7 @@ import pt.sharespot.iot.core.alert.model.AlertLevel;
 import java.time.Instant;
 import java.util.stream.Collectors;
 
-public class AlertNotificationMapperImpl {
+public class AlertNotificationMapper {
 
     public static Notification dtoToDomain(AlertDTO dto) {
         var collect = dto.context.domainIds.stream().map(DomainId::of).collect(Collectors.toSet());

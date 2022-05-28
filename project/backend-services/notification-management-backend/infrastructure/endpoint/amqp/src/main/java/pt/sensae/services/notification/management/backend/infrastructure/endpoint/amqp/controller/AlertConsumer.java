@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.notification.service.NotificationPublisher;
-import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.mapper.AlertNotificationMapperImpl;
+import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.mapper.AlertNotificationMapper;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
@@ -26,7 +26,7 @@ public class AlertConsumer {
     @RabbitListener(queues = QUEUE)
     public void receiveUpdate(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {
         logConsumedMessage(in);
-        publisher.publish(AlertNotificationMapperImpl.dtoToDomain(in.data));
+        publisher.publish(AlertNotificationMapper.dtoToDomain(in.data));
     }
 
     private void logConsumedMessage(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {

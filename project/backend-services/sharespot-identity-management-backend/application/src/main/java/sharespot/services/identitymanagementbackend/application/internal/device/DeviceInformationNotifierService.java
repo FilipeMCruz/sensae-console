@@ -1,7 +1,6 @@
-package sharespot.services.identitymanagementbackend.application.internal;
+package sharespot.services.identitymanagementbackend.application.internal.device;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.identitymanagementbackend.application.model.device.DeviceIdDTO;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
 import sharespot.services.identitymanagementbackend.domainservices.service.device.ViewDeviceDomainOwners;
 

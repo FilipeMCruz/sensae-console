@@ -14,6 +14,10 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementbackend.application.RoutingKeysProvider;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.controller.DeviceNotificationConsumer;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.controller.TenantNotificationConsumer;
+
+import static sharespot.services.identitymanagementbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
+import static sharespot.services.identitymanagementbackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
 
 @Configuration
 public class AmqpConfiguration {
@@ -37,8 +41,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue slaveQueue() {
         return QueueBuilder.durable(DeviceNotificationConsumer.MASTER_QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -51,6 +55,26 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(slaveQueue).to(masterExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue syncQueue() {
+        return QueueBuilder.durable(TenantNotificationConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding syncBinding(Queue syncQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
+                .withOperationType(OperationTypeOptions.INIT)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(syncQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

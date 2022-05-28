@@ -17,9 +17,12 @@ public class AuthenticateTenant {
 
     private final DomainRepository domainRepo;
 
-    public AuthenticateTenant(TenantRepository tenantRepo, DomainRepository domainRepo) {
+    private final TenantUpdateEventPublisher publisher;
+
+    public AuthenticateTenant(TenantRepository tenantRepo, DomainRepository domainRepo, TenantUpdateEventPublisher publisher) {
         this.tenantRepo = tenantRepo;
         this.domainRepo = domainRepo;
+        this.publisher = publisher;
     }
 
     public TenantResult execute(IdentityQuery command) {
@@ -35,6 +38,10 @@ public class AuthenticateTenant {
                 new TenantName(command.name),
                 new TenantEmail(command.preferredUsername),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
-        return tenantRepo.registerNewTenant(tenant);
+        var newTenant = tenantRepo.registerNewTenant(tenant);
+
+        publisher.publishUpdate(newTenant);
+
+        return newTenant;
     }
 }

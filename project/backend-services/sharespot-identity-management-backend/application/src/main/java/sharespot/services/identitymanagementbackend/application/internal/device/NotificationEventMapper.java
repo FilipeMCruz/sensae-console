@@ -1,4 +1,4 @@
-package sharespot.services.identitymanagementbackend.application.internal;
+package sharespot.services.identitymanagementbackend.application.internal.device;
 
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllOwnerDomains;
 

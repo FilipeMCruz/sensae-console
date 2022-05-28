@@ -9,7 +9,7 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementbackend.application.RoutingKeysProvider;
-import sharespot.services.identitymanagementbackend.application.internal.DeviceInformationEventHandlerService;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceInformationEventHandlerService;
 
 @Component
 public class DeviceNotificationEmitter {

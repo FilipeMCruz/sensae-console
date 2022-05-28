@@ -2,7 +2,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amq
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import sharespot.services.identitymanagementbackend.application.internal.DeviceInformationNotifierService;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceInformationNotifierService;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceId;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceIdDTOImpl;
 

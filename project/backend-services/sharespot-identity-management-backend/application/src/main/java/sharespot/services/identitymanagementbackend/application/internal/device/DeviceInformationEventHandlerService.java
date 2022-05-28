@@ -1,4 +1,4 @@
-package sharespot.services.identitymanagementbackend.application.internal;
+package sharespot.services.identitymanagementbackend.application.internal.device;
 
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.ConnectableFlux;

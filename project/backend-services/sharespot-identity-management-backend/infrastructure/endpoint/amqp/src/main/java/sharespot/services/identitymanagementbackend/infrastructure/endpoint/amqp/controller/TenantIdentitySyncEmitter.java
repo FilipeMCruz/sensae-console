@@ -1,6 +1,7 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.controller;
 
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
@@ -23,7 +24,7 @@ public class TenantIdentitySyncEmitter implements TenantIdentitySyncHandler {
 
     private final InternalRoutingKeys syncKeys;
 
-    public TenantIdentitySyncEmitter(RoutingKeysProvider provider, AmqpTemplate template) {
+    public TenantIdentitySyncEmitter(RoutingKeysProvider provider, @Qualifier("amqpTemplate") AmqpTemplate template) {
         this.template = template;
         var syncKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)

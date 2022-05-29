@@ -34,6 +34,7 @@ public class RuleScenarioValidator {
 
     public void validateIndex(RuleScenario scenario) {
         var environment = collector.collect().collect(Collectors.toSet());
+        environment.remove(scenario);
         environment.add(scenario);
         testEnvironment(environment);
     }

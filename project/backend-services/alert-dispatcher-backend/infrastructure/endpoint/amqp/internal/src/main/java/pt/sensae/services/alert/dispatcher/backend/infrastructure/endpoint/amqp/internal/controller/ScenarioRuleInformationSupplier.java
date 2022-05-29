@@ -1,4 +1,4 @@
-package pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.egress.controller;
+package pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.internal.controller;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;

@@ -49,6 +49,11 @@ public class PermissionsMapper {
                     case READ_PAST_DATA_SMART_IRRIGATION -> "smart_irrigation:past_data:read";
 
                     case CONTROL_VALVE_SMART_IRRIGATION -> "smart_irrigation:valve:control";
+
+                    case READ_PAST_DATA_NOTIFICATION_MANAGEMENT -> "notification_management:past_data:read";
+                    case READ_LIVE_DATA_NOTIFICATION_MANAGEMENT -> "notification_management:live_data:read";
+                    case READ_CONFIG_NOTIFICATION_MANAGEMENT -> "notification_management:config:read";
+                    case WRITE_CONFIG_NOTIFICATION_MANAGEMENT -> "notification_management:config:edit";
                 });
     }
 
@@ -95,6 +100,12 @@ public class PermissionsMapper {
                     case "smart_irrigation:past_data:read" -> PermissionType.READ_PAST_DATA_SMART_IRRIGATION;
 
                     case "smart_irrigation:valve:control" -> PermissionType.CONTROL_VALVE_SMART_IRRIGATION;
+                    
+                    case "notification_management:past_data:read" -> PermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT;
+                    case "notification_management:live_data:read" -> PermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT;
+                    case "notification_management:config:read" -> PermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT;
+                    case "notification_management:config:edit" -> PermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT;
+                    
                     default -> throw new RuntimeException("Invalid Permissions");
                 });
     }

@@ -73,6 +73,15 @@ export class PermissionsMapper {
 
       case "smart_irrigation:valve:control" :
         return DomainPermissionType.CONTROL_VALVE_SMART_IRRIGATION;
+
+      case "notification_management:past_data:read" :
+        return DomainPermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT;
+      case "notification_management:live_data:read" :
+        return DomainPermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT;
+      case "notification_management:config:read" :
+        return DomainPermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT;
+      case "notification_management:config:edit" :
+        return DomainPermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT;
       default:
         return DomainPermissionType.ERROR;
     }
@@ -150,6 +159,16 @@ export class PermissionsMapper {
 
       case DomainPermissionType.CONTROL_VALVE_SMART_IRRIGATION :
         return "smart_irrigation:valve:control";
+
+      case DomainPermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT :
+        return "notification_management:past_data:read";
+      case DomainPermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT :
+        return "notification_management:live_data:read";
+      case DomainPermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT :
+        return "notification_management:config:read";
+      case DomainPermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT :
+        return "notification_management:config:edit";
+
       case DomainPermissionType.ERROR:
         return 'error';
     }

@@ -73,5 +73,8 @@ export const environment = {
       },
     },
   },
+  auth: {
+    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE"
+  },
   domain: "localhost",
 };

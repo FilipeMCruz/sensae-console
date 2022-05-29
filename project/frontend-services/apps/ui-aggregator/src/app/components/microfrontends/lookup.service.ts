@@ -44,6 +44,13 @@ const RULE_MANAGEMENT_FRONTEND_URL = environment.production
   '/micro-frontends/rule-management-frontend/remoteEntry.js'
   : 'http://localhost:4294/remoteEntry.js';
 
+const NOTIFICATION_MANAGEMENT_FRONTEND_URL = environment.production
+  ? 'https://' +
+  environment.domain +
+  '/micro-frontends/notification-management-frontend/remoteEntry.js'
+  : 'http://localhost:4296/remoteEntry.js';
+
+
 @Injectable({providedIn: 'root'})
 export class LookupService {
   lookup(): Promise<Microfrontend[]> {
@@ -156,6 +163,23 @@ export class LookupService {
           type: MicrofrontendType.TOOL,
           permissions: Array.of(
             'rule_management:rules:read',
+          ),
+        },
+      },
+      {
+        // For Loading
+        remoteEntry: NOTIFICATION_MANAGEMENT_FRONTEND_URL,
+        exposedModule: './Module',
+        type: 'module',
+
+        // For Routing
+        displayName: 'Notification Management',
+        routePath: 'notification-management',
+        ngModuleName: 'RemoteEntryModule',
+        details: {
+          type: MicrofrontendType.SERVICE,
+          permissions: Array.of(
+            'notification_management:past_data:read',
           ),
         },
       },

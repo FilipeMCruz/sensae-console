@@ -33,4 +33,5 @@ envsubst < secrets/templates/dev/frontend-services/sharespot-data-processor-fron
 envsubst < secrets/templates/dev/frontend-services/sharespot-fleet-management-frontend.ts > frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/sharespot-identity-management-frontend.ts > frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.ts
+envsubst < secrets/templates/dev/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.ts

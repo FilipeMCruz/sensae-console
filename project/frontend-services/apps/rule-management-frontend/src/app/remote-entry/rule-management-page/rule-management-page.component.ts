@@ -10,7 +10,7 @@ import {DeleteRuleScenario, GetAllRuleScenario, IndexRuleScenario} from "@fronte
 import {RuleManagementDialogComponent} from "../rule-management-dialog/rule-management-dialog.component";
 
 @Component({
-  selector: 'frontend-services-data-decoders-page',
+  selector: 'frontend-services-rule-management-page',
   templateUrl: './rule-management-page.component.html',
   styleUrls: ['./rule-management-page.component.scss'],
 })

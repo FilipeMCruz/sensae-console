@@ -26,6 +26,8 @@
     "identity-management-services": "libs/identity-management/services",
     "mutual": "libs/mutual",
     "notification-management-dto": "libs/notification-management/dto",
+    "notification-management-frontend": "apps/notification-management-frontend",
+    "notification-management-frontend-e2e": "apps/notification-management-frontend-e2e",
     "notification-management-mapper": "libs/notification-management/mapper",
     "notification-management-model": "libs/notification-management/model",
     "notification-management-services": "libs/notification-management/services",

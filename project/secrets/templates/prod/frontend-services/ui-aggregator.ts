@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   endpoints: {
     deviceRecords: {
       backend: {
@@ -73,8 +73,21 @@ export const environment = {
       },
     },
   },
+  notificationManagement: {
+    backend: {
+      domain: "localhost",
+      http: {
+        scheme: "http://",
+        path: "/graphql",
+      },
+      websocket: {
+        scheme: "ws://",
+        path: "/subscriptions",
+      },
+    },
+  },
   auth: {
-    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE"
+    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE",
   },
   domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
 };

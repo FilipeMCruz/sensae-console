@@ -72,9 +72,22 @@ export const environment = {
         },
       },
     },
+    notificationManagement: {
+      backend: {
+        domain: "localhost:8096",
+        http: {
+          scheme: "http://",
+          path: "/graphql",
+        },
+        websocket: {
+          scheme: "ws://",
+          path: "/subscriptions",
+        },
+      },
+    },
   },
   auth: {
-    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE"
+    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE",
   },
   domain: "localhost",
 };

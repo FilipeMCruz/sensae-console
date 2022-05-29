@@ -63,6 +63,8 @@ module.exports = {
           'http://localhost:4286/remoteEntry.js',
         'smart-irrigation-frontend': 'http://localhost:4298/remoteEntry.js',
         'rule-management-frontend': 'http://localhost:4294/remoteEntry.js',
+        'notification-management-frontend':
+          'http://localhost:4296/remoteEntry.js',
       },
       shared: share({
         '@angular/animations': {

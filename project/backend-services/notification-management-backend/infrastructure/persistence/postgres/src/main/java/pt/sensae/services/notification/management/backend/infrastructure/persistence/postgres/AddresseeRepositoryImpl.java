@@ -1,5 +1,7 @@
 package pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres;
 
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.notification.management.backend.domain.adressee.Addressee;
@@ -23,6 +25,7 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
     @Override
     @Transactional
+    @Cacheable(value = "addressee_cache", key = "id")
     public Addressee findById(AddresseeId id) {
         var addresseePostgres = repositoryPostgres.findAllById(id.value().toString());
         return AddresseeMapper.daoToModel(addresseePostgres).findFirst().orElse(Addressee.of(id, new HashSet<>()));
@@ -30,6 +33,7 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
     @Override
     @Transactional
+    @CachePut(value = "addressee_cache", key = "addressee.id()")
     public Addressee index(Addressee addressee) {
         repositoryPostgres.deleteAllById(addressee.id().toString());
 

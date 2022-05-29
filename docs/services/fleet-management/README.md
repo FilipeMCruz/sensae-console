@@ -10,7 +10,7 @@ Current version:
 
 This service inputs are:
 
-- **Sensor Topic**: valid data with gps coordinates;
+- **Sensor Topic**: valid data with `gps` readings;
 
 ## Further Discussion
 

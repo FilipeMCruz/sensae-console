@@ -6,7 +6,5 @@ public class DeviceRecordEntryDTOImpl {
 
     public String content;
 
-    public DeviceInformationDTOImpl records;
-
     public DeviceRecordEntryTypeDTOImpl type;
 }

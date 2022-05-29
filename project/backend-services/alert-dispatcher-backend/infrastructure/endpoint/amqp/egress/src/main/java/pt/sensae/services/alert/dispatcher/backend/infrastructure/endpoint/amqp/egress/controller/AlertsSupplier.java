@@ -36,7 +36,7 @@ public class AlertsSupplier {
             logSuppliedMessage(outData);
             try {
                 template.send(IoTCoreTopic.ALERT_EXCHANGE, outData.routingKeys
-                        .toString(), new Message(mapper.writeValueAsBytes(outData.data)));
+                        .toString(), new Message(mapper.writeValueAsBytes(outData)));
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

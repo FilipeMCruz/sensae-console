@@ -2,6 +2,7 @@ package pt.sensae.services.notification.management.backend.infrastructure.endpoi
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class TenantIdentitySyncSupplier {
 
     private final RoutingKeysProvider provider;
 
-    public TenantIdentitySyncSupplier(AmqpTemplate template, RoutingKeysProvider provider) {
+    public TenantIdentitySyncSupplier(@Qualifier("amqpTemplate") AmqpTemplate template, RoutingKeysProvider provider) {
         this.template = template;
         this.provider = provider;
     }

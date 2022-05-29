@@ -30,11 +30,12 @@ public class ScenarioRuleInformationSupplier {
         var info = provider.getInternalBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.RULE_MANAGEMENT)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.INIT)
                 .build();
         if (info.isEmpty()) {
             throw new RuntimeException("Error creating Routing Keys");
         }
-        template.send(IoTCoreTopic.INTERNAL_EXCHANGE, info.get().toString(), new Message("{}".getBytes(StandardCharsets.UTF_8)));
+        template.send(IoTCoreTopic.INTERNAL_EXCHANGE, info.get()
+                .toString(), new Message("{}".getBytes(StandardCharsets.UTF_8)));
     }
 }

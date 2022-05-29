@@ -24,6 +24,7 @@ public class DeviceMapper implements DeviceEventMapper {
         info.deviceId = domain.device().id().value().toString();
         info.name = domain.device().name().value();
         info.downlink = domain.device().downlink().value();
+        if (info.downlink == null) info.downlink = "";
 
         info.entries = domain.records().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryDTOImpl();

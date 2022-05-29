@@ -47,7 +47,7 @@ public class NotificationCollector {
 
     public Stream<NotificationDTO> fetch(NotificationHistoryQueryCommandDTO command, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("alert_management:old_data:read"))
+        if (!extract.permissions.contains("notification_management:past_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         var queryCommand = commandMapper.toDomain(command);

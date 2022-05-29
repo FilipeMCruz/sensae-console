@@ -18,7 +18,7 @@ public class NotificationSubscription {
     }
 
     @DgsSubscription
-    public Publisher<NotificationDTO> alerts(@InputArgument("Authorization") String auth) {
+    public Publisher<NotificationDTO> notification(@InputArgument("Authorization") String auth) {
         return publisher.getSinglePublisher(AuthMiddleware.buildAccessToken(auth));
     }
 }

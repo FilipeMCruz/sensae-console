@@ -34,7 +34,7 @@ public class AddresseeArchiver {
 
     public AddresseeDTO edit(AddresseeConfigUpdateCommandDTO command, AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("alert_management:config:edit"))
+        if (!extract.permissions.contains("notification_management:config:edit"))
             throw new UnauthorizedException("No Permissions");
 
         var index = commandMapper.toDomain(command, AddresseeId.of(extract.oid));

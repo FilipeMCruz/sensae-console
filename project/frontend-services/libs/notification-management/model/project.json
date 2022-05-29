@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/notification-management/model",
+  "sourceRoot": "libs/notification-management/model/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/notification-management/model"],
+      "options": {
+        "jestConfig": "libs/notification-management/model/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/notification-management/model/src/**/*.ts",
+          "libs/notification-management/model/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

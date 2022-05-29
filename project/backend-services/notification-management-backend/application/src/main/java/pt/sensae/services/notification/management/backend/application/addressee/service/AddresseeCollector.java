@@ -29,7 +29,7 @@ public class AddresseeCollector {
 
     public AddresseeDTO fetch(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("alert_management:config:read"))
+        if (!extract.permissions.contains("notification_management:config:read"))
             throw new UnauthorizedException("No Permissions");
 
         var id = AddresseeId.of(extract.oid);

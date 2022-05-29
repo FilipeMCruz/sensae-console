@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/notification-management/dto",
+  "sourceRoot": "libs/notification-management/dto/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/notification-management/dto"],
+      "options": {
+        "jestConfig": "libs/notification-management/dto/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/notification-management/dto/src/**/*.ts",
+          "libs/notification-management/dto/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

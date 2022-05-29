@@ -1,5 +1,5 @@
 type Subscription {
-    alerts(Authorization: String): Notification
+    notification(Authorization: String): Notification
 }
 
 type Query {

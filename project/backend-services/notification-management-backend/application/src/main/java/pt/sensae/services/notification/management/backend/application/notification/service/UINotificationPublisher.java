@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 @Service
 public class UINotificationPublisher {
 
-
     private FluxSink<FullNotification> dataStream;
 
     private ConnectableFlux<FullNotification> dataPublisher;
@@ -52,7 +51,7 @@ public class UINotificationPublisher {
 
     private Predicate<FullNotification> byTenantId(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
-        if (!extract.permissions.contains("alert_management:live_data:read"))
+        if (!extract.permissions.contains("notification_management:live_data:read"))
             throw new UnauthorizedException("No Permissions");
 
         return s -> s.recipients().stream().anyMatch(r -> r.id().equals(AddresseeId.of(extract.oid)));

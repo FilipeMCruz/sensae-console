@@ -3,5 +3,5 @@ export enum NotificationSeverityLevel {
   WATCH = "Watch",
   ADVISORY = "Advisory",
   WARNING = "Warning",
-  CRITICAL = "Critical"
+  CRITICAL = "Critical",
 }

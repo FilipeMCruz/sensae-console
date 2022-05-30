@@ -13,8 +13,8 @@ import {
   MsalGuardConfiguration,
   MsalService,
 } from '@azure/msal-angular';
-import {Subject} from 'rxjs';
-import {filter, takeUntil} from 'rxjs/operators';
+import {Subject, Subscription} from 'rxjs';
+import {filter, takeUntil, tap} from 'rxjs/operators';
 import {
   AuthenticationResult,
   EventMessage,
@@ -25,7 +25,8 @@ import {
   RedirectRequest,
 } from '@azure/msal-browser';
 import {AuthService} from '@frontend-services/simple-auth-lib';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {SnackbarService} from "../../services/SnackBarService";
+import {NotificationService} from "@frontend-services/mutual";
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -39,10 +40,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   microfrontendServices: Microfrontend[] = [];
   microfrontendTools: Microfrontend[] = [];
 
+  private notificationSubscription!: Subscription;
+
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
-    private _snackBar: MatSnackBar,
+    private _snackBar: SnackbarService,
     private externalAuthService: MsalService,
+    private notifications: NotificationService,
     private authService: AuthService,
     private msalBroadcastService: MsalBroadcastService,
     private router: Router,
@@ -102,6 +106,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  async subscribeToNotifications() {
+    await this.delay(500);
+    this.notifications.start();
+    this.notificationSubscription = this.notifications.getCurrentData().pipe(filter(next => !next.isEmpty())).subscribe(next => this.openSnackBar(next.toSnackBar()));
+  }
+
   checkAndSetActiveAccount() {
     /**
      * If no active account set but there are accounts signed in, sets first account to active account
@@ -126,6 +136,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             value
               ? this.openSnackBar('Valid Credentials')
               : this.openSnackBar('Invalid Credentials');
+            this.subscribeToNotifications();
           })
         );
     }
@@ -138,9 +149,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   openSnackBar(message: string) {
-    this._snackBar.open(message, undefined, {
-      duration: 3000,
-    });
+    this._snackBar.info(message);
   }
 
   delay(milliseconds: number) {
@@ -187,10 +196,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.externalAuthService.logout();
+    this.notificationSubscription.unsubscribe();
   }
 
   // unsubscribe to events when component is destroyed
   ngOnDestroy(): void {
+    this.notificationSubscription.unsubscribe();
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }

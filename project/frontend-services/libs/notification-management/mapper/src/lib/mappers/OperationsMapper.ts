@@ -35,8 +35,8 @@ export class OperationsMapper {
   static notificationHistoryQuery(model: NotificationHistoryQuery): NotificationHistoryQueryDTO {
     return {
       filters: {
-        endTime: Math.round(model.end.getTime() / 1000).toString(),
-        startTime: Math.round(model.start.getTime() / 1000).toString()
+        endTime: model.end.getTime().toString(),
+        startTime: model.start.getTime().toString()
       }
     }
   }

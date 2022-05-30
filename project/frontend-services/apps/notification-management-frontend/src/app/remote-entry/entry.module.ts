@@ -22,6 +22,9 @@ import {MatChipsModule} from "@angular/material/chips";
 import {
   NotificationManagementPageComponent
 } from "./notification-management-page/notification-management-page.component";
+import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -54,6 +57,9 @@ import {
       },
     ]),
     MatChipsModule,
+    MatTableModule,
+    MatSortModule,
+    MatTooltipModule,
   ],
   providers: [],
 })

@@ -12,6 +12,6 @@ import java.util.stream.Stream;
 @Repository
 public interface NotificationRepositoryPostgres extends CrudRepository<NotificationPostgres, Long> {
 
-    @Query(value = "SELECT * FROM notifications WHERE Cast(domains AS text[]) && Cast(:domains AS text[]) AND reported_at BETWEEN :openDate AND :closeDate")
+    @Query(value = "SELECT * FROM notification WHERE Cast(domains AS text[]) && Cast(:domains AS text[]) AND reported_at BETWEEN :openDate AND :closeDate")
     Stream<NotificationPostgres> findOldWithDomains(@Param("domains") String domains, @Param("openDate") Instant openDate, @Param("closeDate") Instant closeDate);
 }

@@ -22,9 +22,9 @@ export class ContentTypeMapper {
       case NotificationSeverityLevel.ADVISORY:
         return NotificationLevelDTO.ADVISORY;
       case NotificationSeverityLevel.WARNING:
-        return NotificationLevelDTO.WATCH;
-      case NotificationSeverityLevel.WATCH:
         return NotificationLevelDTO.WARNING;
+      case NotificationSeverityLevel.WATCH:
+        return NotificationLevelDTO.WATCH;
       case NotificationSeverityLevel.INFORMATION:
         return NotificationLevelDTO.INFORMATION;
     }

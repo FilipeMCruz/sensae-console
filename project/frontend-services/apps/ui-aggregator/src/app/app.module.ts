@@ -87,6 +87,10 @@ export function createNamedApollo(
       link: createLink(httpLink, environment.endpoints.ruleManagement.backend),
       cache: new InMemoryCache(),
     },
+    notificationManagement: {
+      link: createLink(httpLink, environment.endpoints.notificationManagement.backend),
+      cache: new InMemoryCache(),
+    },
   };
 }
 

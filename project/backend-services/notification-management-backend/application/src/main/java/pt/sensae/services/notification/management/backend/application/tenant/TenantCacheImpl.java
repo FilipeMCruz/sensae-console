@@ -46,7 +46,7 @@ public class TenantCacheImpl implements TenantCache {
         var map = new HashMap<DomainId, Set<Tenant>>();
         tenants.forEach(tenant -> tenant.domains()
                 .value()
-                .forEach(domain -> map.getOrDefault(domain, new HashSet<>()).add(tenant)));
+                .forEach(domain -> map.computeIfAbsent(domain, k -> new HashSet<>()).add(tenant)));
 
         this.cache.invalidateAll();
         this.cache.putAll(map);

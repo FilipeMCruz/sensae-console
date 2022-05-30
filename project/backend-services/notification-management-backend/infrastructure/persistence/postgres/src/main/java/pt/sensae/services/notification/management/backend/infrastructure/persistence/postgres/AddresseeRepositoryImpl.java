@@ -25,7 +25,7 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
     @Override
     @Transactional
-    @Cacheable(value = "addressee_cache", key = "id")
+    @Cacheable(value = "addressee_cache")
     public Addressee findById(AddresseeId id) {
         var addresseePostgres = repositoryPostgres.findAllById(id.value().toString());
         return AddresseeMapper.daoToModel(addresseePostgres).findFirst().orElse(Addressee.of(id, new HashSet<>()));

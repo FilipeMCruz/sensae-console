@@ -1,6 +1,7 @@
 package pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.notification.Notification;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationQuery;
@@ -8,6 +9,7 @@ import pt.sensae.services.notification.management.backend.domain.notification.No
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.mapper.notification.NotificationMapper;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.repository.NotificationRepositoryPostgres;
 
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +24,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
+    @Transactional
     public Stream<Notification> find(NotificationQuery query) {
         var domainIds = query.domains()
                 .value()
@@ -30,8 +33,9 @@ public class NotificationRepositoryImpl implements NotificationRepository {
                 .map(UUID::toString)
                 .collect(Collectors.joining(",", "{", "}"));
 
-        return repositoryPostgres.findOldWithDomains(domainIds, query.start(), query.end())
-                .map(NotificationMapper::daoToModel);
+        var collect = repositoryPostgres.findOldWithDomains(domainIds, query.start(), query.end())
+                .map(NotificationMapper::daoToModel).collect(Collectors.toSet());
+        return collect.stream();
     }
 
     @Override

@@ -12,10 +12,11 @@ import {OperationsMapper} from "@frontend-services/notification-management/mappe
   providedIn: 'root',
 })
 export class SubscribeToNotification {
+
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
-  canDo():boolean {
+  canDo(): boolean {
     return this.auth.isAuthenticated() && this.auth.isAllowed(["notification_management:live_data:read"]);
   }
 

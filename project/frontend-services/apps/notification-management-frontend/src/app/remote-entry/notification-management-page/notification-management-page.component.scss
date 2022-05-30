@@ -1,0 +1,27 @@
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 50px;
+}
+
+.container {
+  max-height: 500px;
+  width: 70%;
+
+}
+
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.filters {
+  flex-direction: row;
+
+}

@@ -9,7 +9,7 @@
 .container {
   max-height: 500px;
   width: 70%;
-
+  overflow: auto;
 }
 
 table {
@@ -21,7 +21,34 @@ table {
   width: 100%;
 }
 
-.filters {
-  flex-direction: row;
+tr.detail-row {
+  height: 0;
+}
 
+tr.element-row:not(.expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.description {
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+
+.description-title {
+  color: rgba(0, 0, 0, .54);
+  font-size: 12px;
+  font-weight: 500;
 }

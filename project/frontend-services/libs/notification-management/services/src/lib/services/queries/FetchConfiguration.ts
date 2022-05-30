@@ -23,7 +23,7 @@ export class FetchConfiguration {
     return this.auth.isAuthenticated() && this.auth.isAllowed(["notification_management:config:read"])
   }
 
-  getData(filters: NotificationHistoryQuery): Observable<AddresseeConfiguration> {
+  getData(): Observable<AddresseeConfiguration> {
     if (!this.canDo())
       return EMPTY;
 

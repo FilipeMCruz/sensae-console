@@ -14,6 +14,7 @@ import {Subscription} from "rxjs";
 import {NotificationService} from "@frontend-services/mutual";
 import {filter} from "rxjs/operators";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {ConfigurationDialogComponent} from "../configuration-dialog/configuration-dialog.component";
 
 @Component({
   selector: 'frontend-services-notification-management-page',
@@ -40,14 +41,11 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   private subscription!: Subscription;
   private sort: Sort = {active: 'reportedAt', direction: 'desc'};
-  private config: AddresseeConfiguration = AddresseeConfiguration.empty();
 
   constructor(
     public dialog: MatDialog,
     private collector: FetchNotificationHistory,
     private notificationEmitter: NotificationService,
-    private configurationReader: FetchConfiguration,
-    private mutateConfiguration: UpdateAddresseeConfiguration
   ) {
   }
 
@@ -61,7 +59,6 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
         this.sortedData.push(next)
         this.sortData(this.sort);
       });
-    this.configurationReader.getData().subscribe(next => this.config = next);
   }
 
   fetchLastMonthNotifications() {
@@ -108,5 +105,16 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  openConfiguration() {
+    this.dialog.open(ConfigurationDialogComponent, {
+      width: '70%',
+      height: '60%',
+      data: this.sortedData.map(s => s.contentType).filter(({category, subCategory, severity}, index, a) =>
+        a.findIndex(e => category === e.category &&
+          severity === e.severity &&
+          subCategory === e.subCategory) === index)
+    });
   }
 }

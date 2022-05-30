@@ -1,4 +1,4 @@
-.page {
+.table-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,11 +13,6 @@
 }
 
 table {
-  width: 100%;
-}
-
-.mat-form-field {
-  font-size: 14px;
   width: 100%;
 }
 
@@ -51,4 +46,8 @@ tr.element-row:not(.expanded-row):active {
   color: rgba(0, 0, 0, .54);
   font-size: 12px;
   font-weight: 500;
+}
+
+.page {
+  margin: 20px;
 }

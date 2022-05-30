@@ -1,0 +1,29 @@
+.to-right {
+  float: right;
+}
+
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 50px;
+}
+
+.container {
+  max-height: 500px;
+  width: 70%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}

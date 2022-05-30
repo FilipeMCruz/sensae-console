@@ -1,4 +1,5 @@
 import {AddresseeConfigurationEntry} from "./AddresseeConfigurationEntry";
+import {ContentType} from "../notification/ContentType";
 
 export class AddresseeConfiguration {
   constructor(public entries: Array<AddresseeConfigurationEntry>) {
@@ -10,5 +11,9 @@ export class AddresseeConfiguration {
 
   public add(entry: AddresseeConfigurationEntry) {
     this.entries.push(entry);
+  }
+
+  contains(data: ContentType) {
+    return this.entries.some(d => d.contentType.equals(data));
   }
 }

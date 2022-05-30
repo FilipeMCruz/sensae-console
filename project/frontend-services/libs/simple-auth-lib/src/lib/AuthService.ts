@@ -12,7 +12,8 @@ export class AuthService {
 
   private accessToken?: string;
 
-  constructor(private validator: ValidateCredentials) {}
+  constructor(private validator: ValidateCredentials) {
+  }
 
   private static toDto(payload: JwtPayload): TenantIdentity {
     // @ts-ignore

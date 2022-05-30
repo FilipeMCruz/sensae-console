@@ -4,6 +4,10 @@ export class ContentType {
   constructor(public category: string, public subCategory: string, public severity: NotificationSeverityLevel) {
   }
 
+  static empty() {
+    return new ContentType("", "", NotificationSeverityLevel.WARNING);
+  }
+
   public getCategory() {
     const result = this.category.replace(/([A-Z])/g, " $1");
     return result.charAt(0).toUpperCase() + result.slice(1);
@@ -44,7 +48,7 @@ export class ContentType {
     }
   }
 
-  static empty() {
-    return new ContentType("", "", NotificationSeverityLevel.WARNING);
+  equals(data: ContentType) {
+    return this.category === data.category && this.subCategory === data.subCategory && this.severity === data.severity;
   }
 }

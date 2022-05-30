@@ -25,10 +25,13 @@ import {
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {ConfigurationDialogComponent} from "./configuration-dialog/configuration-dialog.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
-    NotificationManagementPageComponent
+    NotificationManagementPageComponent, ConfigurationDialogComponent
   ],
   imports: [
     MatStepperModule,
@@ -60,6 +63,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatTableModule,
     MatSortModule,
     MatTooltipModule,
+    MatCheckboxModule,
+    MatSlideToggleModule,
   ],
   providers: [],
 })

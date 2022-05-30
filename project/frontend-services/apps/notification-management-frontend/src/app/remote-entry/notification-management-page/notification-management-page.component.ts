@@ -10,7 +10,6 @@ import {
   NotificationHistoryQuery
 } from "@frontend-services/notification-management/model";
 import {Sort} from "@angular/material/sort";
-import {MatTableDataSource} from "@angular/material/table";
 import {Subscription} from "rxjs";
 import {NotificationService} from "@frontend-services/mutual";
 import {filter} from "rxjs/operators";
@@ -22,9 +21,10 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   styleUrls: ['./notification-management-page.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('collapsed, void', style({height: '0px', minHeight: '0'})),
       state('expanded', style({height: '*'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
     ]),
   ],
 })
@@ -32,11 +32,9 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   loading = true;
 
-  data: Array<Notification> = [];
+  sortedData: Array<Notification> = [];
 
   displayedColumns = ['category', 'subCategory', 'severity', 'reportedAt'];
-
-  dataSource = new MatTableDataSource(this.data);
 
   expandedElement: Notification | undefined;
 
@@ -60,7 +58,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       .getCurrentData()
       .pipe(filter(next => !next.isEmpty()))
       .subscribe((next: Notification) => {
-        this.dataSource.data.push(next)
+        this.sortedData.push(next)
         this.sortData(this.sort);
       });
     this.configurationReader.getData().subscribe(next => this.config = next);
@@ -72,7 +70,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       .getData(NotificationHistoryQuery.lastMonth())
       .subscribe(
         data => {
-          this.dataSource.data = data
+          this.sortedData = data
           this.sortData(this.sort);
         },
         error => error,
@@ -81,13 +79,13 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   sortData(sort: Sort) {
     this.sort = sort;
-    const data = this.dataSource.data.slice();
+    const data = this.sortedData.slice();
     if (!sort.active || sort.direction === '') {
-      this.dataSource.data = data;
+      this.sortedData = data;
       return;
     }
 
-    this.dataSource.data = data.sort((a, b) => {
+    this.sortedData = data.sort((a, b) => {
       const isAsc = sort.direction === 'asc';
       switch (sort.active) {
         case 'category':

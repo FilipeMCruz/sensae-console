@@ -24,10 +24,10 @@ public class CollectAllDevices {
 
     public Stream<DeviceWithAllOwnerDomains> collect() {
         var devices = repository.findAll();
-        var domains = domainRepo.findAll();
+        var domains = domainRepo.findAll().collect(Collectors.toSet());
 
         return devices.map(device -> {
-            var owners = domains.filter(domain -> device.domains().contains(domain.getOid()))
+            var owners = domains.stream().filter(domain -> device.domains().contains(domain.getOid()))
                     .flatMap(d -> d.getPath().path().stream())
                     .collect(Collectors.toSet());
             return new DeviceWithAllOwnerDomains(device.oid(), owners);

@@ -76,8 +76,8 @@ public class DeviceMapper implements DeviceEventMapper {
         return new Device(new DeviceId(UUID.fromString(device.deviceId)), new DeviceName(device.name), new DeviceDownlink(device.downlink));
     }
 
-    public DeviceWithAllOwnerDomains dtoToDomain(DeviceIdentityWithOwnershipDTOImpl dto) {
-        var domainIds = dto.owners.stream().map(UUID::fromString).map(DomainId::of).collect(Collectors.toSet());
+    public DeviceWithAllOwnerDomains dtoToDomain(DeviceIdentityDTOImpl dto) {
+        var domainIds = dto.information.owners.stream().map(UUID::fromString).map(DomainId::of).collect(Collectors.toSet());
         return new DeviceWithAllOwnerDomains(DeviceId.of(UUID.fromString(dto.deviceId)), domainIds);
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.mapper.DeviceMapper;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceIdentityWithOwnershipDTOImpl;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceIdentityDTOImpl;
 
 @Service
 public class DeviceIdentityInfoConsumer {
@@ -21,7 +21,7 @@ public class DeviceIdentityInfoConsumer {
     }
 
     @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(DeviceIdentityWithOwnershipDTOImpl in) {
+    public void receiveUpdate(DeviceIdentityDTOImpl in) {
         cache.update(mapper.dtoToDomain(in));
     }
 }

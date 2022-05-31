@@ -57,7 +57,8 @@ public class DeviceRepositoryImpl implements DeviceRepository {
     }
 
     @Override
+    @Transactional
     public Stream<Device> findAll() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false).map(DeviceMapper::postgresToDomain);
+        return StreamSupport.stream(repository.findAll().spliterator(), false).map(DeviceMapper::postgresToDomain).toList().stream();
     }
 }

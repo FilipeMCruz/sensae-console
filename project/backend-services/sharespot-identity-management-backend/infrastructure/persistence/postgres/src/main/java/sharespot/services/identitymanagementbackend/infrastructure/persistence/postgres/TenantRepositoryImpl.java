@@ -60,8 +60,9 @@ public class TenantRepositoryImpl implements TenantRepository {
     }
 
     @Override
+    @Transactional
     public Stream<Tenant> findAll() {
         return StreamSupport.stream(this.repository.findAll().spliterator(), false)
-                .map(TenantMapper::postgresToDomain);
+                .map(TenantMapper::postgresToDomain).toList().stream();
     }
 }

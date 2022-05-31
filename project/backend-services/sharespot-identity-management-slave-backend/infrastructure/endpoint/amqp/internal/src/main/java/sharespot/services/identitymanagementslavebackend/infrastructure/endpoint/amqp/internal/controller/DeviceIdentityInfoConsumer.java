@@ -5,13 +5,12 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementslavebackend.application.DeviceOwnershipNotifierService;
-import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.model.DeviceIdDTOImpl;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.model.DeviceNotificationDTOImpl;
 
 import java.io.IOException;
 
 @Service
-public class DeviceDomainsConsumer {
+public class DeviceIdentityInfoConsumer {
 
     public static final String QUEUE = "internal.identity.management.slave.queue";
 
@@ -19,7 +18,7 @@ public class DeviceDomainsConsumer {
 
     private final ObjectMapper mapper;
 
-    public DeviceDomainsConsumer(DeviceOwnershipNotifierService updater, ObjectMapper mapper) {
+    public DeviceIdentityInfoConsumer(DeviceOwnershipNotifierService updater, ObjectMapper mapper) {
         this.updater = updater;
         this.mapper = mapper;
     }

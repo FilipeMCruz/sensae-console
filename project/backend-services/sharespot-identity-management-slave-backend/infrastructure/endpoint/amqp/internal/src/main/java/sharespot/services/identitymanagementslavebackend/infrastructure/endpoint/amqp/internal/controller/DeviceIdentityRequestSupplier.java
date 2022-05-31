@@ -9,12 +9,12 @@ import sharespot.services.identitymanagementslavebackend.application.SensorDataN
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.mapper.DeviceNotificationEventMapperImpl;
 
 @Service
-public class DeviceInformationSupplier {
+public class DeviceIdentityRequestSupplier {
 
-    public DeviceInformationSupplier(AmqpTemplate template,
-                                     SensorDataNotificationPublisherService service,
-                                     DeviceNotificationEventMapperImpl deviceMapper,
-                                     ObjectMapper mapper) {
+    public DeviceIdentityRequestSupplier(AmqpTemplate template,
+                                         SensorDataNotificationPublisherService service,
+                                         DeviceNotificationEventMapperImpl deviceMapper,
+                                         ObjectMapper mapper) {
         service.getPublisher().subscribe(outData -> {
             var deviceDTO = deviceMapper.domainToDto(outData.device());
             try {

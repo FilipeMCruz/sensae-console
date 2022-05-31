@@ -8,6 +8,8 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.device.management.master.backend.application.RoutingKeysProvider;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceIdentityInfoConsumer;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceIdentitySyncConsumer;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceInformationRequestConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
@@ -59,8 +61,28 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public Queue syncQueue() {
+    public Queue initQueue() {
         return QueueBuilder.durable(IDENTITY_MANAGEMENT_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding initBinding(Queue initQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
+                .withOperationType(OperationTypeOptions.INIT)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(initQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue syncQueue() {
+        return QueueBuilder.durable(DeviceIdentitySyncConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -70,10 +92,30 @@ public class AmqpConfiguration {
     Binding syncBinding(Queue syncQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
-                .withOperationType(OperationTypeOptions.INIT)
+                .withOperationType(OperationTypeOptions.SYNC)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(syncQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue infoQueue() {
+        return QueueBuilder.durable(DeviceIdentityInfoConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding infoBinding(Queue infoQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(infoQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

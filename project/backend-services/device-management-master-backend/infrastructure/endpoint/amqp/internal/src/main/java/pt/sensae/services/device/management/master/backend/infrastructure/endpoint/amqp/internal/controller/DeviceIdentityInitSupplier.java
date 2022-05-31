@@ -15,13 +15,13 @@ import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class DeviceIdentitySyncSupplier {
+public class DeviceIdentityInitSupplier {
 
     private final AmqpTemplate template;
 
     private final RoutingKeysProvider provider;
 
-    public DeviceIdentitySyncSupplier(@Qualifier("amqpTemplate") AmqpTemplate template, RoutingKeysProvider provider) {
+    public DeviceIdentityInitSupplier(@Qualifier("amqpTemplate") AmqpTemplate template, RoutingKeysProvider provider) {
         this.template = template;
         this.provider = provider;
     }

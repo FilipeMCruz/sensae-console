@@ -1,8 +1,8 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model;
 
-import sharespot.services.identitymanagementbackend.application.internal.device.DeviceNotificationDTO;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceIdentityDTO;
 
-public class DeviceNotificationDTOImpl implements DeviceNotificationDTO {
+public class DeviceIdentityDTOImpl implements DeviceIdentityDTO {
 
     public String deviceId;
 

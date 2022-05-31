@@ -3,15 +3,15 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amq
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import sharespot.services.identitymanagementbackend.application.internal.tenant.TenantNotificationHandler;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceInitNotificationHandler;
 
 @Service
-public class TenantNotificationConsumer {
-    public static final String QUEUE = "internal.identity.management.tenant.queue";
+public class DeviceIdentityInitConsumer {
+    public static final String QUEUE = "internal.identity.management.device.queue";
 
-    private final TenantNotificationHandler service;
+    private final DeviceInitNotificationHandler service;
 
-    public TenantNotificationConsumer(TenantNotificationHandler service) {
+    public DeviceIdentityInitConsumer(DeviceInitNotificationHandler service) {
         this.service = service;
     }
 

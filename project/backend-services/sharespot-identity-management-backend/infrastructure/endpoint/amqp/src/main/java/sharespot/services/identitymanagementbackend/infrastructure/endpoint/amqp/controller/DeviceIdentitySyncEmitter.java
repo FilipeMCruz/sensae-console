@@ -10,26 +10,24 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementbackend.application.RoutingKeysProvider;
-import sharespot.services.identitymanagementbackend.application.internal.tenant.TenantIdentityDTO;
-import sharespot.services.identitymanagementbackend.application.internal.tenant.TenantIdentitySyncHandler;
-import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenant;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.mapper.TenantIdentityMapperImpl;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceIdentitySyncHandler;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceIdentityDTO;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class TenantIdentitySyncEmitter implements TenantIdentitySyncHandler {
-
+public class DeviceIdentitySyncEmitter implements DeviceIdentitySyncHandler {
+    
     private final AmqpTemplate template;
 
     private final InternalRoutingKeys syncKeys;
 
-    public TenantIdentitySyncEmitter(RoutingKeysProvider provider, @Qualifier("amqpTemplate") AmqpTemplate template) {
+    public DeviceIdentitySyncEmitter(RoutingKeysProvider provider, @Qualifier("amqpTemplate") AmqpTemplate template) {
         this.template = template;
         var syncKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
-                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
+                .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
                 .withOperationType(OperationTypeOptions.SYNC)
                 .build();
         if (syncKeys.isEmpty()) {
@@ -40,8 +38,8 @@ public class TenantIdentitySyncEmitter implements TenantIdentitySyncHandler {
 
 
     @Override
-    public void publishState(Stream<TenantIdentityDTO> tenants) {
+    public void publishState(Stream<DeviceIdentityDTO> devices) {
         template.convertAndSend(IoTCoreTopic.INTERNAL_EXCHANGE, syncKeys.toString(),
-                tenants.collect(Collectors.toSet()));
+                devices.collect(Collectors.toSet()));
     }
 }

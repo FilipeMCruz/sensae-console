@@ -11,30 +11,30 @@ import javax.annotation.PostConstruct;
 @Service
 public class DeviceInformationEventHandlerService {
 
-    private FluxSink<DeviceNotificationDTO> dataStream;
+    private FluxSink<DeviceIdentityDTO> dataStream;
 
-    private ConnectableFlux<DeviceNotificationDTO> dataPublisher;
+    private ConnectableFlux<DeviceIdentityDTO> dataPublisher;
 
-    private final NotificationEventMapper mapper;
+    private final DeviceIdentityMapper mapper;
 
-    public DeviceInformationEventHandlerService(NotificationEventMapper mapper) {
+    public DeviceInformationEventHandlerService(DeviceIdentityMapper mapper) {
         this.mapper = mapper;
     }
 
     @PostConstruct
     public void init() {
-        Flux<DeviceNotificationDTO> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<DeviceIdentityDTO> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<DeviceNotificationDTO> getSinglePublisher() {
+    public Flux<DeviceIdentityDTO> getSinglePublisher() {
         return dataPublisher;
     }
 
     public void publishUpdate(DeviceWithAllOwnerDomains domain) {
-        var outDTO = mapper.domainToUpdatedDto(domain);
+        var outDTO = mapper.domainToDto(domain);
         dataStream.next(outDTO);
     }
 }

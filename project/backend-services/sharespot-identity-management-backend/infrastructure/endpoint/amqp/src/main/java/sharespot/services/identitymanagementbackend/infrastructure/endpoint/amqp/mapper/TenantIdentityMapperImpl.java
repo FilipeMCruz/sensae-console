@@ -1,14 +1,17 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.mapper;
 
+import org.springframework.stereotype.Service;
+import sharespot.services.identitymanagementbackend.application.internal.tenant.TenantIdentityMapper;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.Tenant;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.TenantIdentityDTOImpl;
 
 import java.util.stream.Collectors;
 
-public class TenantIdentityMapper {
+@Service
+public class TenantIdentityMapperImpl implements TenantIdentityMapper {
 
-    public static TenantIdentityDTOImpl domainToDto(Tenant tenant) {
+    public TenantIdentityDTOImpl domainToDto(Tenant tenant) {
         var dto = new TenantIdentityDTOImpl();
         dto.id = tenant.oid().value();
         dto.email = tenant.email().value();

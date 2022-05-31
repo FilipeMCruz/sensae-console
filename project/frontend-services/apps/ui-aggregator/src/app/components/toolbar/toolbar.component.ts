@@ -116,8 +116,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this._snackBar.advisory(notification.toSnackBar());
     } else if (notification.contentType.severity === NotificationSeverityLevel.WATCH) {
       this._snackBar.watch(notification.toSnackBar());
+    } else {
+      this._snackBar.information(notification.toSnackBar());
     }
-    this._snackBar.information(notification.toSnackBar());
   }
 
   checkAndSetActiveAccount() {

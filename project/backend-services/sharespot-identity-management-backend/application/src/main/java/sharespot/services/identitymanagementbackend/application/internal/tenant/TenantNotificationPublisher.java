@@ -12,24 +12,30 @@ import javax.annotation.PostConstruct;
 @Service
 public class TenantNotificationPublisher implements TenantUpdateEventPublisher {
 
-    private FluxSink<Tenant> dataStream;
+    private FluxSink<TenantIdentityDTO> dataStream;
 
-    private ConnectableFlux<Tenant> dataPublisher;
+    private ConnectableFlux<TenantIdentityDTO> dataPublisher;
+
+    private final TenantIdentityMapper mapper;
+
+    public TenantNotificationPublisher(TenantIdentityMapper mapper) {
+        this.mapper = mapper;
+    }
 
     @PostConstruct
     public void init() {
-        Flux<Tenant> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<TenantIdentityDTO> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<Tenant> getSinglePublisher() {
+    public Flux<TenantIdentityDTO> getSinglePublisher() {
         return dataPublisher;
     }
 
     @Override
     public void publishUpdate(Tenant domain) {
-        dataStream.next(domain);
+        dataStream.next(mapper.domainToDto(domain));
     }
 }

@@ -22,7 +22,7 @@ export class SnackbarService {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
-      duration: 3000,
+      duration: 7000,
       panelClass: ['critical-snackbar']
     });
   }
@@ -31,7 +31,7 @@ export class SnackbarService {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
-      duration: 3000,
+      duration: 6000,
       panelClass: ['warning-snackbar']
     });
   }
@@ -40,7 +40,7 @@ export class SnackbarService {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
-      duration: 3000,
+      duration: 5000,
       panelClass: ['advisory-snackbar']
     });
   }
@@ -49,7 +49,7 @@ export class SnackbarService {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
-      duration: 3000,
+      duration: 4000,
       panelClass: ['watch-snackbar']
     });
   }

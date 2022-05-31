@@ -2,7 +2,7 @@ package sharespot.services.identitymanagementbackend.application.internal.device
 
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllOwnerDomains;
 
-public interface NotificationEventMapper {
+public interface DeviceIdentityMapper {
 
-    DeviceNotificationDTO domainToUpdatedDto(DeviceWithAllOwnerDomains domain);
+    DeviceIdentityDTO domainToDto(DeviceWithAllOwnerDomains domain);
 }

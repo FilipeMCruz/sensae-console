@@ -9,13 +9,13 @@ import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp
 import java.util.UUID;
 
 @Service
-public class DeviceNotificationConsumer {
+public class DeviceIdentityRequestConsumer {
 
     public static final String MASTER_QUEUE = "internal.identity.management.master.queue";
 
     private final DeviceInformationNotifierService informer;
 
-    public DeviceNotificationConsumer(DeviceInformationNotifierService informer) {
+    public DeviceIdentityRequestConsumer(DeviceInformationNotifierService informer) {
         this.informer = informer;
     }
 

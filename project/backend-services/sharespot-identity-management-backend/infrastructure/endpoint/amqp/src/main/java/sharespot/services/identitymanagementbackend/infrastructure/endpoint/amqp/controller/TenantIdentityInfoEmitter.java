@@ -11,7 +11,7 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import sharespot.services.identitymanagementbackend.application.RoutingKeysProvider;
 import sharespot.services.identitymanagementbackend.application.internal.tenant.TenantNotificationPublisher;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.mapper.TenantIdentityMapper;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.mapper.TenantIdentityMapperImpl;
 
 import javax.annotation.PostConstruct;
 
@@ -42,6 +42,6 @@ public class TenantIdentityInfoEmitter {
     public void init() {
         publisher.getSinglePublisher()
                 .subscribe(tenant -> template.convertAndSend(IoTCoreTopic.INTERNAL_EXCHANGE, infoKeys.toString(),
-                        TenantIdentityMapper.domainToDto(tenant)));
+                        tenant));
     }
 }

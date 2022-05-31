@@ -1,11 +1,10 @@
 package sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.mapper;
 
 import org.springframework.stereotype.Service;
-import sharespot.services.identitymanagementbackend.application.internal.device.DeviceNotificationDTO;
-import sharespot.services.identitymanagementbackend.application.internal.device.NotificationEventMapper;
+import sharespot.services.identitymanagementbackend.application.internal.device.DeviceIdentityDTO;
 import sharespot.services.identitymanagementbackend.domain.identity.device.DeviceWithAllOwnerDomains;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainId;
-import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceNotificationDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceIdentityDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceNotificationTypeDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.amqp.model.DeviceWithOwnershipDTOImpl;
 
@@ -13,10 +12,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class NotificationEventMapperImpl implements NotificationEventMapper {
+public class DeviceIdentityMapperImpl implements sharespot.services.identitymanagementbackend.application.internal.device.DeviceIdentityMapper {
 
     @Override
-    public DeviceNotificationDTO domainToUpdatedDto(DeviceWithAllOwnerDomains domain) {
+    public DeviceIdentityDTO domainToDto(DeviceWithAllOwnerDomains domain) {
         var info = new DeviceWithOwnershipDTOImpl();
         info.deviceId = domain.oid().value().toString();
         info.owners = domain.ownerDomains()
@@ -25,7 +24,7 @@ public class NotificationEventMapperImpl implements NotificationEventMapper {
                 .map(UUID::toString)
                 .collect(Collectors.toList());
 
-        var notification = new DeviceNotificationDTOImpl();
+        var notification = new DeviceIdentityDTOImpl();
         notification.deviceId = info.deviceId;
         notification.type = DeviceNotificationTypeDTOImpl.UPDATE;
         notification.information = info;

@@ -1,20 +1,12 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {
-  Microfrontend,
-  MicrofrontendType,
-} from '../microfrontends/microfrontend';
+import {Microfrontend, MicrofrontendType,} from '../microfrontends/microfrontend';
 import {Router} from '@angular/router';
 import {LookupService} from '../microfrontends/lookup.service';
 import {buildRoutes} from '../microfrontends/buildRoutes.service';
 import {AuthGuardService} from '../../services/AuthGuardService';
-import {
-  MSAL_GUARD_CONFIG,
-  MsalBroadcastService,
-  MsalGuardConfiguration,
-  MsalService,
-} from '@azure/msal-angular';
+import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService,} from '@azure/msal-angular';
 import {Subject, Subscription} from 'rxjs';
-import {filter, takeUntil, tap} from 'rxjs/operators';
+import {filter, takeUntil} from 'rxjs/operators';
 import {
   AuthenticationResult,
   EventMessage,
@@ -27,6 +19,7 @@ import {
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {SnackbarService} from "../../services/SnackBarService";
 import {NotificationService} from "@frontend-services/mutual";
+import {Notification, NotificationSeverityLevel} from "@frontend-services/notification-management/model";
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -109,7 +102,22 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   async subscribeToNotifications() {
     await this.delay(500);
     this.notifications.start();
-    this.notificationSubscription = this.notifications.getCurrentData().pipe(filter(next => !next.isEmpty())).subscribe(next => this.openSnackBar(next.toSnackBar()));
+    this.notificationSubscription = this.notifications.getCurrentData()
+      .pipe(filter(next => !next.isEmpty()))
+      .subscribe(next => this.sendNotification(next));
+  }
+
+  sendNotification(notification: Notification) {
+    if (notification.contentType.severity === NotificationSeverityLevel.CRITICAL) {
+      this._snackBar.critical(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.WARNING) {
+      this._snackBar.warning(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.ADVISORY) {
+      this._snackBar.advisory(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.WATCH) {
+      this._snackBar.watch(notification.toSnackBar());
+    }
+    this._snackBar.information(notification.toSnackBar());
   }
 
   checkAndSetActiveAccount() {
@@ -134,8 +142,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         .then((token) =>
           this.authService.login(token.idToken).subscribe((value) => {
             value
-              ? this.openSnackBar('Valid Credentials')
-              : this.openSnackBar('Invalid Credentials');
+              ? this._snackBar.default('Valid Credentials')
+              : this._snackBar.default('Invalid Credentials');
             this.subscribeToNotifications();
           })
         );
@@ -146,10 +154,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     await this.router.navigate(['loading']);
     await this.delay(500);
     await this.router.navigate([url]);
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.info(message);
   }
 
   delay(milliseconds: number) {

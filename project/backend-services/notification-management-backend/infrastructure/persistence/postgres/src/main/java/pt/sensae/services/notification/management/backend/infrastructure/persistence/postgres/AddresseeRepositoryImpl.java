@@ -1,5 +1,6 @@
 package pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -25,7 +26,6 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
     @Override
     @Transactional
-    @Cacheable(value = "addressee_cache")
     public Addressee findById(AddresseeId id) {
         var addresseePostgres = repositoryPostgres.findAllById(id.value().toString());
         return AddresseeMapper.daoToModel(addresseePostgres).findFirst().orElse(Addressee.of(id, new HashSet<>()));
@@ -33,9 +33,8 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
     @Override
     @Transactional
-    @CachePut(value = "addressee_cache", key = "addressee.id()")
     public Addressee index(Addressee addressee) {
-        repositoryPostgres.deleteAllById(addressee.id().toString());
+        repositoryPostgres.deleteById(addressee.id().value().toString());
 
         var addresseePostgres = repositoryPostgres.saveAll(AddresseeMapper.modelToDao(addressee)
                 .collect(Collectors.toSet()));

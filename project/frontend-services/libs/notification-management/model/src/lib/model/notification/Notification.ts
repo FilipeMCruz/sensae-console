@@ -41,6 +41,6 @@ export class Notification {
   }
 
   public toSnackBar(): string {
-    return "New notification:" + "\nCategory: " + this.contentType.getCategory() + "\nSub Category: " + this.contentType.getSubCategory()
+    return "New notification!!!" + "\nCategory: " + this.contentType.getCategory() + "\nSub Category: " + this.contentType.getSubCategory()
   }
 }

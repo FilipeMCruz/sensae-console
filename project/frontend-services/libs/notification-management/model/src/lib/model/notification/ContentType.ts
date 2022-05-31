@@ -8,6 +8,10 @@ export class ContentType {
     return new ContentType("", "", NotificationSeverityLevel.WARNING);
   }
 
+  public uniqueKey() {
+    return this.category + "-" + this.subCategory + "-" + this.getSeverityAsNumber();
+  }
+
   public getCategory() {
     const result = this.category.replace(/([A-Z])/g, " $1");
     return result.charAt(0).toUpperCase() + result.slice(1);

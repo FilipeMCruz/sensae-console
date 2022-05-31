@@ -97,5 +97,3 @@ SELECT pg_catalog.setval('public.addressee_config_persistence_id_seq', 1, false)
 ALTER TABLE ONLY public.addressee_config
     ADD CONSTRAINT addressee_config_pkey PRIMARY KEY (persistence_id);
 
-ALTER TABLE ONLY public.addressee_config
-    ADD CONSTRAINT addressee_config_unique UNIQUE (id);

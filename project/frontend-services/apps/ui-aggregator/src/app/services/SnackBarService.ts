@@ -10,11 +10,56 @@ export class SnackbarService {
     private _snackBar: MatSnackBar) {
   }
 
-  info(message: string) {
+  default(message: string) {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 3000,
+    });
+  }
+
+  critical(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: ['critical-snackbar']
+    });
+  }
+
+  warning(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: ['warning-snackbar']
+    });
+  }
+
+  advisory(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: ['advisory-snackbar']
+    });
+  }
+
+  watch(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: ['watch-snackbar']
+    });
+  }
+
+  information(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 3000,
+      panelClass: ['information-snackbar']
     });
   }
 }

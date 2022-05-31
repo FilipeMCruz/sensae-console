@@ -53,3 +53,32 @@ body {
 .search-bar {
   width: 100%;
 }
+
+.critical-snackbar {
+  background: #E03C32;
+  color: #000000;
+  white-space: pre-wrap;
+}
+
+.warning-snackbar {
+  background: #FF8C01;
+  color: #000000;
+  white-space: pre-wrap;
+}
+
+.advisory-snackbar {
+  background: #FFD301;
+  color: #000000;
+  white-space: pre-wrap;
+}
+
+.watch-snackbar {
+  background: #7BB662;
+  color: #000000;
+  white-space: pre-wrap;
+}
+
+.information-snackbar {
+  background: #006B3E;
+  white-space: pre-wrap;
+}

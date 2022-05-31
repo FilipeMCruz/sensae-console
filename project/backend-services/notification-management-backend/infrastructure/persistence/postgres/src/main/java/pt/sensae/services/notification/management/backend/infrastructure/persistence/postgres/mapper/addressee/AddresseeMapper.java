@@ -24,7 +24,7 @@ public class AddresseeMapper {
                 .stream()
                 .map(contentTypList -> {
                     var addresseePostgres = new AddresseePostgres();
-                    addresseePostgres.id = model.id().toString();
+                    addresseePostgres.id = model.id().value().toString();
                     addresseePostgres.category = contentTypList.get(0).contentType().category();
                     addresseePostgres.subCategory = contentTypList.get(0).contentType().subCategory();
                     addresseePostgres.level = contentTypList.get(0)
@@ -56,7 +56,7 @@ public class AddresseeMapper {
             var id = AddresseeId.of(UUID.fromString(addresseeConfigs.get(0).id));
             var configs = new HashSet<AddresseeConfig>();
             addresseeConfigs.forEach(conf -> {
-                var contentType = new ContentType(conf.category, conf.subCategory, NotificationLevel.valueOf(conf.level));
+                var contentType = new ContentType(conf.category, conf.subCategory, NotificationLevel.valueOf(conf.level.toUpperCase(Locale.ROOT)));
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.EMAIL, !conf.sendEmail));
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.SMS, !conf.sendSms));
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.NOTIFICATION, !conf.sendNotification));

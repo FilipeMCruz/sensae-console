@@ -1,13 +1,13 @@
-import {AfterViewInit, Component, Inject} from '@angular/core';
+import {AfterViewInit, Component, Inject, ViewChild} from '@angular/core';
 import {FetchConfiguration, UpdateAddresseeConfiguration} from "@frontend-services/notification-management/services";
 import {
   AddresseeConfiguration,
-  AddresseeConfigurationEntry,
+  AddresseeConfigurationEntry, AddresseeConfigurationTableView,
   ContentType,
-  DeliveryType
+  DeliveryType, NotificationSeverityLevel
 } from "@frontend-services/notification-management/model";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {Sort} from "@angular/material/sort";
+import {MatTable} from "@angular/material/table";
 
 @Component({
   selector: 'frontend-services-configuration-dialog',
@@ -16,9 +16,17 @@ import {Sort} from "@angular/material/sort";
 })
 export class ConfigurationDialogComponent implements AfterViewInit {
 
-  displayedColumns = ['category', 'subCategory', 'severity', 'email', 'sms'];
+  displayedColumns = ['category', 'subCategory', 'severity', 'ui', 'email', 'sms', 'actions'];
 
   configuration: AddresseeConfiguration = AddresseeConfiguration.empty();
+
+
+  @ViewChild(MatTable) table!: MatTable<AddresseeConfigurationTableView>;
+
+  dataSource: Array<AddresseeConfigurationTableView> = [];
+  newCategory = "";
+  newSubCategory = "";
+  newSeverity = "INFORMATION";
 
   constructor(
     private configurationReader: FetchConfiguration,
@@ -28,6 +36,7 @@ export class ConfigurationDialogComponent implements AfterViewInit {
   }
 
   onNoClick(): void {
+    AddresseeConfiguration.fromTableView(this.dataSource);
     this.dialogRef.close();
   }
 
@@ -39,32 +48,83 @@ export class ConfigurationDialogComponent implements AfterViewInit {
         }
       })
       this.configuration = next;
+      this.dataSource = this.configuration.toTableView().sort((n1, n2) => {
+        return n1.contentType.uniqueKey().localeCompare(n2.contentType.uniqueKey())
+      });
+      this.table.renderRows();
     });
   }
 
-  sortData(sort: Sort) {
-    const data = this.configuration.entries.slice();
-    if (!sort.active || sort.direction === '') {
-      this.configuration.entries = data;
-      return;
+  save() {
+    const config = AddresseeConfiguration.fromTableView(this.dataSource);
+    this.mutateConfiguration.execute(config).subscribe();
+    this.dialogRef.close();
+  }
+
+  toCamelCase(value: string) {
+    const result = value.trim().replace(/ /g, "");
+    return result.charAt(0).toLowerCase() + result.slice(1);
+  }
+
+  addEntry() {
+    this.dataSource.push(this.buildEntry());
+    this.dataSource = this.dataSource.sort((n1, n2) => {
+      return n1.contentType.uniqueKey().localeCompare(n2.contentType.uniqueKey())
+    });
+    this.table.renderRows();
+  }
+
+  private buildEntry(): AddresseeConfigurationTableView {
+    let severity: NotificationSeverityLevel;
+    switch (this.newSeverity) {
+      case "WARNING": {
+        severity = NotificationSeverityLevel.WARNING;
+        break;
+      }
+      case "WATCH": {
+        severity = NotificationSeverityLevel.WATCH;
+        break;
+      }
+      case "CRITICAL": {
+        severity = NotificationSeverityLevel.CRITICAL;
+        break;
+      }
+      case "ADVISORY": {
+        severity = NotificationSeverityLevel.ADVISORY;
+        break;
+      }
+      default: {
+        severity = NotificationSeverityLevel.INFORMATION;
+        break;
+      }
+    }
+    const contentType = new ContentType(this.toCamelCase(this.newCategory), this.toCamelCase(this.newSubCategory), severity);
+    return new AddresseeConfigurationTableView(contentType, false, false, false);
+  }
+
+  validEntry() {
+    let outcome = this.newCategory.trim().length !== 0 && this.newSubCategory.trim().length !== 0;
+
+    if (outcome) {
+      const entry = this.buildEntry();
+      outcome = !this.dataSource.some(e => e.contentType.equals(entry.contentType))
     }
 
-    this.configuration.entries = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'category':
-          return this.compare(a.contentType.category, b.contentType.category, isAsc);
-        case 'subCategory':
-          return this.compare(a.contentType.subCategory, b.contentType.subCategory, isAsc);
-        case 'severity':
-          return this.compare(a.contentType.getSeverityAsNumber(), b.contentType.getSeverityAsNumber(), isAsc);
-        default:
-          return 0;
-      }
-    });
+    return outcome;
   }
 
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  getCategoryOptions() {
+    return this.dataSource.map(e => e.contentType.getCategory());
+  }
+
+  getSubCategoryOptions() {
+    return this.dataSource.map(e => e.contentType.getSubCategory());
+  }
+
+  removeEntry(elem: AddresseeConfigurationTableView) {
+    this.dataSource = this.dataSource.filter(e => !e.contentType.equals(elem.contentType)).sort((n1, n2) => {
+      return n1.contentType.uniqueKey().localeCompare(n2.contentType.uniqueKey())
+    });
+    this.table.renderRows();
   }
 }

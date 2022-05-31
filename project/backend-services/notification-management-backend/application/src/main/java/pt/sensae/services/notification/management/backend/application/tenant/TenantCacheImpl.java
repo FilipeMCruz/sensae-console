@@ -30,6 +30,7 @@ public class TenantCacheImpl implements TenantCache {
 
     @Override
     public Tenant index(Tenant tenant) {
+        this.cache.asMap().values().forEach(tenants -> tenants.remove(tenant));
         tenant.domains().value().forEach(domain -> {
             var ifPresent = this.cache.getIfPresent(domain);
             if (ifPresent == null) {

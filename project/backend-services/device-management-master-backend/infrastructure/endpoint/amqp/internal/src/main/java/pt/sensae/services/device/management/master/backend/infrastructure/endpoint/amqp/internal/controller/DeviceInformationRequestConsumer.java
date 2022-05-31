@@ -6,13 +6,13 @@ import pt.sensae.services.device.management.master.backend.application.DeviceInf
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceDTOImpl;
 
 @Service
-public class DeviceNotificationConsumer {
+public class DeviceInformationRequestConsumer {
 
     public static final String MASTER_QUEUE = "internal.device.management.master.queue";
 
     private final DeviceInformationNotifierService informer;
 
-    public DeviceNotificationConsumer(DeviceInformationNotifierService informer) {
+    public DeviceInformationRequestConsumer(DeviceInformationNotifierService informer) {
         this.informer = informer;
     }
 

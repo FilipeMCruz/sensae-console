@@ -16,13 +16,13 @@ import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class TenantIdentitySyncSupplier {
+public class TenantIdentityInitSupplier {
 
     private final AmqpTemplate template;
 
     private final RoutingKeysProvider provider;
 
-    public TenantIdentitySyncSupplier(@Qualifier("amqpTemplate") AmqpTemplate template, RoutingKeysProvider provider) {
+    public TenantIdentityInitSupplier(@Qualifier("amqpTemplate") AmqpTemplate template, RoutingKeysProvider provider) {
         this.template = template;
         this.provider = provider;
     }

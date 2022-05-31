@@ -1,19 +1,24 @@
 package pt.sensae.services.device.management.master.backend.domainservices;
 
 import org.springframework.stereotype.Service;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformationRepository;
 
 @Service
-public class RecordEraser {
+public class DeviceInformationHoarder {
 
     private final DeviceInformationRepository repository;
 
-    public RecordEraser(DeviceInformationRepository repository) {
+    public DeviceInformationHoarder(DeviceInformationRepository repository) {
         this.repository = repository;
     }
 
-    public DeviceId erase(DeviceId deviceId) {
-        return repository.delete(deviceId);
+    public DeviceInformation hoard(DeviceInformation information) {
+        return this.repository.save(information);
+    }
+
+    public boolean exists(DeviceId deviceId) {
+        return this.repository.findById(deviceId).isPresent();
     }
 }

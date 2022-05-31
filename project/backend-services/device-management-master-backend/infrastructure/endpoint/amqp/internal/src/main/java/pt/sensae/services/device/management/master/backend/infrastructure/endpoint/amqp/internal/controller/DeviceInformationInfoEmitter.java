@@ -15,14 +15,14 @@ import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import javax.annotation.PostConstruct;
 
 @Component
-public class DeviceNotificationEmitter {
+public class DeviceInformationInfoEmitter {
 
     private final AmqpTemplate template;
     private final DeviceInformationEventHandlerService service;
 
     private final InternalRoutingKeys info;
 
-    public DeviceNotificationEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, DeviceInformationEventHandlerService service, RoutingKeysProvider provider) {
+    public DeviceInformationInfoEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, DeviceInformationEventHandlerService service, RoutingKeysProvider provider) {
         this.template = template;
         this.service = service;
         var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)

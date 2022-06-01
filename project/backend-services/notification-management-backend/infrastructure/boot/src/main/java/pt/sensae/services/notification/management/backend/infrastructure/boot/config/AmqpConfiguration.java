@@ -104,7 +104,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public Queue syncQueue() {
+    public Queue initQueue() {
         return QueueBuilder.durable(IDENTITY_MANAGEMENT_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
@@ -112,13 +112,13 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding syncBinding(Queue syncQueue, TopicExchange internalExchange) {
+    Binding initBinding(Queue initQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.TENANT_IDENTITY)
                 .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {
-            return BindingBuilder.bind(syncQueue).to(internalExchange).with(keys.get().toString());
+            return BindingBuilder.bind(initQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

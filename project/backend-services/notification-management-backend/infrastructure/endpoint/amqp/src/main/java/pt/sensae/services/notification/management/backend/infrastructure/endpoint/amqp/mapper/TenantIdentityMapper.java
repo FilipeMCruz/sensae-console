@@ -16,5 +16,4 @@ public class TenantIdentityMapper {
         var collect = identity.domains.stream().map(DomainId::new).collect(Collectors.toSet());
         return new Tenant(AddresseeId.of(identity.id), TenantName.of(identity.name), TenantContacts.of(identity.email, identity.phoneNumber), Domains.of(collect));
     }
-
 }

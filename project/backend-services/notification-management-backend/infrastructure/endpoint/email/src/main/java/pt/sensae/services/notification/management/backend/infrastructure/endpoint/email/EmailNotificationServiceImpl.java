@@ -17,7 +17,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
 
     Logger logger = LoggerFactory.getLogger(EmailNotificationServiceImpl.class);
 
-    @Value("${sensae.email.sender.account.name}")
+    @Value("${sensae.email.sender.account}")
     public String accountName;
 
     @Value("${sensae.email.subject}")

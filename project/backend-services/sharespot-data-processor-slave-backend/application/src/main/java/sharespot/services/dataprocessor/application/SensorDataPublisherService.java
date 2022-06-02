@@ -48,7 +48,7 @@ public class SensorDataPublisherService {
     }
 
     private Optional<SensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
-        return mapper.inToOut(node, SensorTypeId.of(keys.sensorTypeId));
+        return mapper.inToOut(node, SensorTypeId.of(keys.sensorTypeId.details()));
     }
 
     private Optional<SensorRoutingKeys> inToOutKeys(SensorDataDTO data, SensorRoutingKeys keys) {

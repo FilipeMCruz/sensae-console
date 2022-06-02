@@ -2,6 +2,8 @@ services:
   message-broker:
     image: rabbitmq:3.10
     container_name: message-broker
+    env_file:
+      - secrets/prod/message-broker.env
     networks:
       - sharespot-network
     ports:

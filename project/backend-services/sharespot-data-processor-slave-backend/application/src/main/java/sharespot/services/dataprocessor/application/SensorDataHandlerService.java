@@ -30,7 +30,7 @@ public class SensorDataHandlerService {
     }
 
     public void info(MessageConsumed<ObjectNode, SensorRoutingKeys> message) {
-        var type = SensorTypeId.of(message.routingKeys.sensorTypeId);
+        var type = SensorTypeId.of(message.routingKeys.sensorTypeId.details());
         if (cache.findById(type).isPresent()) {
             dataPublisher.publish(message);
             notificationPublisher.publishPing(type);

@@ -35,4 +35,4 @@ envsubst < secrets/templates/prod/frontend-services/sharespot-identity-managemen
 envsubst < secrets/templates/prod/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.prod.ts
-envsubst < secrets/templates/dev/message-broker/message-broker.env > secrets/prod/message-broker.env
+envsubst < secrets/templates/prod/message-broker/message-broker.env > secrets/prod/message-broker.env

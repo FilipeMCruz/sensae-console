@@ -22,11 +22,13 @@ public class SMSNotificationServiceImpl implements SMSNotificationService {
 
     @Override
     public void send(FullNotification notification) {
-        notification.recipients().stream().filter(r -> !r.contacts().phone().trim().isEmpty()).forEach(recipient -> {
-            logger.info("Sending SMS to {}. Content: {}", recipient.name().value(), notification.notification()
-                    .asContent());
-            sendSMS(recipient.contacts().phone(), notification.notification().asContent());
-        });
+        notification.recipients().stream()
+                .filter(r -> !r.contacts().phone().trim().isEmpty())
+                .forEach(recipient -> {
+                    logger.info("Sending SMS to {}. Content: {}", recipient.name().value(), notification.notification()
+                            .asContent());
+                    sendSMS(recipient.contacts().phone(), notification.notification().asContent());
+                });
     }
 
     private void sendSMS(String number, String content) {

@@ -36,6 +36,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
     public void send(FullNotification notification) {
         var recipients = notification.recipients()
                 .stream()
+                .filter(r -> !r.contacts().email().trim().isEmpty())
                 .map(r -> r.contacts().email()).toArray(String[]::new);
 
         logger.info("Sending Email to {}. Content: {}", String.join(",", recipients), notification.notification()

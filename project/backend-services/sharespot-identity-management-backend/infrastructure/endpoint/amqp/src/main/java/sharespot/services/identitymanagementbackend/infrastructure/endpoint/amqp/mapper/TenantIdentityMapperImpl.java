@@ -15,7 +15,7 @@ public class TenantIdentityMapperImpl implements TenantIdentityMapper {
         var dto = new TenantIdentityDTOImpl();
         dto.id = tenant.oid().value();
         dto.email = tenant.email().value();
-        dto.phoneNumber = ""; //TODO
+        dto.phoneNumber = tenant.phoneNumber().value();
         dto.domains = tenant.domains().stream().map(DomainId::value).collect(Collectors.toSet());
         dto.name = tenant.name().value();
         return dto;

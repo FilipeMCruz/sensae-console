@@ -1,6 +1,6 @@
 services:
   message-broker:
-    image: rabbitmq:3.10
+    image: rabbitmq:3.10.5-management
     container_name: message-broker
     env_file:
       - secrets/prod/message-broker.env

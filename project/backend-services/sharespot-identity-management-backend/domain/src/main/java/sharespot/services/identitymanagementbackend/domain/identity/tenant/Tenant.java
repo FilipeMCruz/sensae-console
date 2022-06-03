@@ -4,6 +4,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.domain.Domai
 
 import java.util.List;
 
-public record Tenant(TenantId oid, TenantName name, TenantEmail email, List<DomainId> domains) {
+public record Tenant(TenantId oid, TenantName name, TenantEmail email, TenantPhoneNumber phoneNumber,
+                     List<DomainId> domains) {
 
 }

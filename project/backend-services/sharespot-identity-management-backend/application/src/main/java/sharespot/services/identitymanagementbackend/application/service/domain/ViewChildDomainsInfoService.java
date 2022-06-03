@@ -35,7 +35,6 @@ public class ViewChildDomainsInfoService {
         this.mainMapper = mainMapper;
     }
 
-    //TODO: try to do this in a single query
     public Stream<DomainInfoDTO> fetch(ViewDomainDTO dto, AccessTokenDTO claims) {
         var identityCommand = tenantMapper.dtoToCommand(claims);
         var query = domainMapper.dtoToCommand(dto);

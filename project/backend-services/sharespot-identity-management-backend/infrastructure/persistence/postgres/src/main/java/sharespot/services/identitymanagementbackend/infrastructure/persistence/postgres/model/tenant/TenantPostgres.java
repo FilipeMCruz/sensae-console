@@ -17,6 +17,9 @@ public class TenantPostgres {
     @Column(unique = true)
     public String email;
 
+    @Column(name = "phone_number")
+    public String phoneNumber;
+
     public String name;
 
     @Column(columnDefinition = "text[]")

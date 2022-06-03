@@ -35,8 +35,9 @@ public class AuthenticateTenant {
     private Tenant newTenant(IdentityQuery command) {
         var tenant = new Tenant(
                 TenantId.of(UUID.randomUUID()),
-                new TenantName(command.name),
-                new TenantEmail(command.preferredUsername),
+                TenantName.of(command.name),
+                TenantEmail.of(command.preferredUsername),
+                TenantPhoneNumber.empty(),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
         var newTenant = tenantRepo.registerNewTenant(tenant);
 

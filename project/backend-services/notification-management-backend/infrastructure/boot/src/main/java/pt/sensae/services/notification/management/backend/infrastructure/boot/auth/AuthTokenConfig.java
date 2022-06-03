@@ -38,7 +38,7 @@ public class AuthTokenConfig implements AuthTokenHandler {
             byte[] publicKeyBytes = Files.readAllBytes(Path.of(PATH_RSA_PUB));
             publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
         } catch (IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException("Private Key File not Found");
+            throw new RuntimeException("Public Key File not Found");
         }
     }
 

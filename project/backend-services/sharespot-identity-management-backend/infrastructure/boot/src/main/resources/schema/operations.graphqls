@@ -1,5 +1,6 @@
 type Query {
     authenticate: AccessToken
+    refresh: AccessToken
     viewDomain(domain: ViewDomain): [Domain]
     viewDomainInfo(domain: ViewDomain): DomainInfo
     viewChildDomainsInfo(domain: ViewDomain): [DomainInfo]

@@ -1,9 +1,11 @@
 package sharespot.services.identitymanagementbackend.domainservices.service.tenant;
 
 import org.springframework.stereotype.Service;
+import sharespot.services.identitymanagementbackend.domain.exceptions.UnhauthorizedException;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 
@@ -28,6 +30,14 @@ public class AuthenticateTenant {
     public TenantResult execute(IdentityQuery command) {
         var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
                 .orElseGet(() -> newTenant(command));
+        var domains = domainRepo.getDomains(tenant.domains().stream());
+        return TenantResultMapper.toResult(tenant, domains);
+    }
+
+    public TenantResult execute(IdentityCommand command) {
+        var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.email))
+                .orElseThrow(UnhauthorizedException.withMessage("Invalid Credentials"));
+
         var domains = domainRepo.getDomains(tenant.domains().stream());
         return TenantResultMapper.toResult(tenant, domains);
     }

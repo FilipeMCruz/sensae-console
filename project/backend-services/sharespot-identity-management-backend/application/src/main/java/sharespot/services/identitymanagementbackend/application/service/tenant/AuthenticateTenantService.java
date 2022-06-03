@@ -23,4 +23,10 @@ public class AuthenticateTenantService {
         var result = service.execute(identity);
         return mapper.commandToDto(result);
     }
+
+    public AccessTokenDTO authenticate(AccessTokenDTO dto) {
+        var identity = mapper.dtoToCommand(dto);
+        var result = service.execute(identity);
+        return mapper.commandToDto(result);
+    }
 }

@@ -208,6 +208,8 @@ services:
     build: backend-services/notification-management-backend
     container_name: notification-management-backend
     image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:

@@ -1,5 +1,9 @@
-export interface OutcomeDTOQuery {
+export interface AuthenticateResultDTO {
   authenticate: OutcomeDTO;
+}
+
+export interface RefreshResultDTO {
+  refresh: OutcomeDTO;
 }
 
 export interface OutcomeDTO {

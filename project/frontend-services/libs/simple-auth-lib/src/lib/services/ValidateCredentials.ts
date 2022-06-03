@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { FetchResult } from '@apollo/client/core';
-import { OutcomeDTOQuery } from '../dto/CredentialsDTO';
+import { AuthenticateResultDTO } from '../dto/CredentialsDTO';
 import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class ValidateCredentials {
   constructor(private apollo: Apollo) {}
 
-  validate(user: string): Observable<FetchResult<OutcomeDTOQuery>> {
+  validate(user: string): Observable<FetchResult<AuthenticateResultDTO>> {
     const query = gql`
       query authenticate {
         authenticate {
@@ -20,7 +20,7 @@ export class ValidateCredentials {
       }
     `;
 
-    return this.apollo.use('identity').subscribe<OutcomeDTOQuery>({
+    return this.apollo.use('identity').subscribe<AuthenticateResultDTO>({
       query,
       context: {
         headers: new HttpHeaders().set('Authorization', 'Bearer ' + user),

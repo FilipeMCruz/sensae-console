@@ -223,4 +223,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.authGuardService.canShow(r.details.permissions, r.routePath)
     );
   }
+
+  profile() {
+    this.router.navigate(['profile']);
+  }
 }

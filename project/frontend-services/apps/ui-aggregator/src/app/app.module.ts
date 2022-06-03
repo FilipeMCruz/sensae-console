@@ -36,6 +36,7 @@ import {
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {createLink} from '@frontend-services/mutual';
 import {LoadingPageComponent} from "./components/loading-page/loading-page.component";
+import {ProfileComponent} from "./components/profile/profile.component";
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -101,6 +102,7 @@ export function createNamedApollo(
     NotFoundComponent,
     ToolbarComponent,
     LoadingPageComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

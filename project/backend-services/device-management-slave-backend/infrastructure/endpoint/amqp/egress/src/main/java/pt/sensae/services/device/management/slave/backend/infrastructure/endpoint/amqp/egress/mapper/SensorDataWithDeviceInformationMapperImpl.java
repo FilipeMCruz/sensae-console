@@ -1,13 +1,12 @@
 package pt.sensae.services.device.management.slave.backend.infrastructure.endpoint.amqp.egress.mapper;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.device.management.slave.backend.application.ProcessedSensorDataWithRecordMapper;
+import pt.sensae.services.device.management.slave.backend.application.SensorDataWithDeviceInformationMapper;
+import pt.sensae.services.device.management.slave.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.DeviceWithSubDevices;
 import pt.sensae.services.device.management.slave.backend.domain.model.commands.CommandEntry;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.BasicRecordEntry;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordEntry;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.SensorDataRecordLabel;
+import pt.sensae.services.device.management.slave.backend.domain.model.staticData.DeviceStaticData;
+import pt.sensae.services.device.management.slave.backend.domain.model.staticData.StaticDataLabel;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
@@ -20,36 +19,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorDataWithRecordMapper {
+public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWithDeviceInformationMapper {
 
     @Override
-    public DeviceWithSubDevices domainToDto(SensorDataDTO domain, DeviceInformation records) {
-        var sensorDataToUpdate = records.records()
+    public DeviceWithSubDevices domainToDto(SensorDataDTO domain, DeviceInformation deviceInformation) {
+        var staticData = deviceInformation.staticData();
+
+        addGPSData(domain, staticData);
+
+        var newRecords = deviceInformation.deviceRecords()
                 .entries()
                 .stream()
-                .filter(e -> e instanceof SensorDataRecordEntry)
-                .map(e -> (SensorDataRecordEntry) e)
-                .collect(Collectors.toSet());
-
-        var latitudeOpt = sensorDataToUpdate.stream()
-                .filter(e -> e.has(SensorDataRecordLabel.GPS_LATITUDE))
-                .findFirst();
-
-        var longitudeOpt = sensorDataToUpdate.stream()
-                .filter(e -> e.has(SensorDataRecordLabel.GPS_LONGITUDE))
-                .findFirst();
-
-        if (latitudeOpt.isPresent() && longitudeOpt.isPresent()) {
-            domain.getSensorData()
-                    .withGps(GPSDataDTO.ofLatLong(Double.valueOf(latitudeOpt.get()
-                            .content()), Double.valueOf(longitudeOpt.get().content())));
-        }
-
-        var newRecords = records.records()
-                .entries()
-                .stream()
-                .filter(e -> e instanceof BasicRecordEntry)
-                .map(e -> (BasicRecordEntry) e)
                 .map(e -> new DeviceRecordEntryDTO(e.label(), e.content()))
                 .collect(Collectors.toSet());
 
@@ -61,11 +41,15 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
 
         domain.device.records = newRecords;
 
-        domain.device.name = records.device().name().value();
+        domain.device.name = deviceInformation.device().name().value();
+
+        if (!domain.hasProperty(PropertyName.DEVICE_DOWNLINK)) {
+            domain.device.downlink = deviceInformation.device().downlink().value();
+        }
 
         if (domain.hasProperty(PropertyName.DEVICE_COMMANDS)) {
             domain.device.commands.forEach((devKey, value) -> {
-                var commandEntries = records.commands()
+                var commandEntries = deviceInformation.commands()
                         .entries()
                         .stream()
                         .filter(c -> Objects.equals(c.ref().value(), devKey))
@@ -76,14 +60,32 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
             });
         } else {
             domain.device.commands = new HashMap<>();
-            records.commands()
+            deviceInformation.commands()
                     .entries()
                     .forEach(e -> domain.device.commands
                             .computeIfAbsent(e.ref().value(), k -> new ArrayList<>())
                             .add(this.processCommands(e)));
         }
 
-        return new DeviceWithSubDevices(domain, processSubSensors(domain, records));
+        return new DeviceWithSubDevices(domain, processSubSensors(domain, deviceInformation));
+    }
+
+    private void addGPSData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+
+        var latitudeOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.GPS_LATITUDE))
+                .findFirst();
+
+        var longitudeOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.GPS_LONGITUDE))
+                .findFirst();
+
+        if (domain.getSensorData().gps == null && (latitudeOpt.isPresent() || longitudeOpt.isPresent())) {
+            domain.getSensorData().withGps(new GPSDataDTO());
+        }
+
+        latitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.latitude = Double.valueOf(deviceStaticDataEntry.content()));
+        longitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.longitude = Double.valueOf(deviceStaticDataEntry.content()));
     }
 
     private DeviceCommandDTO processCommands(CommandEntry model) {
@@ -112,16 +114,16 @@ public class ProcessedSensorDataWithRecordMapperImpl implements ProcessedSensorD
             deviceInformationDTO.id = sub.id().value();
             deviceInformationDTO.downlink = domain.device.downlink;
 
-            var processedSensorDataDTO = new SensorDataDTO();
-            processedSensorDataDTO.device = deviceInformationDTO;
-            processedSensorDataDTO.reportedAt = domain.reportedAt;
-            processedSensorDataDTO.dataId = UUID.randomUUID();
+            var sensorDataDTO = new SensorDataDTO();
+            sensorDataDTO.device = deviceInformationDTO;
+            sensorDataDTO.reportedAt = domain.reportedAt;
+            sensorDataDTO.dataId = UUID.randomUUID();
 
-            processedSensorDataDTO.measures = Map.of(0, Objects.requireNonNullElseGet(subSensorMeasures, SensorDataDetailsDTO::new));
+            sensorDataDTO.measures = Map.of(0, Objects.requireNonNullElseGet(subSensorMeasures, SensorDataDetailsDTO::new));
 
-            processedSensorDataDTO.device.commands = Map.of(0, Objects.requireNonNullElseGet(subSensorCommands, ArrayList::new));
+            sensorDataDTO.device.commands = Map.of(0, Objects.requireNonNullElseGet(subSensorCommands, ArrayList::new));
 
-            subDevices.add(processedSensorDataDTO);
+            subDevices.add(sensorDataDTO);
         });
 
         return subDevices;

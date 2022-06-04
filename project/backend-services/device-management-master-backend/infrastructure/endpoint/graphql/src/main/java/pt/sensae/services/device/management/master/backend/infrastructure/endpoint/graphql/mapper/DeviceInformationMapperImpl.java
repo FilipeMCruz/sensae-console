@@ -27,7 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class RecordMapperImpl implements RecordMapper {
+public class DeviceInformationMapperImpl implements RecordMapper {
 
     @Override
     public DeviceInformation dtoToDomain(DeviceInformationDTO dto) {

@@ -11,13 +11,14 @@ import pt.sensae.services.device.management.master.backend.domain.model.device.D
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.StaticDataLabel;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.*;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class DeviceMapper implements DeviceEventMapper {
+public class DeviceInformationMapper implements DeviceEventMapper {
 
     @Override
     public DeviceNotificationDTO domainToUpdatedDto(DeviceInformation domain) {
@@ -27,21 +28,19 @@ public class DeviceMapper implements DeviceEventMapper {
         info.downlink = domain.device().downlink().value();
         if (info.downlink == null) info.downlink = "";
 
-        info.entries = domain.deviceRecords().entries().stream().map(e -> {
+        info.records = domain.deviceRecords().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryDTOImpl();
-            entry.type = DeviceRecordEntryTypeDTOImpl.BASIC;
             entry.content = e.content();
             entry.label = e.label();
             return entry;
         }).collect(Collectors.toSet());
 
-        info.entries.addAll(domain.staticData().entries().stream().map(e -> {
-            var entry = new DeviceRecordEntryDTOImpl();
-            entry.type = DeviceRecordEntryTypeDTOImpl.SENSOR_DATA;
+        info.staticData = domain.staticData().entries().stream().map(e -> {
+            var entry = new DeviceStaticSensorEntryDTOImpl();
             entry.content = e.content();
-            entry.label = e.label().value();
+            entry.label = modelToDto(e.label());
             return entry;
-        }).collect(Collectors.toSet()));
+        }).collect(Collectors.toSet());
 
         info.subSensors = domain.subDevices().entries().stream().map(sub -> {
             var entry = new DeviceSubSensorDTOImpl();
@@ -65,6 +64,13 @@ public class DeviceMapper implements DeviceEventMapper {
         notification.type = DeviceNotificationTypeDTOImpl.UPDATE;
         notification.information = info;
         return notification;
+    }
+
+    private DeviceStaticDataLabelDTOImpl modelToDto(StaticDataLabel model) {
+        return switch (model) {
+            case GPS_LATITUDE -> DeviceStaticDataLabelDTOImpl.GPS_LATITUDE;
+            case GPS_LONGITUDE -> DeviceStaticDataLabelDTOImpl.GPS_LONGITUDE;
+        };
     }
 
     @Override

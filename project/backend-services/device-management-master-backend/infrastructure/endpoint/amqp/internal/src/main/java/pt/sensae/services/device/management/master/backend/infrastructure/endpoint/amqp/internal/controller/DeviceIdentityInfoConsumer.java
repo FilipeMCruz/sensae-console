@@ -3,7 +3,7 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.mapper.DeviceMapper;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.mapper.DeviceInformationMapper;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceIdentityDTOImpl;
 
 @Service
@@ -11,11 +11,11 @@ public class DeviceIdentityInfoConsumer {
 
     private final DeviceIdentityCache cache;
 
-    private final DeviceMapper mapper;
+    private final DeviceInformationMapper mapper;
 
     public static final String QUEUE = "internal.device.management.info.queue";
 
-    public DeviceIdentityInfoConsumer(DeviceIdentityCache cache, DeviceMapper mapper) {
+    public DeviceIdentityInfoConsumer(DeviceIdentityCache cache, DeviceInformationMapper mapper) {
         this.cache = cache;
         this.mapper = mapper;
     }

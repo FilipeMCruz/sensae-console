@@ -1,8 +1,8 @@
 package pt.sensae.services.device.management.slave.backend.infrastructure.endpoint.amqp.internal.model;
 
-public class DeviceRecordEntryDTOImpl {
+public class DeviceStaticSensorEntryDTOImpl {
 
-    public String label;
+    public DeviceStaticDataLabelDTOImpl label;
 
     public String content;
 }

@@ -54,8 +54,8 @@ public class NotificationBroadcasterService {
                     .map(Recipient::tenant)
                     .collect(Collectors.toSet());
 
-            smsService.send(FullNotification.of(smsRecipients, notification));
-            emailService.send(FullNotification.of(emailRecipients, notification));
+            if(!smsRecipients.isEmpty()) smsService.send(FullNotification.of(smsRecipients, notification));
+            if(!emailRecipients.isEmpty()) emailService.send(FullNotification.of(emailRecipients, notification));
         });
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformationRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformationRepository;
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.mapper.DeviceInformationMapper;
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.repository.DeviceInformationRepositoryPostgres;
 

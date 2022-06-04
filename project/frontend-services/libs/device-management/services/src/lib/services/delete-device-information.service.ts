@@ -12,7 +12,7 @@ import {extract, isNonNull} from "@frontend-services/core";
 @Injectable({
   providedIn: 'root',
 })
-export class DeleteDeviceRecord {
+export class DeleteDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
@@ -29,7 +29,7 @@ export class DeleteDeviceRecord {
       }
     `;
     return this.apollo
-      .use('deviceRecords')
+      .use('deviceInformation')
       .mutate<DeviceRecordDelete>({
         mutation,
         context: {

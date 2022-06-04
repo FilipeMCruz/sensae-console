@@ -4,9 +4,13 @@ import pt.sensae.services.device.management.master.backend.application.DeviceInf
 
 import java.util.Set;
 
-public class DeviceRecordDTOImpl implements DeviceInformationDTO {
+public class DeviceInformationDTOImpl implements DeviceInformationDTO {
+
     public DeviceDTOImpl device;
-    public Set<RecordEntryDTOImpl> entries;
+
+    public Set<RecordEntryDTOImpl> records;
+
+    public Set<DeviceStaticDataDTOImpl> staticData;
 
     public Set<SubDeviceDTOImpl> subDevices;
 

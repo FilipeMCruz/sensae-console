@@ -11,6 +11,7 @@ import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.AlertConsumer;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
@@ -72,6 +73,7 @@ public class AmqpConfiguration {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withOwnership(OwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {

@@ -7,19 +7,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
 import pt.sensae.services.device.management.master.backend.application.RecordRegisterService;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.auth.AuthMiddleware;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.model.DeviceRecordDTOImpl;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.model.DeviceInformationDTOImpl;
 
 @DgsComponent
-public class RecordRegisterController {
+public class DeviceInformationRegisterController {
 
     private final RecordRegisterService service;
 
-    public RecordRegisterController(RecordRegisterService service) {
+    public DeviceInformationRegisterController(RecordRegisterService service) {
         this.service = service;
     }
 
     @DgsMutation(field = "index")
-    public DeviceInformationDTO index(@InputArgument(value = "records") DeviceRecordDTOImpl dto, @RequestHeader("Authorization") String auth) {
+    public DeviceInformationDTO index(@InputArgument(value = "instructions") DeviceInformationDTOImpl dto, @RequestHeader("Authorization") String auth) {
         return service.register(dto, AuthMiddleware.buildAccessToken(auth));
     }
 }

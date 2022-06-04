@@ -3,5 +3,4 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 public class RecordEntryDTOImpl {
     public String label;
     public String content;
-    public RecordTypeDTOImpl type;
 }

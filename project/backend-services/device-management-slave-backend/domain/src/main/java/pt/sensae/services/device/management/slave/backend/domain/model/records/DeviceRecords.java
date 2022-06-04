@@ -1,8 +1,7 @@
 package pt.sensae.services.device.management.slave.backend.domain.model.records;
 
-public interface RecordEntry {
+import java.util.Set;
 
-    String getLabel();
+public record DeviceRecords(Set<BasicRecordEntry> entries) {
 
-    String getContent();
 }

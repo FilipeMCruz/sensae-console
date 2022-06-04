@@ -2,17 +2,19 @@ import {RecordEntry} from './RecordEntry';
 import {Device} from './Device';
 import {SubDevice} from "./SubDevice";
 import {DeviceCommand} from "./DeviceCommand";
+import {StaticDataEntry} from "./StaticDataEntry";
 
 export class DeviceInformation {
-  constructor(public device: Device, public entries: Array<RecordEntry>, public subDevices: Array<SubDevice>, public commands: Array<DeviceCommand>) {
+  constructor(public device: Device, public records: Array<RecordEntry>, public staticData: Array<StaticDataEntry>, public subDevices: Array<SubDevice>, public commands: Array<DeviceCommand>) {
   }
 
   static empty() {
-    return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>());
+    return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<StaticDataEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>());
   }
 
   isValid() {
-    return this.entries.filter((e) => !e.isValid()).length == 0 &&
+    return this.records.filter((e) => !e.isValid()).length == 0 &&
+      this.staticData.filter((e) => !e.isValid()).length == 0 &&
       this.device.id.trim().length != 0 && this.checkForDuplicatedSubDevices();
   }
 

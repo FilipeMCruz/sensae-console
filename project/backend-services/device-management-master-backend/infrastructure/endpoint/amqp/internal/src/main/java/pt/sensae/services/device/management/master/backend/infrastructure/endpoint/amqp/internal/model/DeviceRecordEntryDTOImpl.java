@@ -5,6 +5,4 @@ public class DeviceRecordEntryDTOImpl {
     public String label;
 
     public String content;
-
-    public DeviceRecordEntryTypeDTOImpl type;
 }

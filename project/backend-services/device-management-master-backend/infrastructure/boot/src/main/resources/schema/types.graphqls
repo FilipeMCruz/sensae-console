@@ -1,14 +1,19 @@
-type DeviceRecords {
+type DeviceInformation {
     device : Device
-    entries : [RecordEntry]
+    records : [RecordEntry]
+    staticData: [StaticDataEntry]
     subDevices : [SubDevice]
     commands : [DeviceCommand]
+}
+
+type StaticDataEntry {
+    label : StaticDataType
+    content : String
 }
 
 type RecordEntry {
     label : String
     content : String
-    type : RecordType
 }
 
 type Device {
@@ -34,9 +39,14 @@ type DeviceId {
     id : String
 }
 
-enum RecordType {
-    BASIC
-    SENSOR_DATA
+enum StaticDataType {
+    GPS_LATITUDE,
+    GPS_LONGITUDE,
+    GPS_ALTITUDE,
+    BATTERY_MIN_VOLTS,
+    BATTERY_MAX_VOLTS,
+    MIN_DISTANCE,
+    MAX_DISTANCE
 }
 
 input DeviceInput {
@@ -45,9 +55,10 @@ input DeviceInput {
     downlink : String
 }
 
-input DeviceRecordsInput {
+input DeviceInformationInput {
     device : DeviceInput
-    entries : [RecordEntryInput]
+    records : [RecordEntryInput]
+    staticData: [StaticDataEntryInput]
     subDevices : [SubDeviceInput]
     commands: [DeviceCommandInput]
 }
@@ -55,7 +66,11 @@ input DeviceRecordsInput {
 input RecordEntryInput {
     label : String
     content : String
-    type : RecordType
+}
+
+input StaticDataEntryInput {
+    label : StaticDataType
+    content : String
 }
 
 input SubDeviceInput {

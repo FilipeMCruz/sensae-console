@@ -12,7 +12,7 @@ import {DeviceRecordRegisterMapper} from "@frontend-services/device-management/m
 @Injectable({
   providedIn: 'root',
 })
-export class IndexDeviceRecord {
+export class IndexDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
@@ -21,17 +21,20 @@ export class IndexDeviceRecord {
       return EMPTY;
 
     const mutation = gql`
-      mutation index($records: DeviceRecordsInput) {
-        index(records: $records) {
+      mutation index($instructions: DeviceInformationInput) {
+        index(instructions: $instructions) {
           device {
             id
             name
             downlink
           }
-          entries {
+          records {
             label
             content
-            type
+          }
+          staticData {
+            label
+            content
           }
           subDevices {
             id
@@ -48,7 +51,7 @@ export class IndexDeviceRecord {
       }
     `;
     return this.apollo
-      .use('deviceRecords')
+      .use('deviceInformation')
       .mutate<DeviceRecordsInput>({
         mutation,
         context: {
@@ -58,7 +61,7 @@ export class IndexDeviceRecord {
           ),
         },
         variables: {
-          records: DeviceRecordRegisterMapper.modelToDto(event).index,
+          instructions: DeviceRecordRegisterMapper.modelToDto(event).index,
         },
       })
       .pipe(

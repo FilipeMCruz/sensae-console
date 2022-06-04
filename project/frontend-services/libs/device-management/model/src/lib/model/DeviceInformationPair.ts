@@ -1,5 +1,5 @@
 import { DeviceInformation } from './DeviceInformation';
 
-export class DeviceRecordPair {
+export class DeviceInformationPair {
   constructor(public fresh: DeviceInformation, public old: DeviceInformation) {}
 }

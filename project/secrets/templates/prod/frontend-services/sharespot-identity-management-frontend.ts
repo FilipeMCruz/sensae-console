@@ -6,7 +6,7 @@ export const environment = {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
           scheme: "http://",
-          path: "/graphql",
+          path: "/identity-management/graphql",
         },
       },
     },

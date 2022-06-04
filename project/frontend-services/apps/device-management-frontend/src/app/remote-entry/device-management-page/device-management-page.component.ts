@@ -3,13 +3,13 @@ import {MatDialog} from '@angular/material/dialog';
 import {
   DeviceGroup,
   DeviceInformation,
-  DeviceRecordPair,
+  DeviceInformationPair,
   DeviceViewType,
 } from '@frontend-services/device-management/model';
 import {
-  DeleteDeviceRecord,
-  GetAllDeviceRecords,
-  IndexDeviceRecord,
+  DeleteDeviceInformation,
+  GetAllDeviceInformation,
+  IndexDeviceInformation,
 } from '@frontend-services/device-management/services';
 import {AuthService} from "@frontend-services/simple-auth-lib";
 import {DeviceDialogComponent} from "../device-dialog/device-dialog.component";
@@ -34,14 +34,14 @@ export class DeviceManagementPageComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
-    private recordsCollector: GetAllDeviceRecords,
-    private indexer: IndexDeviceRecord,
-    private eraser: DeleteDeviceRecord,
+    private recordsCollector: GetAllDeviceInformation,
+    private indexer: IndexDeviceInformation,
+    private eraser: DeleteDeviceInformation,
     private authService: AuthService
   ) {
   }
 
-  openDialog(data: DeviceRecordPair) {
+  openDialog(data: DeviceInformationPair) {
     const dialogRef = this.dialog.open(DeviceDialogComponent, {
       width: '1400px',
       data,
@@ -79,7 +79,7 @@ export class DeviceManagementPageComponent implements OnInit {
   addItem(event: DeviceInformation) {
     const deviceRecords = this.records.filter(r => r.device.id == event.device.id);
     if (deviceRecords.length != 0) {
-      this.openDialog(new DeviceRecordPair(event, deviceRecords[0]));
+      this.openDialog(new DeviceInformationPair(event, deviceRecords[0]));
     } else {
       this.saveItem(event);
     }

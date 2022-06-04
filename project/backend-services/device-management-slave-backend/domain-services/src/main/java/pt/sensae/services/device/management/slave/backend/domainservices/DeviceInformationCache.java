@@ -3,8 +3,8 @@ package pt.sensae.services.device.management.slave.backend.domainservices;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.device.management.slave.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.slave.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.slave.backend.domain.model.records.DeviceInformation;
 
 import java.time.Duration;
 import java.util.Optional;

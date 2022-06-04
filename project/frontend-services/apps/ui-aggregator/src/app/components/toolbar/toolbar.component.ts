@@ -101,7 +101,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   async subscribeToNotifications() {
     await this.delay(500);
-    this.notifications.start();
     this.notificationSubscription = this.notifications.getCurrentData()
       .pipe(filter(next => !next.isEmpty()))
       .subscribe(next => this.sendNotification(next));

@@ -1,6 +1,6 @@
 package pt.sensae.services.rule.management.backend.domain;
 
-import pt.sensae.services.rule.management.backend.domain.exceptions.InvalidSenarioException;
+import pt.sensae.services.rule.management.backend.domain.exceptions.InvalidScenarioException;
 
 import java.util.Objects;
 
@@ -9,8 +9,8 @@ public class RuleScenarioId {
     private final String value;
 
     private RuleScenarioId(String value) {
-        if (value.trim().isBlank() || value.matches("^[#0-9A-Za-z\\\\s-]+$"))
-            throw new InvalidSenarioException("Invalid Rule Scenario Id");
+        if (value.trim().isBlank() || !value.matches("^[#0-9A-Za-z -]+$"))
+            throw new InvalidScenarioException("Invalid Rule Scenario Id\nAllowed Characters: Letters, Numbers, # spaces and -");
         this.value = value;
     }
 

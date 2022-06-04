@@ -51,7 +51,6 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchLastMonthNotifications();
-    this.notificationEmitter.start();
     this.subscription = this.notificationEmitter
       .getCurrentData()
       .pipe(filter(next => !next.isEmpty()))

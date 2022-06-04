@@ -2,10 +2,10 @@ package pt.sensae.services.rule.management.backend.domain.exceptions;
 
 public class ExceptionDetail {
 
-    String error;
+    String details;
 
-    private ExceptionDetail(String error) {
-        this.error = error;
+    private ExceptionDetail(String details) {
+        this.details = details;
     }
 
     public ExceptionDetail() {
@@ -15,7 +15,7 @@ public class ExceptionDetail {
         return new ExceptionDetail(error);
     }
 
-    public String getError() {
-        return error;
+    public String getDetails() {
+        return details;
     }
 }

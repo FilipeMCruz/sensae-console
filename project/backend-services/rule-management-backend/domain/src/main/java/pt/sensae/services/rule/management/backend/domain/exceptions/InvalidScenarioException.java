@@ -1,11 +1,11 @@
 package pt.sensae.services.rule.management.backend.domain.exceptions;
 
 
-public class InvalidSenarioException extends RuntimeException {
+public class InvalidScenarioException extends RuntimeException {
 
     private final ExceptionDetail error;
 
-    public InvalidSenarioException(String message) {
+    public InvalidScenarioException(String message) {
         super(message);
         this.error = ExceptionDetail.of(message);
     }

@@ -27,6 +27,15 @@ export class SnackbarService {
     });
   }
 
+  error(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 10000,
+      panelClass: ['critical-snackbar']
+    });
+  }
+
   warning(message: string) {
     return this._snackBar.open(message, undefined, {
       horizontalPosition: 'right',

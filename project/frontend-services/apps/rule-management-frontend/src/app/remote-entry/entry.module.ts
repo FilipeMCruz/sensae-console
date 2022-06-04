@@ -12,7 +12,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatOptionModule} from "@angular/material/core";
@@ -22,6 +21,7 @@ import {RuleManagementPageComponent} from "./rule-management-page/rule-managemen
 import {RuleManagementComponent} from "./rule-management/rule-management.component";
 import {RuleManagementDialogComponent} from "./rule-management-dialog/rule-management-dialog.component";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import {MatChipsModule} from "@angular/material/chips";
     MatInputModule,
     MatButtonModule,
     MatListModule,
-    MatSnackBarModule,
     MatExpansionModule,
     MatRadioModule,
     MatOptionModule,
@@ -56,6 +55,7 @@ import {MatChipsModule} from "@angular/material/chips";
       },
     ]),
     MatChipsModule,
+    MatSnackBarModule
   ],
   providers: [],
 })

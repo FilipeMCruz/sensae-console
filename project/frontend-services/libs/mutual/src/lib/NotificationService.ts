@@ -11,17 +11,19 @@ export class NotificationService {
   private subscription!: Subscription;
 
   private myObservable = new BehaviorSubject<Notification>(Notification.empty());
+
   private currentData = this.myObservable.asObservable();
 
   constructor(private notifications: SubscribeToNotification) {
   }
 
-  start() {
-    if (this.subscription == null)
+  private start() {
+    if (this.subscription == null || this.subscription.closed)
       this.subscription = this.notifications.getData().subscribe(value => this.myObservable.next(value))
   }
 
   getCurrentData(): Observable<Notification> {
+    this.start();
     return this.currentData;
   }
 }

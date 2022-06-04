@@ -12,7 +12,7 @@ import pt.sensae.services.notification.dispatcher.backend.domain.FullNotificatio
 @Service
 public class EmailNotificationServiceImpl implements EmailNotificationService {
 
-    final Logger logger = LoggerFactory.getLogger(EmailNotificationServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(EmailNotificationServiceImpl.class);
 
     @Value("${sensae.email.sender.account}")
     public String accountName;

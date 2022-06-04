@@ -12,7 +12,7 @@ import pt.sensae.services.notification.dispatcher.backend.domain.FullNotificatio
 @Service
 public class SMSNotificationServiceImpl implements SMSNotificationService {
 
-    final Logger logger = LoggerFactory.getLogger(SMSNotificationServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(SMSNotificationServiceImpl.class);
 
     @Value("${sensae.sms.sender.number}")
     public String senderNumber;

@@ -23,6 +23,7 @@ public class AmqpConfiguration {
 
     public static final String IDENTITY_MANAGEMENT_QUEUE = "internal.identity.management.tenant.queue";
 
+    public static final String ADDRESSEE_MANAGEMENT_QUEUE = "internal.notification.management.addressee.sync.queue";
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -116,6 +117,26 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(initQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue initAddresseeQueue() {
+        return QueueBuilder.durable(ADDRESSEE_MANAGEMENT_QUEUE)
+                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding initAddresseeBinding(Queue initAddresseeQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.ADDRESSEE_CONFIGURATION)
+                .withOperationType(OperationTypeOptions.INIT)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(initAddresseeQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

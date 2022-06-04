@@ -15,8 +15,6 @@
         <module>boot</module>
         <module>endpoint</module>
         <module>persistence</module>
-        <module>endpoint/sms</module>
-        <module>endpoint/email</module>
     </modules>
 
     <properties>

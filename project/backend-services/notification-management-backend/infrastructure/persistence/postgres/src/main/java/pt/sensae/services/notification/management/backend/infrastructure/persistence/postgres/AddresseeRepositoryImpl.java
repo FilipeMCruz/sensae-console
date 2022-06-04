@@ -10,6 +10,7 @@ import pt.sensae.services.notification.management.backend.infrastructure.persist
 
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Repository
@@ -26,6 +27,11 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
     public Addressee findById(AddresseeId id) {
         var addresseePostgres = repositoryPostgres.findAllById(id.value().toString());
         return AddresseeMapper.daoToModel(addresseePostgres).findFirst().orElse(Addressee.of(id, new HashSet<>()));
+    }
+
+    @Override
+    public Stream<Addressee> findAll() {
+        return AddresseeMapper.daoToModel(StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false));
     }
 
     @Override

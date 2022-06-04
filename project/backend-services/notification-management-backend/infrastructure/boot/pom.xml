@@ -31,16 +31,6 @@
         </dependency>
         <dependency>
             <groupId>pt.sensae.services</groupId>
-            <artifactId>email</artifactId>
-            <version>0.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>pt.sensae.services</groupId>
-            <artifactId>sms</artifactId>
-            <version>0.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>pt.sensae.services</groupId>
             <artifactId>postgres</artifactId>
             <version>0.8.0</version>
         </dependency>

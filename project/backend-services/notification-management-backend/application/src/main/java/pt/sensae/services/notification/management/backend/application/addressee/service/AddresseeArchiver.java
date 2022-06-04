@@ -3,6 +3,7 @@ package pt.sensae.services.notification.management.backend.application.addressee
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.addressee.mapper.AddresseeCommandMapper;
 import pt.sensae.services.notification.management.backend.application.addressee.mapper.AddresseeDTOMapper;
+import pt.sensae.services.notification.management.backend.application.addressee.mapper.InternalAddresseeDTOMapper;
 import pt.sensae.services.notification.management.backend.application.addressee.model.AddresseeConfigUpdateCommandDTO;
 import pt.sensae.services.notification.management.backend.application.addressee.model.AddresseeDTO;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;
@@ -22,14 +23,22 @@ public class AddresseeArchiver {
 
     private final AddresseeCommandMapper commandMapper;
 
+    private final AddresseeInfoHandler eventHandler;
+
+    private final InternalAddresseeDTOMapper eventMapper;
+
     public AddresseeArchiver(TokenExtractor authHandler,
                              AddresseeRepository repository,
                              AddresseeDTOMapper mapper,
-                             AddresseeCommandMapper commandMapper) {
+                             AddresseeCommandMapper commandMapper,
+                             AddresseeInfoHandler eventHandler,
+                             InternalAddresseeDTOMapper eventMapper) {
         this.authHandler = authHandler;
         this.repository = repository;
         this.mapper = mapper;
         this.commandMapper = commandMapper;
+        this.eventHandler = eventHandler;
+        this.eventMapper = eventMapper;
     }
 
     public AddresseeDTO edit(AddresseeConfigUpdateCommandDTO command, AccessTokenDTO claims) {
@@ -39,6 +48,9 @@ public class AddresseeArchiver {
 
         var index = commandMapper.toDomain(command, AddresseeId.of(extract.oid));
         var addressee = repository.index(index);
+
+        eventHandler.publish(eventMapper.domainToDto(addressee));
+
         return mapper.toDto(addressee);
     }
 }

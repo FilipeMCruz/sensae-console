@@ -13,7 +13,7 @@ import pt.sharespot.iot.core.keys.MessageConsumed;
 @Service
 public class AlertConsumer {
 
-    Logger logger = LoggerFactory.getLogger(AlertConsumer.class);
+    private final Logger logger = LoggerFactory.getLogger(AlertConsumer.class);
 
     public static final String QUEUE = "alert.notification.management.queue";
 

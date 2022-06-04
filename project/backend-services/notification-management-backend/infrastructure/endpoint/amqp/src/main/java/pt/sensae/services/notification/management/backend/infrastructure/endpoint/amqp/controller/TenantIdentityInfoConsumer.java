@@ -11,7 +11,7 @@ public class TenantIdentityInfoConsumer {
 
     private final TenantCache cache;
 
-    public static final String QUEUE = "internal.notification.management.info.queue";
+    public static final String QUEUE = "internal.notification.management.tenant.info.queue";
 
     public TenantIdentityInfoConsumer(TenantCache cache) {
         this.cache = cache;

@@ -23,6 +23,7 @@ envsubst < secrets/templates/prod/backend-services/sharespot-identity-management
 envsubst < secrets/templates/prod/backend-services/sharespot-identity-management-slave-backend.env > secrets/prod/sharespot-identity-management-slave-backend.env
 envsubst < secrets/templates/prod/backend-services/smart-irrigation-backend.env > secrets/prod/smart-irrigation-backend.env
 envsubst < secrets/templates/prod/backend-services/notification-management-backend.env > secrets/prod/notification-management-backend.env
+envsubst < secrets/templates/prod/backend-services/notification-dispatcher-backend.env > secrets/prod/notification-dispatcher-backend.env
 envsubst < secrets/templates/prod/databases/init-sharespot-data-store-database.js > secrets/prod/init-sharespot-data-store-database.js
 envsubst < secrets/templates/prod/databases/sharespot-common-database.env > secrets/prod/sharespot-common-database.env
 envsubst < secrets/templates/prod/databases/sharespot-data-store-database.env > secrets/prod/sharespot-data-store-database.env

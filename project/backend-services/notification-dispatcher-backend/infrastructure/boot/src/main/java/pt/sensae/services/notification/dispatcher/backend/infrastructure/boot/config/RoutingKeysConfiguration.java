@@ -1,7 +1,7 @@
-package pt.sensae.services.notification.management.backend.infrastructure.boot.config;
+package pt.sensae.services.notification.dispatcher.backend.infrastructure.boot.config;
 
 import org.springframework.context.annotation.Configuration;
-import pt.sensae.services.notification.management.backend.application.RoutingKeysProvider;
+import pt.sensae.services.notification.dispatcher.backend.application.RoutingKeysProvider;
 import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
 import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeysFactory;
 import pt.sharespot.iot.core.internal.routing.keys.InternalRoutingKeys;

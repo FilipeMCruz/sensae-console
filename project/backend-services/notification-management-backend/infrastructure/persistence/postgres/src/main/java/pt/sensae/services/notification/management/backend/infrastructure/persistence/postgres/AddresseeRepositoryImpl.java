@@ -1,8 +1,5 @@
 package pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.notification.management.backend.domain.adressee.Addressee;

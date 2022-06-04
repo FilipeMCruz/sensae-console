@@ -6,13 +6,13 @@ import {AuthService} from '@frontend-services/simple-auth-lib';
 import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from "@frontend-services/core";
 import {DeviceInformation} from '@frontend-services/device-management/model';
-import {DeviceRecordQuery} from '@frontend-services/device-management/dto';
-import {DeviceRecordsQueryMapper} from '@frontend-services/device-management/mapper';
+import {DeviceInformationQuery} from '@frontend-services/device-management/dto';
+import {DeviceInformationQueryMapper} from '@frontend-services/device-management/mapper';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GetAllDeviceRecords {
+export class GetAllDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
@@ -21,17 +21,20 @@ export class GetAllDeviceRecords {
       return EMPTY;
 
     const query = gql`
-      query deviceRecords {
-        deviceRecords {
+      query deviceInformation {
+        deviceInformation {
           device {
             id
             name
             downlink
           }
-          entries {
+          records {
             label
             content
-            type
+          }
+          staticData {
+            label
+            content
           }
           subDevices {
             id
@@ -48,8 +51,8 @@ export class GetAllDeviceRecords {
       }
     `;
     return this.apollo
-      .use('deviceRecords')
-      .query<DeviceRecordQuery>({
+      .use('deviceInformation')
+      .query<DeviceInformationQuery>({
         query,
         context: {
           headers: new HttpHeaders().set(
@@ -62,8 +65,8 @@ export class GetAllDeviceRecords {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((data: DeviceRecordQuery) =>
-          DeviceRecordsQueryMapper.dtoToModel(data)
+        map((data: DeviceInformationQuery) =>
+          DeviceInformationQueryMapper.dtoToModel(data)
         )
       );
   }

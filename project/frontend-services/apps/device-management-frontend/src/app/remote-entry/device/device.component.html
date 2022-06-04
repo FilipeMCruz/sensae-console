@@ -56,17 +56,15 @@
   <br/>
 </p>
 <mat-tab-group>
-  <mat-tab label="Record Entries">
+  <mat-tab label="Records">
     <div class="entries">
       <div *ngIf="entryView === viewType.List">
-        <mat-list *ngIf="device.entries.length !== 0" class="inner-element">
+        <mat-list *ngIf="device.records.length !== 0" class="inner-element">
           <mat-list-item
             class="item-list"
-            *ngFor="let entry of device.entries; let i = index"
+            *ngFor="let entry of device.records; let i = index"
           >
-            <mat-icon (click)="editEntry(i)" mat-list-icon>{{
-              getEntryType(entry)
-              }}</mat-icon>
+            <mat-icon (click)="editEntry(i)" mat-list-icon>text_snippet</mat-icon>
             <div mat-line>{{ entry.label }}</div>
             <div mat-line>{{ entry.content }}</div>
             <button
@@ -78,7 +76,7 @@
             </button>
           </mat-list-item>
         </mat-list>
-        <ng-container *ngIf="device.entries.length === 0" class="inner-element">
+        <ng-container *ngIf="device.records.length === 0" class="inner-element">
           <br/>
           <br/>
           <br/>
@@ -97,45 +95,20 @@
                 mat-stroked-button
                 (click)="entryView = viewType.New"
         >
-          New Entry
+          New Record
         </button>
       </div>
       <div *ngIf="entryView !== viewType.List">
         <div class="inner-element">
           <br/>
           <br/>
-          Entry Type:
-          <mat-radio-group class="radio-button" [(ngModel)]="currentEntry.type">
-            <mat-radio-button
-              class="radio-button"
-              *ngFor="let currentType of recordType"
-              [value]="currentType"
-            >
-              {{ currentType }}
-            </mat-radio-button>
-          </mat-radio-group>
-          <div *ngIf="currentEntry.type === typeType.BASIC">
-            <mat-form-field class="medium-input">
-              <mat-label>Label</mat-label>
-              <input matInput type="text" [(ngModel)]="currentEntry.label"/>
-              <mat-icon matSuffix>label</mat-icon>
-              <mat-hint>e.g. license plate</mat-hint>
-            </mat-form-field>
-          </div>
-          <div *ngIf="currentEntry.type === typeType.SENSOR_DATA">
-            <mat-form-field class="medium-input">
-              <mat-label>Sensor Data</mat-label>
-              <mat-icon matSuffix>label</mat-icon>
-              <mat-select [(ngModel)]="currentEntry.label">
-                <mat-option *ngIf="currentEntry.label"
-                            [value]="currentEntry.label">{{ currentEntry.label }}</mat-option>
-                <mat-option *ngFor="let option of sensorDataType" [value]="option">
-                  {{ option }}
-                </mat-option>
-              </mat-select>
-              <mat-hint>Pick One</mat-hint>
-            </mat-form-field>
-          </div>
+          <mat-form-field class="medium-input">
+            <mat-label>Label</mat-label>
+            <input matInput type="text" [(ngModel)]="currentEntry.label"/>
+            <mat-icon matSuffix>label</mat-icon>
+            <mat-hint>e.g. license plate</mat-hint>
+          </mat-form-field>
+          <br/>
           <mat-form-field class="big-input">
             <mat-label>Content</mat-label>
             <input matInput [(ngModel)]="currentEntry.content"/>
@@ -157,6 +130,99 @@
           mat-stroked-button
           color="primary"
           (click)="saveEntryEdit()"
+        >
+          Save Changes
+        </button>
+        <button
+          class="to-right"
+          mat-stroked-button
+          (click)="entryView = viewType.List"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Static Data">
+    <div class="entries">
+      <div *ngIf="entryView === viewType.List">
+        <mat-list *ngIf="device.staticData.length !== 0" class="inner-element">
+          <mat-list-item
+            class="item-list"
+            *ngFor="let entry of device.staticData; let i = index"
+          >
+            <mat-icon (click)="editStaticData(i)" mat-list-icon>{{entry.getIcon()}}</mat-icon>
+            <div mat-line>{{ entry.label }}</div>
+            <div mat-line>{{ entry.content }}</div>
+            <button
+              *ngIf="deviceView !== deviceViewType.Compare && canEdit"
+              mat-icon-button
+              (click)="removeStaticData($event, i)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
+        <ng-container *ngIf="device.staticData.length === 0" class="inner-element">
+          <br/>
+          <br/>
+          <br/>
+          <div class="empty">No Entries</div>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+        </ng-container>
+        <br/>
+        <button class="to-right"
+                *ngIf="deviceView !== deviceViewType.Compare && canEdit"
+                mat-stroked-button
+                (click)="newStaticData()"
+        >
+          New Static Data
+        </button>
+      </div>
+      <div *ngIf="entryView !== viewType.List">
+        <div class="inner-element">
+          <br/>
+          <br/>
+          <mat-form-field class="medium-input">
+            <mat-label>Data Type</mat-label>
+            <mat-icon matSuffix>label</mat-icon>
+            <mat-select [(ngModel)]="currentStaticData.label">
+              <mat-option *ngIf="currentStaticData.label"
+                          [value]="currentStaticData.label">{{ currentStaticData.label }}</mat-option>
+              <mat-option *ngFor="let option of sensorDataType" [value]="option">
+                {{ option }}
+              </mat-option>
+            </mat-select>
+            <mat-hint>Pick One</mat-hint>
+          </mat-form-field>
+          <br/>
+          <mat-form-field class="big-input">
+            <mat-label>Content</mat-label>
+            <input matInput [(ngModel)]="currentStaticData.content"/>
+            <mat-icon matSuffix>info</mat-icon>
+            <mat-hint>e.g. 00-AA-00</mat-hint>
+          </mat-form-field>
+        </div>
+        <br/>
+        <button
+          *ngIf="entryView === viewType.New && canEdit"
+          mat-stroked-button
+          color="primary"
+          (click)="addStaticData()"
+        >
+          Add Static Data
+        </button>
+        <button
+          *ngIf="entryView === viewType.Edit && canEdit"
+          mat-stroked-button
+          color="primary"
+          (click)="saveStaticDataEdit()"
         >
           Save Changes
         </button>
@@ -194,7 +260,7 @@
           <br/>
           <br/>
           <br/>
-          <div class="empty">No Sub Devices</div>
+          <div class="empty">No Entries</div>
           <br/>
           <br/>
           <br/>
@@ -286,7 +352,7 @@
           <br/>
           <br/>
           <br/>
-          <div class="empty">No Commands</div>
+          <div class="empty">No Entries</div>
           <br/>
           <br/>
           <br/>

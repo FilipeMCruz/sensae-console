@@ -1,18 +1,19 @@
-export interface DeviceRecordQuery {
-  deviceRecords: Array<DeviceRecordDTO>
+export interface DeviceInformationQuery {
+  deviceInformation: Array<DeviceInformationDTO>
 }
 
 export interface DeviceRecordsInput {
-  index: DeviceRecordDTO
+  index: DeviceInformationDTO
 }
 
 export interface DeviceRecordDelete {
   delete: DeviceDTO
 }
 
-export interface DeviceRecordDTO {
+export interface DeviceInformationDTO {
   device: DeviceDTO
-  entries: Array<RecordEntryDTO>
+  records: Array<RecordEntryDTO>
+  staticData: Array<StaticDataEntryDTO>
   subDevices: Array<SubDevice>
   commands: Array<DeviceCommandDTO>
 }
@@ -32,19 +33,18 @@ export interface DeviceCommandDTO {
 }
 
 export interface RecordEntryDTO {
-  label: string | SensorDataRecordLabelDTO
+  label: string
   content: string
-  type: RecordTypeDTO
 }
 
-export enum RecordTypeDTO {
-  BASIC = 'BASIC',
-  SENSOR_DATA = 'SENSOR_DATA',
+export interface StaticDataEntryDTO {
+  label: SensorDataRecordLabelDTO
+  content: string
 }
 
 export enum SensorDataRecordLabelDTO {
-  GPS_LATITUDE = 'gpsLatitude',
-  GPS_LONGITUDE = 'gpsLongitude',
+  GPS_LATITUDE = "GPS_LATITUDE",
+  GPS_LONGITUDE = "GPS_LONGITUDE"
 }
 
 export interface SubDevice {

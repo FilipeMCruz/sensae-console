@@ -11,13 +11,17 @@ import pt.sensae.services.device.management.master.backend.domain.model.device.D
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.master.backend.domain.model.exceptions.NotValidException;
-import pt.sensae.services.device.management.master.backend.domain.model.records.*;
+import pt.sensae.services.device.management.master.backend.domain.model.records.BasicRecordEntry;
+import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceRecords;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.DeviceStaticData;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.DeviceStaticDataEntry;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.StaticDataLabel;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.DeviceRef;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.SubDevice;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.SubDevices;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.model.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -27,29 +31,27 @@ public class RecordMapperImpl implements RecordMapper {
 
     @Override
     public DeviceInformation dtoToDomain(DeviceInformationDTO dto) {
-        var deviceDTO = (DeviceRecordDTOImpl) dto;
+        var deviceDTO = (DeviceInformationDTOImpl) dto;
 
-        List<RecordEntry> records = deviceDTO.entries.stream()
-                .map(e -> RecordTypeDTOImpl.BASIC.equals(e.type) ?
-                        new BasicRecordEntry(e.label, e.content) :
-                        new SensorDataRecordEntry(SensorDataRecordLabel.give(e.label), e.content))
-                .collect(Collectors.toList());
+        Set<BasicRecordEntry> records = deviceDTO.records.stream()
+                .map(e -> new BasicRecordEntry(e.label, e.content))
+                .collect(Collectors.toSet());
+
+        Set<DeviceStaticDataEntry> staticData = deviceDTO.staticData.stream()
+                .map(e -> new DeviceStaticDataEntry(dtoToModel(e.label), e.content))
+                .collect(Collectors.toSet());
 
         var subDevices = deviceDTO.subDevices.stream()
                 .map(sub -> new SubDevice(new DeviceId(UUID.fromString(sub.id)), new DeviceRef(sub.ref)))
                 .collect(Collectors.toSet());
 
-        var hasSensorLabelDuplicates = records.stream()
-                .filter(e -> e instanceof SensorDataRecordEntry)
-                .map(e -> ((SensorDataRecordEntry) e).label())
+        var hasSensorLabelDuplicates = staticData.stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .values()
                 .stream()
                 .anyMatch(occurrences -> occurrences != 1);
 
         var hasDuplicates = records.stream()
-                .filter(e -> e instanceof BasicRecordEntry)
-                .map(e -> ((BasicRecordEntry) e).label())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .values()
                 .stream()
@@ -93,26 +95,28 @@ public class RecordMapperImpl implements RecordMapper {
                 .map(c -> new CommandEntry(CommandId.of(c.id), CommandName.of(c.name), CommandPayload.of(c.payload), CommandPort.of(c.port), DeviceRef.of(c.ref)))
                 .collect(Collectors.toSet());
 
-        return new DeviceInformation(new Device(id, name, downlink), new Records(records), new SubDevices(subDevices), new DeviceCommands(commands));
+        return new DeviceInformation(new Device(id, name, downlink), new DeviceRecords(records), new DeviceStaticData(staticData), new SubDevices(subDevices), new DeviceCommands(commands));
     }
 
     @Override
     public DeviceInformationDTO domainToDto(DeviceInformation domain) {
-        var dto = new DeviceRecordDTOImpl();
+        var dto = new DeviceInformationDTOImpl();
         var deviceDTO = new DeviceDTOImpl();
         deviceDTO.id = domain.device().id().value().toString();
         deviceDTO.name = domain.device().name().value();
         deviceDTO.downlink = domain.device().downlink().value();
         dto.device = deviceDTO;
-        dto.entries = domain.records().entries().stream().map(e -> {
+        dto.records = domain.deviceRecords().entries().stream().map(e -> {
             var entry = new RecordEntryDTOImpl();
-            if (e instanceof BasicRecordEntry) {
-                entry.type = RecordTypeDTOImpl.BASIC;
-            } else {
-                entry.type = RecordTypeDTOImpl.SENSOR_DATA;
-            }
-            entry.content = e.getContent();
-            entry.label = e.getLabel();
+            entry.content = e.content();
+            entry.label = e.label();
+            return entry;
+        }).collect(Collectors.toSet());
+
+        dto.staticData = domain.staticData().entries().stream().map(e -> {
+            var entry = new DeviceStaticDataDTOImpl();
+            entry.content = e.content();
+            entry.label = modelToDto(e.label());
             return entry;
         }).collect(Collectors.toSet());
 
@@ -135,6 +139,21 @@ public class RecordMapperImpl implements RecordMapper {
 
         return dto;
     }
+
+    private DeviceStaticDataLabelDTO modelToDto(StaticDataLabel model) {
+        return switch (model) {
+            case GPS_LATITUDE -> DeviceStaticDataLabelDTO.GPS_LATITUDE;
+            case GPS_LONGITUDE -> DeviceStaticDataLabelDTO.GPS_LONGITUDE;
+        };
+    }
+
+    private StaticDataLabel dtoToModel(DeviceStaticDataLabelDTO model) {
+        return switch (model) {
+            case GPS_LATITUDE -> StaticDataLabel.GPS_LATITUDE;
+            case GPS_LONGITUDE -> StaticDataLabel.GPS_LONGITUDE;
+        };
+    }
+
 
     @Override
     public DeviceId dtoToDomain(DeviceDTO dto) {

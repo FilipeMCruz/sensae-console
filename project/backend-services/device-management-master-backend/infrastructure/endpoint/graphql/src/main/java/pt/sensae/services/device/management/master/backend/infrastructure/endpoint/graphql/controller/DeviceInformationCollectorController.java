@@ -10,16 +10,16 @@ import pt.sensae.services.device.management.master.backend.infrastructure.endpoi
 import java.util.List;
 
 @DgsComponent
-public class RecordCollectorController {
+public class DeviceInformationCollectorController {
 
     private final DeviceInformationCollectorService service;
 
-    public RecordCollectorController(DeviceInformationCollectorService service) {
+    public DeviceInformationCollectorController(DeviceInformationCollectorService service) {
         this.service = service;
     }
 
-    @DgsQuery(field = "deviceRecords")
-    public List<DeviceInformationDTO> collect(@RequestHeader("Authorization") String auth) {
+    @DgsQuery(field = "deviceInformation")
+    public List<DeviceInformationDTO> deviceInformation(@RequestHeader("Authorization") String auth) {
         return service.catalog(AuthMiddleware.buildAccessToken(auth)).toList();
     }
 }

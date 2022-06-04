@@ -6,11 +6,11 @@ export const environment = {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
           scheme: "http://",
-          path: "/graphql",
+          path: "/notification-management/graphql",
         },
         websocket: {
           scheme: "ws://",
-          path: "/subscriptions",
+          path: "/notification-management/subscriptions",
         },
       },
     },

@@ -1,29 +1,19 @@
-import {RecordEntryType} from './RecordEntryType';
-import {SensorDataRecordLabel} from './SensorDataRecordLabel';
-
 export class RecordEntry {
   constructor(
-    public label: string | SensorDataRecordLabel,
+    public label: string,
     public content: string,
-    public type: RecordEntryType
   ) {
   }
 
   static empty() {
-    return new RecordEntry('', '', RecordEntryType.BASIC);
+    return new RecordEntry('', '');
   }
 
   clone(): RecordEntry {
-    return new RecordEntry(this.label, this.content, this.type);
+    return new RecordEntry(this.label, this.content);
   }
 
   isValid(): boolean {
-    if (this.type == RecordEntryType.BASIC) {
-      return true;
-    } else {
-      return Object.values(SensorDataRecordLabel).includes(
-        this.label as SensorDataRecordLabel
-      );
-    }
+    return this.label.trim().length !== 0 && this.content.trim().length !== 0;
   }
 }

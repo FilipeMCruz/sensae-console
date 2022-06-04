@@ -15,8 +15,8 @@ export function createNamedApollo(
   httpLink: HttpLink
 ): Record<string, ApolloClientOptions<any>> {
   return {
-    deviceRecords: {
-      link: createLink(httpLink, environment.endpoints.deviceRecords.backend),
+    deviceInformation: {
+      link: createLink(httpLink, environment.endpoints.deviceInformation.backend),
       cache: new InMemoryCache(),
     },
   };

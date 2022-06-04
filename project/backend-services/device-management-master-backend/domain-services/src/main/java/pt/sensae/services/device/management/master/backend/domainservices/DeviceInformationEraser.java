@@ -2,7 +2,7 @@ package pt.sensae.services.device.management.master.backend.domainservices;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
-import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceInformationRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformationRepository;
 
 @Service
 public class DeviceInformationEraser {

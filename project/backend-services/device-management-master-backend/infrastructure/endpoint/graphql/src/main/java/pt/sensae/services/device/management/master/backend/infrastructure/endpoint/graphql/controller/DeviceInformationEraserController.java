@@ -10,11 +10,11 @@ import pt.sensae.services.device.management.master.backend.infrastructure.endpoi
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.model.DeviceDTOImpl;
 
 @DgsComponent
-public class RecordEraserController {
+public class DeviceInformationEraserController {
 
     private final RecordEraserService service;
 
-    public RecordEraserController(RecordEraserService service) {
+    public DeviceInformationEraserController(RecordEraserService service) {
         this.service = service;
     }
 

@@ -11,7 +11,6 @@ import pt.sensae.services.device.management.master.backend.domain.model.device.D
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
-import pt.sensae.services.device.management.master.backend.domain.model.records.BasicRecordEntry;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.*;
 
 import java.util.UUID;
@@ -28,15 +27,21 @@ public class DeviceMapper implements DeviceEventMapper {
         info.downlink = domain.device().downlink().value();
         if (info.downlink == null) info.downlink = "";
 
-        info.entries = domain.records().entries().stream().map(e -> {
+        info.entries = domain.deviceRecords().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryDTOImpl();
-            entry.type = e instanceof BasicRecordEntry ?
-                    DeviceRecordEntryTypeDTOImpl.BASIC :
-                    DeviceRecordEntryTypeDTOImpl.SENSOR_DATA;
-            entry.content = e.getContent();
-            entry.label = e.getLabel();
+            entry.type = DeviceRecordEntryTypeDTOImpl.BASIC;
+            entry.content = e.content();
+            entry.label = e.label();
             return entry;
         }).collect(Collectors.toSet());
+
+        info.entries.addAll(domain.staticData().entries().stream().map(e -> {
+            var entry = new DeviceRecordEntryDTOImpl();
+            entry.type = DeviceRecordEntryTypeDTOImpl.SENSOR_DATA;
+            entry.content = e.content();
+            entry.label = e.label().value();
+            return entry;
+        }).collect(Collectors.toSet()));
 
         info.subSensors = domain.subDevices().entries().stream().map(sub -> {
             var entry = new DeviceSubSensorDTOImpl();
@@ -77,7 +82,10 @@ public class DeviceMapper implements DeviceEventMapper {
     }
 
     public DeviceWithAllOwnerDomains dtoToDomain(DeviceIdentityDTOImpl dto) {
-        var domainIds = dto.information.owners.stream().map(UUID::fromString).map(DomainId::of).collect(Collectors.toSet());
+        var domainIds = dto.information.owners.stream()
+                .map(UUID::fromString)
+                .map(DomainId::of)
+                .collect(Collectors.toSet());
         return new DeviceWithAllOwnerDomains(DeviceId.of(UUID.fromString(dto.deviceId)), domainIds);
     }
 }

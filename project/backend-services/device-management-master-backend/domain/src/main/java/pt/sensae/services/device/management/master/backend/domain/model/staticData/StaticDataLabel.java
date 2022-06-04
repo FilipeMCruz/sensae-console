@@ -1,6 +1,6 @@
-package pt.sensae.services.device.management.master.backend.domain.model.records;
+package pt.sensae.services.device.management.master.backend.domain.model.staticData;
 
-public enum SensorDataRecordLabel {
+public enum StaticDataLabel {
     GPS_LATITUDE {
         @Override
         public String value() {
@@ -14,7 +14,7 @@ public enum SensorDataRecordLabel {
         }
     };
 
-    public static SensorDataRecordLabel give(String s) {
+    public static StaticDataLabel give(String s) {
         if (GPS_LATITUDE.value().equals(s)) {
             return GPS_LATITUDE;
         } else if (GPS_LONGITUDE.value().equals(s)) {

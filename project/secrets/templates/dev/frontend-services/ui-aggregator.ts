@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   endpoints: {
-    deviceRecords: {
+    deviceInformation: {
       backend: {
         domain: "localhost:8088",
         http: {

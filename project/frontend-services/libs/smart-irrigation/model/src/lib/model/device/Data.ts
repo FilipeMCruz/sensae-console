@@ -5,6 +5,7 @@ import {StoveSensorDataDetails} from "../details/StoveSensorDataDetails";
 import {ValveDataDetails} from "../details/ValveDataDetails";
 import {Feature} from "geojson";
 import * as mapboxgl from "mapbox-gl";
+import {DateFormat} from "@frontend-services/core";
 
 export class Data {
   constructor(public id: string, public device: Device, public reportedAt: Date, public data: SensorDataDetails) {
@@ -191,6 +192,10 @@ export class Data {
     this.data = update.data;
   }
 
+  public timeAgo(): string {
+    return DateFormat.timeAgo(this.reportedAt);
+  }
+
   getColor() {
     return {'color': this.data.color}
   }
@@ -255,7 +260,7 @@ export class Data {
         description: `
 <strong>Device Name:</strong> ${this.device.name.value}</br>
 <strong>Device Id:</strong> ${this.device.id.value}</br>
-<strong>Reported At:</strong> ${this.reportedAt.toLocaleString()}</br>
+<strong>Reported:</strong> ${this.timeAgo()}</br>
 ${this.data.getDataDetailsInHTML()}
 `,
         id: this.device.id.value,

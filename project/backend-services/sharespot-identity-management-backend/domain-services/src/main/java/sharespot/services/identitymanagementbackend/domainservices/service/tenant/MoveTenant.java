@@ -20,9 +20,12 @@ public class MoveTenant {
 
     private final DomainRepository domainRepo;
 
-    public MoveTenant(TenantRepository tenantRepo, DomainRepository domainRepo) {
+    private final TenantUpdateEventPublisher publisher;
+
+    public MoveTenant(TenantRepository tenantRepo, DomainRepository domainRepo, TenantUpdateEventPublisher publisher) {
         this.tenantRepo = tenantRepo;
         this.domainRepo = domainRepo;
+        this.publisher = publisher;
     }
 
     public TenantResult execute(PlaceTenantInDomainCommand command, IdentityCommand identity) {
@@ -39,6 +42,9 @@ public class MoveTenant {
         tenantToPlace.domains().add(domain.getOid());
 
         var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);
+
+        publisher.publishUpdate(relocateTenant);
+
         return TenantResultMapper.toResult(relocateTenant);
     }
 
@@ -60,6 +66,9 @@ public class MoveTenant {
         }
 
         var relocateTenant = tenantRepo.relocateTenant(tenantToPlace);
+
+        publisher.publishUpdate(relocateTenant);
+
         return TenantResultMapper.toResult(relocateTenant);
     }
 }

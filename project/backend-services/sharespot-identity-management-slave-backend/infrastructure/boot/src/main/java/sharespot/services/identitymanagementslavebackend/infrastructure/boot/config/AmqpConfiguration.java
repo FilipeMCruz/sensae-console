@@ -14,7 +14,7 @@ import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 import sharespot.services.identitymanagementslavebackend.application.RoutingKeysProvider;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.AlertConsumer;
 import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
-import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.controller.DeviceDomainsConsumer;
+import sharespot.services.identitymanagementslavebackend.infrastructure.endpoint.amqp.internal.controller.DeviceIdentityInfoConsumer;
 
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static sharespot.services.identitymanagementslavebackend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -30,7 +30,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(DeviceDomainsConsumer.QUEUE)
+        return QueueBuilder.durable(DeviceIdentityInfoConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

@@ -18,7 +18,7 @@ public class TenantResultMapper {
 
     public static TenantIdentity toDomain(IdentityCommand command) {
         var domainsId = command.domains.stream().map(UUID::fromString).map(DomainId::of).toList();
-        var tenant = new Tenant(TenantId.of(command.oid), TenantName.of(command.name), TenantEmail.of(command.email), domainsId);
+        var tenant = new Tenant(TenantId.of(command.oid), TenantName.of(command.name), TenantEmail.of(command.email), TenantPhoneNumber.empty(), domainsId);
         var permissions = PermissionsMapper.toDomain(command.permissions.stream()).collect(Collectors.toSet());
         return new TenantIdentity(tenant, DomainPermissions.of(permissions));
     }
@@ -27,6 +27,7 @@ public class TenantResultMapper {
         var identityResult = new TenantResult();
         identityResult.oid = tenant.oid().value();
         identityResult.email = tenant.email().value();
+        identityResult.phoneNumber = tenant.phoneNumber().value();
         identityResult.name = tenant.name().value();
         identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
         return identityResult;
@@ -36,6 +37,7 @@ public class TenantResultMapper {
         var identityResult = new TenantResult();
         identityResult.email = tenant.email().value();
         identityResult.name = tenant.name().value();
+        identityResult.phoneNumber = tenant.phoneNumber().value();
         identityResult.oid = tenant.oid().value();
         identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
 

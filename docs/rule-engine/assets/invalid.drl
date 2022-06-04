@@ -1,26 +1,28 @@
-package org.example.services
+package rules
 
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import org.example.model.AlarmBuilder;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.AlertLevel;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
 import java.util.List;
 import java.util.UUID;
 
-global org.example.model.Dispatcher dispatcher;
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
 
 dialect "mvel"
 
-// catches all ProcessedSensorDataDTO that are not valid in this context
+// catches all SensorDataDTO that are not valid in this context
 // e.g. data without a TRIGGER or without AIR_HUMIDITY_RELATIVE_PERCENTAGE/TEMPERATURE
 rule "Stove/Valve Alarm - Guard Scenario"
     when        
-        ProcessedSensorDataDTO(
+        SensorDataDTO(
             !getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)
             || !getSensorData().hasProperty(PropertyName.TEMPERATURE)
         ) or
-        ProcessedSensorDataDTO(
+        SensorDataDTO(
             !getSensorData().hasProperty(PropertyName.TRIGGER)
         )
     then

@@ -4,8 +4,8 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
+import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
+import pt.sharespot.iot.core.keys.MessageConsumed;
 import sharespot.services.identitymanagementslavebackend.domain.model.identity.device.DeviceId;
 
 import java.util.HashSet;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UnhandledAlertCache {
-    private final Cache<DeviceId, Set<AlertDTO>> cache;
+    private final Cache<DeviceId, Set<MessageConsumed<AlertDTO, AlertRoutingKeys>>> cache;
 
     public UnhandledAlertCache() {
         this.cache = Caffeine.newBuilder()
@@ -22,10 +22,10 @@ public class UnhandledAlertCache {
                 .build();
     }
 
-    public void insert(AlertDTO data, DeviceId id) {
+    public void insert(MessageConsumed<AlertDTO, AlertRoutingKeys> data, DeviceId id) {
         var ifPresent = this.cache.getIfPresent(id);
         if (ifPresent == null) {
-            var list = new HashSet<AlertDTO>();
+            var list = new HashSet<MessageConsumed<AlertDTO, AlertRoutingKeys>>();
             list.add(data);
             this.cache.put(id, list);
         } else {
@@ -33,14 +33,14 @@ public class UnhandledAlertCache {
         }
     }
 
-    public Set<AlertDTO> retrieve(DeviceId id) {
+    public Set<MessageConsumed<AlertDTO, AlertRoutingKeys>> retrieve(DeviceId id) {
         var alerts = this.cache.getIfPresent(id);
         if (alerts == null) {
             return new HashSet<>();
         } else {
             this.cache.invalidate(id);
             return alerts.stream()
-                    .filter(alert -> alert.context
+                    .filter(alert -> alert.data.context
                             .deviceIds.stream()
                             .map(DeviceId::new)
                             .allMatch(dev -> cache.getIfPresent(dev) == null))

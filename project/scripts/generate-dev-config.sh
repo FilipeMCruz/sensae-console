@@ -22,6 +22,8 @@ envsubst < secrets/templates/dev/backend-services/sharespot-fleet-management-bac
 envsubst < secrets/templates/dev/backend-services/sharespot-identity-management-backend.properties > backend-services/sharespot-identity-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-identity-management-slave-backend.properties > backend-services/sharespot-identity-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/smart-irrigation-backend.properties > backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/notification-management-backend.properties > backend-services/notification-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/notification-dispatcher-backend.properties > backend-services/notification-dispatcher-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/databases/init-sharespot-data-store-database.js > secrets/dev/init-sharespot-data-store-database.js
 envsubst < secrets/templates/dev/databases/sharespot-common-database.env > secrets/dev/sharespot-common-database.env
 envsubst < secrets/templates/dev/databases/sharespot-data-store-database.env > secrets/dev/sharespot-data-store-database.env
@@ -32,4 +34,6 @@ envsubst < secrets/templates/dev/frontend-services/sharespot-data-processor-fron
 envsubst < secrets/templates/dev/frontend-services/sharespot-fleet-management-frontend.ts > frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/sharespot-identity-management-frontend.ts > frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.ts
+envsubst < secrets/templates/dev/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.ts
+envsubst < secrets/templates/dev/message-broker/message-broker.env > secrets/dev/message-broker.env

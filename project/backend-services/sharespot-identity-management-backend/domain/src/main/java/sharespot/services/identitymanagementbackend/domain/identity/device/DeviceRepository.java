@@ -14,4 +14,6 @@ public interface DeviceRepository {
     Stream<Device> getDevicesInDomains(Stream<DomainId> domain);
 
     Device add(Device device);
+
+    Stream<Device> findAll();
 }

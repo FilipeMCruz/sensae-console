@@ -4,13 +4,16 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
-import pt.sensae.services.device.management.master.backend.application.ownership.DeviceDomainCheckerService;
-import pt.sensae.services.device.management.master.backend.domainservices.RecordHoarder;
+import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
+import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
+import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationHoarder;
+
+import java.util.UUID;
 
 @Service
 public class RecordRegisterService {
 
-    private final RecordHoarder hoarder;
+    private final DeviceInformationHoarder hoarder;
 
     private final RecordMapper mapper;
 
@@ -18,12 +21,12 @@ public class RecordRegisterService {
 
     private final TokenExtractor authHandler;
 
-    private final DeviceDomainCheckerService ownerChecker;
+    private final DeviceIdentityCache ownerChecker;
 
-    public RecordRegisterService(RecordHoarder hoarder,
+    public RecordRegisterService(DeviceInformationHoarder hoarder,
                                  RecordMapper mapper,
                                  DeviceInformationEventHandlerService publisher,
-                                 TokenExtractor authHandler, DeviceDomainCheckerService ownerChecker) {
+                                 TokenExtractor authHandler, DeviceIdentityCache ownerChecker) {
         this.hoarder = hoarder;
         this.mapper = mapper;
         this.publisher = publisher;
@@ -40,7 +43,9 @@ public class RecordRegisterService {
         var id = deviceInformation.device().id();
 
         if (hoarder.exists(id)) {
-            if (!ownerChecker.owns(claims).toList().contains(id)) {
+            if (!ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of))
+                    .toList()
+                    .contains(id)) {
                 throw new UnauthorizedException("No Permissions");
             }
         }

@@ -79,6 +79,10 @@ public class DomainPermissionTypePostgres {
             case READ_RULE_SCENARIO -> new DomainPermissionTypePostgres(28);
             case EDIT_RULE_SCENARIO -> new DomainPermissionTypePostgres(29);
             case DELETE_RULE_SCENARIO -> new DomainPermissionTypePostgres(30);
+            case READ_PAST_DATA_NOTIFICATION_MANAGEMENT -> new DomainPermissionTypePostgres(31);
+            case READ_LIVE_DATA_NOTIFICATION_MANAGEMENT -> new DomainPermissionTypePostgres(32);
+            case READ_CONFIG_NOTIFICATION_MANAGEMENT -> new DomainPermissionTypePostgres(33);
+            case WRITE_CONFIG_NOTIFICATION_MANAGEMENT -> new DomainPermissionTypePostgres(34);
         };
     }
 
@@ -114,6 +118,10 @@ public class DomainPermissionTypePostgres {
             case 28 -> PermissionType.READ_RULE_SCENARIO;
             case 29 -> PermissionType.EDIT_RULE_SCENARIO;
             case 30 -> PermissionType.DELETE_RULE_SCENARIO;
+            case 31 -> PermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT;
+            case 32 -> PermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT;
+            case 33 -> PermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT;
+            case 34 -> PermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT;
             default -> throw new RuntimeException("Invalid Value");
         };
     }

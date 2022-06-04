@@ -18,6 +18,10 @@ export class RuleScenario {
     );
   }
 
+  copy() {
+    return new RuleScenario(this.id.copy(), this.content.copy(), new IsDraft(true));
+  }
+
   isValid() {
     return (
       this.id.value.trim().length !== 0 &&

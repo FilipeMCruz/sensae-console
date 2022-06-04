@@ -33,6 +33,8 @@ sharedMappings.register(
     '@frontend-services/fleet-management/services',
     '@frontend-services/identity-management/model',
     '@frontend-services/identity-management/services',
+    '@frontend-services/notification-management/model',
+    '@frontend-services/notification-management/services',
   ],
   workspaceRootPath
 );
@@ -58,12 +60,7 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
       library: { type: 'module' },
-      remotes: {
-        'sharespot-data-decoder-frontend':
-          'http://localhost:4286/remoteEntry.js',
-        'smart-irrigation-frontend': 'http://localhost:4298/remoteEntry.js',
-        'rule-management-frontend': 'http://localhost:4294/remoteEntry.js',
-      },
+      remotes: {},
       shared: share({
         '@angular/animations': {
           singleton: true,

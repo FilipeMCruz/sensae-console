@@ -9,8 +9,10 @@ public class TenantResult {
     public UUID oid;
     
     public String email;
-    
+
     public String name;
+
+    public String phoneNumber;
 
     public List<UUID> domains;
     

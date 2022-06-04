@@ -1,7 +1,9 @@
 services:
   message-broker:
-    image: rabbitmq:3.10
+    image: rabbitmq:3.10.5-management
     container_name: message-broker
+    env_file:
+      - secrets/dev/message-broker.env
     ports:
       - 5672:5672
       - 15672:15672

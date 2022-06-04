@@ -21,7 +21,7 @@ import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.co
 
 @Configuration
 public class AmqpConfiguration {
-    
+
     public static final String RULE_MANAGEMENT_QUEUE = "internal.rule.management.queue";
 
     private final RoutingKeysProvider provider;
@@ -57,11 +57,24 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding internalBinding(Queue internalQueue, TopicExchange internalTopic) {
+    Binding internalInfoBinding(Queue internalQueue, TopicExchange internalTopic) {
         var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContainerType(ContainerTypeOptions.RULE_MANAGEMENT)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(internalQueue).to(internalTopic).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    Binding internalSyncBinding(Queue internalQueue, TopicExchange internalTopic) {
+        var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContainerType(ContainerTypeOptions.RULE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.SYNC)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(internalQueue).to(internalTopic).with(keys.get().toString());
@@ -96,7 +109,7 @@ public class AmqpConfiguration {
         var keys = provider.getInternalBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContainerType(ContainerTypeOptions.ALERT_DISPATCHER)
                 .withContextType(ContextTypeOptions.RULE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(ruleQueue).to(internalTopic).with(keys.get().toString());

@@ -24,4 +24,6 @@ public interface DomainRepository {
     Domain changeDomain(Domain domain);
     
     void deleteDomainAndChildren(DomainId id);
+
+    Stream<Domain> findAll();
 }

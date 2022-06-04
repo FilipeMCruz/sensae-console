@@ -45,7 +45,15 @@ public enum PermissionType {
 
     DELETE_RULE_SCENARIO,
 
-    EDIT_RULE_SCENARIO;
+    EDIT_RULE_SCENARIO,
+
+    READ_PAST_DATA_NOTIFICATION_MANAGEMENT,
+
+    READ_LIVE_DATA_NOTIFICATION_MANAGEMENT,
+
+    READ_CONFIG_NOTIFICATION_MANAGEMENT,
+
+    WRITE_CONFIG_NOTIFICATION_MANAGEMENT;
 
     public static void reviewPermissions(Set<PermissionType> permissions) {
 
@@ -57,6 +65,8 @@ public enum PermissionType {
 
         reviewRuleManagementPermissions(permissions);
 
+        reviewNotificationManagementPermissions(permissions);
+
         reviewIdentityManagementDevicePermissions(permissions);
 
         reviewIdentityManagementDomainPermissions(permissions);
@@ -66,6 +76,20 @@ public enum PermissionType {
         reviewGardenSmartIrrigationPermissions(permissions);
 
         reviewDataFleetManagementPermissions(permissions);
+    }
+
+    private static void reviewNotificationManagementPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT)) {
+            permissions.add(PermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT);
+        }
+
+        if (permissions.contains(PermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT)) {
+            permissions.add(PermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT);
+        }
+
+        if (permissions.contains(PermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT)) {
+            permissions.add(PermissionType.READ_PAST_DATA_NOTIFICATION_MANAGEMENT);
+        }
     }
 
     private static void reviewIdentityManagementTenantPermissions(Set<PermissionType> permissions) {

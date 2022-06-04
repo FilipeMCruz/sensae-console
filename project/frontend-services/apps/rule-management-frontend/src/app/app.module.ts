@@ -15,6 +15,7 @@ import {environment} from "../environments/environment";
 import {APOLLO_NAMED_OPTIONS, ApolloModule} from "apollo-angular";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RemoteEntryModule} from "./remote-entry/entry.module";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 export function createNamedApollo(
   httpLink: HttpLink

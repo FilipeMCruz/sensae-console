@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class DeviceRepositoryImpl implements DeviceRepository {
@@ -53,5 +54,11 @@ public class DeviceRepositoryImpl implements DeviceRepository {
         var devicePostgres = DeviceMapper.domainToPostgres(device);
         var saved = repository.save(devicePostgres);
         return DeviceMapper.postgresToDomain(saved);
+    }
+
+    @Override
+    @Transactional
+    public Stream<Device> findAll() {
+        return StreamSupport.stream(repository.findAll().spliterator(), false).map(DeviceMapper::postgresToDomain).toList().stream();
     }
 }

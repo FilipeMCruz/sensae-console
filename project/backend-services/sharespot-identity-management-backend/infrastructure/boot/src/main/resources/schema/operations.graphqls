@@ -1,5 +1,7 @@
 type Query {
     authenticate: AccessToken
+    refresh: AccessToken
+    profile: Tenant
     viewDomain(domain: ViewDomain): [Domain]
     viewDomainInfo(domain: ViewDomain): DomainInfo
     viewChildDomainsInfo(domain: ViewDomain): [DomainInfo]
@@ -11,6 +13,7 @@ type Mutation {
     createDomain(domain: CreateDomain): Domain
     changeDomain(domain: ChangeDomain): Domain
     addTenant(instructions: AddTenantToDomain): Tenant
+    updateTenant(instructions: TenantUpdateCommandInput): Tenant
     removeTenant(instructions: RemoveTenantFromDomain): Tenant
     addDevice(instructions: AddDeviceToDomain): Device
     removeDevice(instructions: RemoveDeviceFromDomain): Device

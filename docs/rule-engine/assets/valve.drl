@@ -1,14 +1,16 @@
-package org.example.services
+package rules
 
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import org.example.model.AlarmBuilder;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.AlertLevel;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
 import java.util.List;
 import java.util.UUID;
 
-global org.example.model.Dispatcher dispatcher;
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
 
 dialect "mvel"
 
@@ -26,7 +28,7 @@ end
 
 rule "Valve Alarm - Guard Scenario"
     when
-        ProcessedSensorDataDTO(
+        SensorDataDTO(
             !getSensorData().hasProperty(PropertyName.TRIGGER)
         )
     then
@@ -35,29 +37,30 @@ end
 //to ensure that only one alarm per valve is sent
 rule "Create new valve device that belongs to Project #003"
     when
-        data : ProcessedSensorDataDTO(
+        data : SensorDataDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
-        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
         not(ValveDevice(deviceId == data.device.id))
     then
         ValveDevice valve = new ValveDevice();
         valve.setDeviceId(data.device.id);
         insert(valve)
-        dispatcher.send(AlarmBuilder.create()
-                          .setName("valve")
-                          .setDescription("New Valve")
-                          .setDeviceId(data.device.id)
-                          .createAlarm());
+        dispatcher.publish(AlertBuilder.create()
+                          .setCategory("new device")
+                          .setSubCategory("valve")
+                          .setLevel(AlertLevel.INFORMATION)
+                          .setDescription("DeviceId: " + data.device.id)
+                          .build());
 end
 
 //if the data is from a valve device and is not duplicated add it
 rule "Collect valve device data that belongs to Project #003"
     when
-        data : ProcessedSensorDataDTO(
+        data : SensorDataDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
-        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
         not(ValveDeviceData(dataId == data.dataId))
     then
         ValveDeviceData reading = new ValveDeviceData();
@@ -65,11 +68,16 @@ rule "Collect valve device data that belongs to Project #003"
         reading.setDataId(data.dataId);
         reading.setOn(data.getSensorData().trigger.value);
         insert(reading)
-        dispatcher.send(AlarmBuilder.create()
-                          .setName("valveData")
+        dispatcher.publish(AlertBuilder.create()
+                          .setCategory("data")
+                          .setSubCategory("valve")
+                          .setLevel(AlertLevel.INFORMATION)
                           .setDescription("DataId: " + data.dataId + " - On: " + data.getSensorData().trigger.value)
-                          .setDeviceId(data.device.id)
-                          .createAlarm());
+                          .setContext(CorrelationDataBuilder.create()
+                                .setDataIds(data.dataId)
+                                .setDeviceIds(data.device.id)
+                                .build())
+                          .build());
 end
 
 rule "Dispatch Valve Alarm - Senario 1 - Project #003"
@@ -84,9 +92,13 @@ rule "Dispatch Valve Alarm - Senario 1 - Project #003"
             )
         )
     then
-        dispatcher.send(AlarmBuilder.create()
-                          .setName("closeValve")
+        dispatcher.publish(AlertBuilder.create()
+                          .setCategory("smartIrrigation")
+                          .setSubCategory("valveOpenForLengthyPeriod")
+                          .setLevel(AlertLevel.ADVISORY)
                           .setDescription("Project #003 - Valve has been open for more than 10 minutes, needs to be closed")
-                          .setDeviceId($v.deviceId)
-                          .createAlarm());
+                          .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($v.deviceId)
+                                .build())
+                          .build());
 end

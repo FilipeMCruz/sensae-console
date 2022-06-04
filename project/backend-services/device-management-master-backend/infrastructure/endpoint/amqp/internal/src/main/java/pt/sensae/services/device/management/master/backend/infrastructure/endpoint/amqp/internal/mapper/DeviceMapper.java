@@ -4,12 +4,14 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceEventMapper;
 import pt.sensae.services.device.management.master.backend.application.DeviceNotificationDTO;
+import pt.sensae.services.device.management.master.backend.application.ownership.DeviceWithAllOwnerDomains;
+import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
-import pt.sensae.services.device.management.master.backend.domain.model.records.*;
+import pt.sensae.services.device.management.master.backend.domain.model.records.BasicRecordEntry;
 import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.*;
 
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class DeviceMapper implements DeviceEventMapper {
         info.deviceId = domain.device().id().value().toString();
         info.name = domain.device().name().value();
         info.downlink = domain.device().downlink().value();
+        if (info.downlink == null) info.downlink = "";
 
         info.entries = domain.records().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryDTOImpl();
@@ -71,5 +74,10 @@ public class DeviceMapper implements DeviceEventMapper {
     public Device dtoToDomain(DeviceDTO dto) {
         var device = (DeviceDTOImpl) dto;
         return new Device(new DeviceId(UUID.fromString(device.deviceId)), new DeviceName(device.name), new DeviceDownlink(device.downlink));
+    }
+
+    public DeviceWithAllOwnerDomains dtoToDomain(DeviceIdentityDTOImpl dto) {
+        var domainIds = dto.information.owners.stream().map(UUID::fromString).map(DomainId::of).collect(Collectors.toSet());
+        return new DeviceWithAllOwnerDomains(DeviceId.of(UUID.fromString(dto.deviceId)), domainIds);
     }
 }

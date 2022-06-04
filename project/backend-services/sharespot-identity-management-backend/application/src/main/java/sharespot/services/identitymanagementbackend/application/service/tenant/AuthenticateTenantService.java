@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import sharespot.services.identitymanagementbackend.application.mapper.tenant.TenantMapper;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.model.tenant.IdentityTokenDTO;
+import sharespot.services.identitymanagementbackend.application.model.tenant.TenantDTO;
 import sharespot.services.identitymanagementbackend.domainservices.service.tenant.AuthenticateTenant;
 
 @Service
@@ -22,5 +23,17 @@ public class AuthenticateTenantService {
         var identity = mapper.dtoToCommand(dto);
         var result = service.execute(identity);
         return mapper.commandToDto(result);
+    }
+
+    public AccessTokenDTO authenticate(AccessTokenDTO dto) {
+        var identity = mapper.dtoToCommand(dto);
+        var result = service.execute(identity);
+        return mapper.commandToDto(result);
+    }
+
+    public TenantDTO fetch(AccessTokenDTO dto) {
+        var identity = mapper.dtoToCommand(dto);
+        var result = service.execute(identity);
+        return mapper.resultToDto(result);
     }
 }

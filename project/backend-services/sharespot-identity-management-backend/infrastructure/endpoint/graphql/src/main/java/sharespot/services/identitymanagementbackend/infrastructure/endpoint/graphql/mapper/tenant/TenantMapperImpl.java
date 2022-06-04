@@ -9,6 +9,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.ExpelTenantFromDomainDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.PlaceTenantInDomainDTOImpl;
 import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.TenantDTOImpl;
+import sharespot.services.identitymanagementbackend.infrastructure.endpoint.graphql.model.tenant.UpdateTenantDTOImpl;
 
 import java.util.UUID;
 
@@ -60,11 +61,21 @@ public class TenantMapperImpl implements TenantMapper {
     }
 
     @Override
+    public UpdateTenantProfileCommand dtoToCommand(UpdateTenantDTO dto) {
+        var info = (UpdateTenantDTOImpl) dto;
+        var command = new UpdateTenantProfileCommand();
+        command.name = info.name;
+        command.phoneNumber = info.phoneNumber;
+        return command;
+    }
+
+    @Override
     public TenantDTO resultToDto(TenantResult result) {
         var dto = new TenantDTOImpl();
         dto.oid = result.oid.toString();
         dto.email = result.email;
         dto.name = result.name;
+        dto.phoneNumber = result.phoneNumber;
         dto.domains = result.domains.stream().map(UUID::toString).toList();
         return dto;
     }

@@ -12,7 +12,7 @@ COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
 COPY infrastructure/pom.xml infrastructure/pom.xml
 COPY pom.xml pom.xml
 # build all external dependencies
-RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=sharespot-fleet-management-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp
+RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=sharespot-fleet-management-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,questdb
 
 COPY . .
 RUN mvn clean package

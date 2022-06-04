@@ -7,9 +7,10 @@ import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.data.validator.backend.application.SensorDataHandlerService;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.MessageSupplied;
 import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
+import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 @Component
 public class SensorDataSupplier {
@@ -26,7 +27,7 @@ public class SensorDataSupplier {
                 });
     }
 
-    private void logSuppliedMessage(MessageSupplied<SensorDataDTO> in) {
+    private void logSuppliedMessage(MessageSupplied<SensorDataDTO, SensorRoutingKeys> in) {
         logger.info("Data Id Supplied: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

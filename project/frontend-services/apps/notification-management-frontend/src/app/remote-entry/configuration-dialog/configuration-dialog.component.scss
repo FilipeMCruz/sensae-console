@@ -1,0 +1,37 @@
+.to-right {
+  float: right;
+}
+
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+.table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 50px;
+}
+
+.container {
+  max-height: 300px;
+  width: 80%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.spaced-input {
+  margin: 0 12px;
+}
+
+.center-cell {
+  text-align: center;
+  justify-content: center;
+}

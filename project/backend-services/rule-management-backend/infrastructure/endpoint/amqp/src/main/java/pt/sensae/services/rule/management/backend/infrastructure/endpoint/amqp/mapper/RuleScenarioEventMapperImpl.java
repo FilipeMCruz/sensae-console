@@ -36,7 +36,7 @@ public class RuleScenarioEventMapperImpl implements RuleScenarioEventMapper {
     }
 
     @Override
-    public RuleScenarioNotificationGroupDTO domainToDto(Set<RuleScenarioNotificationDTO> notifications) {
-        return RuleScenarioNotificationGroupDTOImpl.of(notifications);
+    public RuleScenarioNotificationGroupDTO domainToDto(Set<RuleScenarioNotificationDTO> notifications, boolean staleData) {
+        return RuleScenarioNotificationGroupDTOImpl.of(notifications, staleData);
     }
 }

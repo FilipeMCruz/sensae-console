@@ -1,11 +1,11 @@
 package sharespot.services.identitymanagementslavebackend.application;
 
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.keys.MessageConsumed;
+import pt.sharespot.iot.core.keys.MessageSupplied;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.MessageConsumed;
-import pt.sharespot.iot.core.sensor.routing.MessageSupplied;
 import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -17,9 +17,9 @@ import java.util.Optional;
 @Service
 public class SensorDataPublisherService {
 
-    private FluxSink<MessageSupplied<SensorDataDTO>> dataStream;
+    private FluxSink<MessageSupplied<SensorDataDTO, SensorRoutingKeys>> dataStream;
 
-    private ConnectableFlux<MessageSupplied<SensorDataDTO>> dataPublisher;
+    private ConnectableFlux<MessageSupplied<SensorDataDTO, SensorRoutingKeys>> dataPublisher;
 
     private final DomainAppenderService appender;
     private final RoutingKeysProvider provider;
@@ -31,17 +31,17 @@ public class SensorDataPublisherService {
 
     @PostConstruct
     public void init() {
-        Flux<MessageSupplied<SensorDataDTO>> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<MessageSupplied<SensorDataDTO, SensorRoutingKeys>> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
     }
 
-    public Flux<MessageSupplied<SensorDataDTO>> getSinglePublisher() {
+    public Flux<MessageSupplied<SensorDataDTO, SensorRoutingKeys>> getSinglePublisher() {
         return dataPublisher;
     }
 
-    public void publish(MessageConsumed<SensorDataDTO> message) {
+    public void publish(MessageConsumed<SensorDataDTO, SensorRoutingKeys> message) {
         message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(dataStream::next);
     }
 

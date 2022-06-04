@@ -1,14 +1,16 @@
-package org.example.services
+package rules
 
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.ProcessedSensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordBasicEntryDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
 import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import org.example.model.AlarmBuilder;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.AlertLevel;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
 import java.util.List;
 import java.util.UUID;
 
-global org.example.model.Dispatcher dispatcher;
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
 
 dialect "mvel"
 
@@ -21,13 +23,13 @@ declare StoveSensorData
     @role( event )
     deviceId : UUID
     dataId : UUID
-    temperature : Double
-    humidity : Double
+    temperature : Float
+    humidity : Float
 end
 
 rule "Stove Alarm - Guard Scenario"
     when        
-        ProcessedSensorDataDTO(
+        SensorDataDTO(
             !getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)
             || !getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )
@@ -38,11 +40,11 @@ end
 //to ensure that only one alarm per device is sent
 rule "Create new stove sensor devices that belongs to Project #003"
     when
-        data : ProcessedSensorDataDTO(
+        data : SensorDataDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )
-        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
         not(StoveSensor(deviceId == data.device.id))
     then 
         StoveSensor sensor = new StoveSensor();
@@ -53,11 +55,11 @@ end
 //if the data is from a stove sensor and is not duplicated add it
 rule "Collect stove sensor data that belongs to Project #003"
     when
-        data : ProcessedSensorDataDTO(
+        data : SensorDataDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )
-        exists DeviceRecordBasicEntryDTO(label == "Project" && content == "#003") from data.device.records.entry
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
         not(StoveSensorData(dataId == data.dataId))
     then
         StoveSensorData reading = new StoveSensorData();
@@ -84,9 +86,13 @@ rule "Dispatch Stove Alarm - Scenario - Project #003"
                         $avgHumi : average( $humi );
                         $count != 1 && ($avgHumi < 20 && $maxTemp > 40 && $avgTemp > 30))
     then 
-        dispatcher.send(AlarmBuilder.create()
-                            .setName("drySoilDetected")
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("smartIrrigation")
+                            .setSubCategory("drySoilDetected")
+                            .setLevel(AlertLevel.ADVISORY)
                             .setDescription("Project #003 - Stove environment has low humidity and should be watered")
-                            .setDeviceId($s.deviceId)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($s.deviceId)
+                                .build())
                             .createAlarm());
 end

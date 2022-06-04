@@ -7,6 +7,9 @@ import java.util.List;
 public class TenantDTOImpl implements TenantDTO {
     public String oid;
     public String email;
+    
     public String name;
+    
+    public String phoneNumber;
     public List<String> domains;
 }

@@ -1,9 +1,11 @@
 package sharespot.services.identitymanagementbackend.domainservices.service.tenant;
 
 import org.springframework.stereotype.Service;
+import sharespot.services.identitymanagementbackend.domain.exceptions.UnhauthorizedException;
 import sharespot.services.identitymanagementbackend.domain.identity.domain.DomainRepository;
 import sharespot.services.identitymanagementbackend.domain.identity.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 
@@ -17,9 +19,12 @@ public class AuthenticateTenant {
 
     private final DomainRepository domainRepo;
 
-    public AuthenticateTenant(TenantRepository tenantRepo, DomainRepository domainRepo) {
+    private final TenantUpdateEventPublisher publisher;
+
+    public AuthenticateTenant(TenantRepository tenantRepo, DomainRepository domainRepo, TenantUpdateEventPublisher publisher) {
         this.tenantRepo = tenantRepo;
         this.domainRepo = domainRepo;
+        this.publisher = publisher;
     }
 
     public TenantResult execute(IdentityQuery command) {
@@ -29,12 +34,25 @@ public class AuthenticateTenant {
         return TenantResultMapper.toResult(tenant, domains);
     }
 
+    public TenantResult execute(IdentityCommand command) {
+        var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.email))
+                .orElseThrow(UnhauthorizedException.withMessage("Invalid Credentials"));
+
+        var domains = domainRepo.getDomains(tenant.domains().stream());
+        return TenantResultMapper.toResult(tenant, domains);
+    }
+
     private Tenant newTenant(IdentityQuery command) {
         var tenant = new Tenant(
                 TenantId.of(UUID.randomUUID()),
-                new TenantName(command.name),
-                new TenantEmail(command.preferredUsername),
+                TenantName.of(command.name),
+                TenantEmail.of(command.preferredUsername),
+                TenantPhoneNumber.empty(),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
-        return tenantRepo.registerNewTenant(tenant);
+        var newTenant = tenantRepo.registerNewTenant(tenant);
+
+        publisher.publishUpdate(newTenant);
+
+        return newTenant;
     }
 }

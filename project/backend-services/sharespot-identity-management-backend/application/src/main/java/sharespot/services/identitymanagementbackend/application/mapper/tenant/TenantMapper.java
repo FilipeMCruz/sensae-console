@@ -14,6 +14,7 @@ public interface TenantMapper {
     PlaceTenantInDomainCommand dtoToCommand(PlaceTenantInDomainDTO dto);
 
     RemoveTenantFromDomainCommand dtoToCommand(ExpelTenantFromDomainDTO dto);
+    UpdateTenantProfileCommand dtoToCommand(UpdateTenantDTO dto);
     
     TenantDTO resultToDto(TenantResult result);
 

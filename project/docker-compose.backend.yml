@@ -1,7 +1,9 @@
 services:
   message-broker:
-    image: rabbitmq:3.10
+    image: rabbitmq:3.10.5-management
     container_name: message-broker
+    env_file:
+      - secrets/prod/message-broker.env
     networks:
       - sharespot-network
     ports:
@@ -187,7 +189,7 @@ services:
     networks:
       - sharespot-network
     ports:
-      - 8094:8080  
+      - 8094:8080
   alert-dispatcher-backend:
     build: backend-services/alert-dispatcher-backend
     container_name: alert-dispatcher-backend
@@ -202,6 +204,32 @@ services:
       - 8093:8080
     depends_on:
       - rule-management-backend
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8096:8080
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-dispatcher-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8095:8080
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

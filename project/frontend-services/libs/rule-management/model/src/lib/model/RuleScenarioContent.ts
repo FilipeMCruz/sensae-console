@@ -5,4 +5,8 @@ export class RuleScenarioContent {
   static empty() {
     return new RuleScenarioContent('');
   }
+
+  copy() {
+    return new RuleScenarioContent(this.value);
+  }
 }

@@ -8,9 +8,10 @@ import {
 } from "@frontend-services/rule-management/model";
 import {DeleteRuleScenario, GetAllRuleScenario, IndexRuleScenario} from "@frontend-services/rule-management/services";
 import {RuleManagementDialogComponent} from "../rule-management-dialog/rule-management-dialog.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'frontend-services-data-decoders-page',
+  selector: 'frontend-services-rule-management-page',
   templateUrl: './rule-management-page.component.html',
   styleUrls: ['./rule-management-page.component.scss'],
 })
@@ -22,12 +23,14 @@ export class RuleManagementPageComponent implements OnInit {
   ruleScenarioViewType = RuleScenarioViewType;
 
   loading = true;
+  emptyScenario = RuleScenario.empty();
 
   constructor(
     public dialog: MatDialog,
     private collector: GetAllRuleScenario,
     private indexer: IndexRuleScenario,
-    private eraser: DeleteRuleScenario
+    private eraser: DeleteRuleScenario,
+    private _snackBar: MatSnackBar
   ) {
   }
 
@@ -80,11 +83,13 @@ export class RuleManagementPageComponent implements OnInit {
     this.indexer
       .index(event)
       .subscribe((ruleScenario: RuleScenario) => {
-        this.ruleScenarios = this.ruleScenarios.filter(
-          (r) => r.id.value != ruleScenario.id.value
-        );
-        this.ruleScenarios.push(ruleScenario);
-      });
+          this.ruleScenarios = this.ruleScenarios.filter(
+            (r) => r.id.value != ruleScenario.id.value
+          );
+          this.ruleScenarios.push(ruleScenario);
+          this.emptyScenario = RuleScenario.empty();
+        },
+        error => this.error(error));
   }
 
   deleteItem(event: RuleScenario) {
@@ -111,5 +116,14 @@ export class RuleManagementPageComponent implements OnInit {
 
   canDelete() {
     return this.eraser.canDo();
+  }
+
+  error(message: string) {
+    return this._snackBar.open(message, undefined, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      duration: 10000,
+      panelClass: ['critical-snackbar']
+    });
   }
 }

@@ -1,7 +1,7 @@
 <p>
   <mat-form-field class="medium-input">
     <mat-label>Scenario Id</mat-label>
-    <input [disabled]="ruleScenarioView === scenarioViewType.Compare || !canEdit"
+    <input [disabled]="ruleScenarioView !== scenarioViewType.New"
            [(ngModel)]="ruleScenario.id.value"
            matInput/>
     <mat-hint>Project #003 - Irrigation</mat-hint>

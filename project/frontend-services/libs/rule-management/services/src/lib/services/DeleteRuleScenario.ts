@@ -41,7 +41,7 @@ export class DeleteRuleScenario {
             'Bearer ' + this.auth.getToken()
           ),
         },
-        variables: {type: RuleScenarioIdMapper.modelToDto(event.id)},
+        variables: {id: RuleScenarioIdMapper.modelToDto(event.id)},
       })
       .pipe(
         map(extract),

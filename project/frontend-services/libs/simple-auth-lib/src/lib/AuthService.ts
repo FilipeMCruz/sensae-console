@@ -3,6 +3,7 @@ import {ValidateCredentials} from './services/ValidateCredentials';
 import {ReplaySubject} from 'rxjs';
 import jwt_decode, {JwtPayload} from 'jwt-decode';
 import {TenantIdentity} from './dto/CredentialsDTO';
+import {RefreshAuthToken} from "./services/RefreshAuthToken";
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,11 @@ import {TenantIdentity} from './dto/CredentialsDTO';
 export class AuthService {
   private payload?: TenantIdentity;
 
-  private accessToken?: string;
+  private accessToken!: string;
 
-  constructor(private validator: ValidateCredentials) {}
+  constructor(private validator: ValidateCredentials,
+              private refresher: RefreshAuthToken) {
+  }
 
   private static toDto(payload: JwtPayload): TenantIdentity {
     // @ts-ignore
@@ -31,10 +34,11 @@ export class AuthService {
   login(token: string) {
     const subject = new ReplaySubject(1);
     this.validator.validate(token).subscribe((next) => {
-      this.accessToken = next.data?.authenticate.token;
-      if (this.accessToken) {
-        const claims = jwt_decode<JwtPayload>(this.accessToken);
-        this.payload = AuthService.toDto(claims);
+      const token = next.data?.authenticate.token;
+      if (token) {
+        this.accessToken = token;
+        this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
+        this.startAuthTokenPooling();
       }
     });
     subject.next(true);
@@ -47,8 +51,23 @@ export class AuthService {
     });
   }
 
+  startAuthTokenPooling() {
+    setInterval(() => this.refresh(this.accessToken), 1500000);
+  }
+
+  refresh(token: string) {
+    console.log("Refreshing token", token)
+    this.refresher.refresh(token).subscribe((next) => {
+      const token = next.data?.refresh.token;
+      if (token) {
+        this.accessToken = token;
+        this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
+      }
+    });
+  }
+
   logout() {
-    this.accessToken = undefined;
+    this.accessToken = "";
   }
 
   isAuthenticated(): boolean {

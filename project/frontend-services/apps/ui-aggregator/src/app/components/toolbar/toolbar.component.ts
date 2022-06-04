@@ -1,19 +1,11 @@
 import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {
-  Microfrontend,
-  MicrofrontendType,
-} from '../microfrontends/microfrontend';
+import {Microfrontend, MicrofrontendType,} from '../microfrontends/microfrontend';
 import {Router} from '@angular/router';
 import {LookupService} from '../microfrontends/lookup.service';
 import {buildRoutes} from '../microfrontends/buildRoutes.service';
 import {AuthGuardService} from '../../services/AuthGuardService';
-import {
-  MSAL_GUARD_CONFIG,
-  MsalBroadcastService,
-  MsalGuardConfiguration,
-  MsalService,
-} from '@azure/msal-angular';
-import {Subject} from 'rxjs';
+import {MSAL_GUARD_CONFIG, MsalBroadcastService, MsalGuardConfiguration, MsalService,} from '@azure/msal-angular';
+import {Subject, Subscription} from 'rxjs';
 import {filter, takeUntil} from 'rxjs/operators';
 import {
   AuthenticationResult,
@@ -25,7 +17,9 @@ import {
   RedirectRequest,
 } from '@azure/msal-browser';
 import {AuthService} from '@frontend-services/simple-auth-lib';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {SnackbarService} from "../../services/SnackBarService";
+import {NotificationService} from "@frontend-services/mutual";
+import {Notification, NotificationSeverityLevel} from "@frontend-services/notification-management/model";
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -39,10 +33,13 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   microfrontendServices: Microfrontend[] = [];
   microfrontendTools: Microfrontend[] = [];
 
+  private notificationSubscription!: Subscription;
+
   constructor(
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
-    private _snackBar: MatSnackBar,
+    private _snackBar: SnackbarService,
     private externalAuthService: MsalService,
+    private notifications: NotificationService,
     private authService: AuthService,
     private msalBroadcastService: MsalBroadcastService,
     private router: Router,
@@ -102,6 +99,27 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  async subscribeToNotifications() {
+    await this.delay(500);
+    this.notificationSubscription = this.notifications.getCurrentData()
+      .pipe(filter(next => !next.isEmpty()))
+      .subscribe(next => this.sendNotification(next));
+  }
+
+  sendNotification(notification: Notification) {
+    if (notification.contentType.severity === NotificationSeverityLevel.CRITICAL) {
+      this._snackBar.critical(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.WARNING) {
+      this._snackBar.warning(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.ADVISORY) {
+      this._snackBar.advisory(notification.toSnackBar());
+    } else if (notification.contentType.severity === NotificationSeverityLevel.WATCH) {
+      this._snackBar.watch(notification.toSnackBar());
+    } else {
+      this._snackBar.information(notification.toSnackBar());
+    }
+  }
+
   checkAndSetActiveAccount() {
     /**
      * If no active account set but there are accounts signed in, sets first account to active account
@@ -124,8 +142,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         .then((token) =>
           this.authService.login(token.idToken).subscribe((value) => {
             value
-              ? this.openSnackBar('Valid Credentials')
-              : this.openSnackBar('Invalid Credentials');
+              ? this._snackBar.default('Valid Credentials')
+              : this._snackBar.default('Invalid Credentials');
+            this.subscribeToNotifications();
           })
         );
     }
@@ -135,12 +154,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     await this.router.navigate(['loading']);
     await this.delay(500);
     await this.router.navigate([url]);
-  }
-
-  openSnackBar(message: string) {
-    this._snackBar.open(message, undefined, {
-      duration: 3000,
-    });
   }
 
   delay(milliseconds: number) {
@@ -187,10 +200,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.externalAuthService.logout();
+    this.notificationSubscription.unsubscribe();
   }
 
   // unsubscribe to events when component is destroyed
   ngOnDestroy(): void {
+    this.notificationSubscription.unsubscribe();
     this._destroying$.next(undefined);
     this._destroying$.complete();
   }
@@ -206,5 +221,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     return routes.some((r) =>
       this.authGuardService.canShow(r.details.permissions, r.routePath)
     );
+  }
+
+  profile() {
+    this.router.navigate(['profile']);
   }
 }

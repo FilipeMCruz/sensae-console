@@ -11,6 +11,7 @@ import sharespot.services.identitymanagementbackend.infrastructure.persistence.p
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Repository
 public class DomainRepositoryImpl implements DomainRepository {
@@ -97,5 +98,10 @@ public class DomainRepositoryImpl implements DomainRepository {
     @Override
     public void deleteDomainAndChildren(DomainId id) {
         repository.deleteDomainChilds(PostgresArrayMapper.toArray(id.value().toString()));
+    }
+
+    @Override
+    public Stream<Domain> findAll() {
+        return StreamSupport.stream(repository.findAll().spliterator(), false).map(DomainMapper::postgresToDomain);
     }
 }

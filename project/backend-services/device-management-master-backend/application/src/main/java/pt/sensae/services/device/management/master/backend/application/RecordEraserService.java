@@ -1,16 +1,19 @@
 package pt.sensae.services.device.management.master.backend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
-import pt.sensae.services.device.management.master.backend.application.ownership.DeviceDomainCheckerService;
-import pt.sensae.services.device.management.master.backend.domainservices.RecordEraser;
+import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
+import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
+import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
+import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationEraser;
+
+import java.util.UUID;
 
 @Service
 public class RecordEraserService {
 
-    private final RecordEraser eraser;
+    private final DeviceInformationEraser eraser;
 
     private final RecordMapper mapper;
 
@@ -18,13 +21,13 @@ public class RecordEraserService {
 
     private final TokenExtractor authHandler;
 
-    private final DeviceDomainCheckerService ownerChecker;
+    private final DeviceIdentityCache ownerChecker;
 
-    public RecordEraserService(RecordEraser eraser,
+    public RecordEraserService(DeviceInformationEraser eraser,
                                RecordMapper mapper,
                                DeviceInformationEventHandlerService publisher,
                                TokenExtractor authHandler,
-                               DeviceDomainCheckerService ownerChecker) {
+                               DeviceIdentityCache ownerChecker) {
         this.eraser = eraser;
         this.mapper = mapper;
         this.publisher = publisher;
@@ -39,7 +42,7 @@ public class RecordEraserService {
 
         var deviceId = mapper.dtoToDomain(dto);
 
-        var owns = ownerChecker.owns(claims).toList();
+        var owns = ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of)).toList();
 
         if (owns.contains(deviceId)) {
             var erased = eraser.erase(deviceId);

@@ -2,6 +2,8 @@ services:
   message-broker:
     image: rabbitmq:3.10
     container_name: message-broker
+    env_file:
+      - secrets/prod/message-broker.env
     networks:
       - sharespot-network
     ports:
@@ -27,6 +29,7 @@ services:
       - sharespot-identity-management-frontend
       - smart-irrigation-frontend
       - rule-management-frontend
+      - notification-frontend
   device-management-frontend:
     build:
       dockerfile: docker/device-management-frontend/Dockerfile
@@ -125,6 +128,20 @@ services:
       - 443
     depends_on:
       - smart-irrigation-backend
+  notification-management-frontend:
+    build:
+      dockerfile: docker/notification-management-frontend/Dockerfile
+      context: frontend-services
+    image: notification-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sharespot-network
+    ports:
+      - 443
+    depends_on:
+      - notification-management-backend
   sharespot-data-relayer:
     build: backend-services/sharespot-data-relayer
     image: sharespot-data-relayer
@@ -308,8 +325,30 @@ services:
       - ./secrets/prod/alert-dispatcher-backend.env
     networks:
       - sharespot-network
-    depends_on:
-      - rule-management-backend
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-management-backend.env
+    networks:
+      - sharespot-network
+    ports:
+      - 8080
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-dispatcher-backend.env
+    networks:
+      - sharespot-network
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database

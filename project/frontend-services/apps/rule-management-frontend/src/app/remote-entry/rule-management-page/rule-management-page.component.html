@@ -45,6 +45,7 @@
       <mat-card-content>
         <frontend-services-rule-management
           (newRuleScenarioEvent)="addItem($event)"
+          [entry]="emptyScenario"
           [ruleScenarioViewType]="ruleScenarioViewType.New"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"

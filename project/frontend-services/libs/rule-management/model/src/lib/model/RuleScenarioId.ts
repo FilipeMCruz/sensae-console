@@ -4,4 +4,8 @@ export class RuleScenarioId {
   static empty() {
     return new RuleScenarioId('');
   }
+
+  copy() {
+    return new RuleScenarioId(this.value);
+  }
 }

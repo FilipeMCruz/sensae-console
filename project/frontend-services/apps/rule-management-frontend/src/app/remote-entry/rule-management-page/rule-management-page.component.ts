@@ -23,6 +23,7 @@ export class RuleManagementPageComponent implements OnInit {
   ruleScenarioViewType = RuleScenarioViewType;
 
   loading = true;
+  emptyScenario = RuleScenario.empty();
 
   constructor(
     public dialog: MatDialog,
@@ -86,6 +87,7 @@ export class RuleManagementPageComponent implements OnInit {
             (r) => r.id.value != ruleScenario.id.value
           );
           this.ruleScenarios.push(ruleScenario);
+          this.emptyScenario = RuleScenario.empty();
         },
         error => this.error(error));
   }

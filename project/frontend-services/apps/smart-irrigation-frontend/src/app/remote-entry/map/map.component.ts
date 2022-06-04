@@ -70,10 +70,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   private fetchGardens() {
     this.loadingGardens = true;
-    this.fetchGardensService.getData().subscribe(
-      next => {
-        this.gardens = next;
-        this.map.on('load', () => {
+    this.map.on('load', () => {
+      this.fetchGardensService.getData().subscribe(
+        next => {
+          this.gardens = next;
           this.drawGardens();
           this.map.on('click', 'gardens', (e) => {
             if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
@@ -85,11 +85,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           this.map.on('mouseleave', 'gardens', () => {
             this.map.getCanvas().style.cursor = '';
           });
-        });
-      },
-      error => error,
-      () => this.loadingGardens = false
-    );
+        },
+        error => error,
+        () => this.loadingGardens = false
+      );
+    });
   }
 
   private drawGardens() {
@@ -191,10 +191,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   fetchLatestData() {
     const filter = new LatestDataQueryFilters([], []);
-    this.fetchLatestDataService.getData(filter).subscribe(
-      next => {
-        this.latestData.push(...next);
-        this.map.on('load', () => {
+    this.map.on('load', () => {
+      this.fetchLatestDataService.getData(filter).subscribe(
+        next => {
+          this.latestData.push(...next);
           this.drawLatestData();
           const popup = new mapboxgl.Popup({
             maxWidth: 'none',
@@ -221,9 +221,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
             this.map.getCanvas().style.cursor = '';
             popup.remove();
           });
-        });
-      },
-      error => error);
+        },
+        error => error);
+    });
   }
 
   drawLatestData() {

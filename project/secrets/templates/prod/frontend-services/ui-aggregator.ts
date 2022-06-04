@@ -5,8 +5,8 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/device-management/graphql",
         },
       },
     },
@@ -14,8 +14,8 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/data-processor/graphql",
         },
       },
     },
@@ -23,8 +23,8 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/data-decoder/graphql",
         },
       },
     },
@@ -32,12 +32,12 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/fleet-management/graphql",
         },
         websocket: {
-          scheme: "ws://",
-          path: "/subscriptions",
+          scheme: "wss://",
+          path: "/fleet-management/subscriptions",
         },
       },
     },
@@ -45,8 +45,8 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/identity-management/graphql",
         },
       },
     },
@@ -54,12 +54,12 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/smart-irrigation/graphql",
         },
         websocket: {
-          scheme: "ws://",
-          path: "/subscriptions",
+          scheme: "wss://",
+          path: "/smart-irrigation/subscriptions",
         },
       },
     },
@@ -67,22 +67,22 @@ export const environment = {
       backend: {
         domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
-          scheme: "http://",
-          path: "/graphql",
+          scheme: "https://",
+          path: "/rule-management/graphql",
         },
       },
     },
-  },
-  notificationManagement: {
-    backend: {
-      domain: "localhost",
-      http: {
-        scheme: "http://",
-        path: "/graphql",
-      },
-      websocket: {
-        scheme: "ws://",
-        path: "/subscriptions",
+    notificationManagement: {
+      backend: {
+        domain: "localhost",
+        http: {
+          scheme: "https://",
+          path: "/notification-management/graphql",
+        },
+        websocket: {
+          scheme: "wss://",
+          path: "/notification-management/subscriptions",
+        },
       },
     },
   },

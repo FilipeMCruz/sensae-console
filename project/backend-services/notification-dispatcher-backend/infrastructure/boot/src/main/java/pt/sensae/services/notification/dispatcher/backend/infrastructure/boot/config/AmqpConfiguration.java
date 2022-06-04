@@ -8,9 +8,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.notification.dispatcher.backend.application.RoutingKeysProvider;
-import pt.sensae.services.notification.dispatcher.backend.infrastructure.endpoint.amqp.controller.AlertConsumer;
-import pt.sensae.services.notification.dispatcher.backend.infrastructure.endpoint.amqp.controller.TenantIdentityInfoConsumer;
-import pt.sensae.services.notification.dispatcher.backend.infrastructure.endpoint.amqp.controller.TenantIdentitySyncConsumer;
+import pt.sensae.services.notification.dispatcher.backend.infrastructure.endpoint.amqp.controller.*;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
@@ -18,12 +16,15 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 
+import static pt.sensae.services.notification.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
+import static pt.sensae.services.notification.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
+
 @Configuration
 public class AmqpConfiguration {
 
     public static final String IDENTITY_MANAGEMENT_QUEUE = "internal.identity.management.tenant.queue";
 
-    public static final String ADDRESSEE_MANAGEMENT_QUEUE = "internal.notification.management.addressee.sync.queue";
+    public static final String ADDRESSEE_MANAGEMENT_QUEUE = "internal.notification.management.addressee.init.queue";
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -38,8 +39,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue internalInfoQueue() {
         return QueueBuilder.durable(TenantIdentityInfoConsumer.QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -59,8 +60,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue internalSyncQueue() {
         return QueueBuilder.durable(TenantIdentitySyncConsumer.QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -85,8 +86,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue alertQueue() {
         return QueueBuilder.durable(AlertConsumer.QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -104,8 +105,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue initQueue() {
         return QueueBuilder.durable(IDENTITY_MANAGEMENT_QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -124,8 +125,8 @@ public class AmqpConfiguration {
     @Bean
     public Queue initAddresseeQueue() {
         return QueueBuilder.durable(ADDRESSEE_MANAGEMENT_QUEUE)
-                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
@@ -137,6 +138,48 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(initAddresseeQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue internalAddresseeInfoQueue() {
+        return QueueBuilder.durable(AddresseeInfoConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingInternalAddresseeInfo(Queue internalAddresseeInfoQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.ADDRESSEE_CONFIGURATION)
+                .withContainerType(ContainerTypeOptions.NOTIFICATION_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(internalAddresseeInfoQueue).to(internalExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue internalAddresseeSyncQueue() {
+        return QueueBuilder.durable(AddresseeSyncConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingAddresseeSyncMaster(Queue internalAddresseeSyncQueue, TopicExchange internalExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.ADDRESSEE_CONFIGURATION)
+                .withContainerType(ContainerTypeOptions.NOTIFICATION_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.SYNC)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(internalAddresseeSyncQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

@@ -10,7 +10,7 @@ public class AddressInitConsumer {
 
     private final AddresseeInitNotificationHandler handler;
 
-    public static final String QUEUE = "internal.notification.management.addressee.sync.queue";
+    public static final String QUEUE = "internal.notification.management.addressee.init.queue";
 
     public AddressInitConsumer(AddresseeInitNotificationHandler handler) {
         this.handler = handler;

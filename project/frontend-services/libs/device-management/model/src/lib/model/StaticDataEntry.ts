@@ -16,7 +16,9 @@ export class StaticDataEntry {
   }
 
   isValid(): boolean {
-    return this.content !== SensorDataRecordLabel.ERROR;
+    return this.label !== SensorDataRecordLabel.ERROR &&
+      this.content.trim().length !== 0 &&
+      !isNaN(+this.content.trim());
   }
 
   clone() {
@@ -25,12 +27,22 @@ export class StaticDataEntry {
 
   getIcon() {
     switch (this.label) {
-      case SensorDataRecordLabel.ERROR:
-        return 'error'
+      case SensorDataRecordLabel.GPS_ALTITUDE:
+        return 'terrain';
+      case SensorDataRecordLabel.BATTERY_MIN_VOLTS:
+        return 'battery_0_bar';
+      case SensorDataRecordLabel.BATTERY_MAX_VOLTS:
+        return 'battery_full';
+      case SensorDataRecordLabel.MIN_DISTANCE:
+        return 'straighten';
+      case SensorDataRecordLabel.MAX_DISTANCE:
+        return 'straighten';
       case SensorDataRecordLabel.GPS_LATITUDE:
         return 'share_location'
       case SensorDataRecordLabel.GPS_LONGITUDE:
         return 'share_location'
+      case SensorDataRecordLabel.ERROR:
+        return 'error'
     }
   }
 }

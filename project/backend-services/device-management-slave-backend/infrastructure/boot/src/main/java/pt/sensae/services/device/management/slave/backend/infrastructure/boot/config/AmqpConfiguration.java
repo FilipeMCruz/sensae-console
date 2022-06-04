@@ -69,7 +69,7 @@ public class AmqpConfiguration {
         var keys = provider.getSensorTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
-                .withOwnership(OwnershipOptions.UNIDENTIFIED_DOMAIN_OWNERSHIP)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {

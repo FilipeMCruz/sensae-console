@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.data.validator.backend.application.RoutingKeysProvider;
 import pt.sensae.services.data.validator.backend.infrastructure.endpoint.amqpingress.controller.SensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
@@ -40,6 +41,7 @@ public class AmqpConfiguration {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
                 .withRecords(RecordsOptions.WITH_RECORDS)
                 .missingAsAny();
         if (keys.isPresent()) {

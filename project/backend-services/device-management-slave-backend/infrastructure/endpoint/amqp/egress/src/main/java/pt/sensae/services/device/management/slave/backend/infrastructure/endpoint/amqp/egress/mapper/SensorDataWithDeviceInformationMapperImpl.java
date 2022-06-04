@@ -9,6 +9,8 @@ import pt.sensae.services.device.management.slave.backend.domain.model.staticDat
 import pt.sensae.services.device.management.slave.backend.domain.model.staticData.StaticDataLabel;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.BatteryDataDTO;
+import pt.sharespot.iot.core.sensor.model.data.types.DistanceDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
 import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
 import pt.sharespot.iot.core.sensor.model.device.controls.DeviceCommandDTO;
@@ -26,6 +28,8 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
         var staticData = deviceInformation.staticData();
 
         addGPSData(domain, staticData);
+        addBatteryData(domain, staticData);
+        addDistanceData(domain, staticData);
 
         var newRecords = deviceInformation.deviceRecords()
                 .entries()
@@ -80,12 +84,53 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
                 .filter(e -> e.has(StaticDataLabel.GPS_LONGITUDE))
                 .findFirst();
 
-        if (domain.getSensorData().gps == null && (latitudeOpt.isPresent() || longitudeOpt.isPresent())) {
+        var altitudeOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.GPS_ALTITUDE))
+                .findFirst();
+
+        if (domain.getSensorData().gps == null && (latitudeOpt.isPresent() || longitudeOpt.isPresent() || altitudeOpt.isPresent())) {
             domain.getSensorData().withGps(new GPSDataDTO());
         }
 
         latitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.latitude = Double.valueOf(deviceStaticDataEntry.content()));
         longitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.longitude = Double.valueOf(deviceStaticDataEntry.content()));
+        altitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.altitude = Float.valueOf(deviceStaticDataEntry.content()));
+    }
+
+    private void addDistanceData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+
+        var maxDistanceOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.MAX_DISTANCE))
+                .findFirst();
+
+        var minDistanceOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.MIN_DISTANCE))
+                .findFirst();
+
+        if (domain.getSensorData().distance == null && (maxDistanceOpt.isPresent() || minDistanceOpt.isPresent())) {
+            domain.getSensorData().withDistance(new DistanceDataDTO());
+        }
+
+        maxDistanceOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().distance.maxMillimeters = Float.valueOf(deviceStaticDataEntry.content()));
+        minDistanceOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().distance.minMillimeters = Float.valueOf(deviceStaticDataEntry.content()));
+    }
+
+    private void addBatteryData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+
+        var maxBatOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.BATTERY_MAX_VOLTS))
+                .findFirst();
+
+        var minBatOpt = deviceInformation.entries().stream()
+                .filter(e -> e.has(StaticDataLabel.BATTERY_MIN_VOLTS))
+                .findFirst();
+
+        if (domain.getSensorData().battery == null && (maxBatOpt.isPresent() || minBatOpt.isPresent())) {
+            domain.getSensorData().withBattery(new BatteryDataDTO());
+        }
+
+        maxBatOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().battery.maxVolts = Float.valueOf(deviceStaticDataEntry.content()));
+        minBatOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().battery.minVolts = Float.valueOf(deviceStaticDataEntry.content()));
     }
 
     private DeviceCommandDTO processCommands(CommandEntry model) {

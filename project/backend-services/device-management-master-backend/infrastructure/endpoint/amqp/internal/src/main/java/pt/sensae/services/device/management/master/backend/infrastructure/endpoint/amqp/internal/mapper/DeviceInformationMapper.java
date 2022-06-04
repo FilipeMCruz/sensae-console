@@ -70,6 +70,11 @@ public class DeviceInformationMapper implements DeviceEventMapper {
         return switch (model) {
             case GPS_LATITUDE -> DeviceStaticDataLabelDTOImpl.GPS_LATITUDE;
             case GPS_LONGITUDE -> DeviceStaticDataLabelDTOImpl.GPS_LONGITUDE;
+            case GPS_ALTITUDE -> DeviceStaticDataLabelDTOImpl.GPS_ALTITUDE;
+            case BATTERY_MAX_VOLTS -> DeviceStaticDataLabelDTOImpl.BATTERY_MAX_VOLTS;
+            case BATTERY_MIN_VOLTS -> DeviceStaticDataLabelDTOImpl.BATTERY_MIN_VOLTS;
+            case MIN_DISTANCE -> DeviceStaticDataLabelDTOImpl.MIN_DISTANCE;
+            case MAX_DISTANCE -> DeviceStaticDataLabelDTOImpl.MAX_DISTANCE;
         };
     }
 

@@ -38,7 +38,14 @@ public class DeviceInformationMapperImpl implements RecordMapper {
                 .collect(Collectors.toSet());
 
         Set<DeviceStaticDataEntry> staticData = deviceDTO.staticData.stream()
-                .map(e -> new DeviceStaticDataEntry(dtoToModel(e.label), e.content))
+                .map(e -> {
+                    try {
+                        Double.parseDouble(e.content);
+                        return new DeviceStaticDataEntry(dtoToModel(e.label), e.content);
+                    } catch (Exception ex) {
+                        throw new NotValidException(e.label + " content is not a valid number: " + e.content);
+                    }
+                })
                 .collect(Collectors.toSet());
 
         var subDevices = deviceDTO.subDevices.stream()
@@ -144,6 +151,11 @@ public class DeviceInformationMapperImpl implements RecordMapper {
         return switch (model) {
             case GPS_LATITUDE -> DeviceStaticDataLabelDTO.GPS_LATITUDE;
             case GPS_LONGITUDE -> DeviceStaticDataLabelDTO.GPS_LONGITUDE;
+            case GPS_ALTITUDE -> DeviceStaticDataLabelDTO.GPS_ALTITUDE;
+            case BATTERY_MAX_VOLTS -> DeviceStaticDataLabelDTO.BATTERY_MAX_VOLTS;
+            case BATTERY_MIN_VOLTS -> DeviceStaticDataLabelDTO.BATTERY_MIN_VOLTS;
+            case MIN_DISTANCE -> DeviceStaticDataLabelDTO.MIN_DISTANCE;
+            case MAX_DISTANCE -> DeviceStaticDataLabelDTO.MAX_DISTANCE;
         };
     }
 
@@ -151,6 +163,11 @@ public class DeviceInformationMapperImpl implements RecordMapper {
         return switch (model) {
             case GPS_LATITUDE -> StaticDataLabel.GPS_LATITUDE;
             case GPS_LONGITUDE -> StaticDataLabel.GPS_LONGITUDE;
+            case GPS_ALTITUDE -> StaticDataLabel.GPS_ALTITUDE;
+            case BATTERY_MAX_VOLTS -> StaticDataLabel.BATTERY_MAX_VOLTS;
+            case BATTERY_MIN_VOLTS -> StaticDataLabel.BATTERY_MIN_VOLTS;
+            case MIN_DISTANCE -> StaticDataLabel.MIN_DISTANCE;
+            case MAX_DISTANCE -> StaticDataLabel.MAX_DISTANCE;
         };
     }
 

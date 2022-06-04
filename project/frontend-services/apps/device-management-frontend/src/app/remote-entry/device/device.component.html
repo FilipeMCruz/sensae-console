@@ -206,12 +206,13 @@
             <mat-label>Content</mat-label>
             <input matInput [(ngModel)]="currentStaticData.content"/>
             <mat-icon matSuffix>info</mat-icon>
-            <mat-hint>e.g. 00-AA-00</mat-hint>
+            <mat-hint>e.g. 4.365</mat-hint>
           </mat-form-field>
         </div>
         <br/>
         <button
           *ngIf="entryView === viewType.New && canEdit"
+          [disabled]="!this.currentStaticData.isValid()"
           mat-stroked-button
           color="primary"
           (click)="addStaticData()"

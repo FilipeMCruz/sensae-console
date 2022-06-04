@@ -17,3 +17,18 @@ export interface TenantIdentity {
   domains: string[];
   permissions: string[];
 }
+
+export interface TenantProfileResultDTO {
+  profile: TenantProfileDTO
+}
+
+export interface TenantProfileUpdateResultDTO {
+  updateTenant: TenantProfileDTO
+}
+
+export interface TenantProfileDTO {
+  oid: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+}

@@ -1,7 +1,7 @@
 <div>
   <div id="map" class="map"></div>
   <frontend-services-search-card *ngIf="canViewLiveOrPastData()"
-    class="search-card"
+    class="search-card mat-elevation-z2"
     (devicesPicked)="subscribeToDevice($event)"
     (deviceCleaned)="cleanSubscriber()"
     (contentPicked)="subscribeToContent($event)"

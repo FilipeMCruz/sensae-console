@@ -50,4 +50,11 @@ tr.element-row:not(.expanded-row):active {
 
 .page {
   margin: 20px;
+  position: relative;
+  top: 64px;
+}
+
+.top-button {
+  margin-top: 14.5px;
+  margin-bottom: 14.5px;
 }

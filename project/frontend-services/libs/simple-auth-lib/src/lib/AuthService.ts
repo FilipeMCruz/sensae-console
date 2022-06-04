@@ -56,7 +56,6 @@ export class AuthService {
   }
 
   refresh(token: string) {
-    console.log(token);
     this.refresher.refresh(token).subscribe((next) => {
       const token = next.data?.refresh.token;
       if (token) {

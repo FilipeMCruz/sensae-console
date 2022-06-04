@@ -1,6 +1,6 @@
 <div>
   <div id="map" class="map"></div>
-  <mat-card *ngIf="!isDrawing" class="garden-card">
+  <mat-card *ngIf="!isDrawing" class="garden-card mat-elevation-z2">
     <mat-card-title>
       Gardens
     </mat-card-title>
@@ -88,7 +88,7 @@
       <button mat-stroked-button (click)="deleteGardenEditSketch()">Cancel</button>
     </mat-card-actions>
   </mat-card>
-  <mat-card class="styles-card">
+  <mat-card class="styles-card mat-elevation-z2">
     <label>Change Styles</label>
     <mat-radio-group
       class="radio-group"

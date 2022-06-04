@@ -37,6 +37,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {createLink} from '@frontend-services/mutual';
 import {LoadingPageComponent} from "./components/loading-page/loading-page.component";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -119,6 +122,9 @@ export function createNamedApollo(
     HttpClientModule,
     ApolloModule,
     RouterModule.forRoot(ROUTES, {initialNavigation: 'enabledBlocking'}),
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
   ],
   providers: [
     {

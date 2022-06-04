@@ -19,4 +19,6 @@ public interface TenantRepository {
     Stream<Tenant> getTenantsInDomain(DomainId domain);
 
     Stream<Tenant> findAll();
+
+    Tenant updateProfile(Tenant updated);
 }

@@ -28,7 +28,8 @@ public class TenantMapper {
         var name = TenantName.of(postgres.name);
         var oid = TenantId.of(UUID.fromString(postgres.oid));
         var email = TenantEmail.of(postgres.email);
-        var phoneNumber = TenantPhoneNumber.of(postgres.email);
+        var phoneNumber = postgres.phoneNumber == null || postgres.phoneNumber.isBlank() ?
+                TenantPhoneNumber.empty() : TenantPhoneNumber.of(postgres.phoneNumber);
         var domains = Arrays.stream(postgres.domains).map(d -> DomainId.of(UUID.fromString(d)))
                 .collect(Collectors.toList());
         return new Tenant(oid, name, email, phoneNumber, domains);

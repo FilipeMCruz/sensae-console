@@ -1,6 +1,6 @@
 <div class="container">
   <button
-    class="bottom"
+    class="top-button"
     mat-stroked-button
     color="primary"
     (click)="fetchAllDataTransformations()"
@@ -10,7 +10,7 @@
   <div class="list" *ngIf="!this.loading">
     <mat-card
       *ngFor="let transformation of this.dataTransformations"
-      class="item"
+      class="item mat-elevation-z2"
     >
       <mat-card-title>Data Transformation</mat-card-title>
       <mat-card-content>
@@ -24,7 +24,7 @@
         ></frontend-services-data-transformation>
       </mat-card-content>
     </mat-card>
-    <mat-card *ngIf="canEdit()" class="item">
+    <mat-card *ngIf="canEdit()" class="item mat-elevation-z2">
       <mat-card-title>New Data Transformation</mat-card-title>
       <mat-card-content>
         <frontend-services-data-transformation

@@ -27,6 +27,7 @@ public class TenantResultMapper {
         var identityResult = new TenantResult();
         identityResult.oid = tenant.oid().value();
         identityResult.email = tenant.email().value();
+        identityResult.phoneNumber = tenant.phoneNumber().value();
         identityResult.name = tenant.name().value();
         identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
         return identityResult;
@@ -36,6 +37,7 @@ public class TenantResultMapper {
         var identityResult = new TenantResult();
         identityResult.email = tenant.email().value();
         identityResult.name = tenant.name().value();
+        identityResult.phoneNumber = tenant.phoneNumber().value();
         identityResult.oid = tenant.oid().value();
         identityResult.domains = tenant.domains().stream().map(DomainId::value).toList();
 

@@ -1,1 +1,52 @@
-<p>home works!</p>
+<div class="container">
+  <div *ngIf="!this.loading">
+    <h3>Profile</h3>
+    <br>
+    <mat-form-field class="medium-input">
+      <mat-label>Name</mat-label>
+      <input
+        [(ngModel)]="profile.name"
+        matInput
+      />
+      <mat-hint>e.g. Fernando Fernandes</mat-hint>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field class="medium-input">
+      <mat-label>Email</mat-label>
+      <input
+        [disabled]="true"
+        [(ngModel)]="profile.email"
+        matInput
+      />
+      <mat-hint>Email account in Sensae Console</mat-hint>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field class="medium-input">
+      <mat-label>Phone Number</mat-label>
+      <input
+        [(ngModel)]="profile.phoneNumber"
+        matInput
+      />
+      <mat-hint>With country prefix e.g. +351911111111</mat-hint>
+    </mat-form-field>
+    <br>
+    <br>
+    <button
+      [disabled]="!changed() || !valid()"
+      mat-stroked-button
+      (click)="updateProfile()"
+    >
+      Update
+    </button>
+  </div>
+  <div *ngIf="this.loading" class="wrapper">
+    <div class="notfound">
+      <h1>!</h1>
+    </div>
+    <div>
+      Loading Data
+    </div>
+  </div>
+</div>

@@ -13,7 +13,7 @@ public class DeviceIdentityInfoConsumer {
 
     private final DeviceMapper mapper;
 
-    public static final String QUEUE = "internal.notification.management.info.queue";
+    public static final String QUEUE = "internal.device.management.info.queue";
 
     public DeviceIdentityInfoConsumer(DeviceIdentityCache cache, DeviceMapper mapper) {
         this.cache = cache;

@@ -87,7 +87,12 @@ export const environment = {
     },
   },
   auth: {
-    clientId: "$SENSAE_AUTH_EXTERNAL_AUDIENCE",
+    microsoft: {
+      clientId: "$SENSAE_AUTH_EXTERNAL_MICROSOFT_AUDIENCE",
+    },
+    google: {
+      clientId: '$SENSAE_AUTH_EXTERNAL_GOOGLE_AUDIENCE',
+    },
   },
   domain: "localhost",
 };

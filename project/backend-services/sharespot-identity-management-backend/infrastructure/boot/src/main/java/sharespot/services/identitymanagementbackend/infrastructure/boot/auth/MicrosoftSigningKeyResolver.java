@@ -19,11 +19,11 @@ import java.security.cert.CertificateFactory;
 import java.util.Objects;
 
 @Service
-public class SigningKeyResolver extends SigningKeyResolverAdapter {
+public class MicrosoftSigningKeyResolver extends SigningKeyResolverAdapter {
 
     private final RestTemplate client;
 
-    public SigningKeyResolver() {
+    public MicrosoftSigningKeyResolver() {
         this.client = new RestTemplate();
     }
 

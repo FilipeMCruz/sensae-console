@@ -1,11 +1,8 @@
 package sharespot.services.identitymanagementbackend.domainservices.model.tenant;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+public interface IdentityQuery {
 
-public class IdentityQuery {
+    String getEmail();
 
-    @JsonProperty("preferred_username")
-    public String preferredUsername;
-
-    public String name;
+    String getName();
 }

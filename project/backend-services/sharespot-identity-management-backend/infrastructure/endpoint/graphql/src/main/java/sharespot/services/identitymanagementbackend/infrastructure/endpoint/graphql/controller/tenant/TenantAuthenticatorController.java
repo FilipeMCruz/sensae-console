@@ -2,6 +2,7 @@ package sharespot.services.identitymanagementbackend.infrastructure.endpoint.gra
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
 import sharespot.services.identitymanagementbackend.application.model.tenant.AccessTokenDTO;
 import sharespot.services.identitymanagementbackend.application.service.tenant.AuthenticateTenantService;
@@ -17,7 +18,7 @@ public class TenantAuthenticatorController {
     }
 
     @DgsQuery(field = "authenticate")
-    public AccessTokenDTO authenticate(@RequestHeader("Authorization") String auth) {
-        return service.authenticate(AuthMiddleware.buildIdentityToken(auth));
+    public AccessTokenDTO authenticate(@InputArgument(value = "provider") String provider, @RequestHeader("Authorization") String auth) {
+        return service.authenticate(provider, AuthMiddleware.buildIdentityToken(auth));
     }
 }

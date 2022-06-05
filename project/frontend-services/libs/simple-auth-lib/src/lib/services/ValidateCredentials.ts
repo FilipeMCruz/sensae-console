@@ -1,20 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
-import { Observable } from 'rxjs';
-import { FetchResult } from '@apollo/client/core';
-import { AuthenticateResultDTO } from '../dto/CredentialsDTO';
-import { HttpHeaders } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Apollo, gql} from 'apollo-angular';
+import {Observable} from 'rxjs';
+import {FetchResult} from '@apollo/client/core';
+import {AuthenticateResultDTO} from '../dto/CredentialsDTO';
+import {HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ValidateCredentials {
-  constructor(private apollo: Apollo) {}
+  constructor(private apollo: Apollo) {
+  }
 
-  validate(user: string): Observable<FetchResult<AuthenticateResultDTO>> {
+  validate(token: string, provider: string): Observable<FetchResult<AuthenticateResultDTO>> {
     const query = gql`
-      query authenticate {
-        authenticate {
+      query authenticate($provider: String) {
+        authenticate(provider: $provider) {
           token
         }
       }
@@ -23,8 +24,11 @@ export class ValidateCredentials {
     return this.apollo.use('identity').subscribe<AuthenticateResultDTO>({
       query,
       context: {
-        headers: new HttpHeaders().set('Authorization', 'Bearer ' + user),
+        headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
       },
+      variables: {
+        provider: provider
+      }
     });
   }
 }

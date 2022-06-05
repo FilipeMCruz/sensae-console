@@ -19,8 +19,8 @@ public class AuthenticateTenantService {
         this.mapper = mapper;
     }
 
-    public AccessTokenDTO authenticate(IdentityTokenDTO dto) {
-        var identity = mapper.dtoToCommand(dto);
+    public AccessTokenDTO authenticate(String provider, IdentityTokenDTO dto) {
+        var identity = mapper.dtoToCommand(dto, provider.equalsIgnoreCase("microsoft"));
         var result = service.execute(identity);
         return mapper.commandToDto(result);
     }

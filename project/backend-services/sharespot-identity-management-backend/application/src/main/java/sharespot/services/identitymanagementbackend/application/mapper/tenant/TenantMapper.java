@@ -5,7 +5,7 @@ import sharespot.services.identitymanagementbackend.domainservices.model.tenant.
 
 public interface TenantMapper {
 
-    IdentityQuery dtoToCommand(IdentityTokenDTO dto);
+    IdentityQuery dtoToCommand(IdentityTokenDTO dto, boolean isMicrosoft);
 
     AccessTokenDTO commandToDto(TenantResult result);
 

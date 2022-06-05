@@ -1,5 +1,5 @@
 type Query {
-    authenticate: AccessToken
+    authenticate(provider: String): AccessToken
     refresh: AccessToken
     profile: Tenant
     viewDomain(domain: ViewDomain): [Domain]

@@ -40,17 +40,23 @@ public class AuthTokenConfig implements AuthTokenHandler {
     @Value("${sensae.auth.audience}")
     public String AUDIENCE;
 
-    @Value("${sensae.auth.external.audience}")
-    public String EXTERNAL_AUDIENCE;
+    @Value("${sensae.auth.external.microsoft.audience}")
+    public String MICROSOFT_EXTERNAL_AUDIENCE;
+    
+    @Value("${sensae.auth.external.google.audience}")
+    public String GOOGLE_EXTERNAL_AUDIENCE;
 
     private PrivateKey privateKey;
 
     private PublicKey publicKey;
 
-    private final SigningKeyResolver keyResolver;
+    private final MicrosoftSigningKeyResolver microsoftSigningKeyResolver;
+    
+    private final GoogleSigningKeyResolver googleSigningKeyResolver;
 
     public AuthTokenConfig() {
-        this.keyResolver = new SigningKeyResolver();
+        this.microsoftSigningKeyResolver = new MicrosoftSigningKeyResolver();
+        this.googleSigningKeyResolver = new GoogleSigningKeyResolver();
     }
 
     @PostConstruct
@@ -87,13 +93,28 @@ public class AuthTokenConfig implements AuthTokenHandler {
     }
 
     @Override
-    public Map<String, Object> decode(IdentityTokenDTO token) {
+    public Map<String, Object> decodeForMicrosoftProvider(IdentityTokenDTO token) {
         try {
             var dto = (IdentityTokenDTOImpl) token;
             return Jwts.parserBuilder()
-                    .setSigningKeyResolver(keyResolver)
+                    .setSigningKeyResolver(microsoftSigningKeyResolver)
                     .setAllowedClockSkewSeconds(60)
-                    .requireAudience(EXTERNAL_AUDIENCE)
+                    .requireAudience(MICROSOFT_EXTERNAL_AUDIENCE)
+                    .build()
+                    .parseClaimsJws(dto.token).getBody();
+        } catch (Exception ex) {
+            throw new RuntimeException("Invalid Identity Token", ex);
+        }
+    }
+
+    @Override
+    public Map<String, Object> decodeForGoogleProvider(IdentityTokenDTO token) {
+        try {
+            var dto = (IdentityTokenDTOImpl) token;
+            return Jwts.parserBuilder()
+                    .setSigningKeyResolver(googleSigningKeyResolver)
+                    .setAllowedClockSkewSeconds(60)
+                    .requireAudience(GOOGLE_EXTERNAL_AUDIENCE)
                     .build()
                     .parseClaimsJws(dto.token).getBody();
         } catch (Exception ex) {

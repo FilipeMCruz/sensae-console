@@ -24,11 +24,11 @@ export class PermissionsMapper {
       case "data_decoders:decoders:delete" :
         return DomainPermissionType.DELETE_DATA_DECODER;
 
-      case "rule_management:rule:read" :
+      case "rule_management:rules:read" :
         return DomainPermissionType.READ_RULE_SCENARIO;
-      case "rule_management:rule:edit" :
+      case "rule_management:rules:edit" :
         return DomainPermissionType.EDIT_RULE_SCENARIO;
-      case "rule_management:rule:delete" :
+      case "rule_management:rules:delete" :
         return DomainPermissionType.DELETE_RULE_SCENARIO;
 
       case "identity_management:domains:create" :
@@ -111,11 +111,11 @@ export class PermissionsMapper {
         return "data_decoders:decoders:delete";
 
       case DomainPermissionType.READ_RULE_SCENARIO :
-        return "rule_management:rule:read";
+        return "rule_management:rules:read";
       case DomainPermissionType.EDIT_RULE_SCENARIO :
-        return "rule_management:rule:edit";
+        return "rule_management:rules:edit";
       case DomainPermissionType.DELETE_RULE_SCENARIO :
-        return "rule_management:rule:delete";
+        return "rule_management:rules:delete";
 
       case DomainPermissionType.EDIT_DOMAIN :
         return "identity_management:domains:edit";

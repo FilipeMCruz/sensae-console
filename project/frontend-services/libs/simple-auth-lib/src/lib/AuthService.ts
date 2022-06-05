@@ -13,6 +13,8 @@ export class AuthService {
 
   private accessToken!: string;
 
+  private provider!: string;
+
   constructor(private validator: ValidateCredentials,
               private refresher: RefreshAuthToken) {
   }
@@ -31,17 +33,20 @@ export class AuthService {
     return {email, domains, name, permissions, oid};
   }
 
-  login(token: string) {
+  login(token: string, provider: string) {
+    this.provider = provider;
     const subject = new ReplaySubject(1);
-    this.validator.validate(token).subscribe((next) => {
+    this.validator.validate(token, provider).subscribe((next) => {
       const token = next.data?.authenticate.token;
       if (token) {
         this.accessToken = token;
         this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
         this.startAuthTokenPooling();
+        subject.next(true);
+      } else {
+        subject.next(false);
       }
     });
-    subject.next(true);
     return subject;
   }
 
@@ -56,7 +61,6 @@ export class AuthService {
   }
 
   refresh(token: string) {
-    console.log("Refreshing token", token)
     this.refresher.refresh(token).subscribe((next) => {
       const token = next.data?.refresh.token;
       if (token) {
@@ -71,7 +75,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.payload != null;
+    return this.accessToken != null && this.accessToken.trim().length > 0;
   }
 
   getDomains(): string[] {
@@ -83,5 +87,13 @@ export class AuthService {
 
   getToken(): string {
     return this.accessToken ? this.accessToken : '';
+  }
+
+  isProviderMicrosoft() {
+    return this.provider === "Microsoft";
+  }
+
+  isProviderGoogle() {
+    return this.provider === "Google";
   }
 }

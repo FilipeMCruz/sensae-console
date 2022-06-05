@@ -26,9 +26,14 @@ public class TenantMapperImpl implements TenantMapper {
     }
 
     @Override
-    public IdentityQuery dtoToCommand(IdentityTokenDTO dto) {
-        var claims = authHandler.decode(dto);
-        return mapper.convertValue(claims, IdentityQuery.class);
+    public IdentityQuery dtoToCommand(IdentityTokenDTO dto, boolean isMicrosoft) {
+        if (isMicrosoft) {
+            var claims = authHandler.decodeForMicrosoftProvider(dto);
+            return mapper.convertValue(claims, MicrosoftIdentityQuery.class);
+        } else {
+            var claims = authHandler.decodeForGoogleProvider(dto);
+            return mapper.convertValue(claims, GoogleIdentityQuery.class);
+        }
     }
 
     @Override

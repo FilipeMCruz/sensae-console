@@ -27,7 +27,21 @@
     </div>
   </mat-menu>
   <span *ngIf="canShowAny(microfrontendTools)" class="spacer"></span>
-  <button mat-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+
+  <button mat-button *ngIf="!loginDisplay" [matMenuTriggerFor]="login">
+    Login
+  </button>
+  <mat-menu #login="matMenu">
+    <button (click)="logInWithGoogle()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Google</span>
+    </button>
+    <button (click)="loginWithMicrosoft()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Microsoft</span>
+    </button>
+  </mat-menu>
+
   <button mat-icon-button *ngIf="loginDisplay" [matMenuTriggerFor]="account">
     <mat-icon>account_circle</mat-icon>
   </button>

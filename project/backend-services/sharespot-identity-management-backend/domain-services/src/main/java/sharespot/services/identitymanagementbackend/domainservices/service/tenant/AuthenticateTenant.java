@@ -7,6 +7,7 @@ import sharespot.services.identitymanagementbackend.domain.identity.tenant.*;
 import sharespot.services.identitymanagementbackend.domainservices.mapper.TenantResultMapper;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityCommand;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.IdentityQuery;
+import sharespot.services.identitymanagementbackend.domainservices.model.tenant.MicrosoftIdentityQuery;
 import sharespot.services.identitymanagementbackend.domainservices.model.tenant.TenantResult;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class AuthenticateTenant {
     }
 
     public TenantResult execute(IdentityQuery command) {
-        var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.preferredUsername))
+        var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.getEmail()))
                 .orElseGet(() -> newTenant(command));
         var domains = domainRepo.getDomains(tenant.domains().stream());
         return TenantResultMapper.toResult(tenant, domains);
@@ -45,8 +46,8 @@ public class AuthenticateTenant {
     private Tenant newTenant(IdentityQuery command) {
         var tenant = new Tenant(
                 TenantId.of(UUID.randomUUID()),
-                TenantName.of(command.name),
-                TenantEmail.of(command.preferredUsername),
+                TenantName.of(command.getName()),
+                TenantEmail.of(command.getEmail()),
                 TenantPhoneNumber.empty(),
                 List.of(domainRepo.getUnallocatedRootDomain().getOid()));
         var newTenant = tenantRepo.registerNewTenant(tenant);

@@ -4,6 +4,7 @@ import {ReplaySubject} from 'rxjs';
 import jwt_decode, {JwtPayload} from 'jwt-decode';
 import {TenantIdentity} from './dto/CredentialsDTO';
 import {RefreshAuthToken} from "./services/RefreshAuthToken";
+import {AnonymousCredentials} from "./services/AnonymousCredentials";
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class AuthService {
 
   private provider!: string;
 
-  constructor(private validator: ValidateCredentials,
+  constructor(private validatorService: ValidateCredentials,
+              private anonymousService: AnonymousCredentials,
               private refresher: RefreshAuthToken) {
   }
 
@@ -36,7 +38,7 @@ export class AuthService {
   login(token: string, provider: string) {
     this.provider = provider;
     const subject = new ReplaySubject(1);
-    this.validator.validate(token, provider).subscribe((next) => {
+    this.validatorService.validate(token, provider).subscribe((next) => {
       const token = next.data?.authenticate.token;
       if (token) {
         this.accessToken = token;
@@ -48,6 +50,27 @@ export class AuthService {
       }
     });
     return subject;
+  }
+
+  anonymous() {
+    this.provider = "anonymous";
+    const subject = new ReplaySubject(1);
+    this.anonymousService.validate().subscribe((next) => {
+      const token = next.data?.anonymous.token;
+      if (token) {
+        this.accessToken = token;
+        this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
+        this.startAuthTokenPooling();
+        subject.next(true);
+      } else {
+        subject.next(false);
+      }
+    });
+    return subject;
+  }
+
+  isAnonymous() {
+    return this.provider == "anonymous";
   }
 
   isAllowed(permissions: string[]) {

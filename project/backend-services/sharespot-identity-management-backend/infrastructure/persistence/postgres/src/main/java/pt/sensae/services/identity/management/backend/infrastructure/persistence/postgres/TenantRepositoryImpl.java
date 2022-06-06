@@ -35,8 +35,7 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Transactional
     public Optional<Tenant> findTenantByEmail(TenantEmail email) {
         return repository.findByEmail(email.value())
-                .map(TenantMapper::postgresToDomain)
-                .filter(Tenant::isNotAnonymous);
+                .map(TenantMapper::postgresToDomain);
     }
 
     @Override
@@ -91,6 +90,6 @@ public class TenantRepositoryImpl implements TenantRepository {
 
     @Override
     public Tenant findAnonymous() {
-        return repository.findAnonymous();
+        return TenantMapper.postgresToDomain(repository.findAnonymous());
     }
 }

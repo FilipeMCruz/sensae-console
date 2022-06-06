@@ -231,8 +231,16 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['profile']);
   }
 
+  logInAsAnonymous() {
+    this.authService.anonymous().subscribe((value) => {
+      value ? this._snackBar.default('Valid Credentials')
+        : this._snackBar.default('Invalid Credentials');
+      this.subscribeToNotifications();
+      this.loginDisplay = this.authService.isAuthenticated();
+    });
+  }
+
   logInWithGoogle() {
-    console.log("oi");
     if (this.googleLogIn.isAuthenticated()) {
       this.logInInternallyWithGoogle();
     } else {
@@ -260,5 +268,9 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.subscribeToNotifications();
       this.loginDisplay = this.authService.isAuthenticated();
     });
+  }
+
+  isAnonymous() {
+    return this.authService.isAnonymous();
   }
 }

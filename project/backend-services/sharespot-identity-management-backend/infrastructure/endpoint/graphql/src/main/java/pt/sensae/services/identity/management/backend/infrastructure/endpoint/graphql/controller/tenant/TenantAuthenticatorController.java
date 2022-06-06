@@ -21,4 +21,8 @@ public class TenantAuthenticatorController {
     public AccessTokenDTO authenticate(@InputArgument(value = "provider") String provider, @RequestHeader("Authorization") String auth) {
         return service.authenticate(provider, AuthMiddleware.buildIdentityToken(auth));
     }
+    @DgsQuery(field = "anonymous")
+    public AccessTokenDTO anonymous() {
+        return service.authenticate();
+    }
 }

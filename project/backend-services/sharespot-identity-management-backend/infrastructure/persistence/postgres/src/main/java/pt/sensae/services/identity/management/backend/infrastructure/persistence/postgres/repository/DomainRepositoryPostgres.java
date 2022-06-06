@@ -19,13 +19,13 @@ public interface DomainRepositoryPostgres extends CrudRepository<DomainPostgres,
     @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 1", nativeQuery = true)
     Optional<DomainPostgres> findRoot();
 
-    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 2 AND name = 'unallocated'", nativeQuery = true)
+    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) = 2 AND name = 'unallocated'", nativeQuery = true)
     Optional<DomainPostgres> findRootUnallocated();
 
-    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) <= 2 AND name = 'public'", nativeQuery = true)
+    @Query(value = "SELECT * FROM domain WHERE array_length(path,1) = 2 AND name = 'public'", nativeQuery = true)
     Optional<DomainPostgres> findPublic();
 
-    @Query(value = "SELECT * FROM domain WHERE oid in Cast(:domains AS text[])", nativeQuery = true)
+    @Query(value = "SELECT * FROM domain WHERE oid IN Cast(:domains AS text[])", nativeQuery = true)
     List<DomainPostgres> findDomainParents(@Param("domains") String domains);
 
     @Query(value = "SELECT * FROM domain WHERE path && Cast(:domainId AS text[])", nativeQuery = true)

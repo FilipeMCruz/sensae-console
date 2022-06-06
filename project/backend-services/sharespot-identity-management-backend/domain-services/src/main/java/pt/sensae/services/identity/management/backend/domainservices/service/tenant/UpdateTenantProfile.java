@@ -1,15 +1,12 @@
 package pt.sensae.services.identity.management.backend.domainservices.service.tenant;
 
 import org.springframework.stereotype.Service;
+import pt.sensae.services.identity.management.backend.domain.identity.tenant.*;
 import pt.sensae.services.identity.management.backend.domainservices.mapper.TenantResultMapper;
 import pt.sensae.services.identity.management.backend.domainservices.model.tenant.IdentityCommand;
 import pt.sensae.services.identity.management.backend.domainservices.model.tenant.TenantResult;
 import pt.sensae.services.identity.management.backend.domainservices.model.tenant.UpdateTenantProfileCommand;
 import pt.sensae.services.identity.management.backend.domain.exceptions.NotValidException;
-import pt.sensae.services.identity.management.backend.domain.identity.tenant.TenantId;
-import pt.sensae.services.identity.management.backend.domain.identity.tenant.TenantName;
-import pt.sensae.services.identity.management.backend.domain.identity.tenant.TenantPhoneNumber;
-import pt.sensae.services.identity.management.backend.domain.identity.tenant.TenantRepository;
 
 @Service
 public class UpdateTenantProfile {
@@ -25,6 +22,7 @@ public class UpdateTenantProfile {
 
     public TenantResult execute(UpdateTenantProfileCommand command, IdentityCommand identity) {
         var tenantToUpdate = tenantRepo.findTenantById(TenantId.of(identity.oid))
+                .filter(Tenant::isNotAnonymous)
                 .orElseThrow(NotValidException.withMessage("Invalid Tenant"));
 
         var updated = tenantToUpdate

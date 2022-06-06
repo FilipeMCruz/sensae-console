@@ -38,6 +38,13 @@ public class AuthenticateTenant {
 
         return TenantResultMapper.toResult(tenant, allDomains);
     }
+    
+    public TenantResult execute() {
+        var tenant = tenantRepo.findAnonymous();
+        var domains = domainRepo.getDomains(tenant.domains().stream());
+
+        return TenantResultMapper.toResult(tenant, domains);
+    }
 
     public TenantResult execute(IdentityCommand command) {
         var tenant = tenantRepo.findTenantByEmail(TenantEmail.of(command.email))
@@ -49,13 +56,6 @@ public class AuthenticateTenant {
         var allDomains = Stream.concat(domains, Stream.of(publicDomain));
 
         return TenantResultMapper.toResult(tenant, allDomains);
-    }
-    
-    public TenantResult execute() {
-        var tenant = tenantRepo.findAnonymous();
-        var domains = domainRepo.getDomains(tenant.domains().stream());
-
-        return TenantResultMapper.toResult(tenant, domains);
     }
 
     private Tenant newTenant(IdentityQuery command) {

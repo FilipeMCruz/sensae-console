@@ -6,7 +6,7 @@
         Domain: <strong class="with-margin">{{ entry.item.domain.name }}</strong>
       </mat-panel-title>
       <mat-panel-description *ngIf="panelOpenState === false">
-        <div class="with-margin">
+        <div class="with-margin" *ngIf="!entry.item.isPublic()">
           <mat-icon mat-list-icon>account_circle</mat-icon>
           {{entry.item.tenants.length}}
         </div>

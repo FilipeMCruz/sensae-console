@@ -20,6 +20,6 @@ public interface TenantRepositoryPostgres extends CrudRepository<TenantPostgres,
     @Query(value = "SELECT * FROM tenant WHERE :domainId = ANY (domains)", nativeQuery = true)
     List<TenantPostgres> findTenantsInDomain(@Param("domainId") String domainId);
 
-    @Query(value = "SELECT * FROM tenant WHERE :phone_number = '' AND :email = '' AND :name = 'Anonymous'", nativeQuery = true)
-    Tenant findAnonymous();
+    @Query(value = "SELECT * FROM tenant WHERE phone_number = '' AND email = '' AND name = 'Anonymous'", nativeQuery = true)
+    TenantPostgres findAnonymous();
 }

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>persistence</artifactId>
-        <groupId>sharespot.services</groupId>
+        <groupId>pt.sensae.services</groupId>
         <version>0.8.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -12,7 +12,7 @@
     <artifactId>postgres</artifactId>
     <dependencies>
         <dependency>
-            <groupId>sharespot.services</groupId>
+            <groupId>pt.sensae.services</groupId>
             <artifactId>domain</artifactId>
             <version>0.8.0</version>
             <scope>compile</scope>

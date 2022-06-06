@@ -4,6 +4,7 @@ import {ReplaySubject} from 'rxjs';
 import jwt_decode, {JwtPayload} from 'jwt-decode';
 import {TenantIdentity} from './dto/CredentialsDTO';
 import {RefreshAuthToken} from "./services/RefreshAuthToken";
+import {AnonymousCredentials} from "./services/AnonymousCredentials";
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,10 @@ export class AuthService {
 
   private accessToken!: string;
 
-  constructor(private validator: ValidateCredentials,
+  private provider!: string;
+
+  constructor(private validatorService: ValidateCredentials,
+              private anonymousService: AnonymousCredentials,
               private refresher: RefreshAuthToken) {
   }
 
@@ -31,18 +35,42 @@ export class AuthService {
     return {email, domains, name, permissions, oid};
   }
 
-  login(token: string) {
+  login(token: string, provider: string) {
+    this.provider = provider;
     const subject = new ReplaySubject(1);
-    this.validator.validate(token).subscribe((next) => {
+    this.validatorService.validate(token, provider).subscribe((next) => {
       const token = next.data?.authenticate.token;
       if (token) {
         this.accessToken = token;
         this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
         this.startAuthTokenPooling();
+        subject.next(true);
+      } else {
+        subject.next(false);
       }
     });
-    subject.next(true);
     return subject;
+  }
+
+  anonymous() {
+    this.provider = "anonymous";
+    const subject = new ReplaySubject(1);
+    this.anonymousService.validate().subscribe((next) => {
+      const token = next.data?.anonymous.token;
+      if (token) {
+        this.accessToken = token;
+        this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
+        this.startAuthTokenPooling();
+        subject.next(true);
+      } else {
+        subject.next(false);
+      }
+    });
+    return subject;
+  }
+
+  isAnonymous() {
+    return this.provider == "anonymous";
   }
 
   isAllowed(permissions: string[]) {
@@ -56,7 +84,6 @@ export class AuthService {
   }
 
   refresh(token: string) {
-    console.log("Refreshing token", token)
     this.refresher.refresh(token).subscribe((next) => {
       const token = next.data?.refresh.token;
       if (token) {
@@ -71,7 +98,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.payload != null;
+    return this.accessToken != null && this.accessToken.trim().length > 0;
   }
 
   getDomains(): string[] {
@@ -83,5 +110,13 @@ export class AuthService {
 
   getToken(): string {
     return this.accessToken ? this.accessToken : '';
+  }
+
+  isProviderMicrosoft() {
+    return this.provider === "Microsoft";
+  }
+
+  isProviderGoogle() {
+    return this.provider === "Google";
   }
 }

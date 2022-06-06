@@ -20,6 +20,7 @@ import {AuthService} from '@frontend-services/simple-auth-lib';
 import {SnackbarService} from "../../services/SnackBarService";
 import {NotificationService} from "@frontend-services/mutual";
 import {Notification, NotificationSeverityLevel} from "@frontend-services/notification-management/model";
+import {GoogleApiService} from "../../services/GoogleApiService";
 
 @Component({
   selector: 'frontend-services-toolbar',
@@ -39,6 +40,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
     private _snackBar: SnackbarService,
     private externalAuthService: MsalService,
+    private googleLogIn: GoogleApiService,
     private notifications: NotificationService,
     private authService: AuthService,
     private msalBroadcastService: MsalBroadcastService,
@@ -48,54 +50,57 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ) {
   }
 
-
   ngOnInit(): void {
     this.isIframe = window !== window.parent && !window.opener;
+    this.delay(500).then(() => {
+      if (this.googleLogIn.isAuthenticated()) {
+        this.logInInternallyWithGoogle();
+      } else {
+        /**
+         * You can subscribe to MSAL events as shown below. For more info,
+         * visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/events.md
+         */
+        this.msalBroadcastService.inProgress$
+          .pipe(
+            filter(
+              (status: InteractionStatus) => status === InteractionStatus.None
+            ),
+            takeUntil(this._destroying$)
+          )
+          .subscribe(() => {
+            this.loginDisplay = this.authService.isAuthenticated();
+          });
 
-    /**
-     * You can subscribe to MSAL events as shown below. For more info,
-     * visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/events.md
-     */
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter(
-          (status: InteractionStatus) => status === InteractionStatus.None
-        ),
-        takeUntil(this._destroying$)
-      )
-      .subscribe(() => {
-        this.setLoginDisplay();
-      });
+        this.msalBroadcastService.msalSubject$
+          .pipe(
+            filter(
+              (msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS
+            ),
+            takeUntil(this._destroying$)
+          )
+          .subscribe((result: EventMessage) => {
+            const payload = result.payload as AuthenticationResult;
+            this.externalAuthService.instance.setActiveAccount(payload.account);
+          });
 
-    this.msalBroadcastService.msalSubject$
-      .pipe(
-        filter(
-          (msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS
-        ),
-        takeUntil(this._destroying$)
-      )
-      .subscribe((result: EventMessage) => {
-        const payload = result.payload as AuthenticationResult;
-        this.externalAuthService.instance.setActiveAccount(payload.account);
-      });
-
-    this.msalBroadcastService.inProgress$
-      .pipe(
-        filter((status: InteractionStatus) => status === InteractionStatus.None)
-      )
-      .subscribe(() => {
-        this.setLoginDisplay();
-        this.checkAndSetActiveAccount();
-      });
-    this.lookupService.lookup().then((microfrontends) => {
-      const routes = buildRoutes(microfrontends);
-      this.router.resetConfig(routes);
-      this.microfrontendServices = microfrontends.filter(
-        (m) => m.details.type === MicrofrontendType.SERVICE
-      );
-      this.microfrontendTools = microfrontends.filter(
-        (m) => m.details.type === MicrofrontendType.TOOL
-      );
+        this.msalBroadcastService.inProgress$
+          .pipe(
+            filter((status: InteractionStatus) => status === InteractionStatus.None)
+          )
+          .subscribe(() => {
+            this.checkAndSetActiveAccount();
+          });
+        this.lookupService.lookup().then((microfrontends) => {
+          const routes = buildRoutes(microfrontends);
+          this.router.resetConfig(routes);
+          this.microfrontendServices = microfrontends.filter(
+            (m) => m.details.type === MicrofrontendType.SERVICE
+          );
+          this.microfrontendTools = microfrontends.filter(
+            (m) => m.details.type === MicrofrontendType.TOOL
+          );
+        });
+      }
     });
   }
 
@@ -140,11 +145,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       this.externalAuthService.instance
         .acquireTokenSilent({scopes: ['profile']})
         .then((token) =>
-          this.authService.login(token.idToken).subscribe((value) => {
+          this.authService.login(token.idToken, 'Microsoft').subscribe((value) => {
             value
               ? this._snackBar.default('Valid Credentials')
               : this._snackBar.default('Invalid Credentials');
             this.subscribeToNotifications();
+            this.loginDisplay = this.authService.isAuthenticated();
           })
         );
     }
@@ -162,12 +168,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  setLoginDisplay() {
-    this.loginDisplay =
-      this.externalAuthService.instance.getAllAccounts().length > 0;
-  }
-
-  login() {
+  loginWithMicrosoft() {
     if (this.msalGuardConfig.interactionType === InteractionType.Popup) {
       if (this.msalGuardConfig.authRequest) {
         this.externalAuthService
@@ -198,9 +199,12 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    if (this.authService.isProviderMicrosoft()) this.externalAuthService.logout();
+    if (this.authService.isProviderGoogle()) this.googleLogIn.instance.revokeTokenAndLogout();
     this.authService.logout();
-    this.externalAuthService.logout();
-    this.notificationSubscription.unsubscribe();
+    if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
+    this.loginDisplay = this.authService.isAuthenticated();
+    this.router.navigate(['']);
   }
 
   // unsubscribe to events when component is destroyed
@@ -225,5 +229,48 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   profile() {
     this.router.navigate(['profile']);
+  }
+
+  logInAsAnonymous() {
+    this.authService.anonymous().subscribe((value) => {
+      value ? this._snackBar.default('Valid Credentials')
+        : this._snackBar.default('Invalid Credentials');
+      this.subscribeToNotifications();
+      this.loginDisplay = this.authService.isAuthenticated();
+    });
+  }
+
+  logInWithGoogle() {
+    if (this.googleLogIn.isAuthenticated()) {
+      this.logInInternallyWithGoogle();
+    } else {
+      this.checkAndSetActiveGoogleAccount();
+    }
+  }
+
+  checkAndSetActiveGoogleAccount() {
+    this.googleLogIn.instance.loadDiscoveryDocumentAndTryLogin().then(() => {
+      this.googleLogIn.instance.tryLoginCodeFlow().then(() => {
+        if (this.googleLogIn.instance.hasValidIdToken()) {
+          this.logInInternallyWithGoogle();
+        } else {
+          this.googleLogIn.instance.initLoginFlow();
+        }
+      });
+    });
+  }
+
+  logInInternallyWithGoogle() {
+    const idToken = this.googleLogIn.instance.getIdToken();
+    this.authService.login(idToken, 'Google').subscribe((value) => {
+      value ? this._snackBar.default('Valid Credentials')
+        : this._snackBar.default('Invalid Credentials');
+      this.subscribeToNotifications();
+      this.loginDisplay = this.authService.isAuthenticated();
+    });
+  }
+
+  isAnonymous() {
+    return this.authService.isAnonymous();
   }
 }

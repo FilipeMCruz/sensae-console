@@ -27,12 +27,30 @@
     </div>
   </mat-menu>
   <span *ngIf="canShowAny(microfrontendTools)" class="spacer"></span>
-  <button mat-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+
+  <button mat-button *ngIf="!loginDisplay" [matMenuTriggerFor]="login">
+    Login
+  </button>
+  <mat-menu #login="matMenu">
+    <button (click)="logInAsAnonymous()" mat-menu-item>
+      <mat-icon>no_accounts</mat-icon>
+      <span>Anonymous</span>
+    </button>
+    <button (click)="logInWithGoogle()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Google</span>
+    </button>
+    <button (click)="loginWithMicrosoft()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Microsoft</span>
+    </button>
+  </mat-menu>
+
   <button mat-icon-button *ngIf="loginDisplay" [matMenuTriggerFor]="account">
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #account="matMenu">
-    <button (click)="profile()" mat-menu-item>
+    <button *ngIf="!isAnonymous()" (click)="profile()" mat-menu-item>
       <mat-icon>badge</mat-icon>
       <span>Profile</span>
     </button>

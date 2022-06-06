@@ -2,6 +2,10 @@ export interface AuthenticateResultDTO {
   authenticate: OutcomeDTO;
 }
 
+export interface AnonymousResultDTO {
+  anonymous: OutcomeDTO;
+}
+
 export interface RefreshResultDTO {
   refresh: OutcomeDTO;
 }

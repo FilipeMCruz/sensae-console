@@ -40,6 +40,7 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
+import {OAuthModule} from "angular-oauth2-oidc";
 
 /**
  * Here we pass the configuration parameters to create an MSAL instance.
@@ -125,6 +126,7 @@ export function createNamedApollo(
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    OAuthModule.forRoot()
   ],
   providers: [
     {

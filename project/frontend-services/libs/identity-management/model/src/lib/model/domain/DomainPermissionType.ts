@@ -41,11 +41,8 @@ export enum DomainPermissionType {
   CONTROL_VALVE_SMART_IRRIGATION = 'Smart Irrigation | Control Valves',
 
   READ_PAST_DATA_NOTIFICATION_MANAGEMENT = 'Notification Management | See Past Notifications',
-
   READ_LIVE_DATA_NOTIFICATION_MANAGEMENT = 'Notification Management | See Live Notifications',
-
   READ_CONFIG_NOTIFICATION_MANAGEMENT = 'Notification Management | See Notification Subscriptions',
-
   WRITE_CONFIG_NOTIFICATION_MANAGEMENT = 'Notification Management | Change Notification Subscriptions',
 
   ERROR = 'Error',

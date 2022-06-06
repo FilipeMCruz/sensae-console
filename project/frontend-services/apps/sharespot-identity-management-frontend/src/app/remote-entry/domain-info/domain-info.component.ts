@@ -57,25 +57,36 @@ export class DomainInfoComponent implements OnChanges, OnInit {
   }
 
   canChangeDomains() {
-    return this.authService.isAllowed(Array.of("identity_management:domains:edit"))
+    return this.changeDomainService.canDo();
   }
 
-  canCreateDomains() {
-    return this.authService.isAllowed(Array.of("identity_management:domains:create"))
+  canAddDevice() {
+    return this.addDeviceService.canDo();
+  }
+
+  canRemoveDevice() {
+    return this.removeDeviceService.canDo();
+  }
+
+  canAddTenant() {
+    return this.addTenantService.canDo();
+  }
+
+  canRemoveTenant() {
+    return this.removeTenantService.canDo();
   }
 
   canChangeDevices() {
-    return this.authService.isAllowed(Array.of("identity_management:device:write"))
+    return this.canAddDevice() && this.canRemoveDevice();
   }
 
   canChangeTenants() {
-    return this.authService.isAllowed(Array.of("identity_management:tenant:write"))
+    return this.canAddTenant() && this.canRemoveTenant();
   }
 
   ngOnChanges(): void {
-    this.currentDomainsForTenants = this.domains.filter(
-      (d) => d.domain.id != this.entry.item.domain.id
-    );
+    this.currentDomainsForTenants = this.domains.filter(d => d.domain.id != this.entry.item.domain.id)
+      .filter(d => !d.isPublic());
     this.currentDomainsForDevices = this.domains
       .filter((d) => d.domain.id != this.entry.item.domain.id)
       .filter((d) => !d.isUnallocated());
@@ -129,9 +140,7 @@ export class DomainInfoComponent implements OnChanges, OnInit {
     this.removeTenantService
       .mutate(tenant.id, this.entry.item.domain.id)
       .subscribe((next) => {
-        const index = this.entry.item.tenants.findIndex(
-          (d) => d.id === next.id
-        ); //find index in your array
+        const index = this.entry.item.tenants.findIndex(d => d.id === next.id);
         this.entry.item.tenants.splice(index, 1);
       });
   }
@@ -148,9 +157,7 @@ export class DomainInfoComponent implements OnChanges, OnInit {
     this.removeDeviceService
       .mutate(device.id, this.entry.item.domain.id)
       .subscribe((next) => {
-        const index = this.entry.item.devices.findIndex(
-          (d) => d.id === next.id
-        ); //find index in your array
+        const index = this.entry.item.devices.findIndex(d => d.id === next.id);
         this.entry.item.devices.splice(index, 1);
       });
   }

@@ -50,6 +50,13 @@ public class AuthenticateTenant {
 
         return TenantResultMapper.toResult(tenant, allDomains);
     }
+    
+    public TenantResult execute() {
+        var tenant = tenantRepo.findAnonymous();
+        var domains = domainRepo.getDomains(tenant.domains().stream());
+
+        return TenantResultMapper.toResult(tenant, domains);
+    }
 
     private Tenant newTenant(IdentityQuery command) {
         var tenant = new Tenant(

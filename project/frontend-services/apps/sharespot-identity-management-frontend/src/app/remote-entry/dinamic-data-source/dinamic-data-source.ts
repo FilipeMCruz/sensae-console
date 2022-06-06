@@ -3,10 +3,10 @@ import {
   DataSource,
   SelectionChange,
 } from '@angular/cdk/collections';
-import { BehaviorSubject, forkJoin, merge, Observable } from 'rxjs';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { map } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import {BehaviorSubject, forkJoin, merge, Observable} from 'rxjs';
+import {FlatTreeControl} from '@angular/cdk/tree';
+import {map} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 import {
   CreateDomain,
   GetChildDomainsInfo,
@@ -18,16 +18,17 @@ import {
   DomainInfo,
   TenantInfo,
 } from '@frontend-services/identity-management/model';
-import { AuthService } from '@frontend-services/simple-auth-lib';
+import {AuthService} from '@frontend-services/simple-auth-lib';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DynamicDatabase {
   constructor(
     private getChildDomainsInfo: GetChildDomainsInfo,
     private getDomainInfo: GetDomainInfo,
     private createDomain: CreateDomain,
     private authService: AuthService
-  ) {}
+  ) {
+  }
 
   initialData(): Observable<DynamicFlatNode[]> {
     const domainObs: Observable<DynamicFlatNode>[] = this.authService
@@ -43,7 +44,7 @@ export class DynamicDatabase {
   }
 
   userCanCreateDomains() {
-    return this.authService.isAllowed(['identity_management:domains:create']);
+    return this.createDomain.canDo();
   }
 
   getChildren(node: string): Observable<DomainInfo[]> {
@@ -64,7 +65,8 @@ export class DynamicFlatNode {
     public level = 1,
     public expandable = true,
     public isLoading = false
-  ) {}
+  ) {
+  }
 }
 
 export class DynamicDataSource implements DataSource<DynamicFlatNode> {
@@ -82,7 +84,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
   constructor(
     private _treeControl: FlatTreeControl<DynamicFlatNode>,
     private _database: DynamicDatabase
-  ) {}
+  ) {
+  }
 
   connect(collectionViewer: CollectionViewer): Observable<DynamicFlatNode[]> {
     this._treeControl.expansionModel.changed.subscribe((change) => {
@@ -99,7 +102,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
     );
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {}
+  disconnect(collectionViewer: CollectionViewer): void {
+  }
 
   /** Handle expand/collapse behaviors */
   handleTreeControl(change: SelectionChange<DynamicFlatNode>) {
@@ -154,7 +158,8 @@ export class DynamicDataSource implements DataSource<DynamicFlatNode> {
         let i = index + 1;
         i < this.data.length && this.data[i].level > node.level;
         i++, count++
-      ) {}
+      ) {
+      }
       this.data.splice(index + 1, count);
       this.dataChange.next(this.data);
     }

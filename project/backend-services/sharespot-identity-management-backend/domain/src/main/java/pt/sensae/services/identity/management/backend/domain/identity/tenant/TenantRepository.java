@@ -20,4 +20,6 @@ public interface TenantRepository {
     Stream<Tenant> findAll();
 
     Tenant updateProfile(Tenant updated);
+
+    Tenant findAnonymous();
 }

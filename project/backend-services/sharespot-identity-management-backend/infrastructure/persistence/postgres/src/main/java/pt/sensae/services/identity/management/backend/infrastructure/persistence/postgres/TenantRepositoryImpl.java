@@ -27,14 +27,16 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Transactional
     public Optional<Tenant> findTenantById(TenantId id) {
         return repository.findByOid(id.value().toString())
-                .map(TenantMapper::postgresToDomain);
+                .map(TenantMapper::postgresToDomain)
+                .filter(Tenant::isNotAnonymous);
     }
 
     @Override
     @Transactional
     public Optional<Tenant> findTenantByEmail(TenantEmail email) {
         return repository.findByEmail(email.value())
-                .map(TenantMapper::postgresToDomain);
+                .map(TenantMapper::postgresToDomain)
+                .filter(Tenant::isNotAnonymous);
     }
 
     @Override
@@ -60,25 +62,35 @@ public class TenantRepositoryImpl implements TenantRepository {
     public Stream<Tenant> getTenantsInDomain(DomainId domain) {
         return repository.findTenantsInDomain(domain.value().toString())
                 .stream()
-                .map(TenantMapper::postgresToDomain);
+                .map(TenantMapper::postgresToDomain)
+                .filter(Tenant::isNotAnonymous);
     }
 
     @Override
     @Transactional
     public Stream<Tenant> findAll() {
         return StreamSupport.stream(this.repository.findAll().spliterator(), false)
-                .map(TenantMapper::postgresToDomain).toList().stream();
+                .map(TenantMapper::postgresToDomain)
+                .filter(Tenant::isNotAnonymous)
+                .toList().stream();
     }
 
     @Override
     @Transactional
     public Tenant updateProfile(Tenant updated) {
-        var tenantPostgres = repository.findByEmail(updated.email().value());
+        var tenantPostgres = repository.findByEmail(updated.email().value())
+                .filter(d -> !d.phoneNumber.isBlank() && !d.email.isBlank() && !d.name.equalsIgnoreCase("Anonymous"));
+
         tenantPostgres.ifPresent(tenant -> {
             tenant.phoneNumber = updated.phoneNumber().value();
             tenant.name = updated.name().value();
             repository.save(tenant);
         });
         return updated;
+    }
+
+    @Override
+    public Tenant findAnonymous() {
+        return repository.findAnonymous();
     }
 }

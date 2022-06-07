@@ -59,6 +59,7 @@ type Tenant {
 
 type Device {
     oid: String
+    name: String
     domains: [DeviceDomainPermission]
 }
 

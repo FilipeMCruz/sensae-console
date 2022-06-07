@@ -14,6 +14,7 @@ import pt.sensae.services.identity.management.backend.domain.identity.permission
 import pt.sensae.services.identity.management.backend.domain.identity.tenant.TenantRepository;
 import pt.sensae.services.identity.management.backend.domainservices.model.domain.DomainInfoResult;
 import pt.sensae.services.identity.management.backend.domainservices.model.domain.ViewDomainQuery;
+import pt.sensae.services.identity.management.backend.domainservices.service.device.DeviceInformationCache;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -27,10 +28,16 @@ public class ViewDomainInfo {
 
     private final DeviceRepository deviceRepo;
 
-    public ViewDomainInfo(DomainRepository domainRepo, TenantRepository tenantRepo, DeviceRepository deviceRepo) {
+    private final DeviceInformationCache deviceInformationCache;
+
+    public ViewDomainInfo(DomainRepository domainRepo,
+                          TenantRepository tenantRepo,
+                          DeviceRepository deviceRepo,
+                          DeviceInformationCache deviceInformationCache) {
         this.domainRepo = domainRepo;
         this.tenantRepo = tenantRepo;
         this.deviceRepo = deviceRepo;
+        this.deviceInformationCache = deviceInformationCache;
     }
 
     public DomainInfoResult fetch(ViewDomainQuery query, IdentityCommand identity) {
@@ -52,7 +59,7 @@ public class ViewDomainInfo {
 
         var deviceResults = deviceRepo
                 .getDevicesInDomains(Stream.of(top.getOid()))
-                .map(DeviceResultMapper::toResult)
+                .map(d -> DeviceResultMapper.toResult(d, this.deviceInformationCache.findById(d.oid())))
                 .toList();
 
         var domainInfoResult = new DomainInfoResult();

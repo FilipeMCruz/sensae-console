@@ -23,9 +23,14 @@ public class ViewDevicesInDomain {
 
     private final DeviceRepository deviceRepo;
 
-    public ViewDevicesInDomain(DomainRepository domainRepo, DeviceRepository deviceRepo) {
+    private final DeviceInformationCache deviceInformationCache;
+
+    public ViewDevicesInDomain(DomainRepository domainRepo,
+                               DeviceRepository deviceRepo,
+                               DeviceInformationCache deviceInformationCache) {
         this.domainRepo = domainRepo;
         this.deviceRepo = deviceRepo;
+        this.deviceInformationCache = deviceInformationCache;
     }
 
     public Stream<DeviceResult> fetch(ViewDomainQuery query, IdentityCommand identity) {
@@ -37,6 +42,6 @@ public class ViewDevicesInDomain {
         PermissionsValidator.verifyPermissions(tenant, top, List.of(PermissionType.READ_DEVICE));
 
         return deviceRepo.getDevicesInDomains(Stream.of(top.getOid()))
-                .map(DeviceResultMapper::toResult);
+                .map(d -> DeviceResultMapper.toResult(d, this.deviceInformationCache.findById(d.oid())));
     }
 }

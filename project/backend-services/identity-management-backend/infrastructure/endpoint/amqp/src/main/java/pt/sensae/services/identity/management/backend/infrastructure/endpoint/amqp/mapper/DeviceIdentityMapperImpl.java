@@ -1,13 +1,13 @@
 package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.mapper;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.identity.management.backend.application.internal.device.DeviceIdentityMapper;
-import pt.sensae.services.identity.management.backend.application.internal.device.DeviceIdentityDTO;
+import pt.sensae.services.identity.management.backend.application.internal.identity.device.DeviceIdentityMapper;
+import pt.sensae.services.identity.management.backend.application.internal.identity.device.DeviceIdentityDTO;
 import pt.sensae.services.identity.management.backend.domain.identity.device.DeviceWithAllOwnerDomains;
 import pt.sensae.services.identity.management.backend.domain.identity.domain.DomainId;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.DeviceWithOwnershipDTOImpl;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.DeviceIdentityDTOImpl;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.DeviceNotificationTypeDTOImpl;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.identity.device.DeviceWithOwnershipDTOImpl;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.identity.device.DeviceIdentityDTOImpl;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.identity.device.DeviceNotificationTypeDTOImpl;
 
 import java.util.UUID;
 import java.util.stream.Collectors;

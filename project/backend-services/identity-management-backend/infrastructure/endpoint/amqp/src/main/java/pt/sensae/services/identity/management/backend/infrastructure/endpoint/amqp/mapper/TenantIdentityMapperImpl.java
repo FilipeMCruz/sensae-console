@@ -1,10 +1,10 @@
 package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.mapper;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.identity.management.backend.application.internal.tenant.TenantIdentityMapper;
+import pt.sensae.services.identity.management.backend.application.internal.identity.tenant.TenantIdentityMapper;
 import pt.sensae.services.identity.management.backend.domain.identity.domain.DomainId;
 import pt.sensae.services.identity.management.backend.domain.identity.tenant.Tenant;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.TenantIdentityDTOImpl;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.model.identity.tenant.TenantIdentityDTOImpl;
 
 import java.util.stream.Collectors;
 

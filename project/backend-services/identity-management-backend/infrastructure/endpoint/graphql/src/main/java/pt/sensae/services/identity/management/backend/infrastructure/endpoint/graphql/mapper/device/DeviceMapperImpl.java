@@ -1,7 +1,6 @@
 package pt.sensae.services.identity.management.backend.infrastructure.endpoint.graphql.mapper.device;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.identity.management.backend.application.mapper.device.DeviceMapper;
 import pt.sensae.services.identity.management.backend.application.model.device.DeviceIdDTO;
 import pt.sensae.services.identity.management.backend.application.model.device.ExpelDeviceFromDomainDTO;
 import pt.sensae.services.identity.management.backend.application.model.device.PlaceDeviceInDomainDTO;
@@ -12,6 +11,7 @@ import pt.sensae.services.identity.management.backend.infrastructure.endpoint.gr
 import pt.sensae.services.identity.management.backend.infrastructure.endpoint.graphql.model.device.DeviceIdDTOImpl;
 import pt.sensae.services.identity.management.backend.infrastructure.endpoint.graphql.model.device.ExpelDeviceFromDomainDTOImpl;
 import pt.sensae.services.identity.management.backend.infrastructure.endpoint.graphql.model.device.PlaceDeviceInDomainDTOImpl;
+import pt.sensae.services.identity.management.backend.application.mapper.device.DeviceMapper;
 
 import java.util.UUID;
 
@@ -39,6 +39,7 @@ public class DeviceMapperImpl implements DeviceMapper {
     public DeviceIdDTO resultToDto(DeviceResult result) {
         var dto = new DeviceIdDTOImpl();
         dto.oid = result.oid;
+        dto.name = result.name;
         dto.domains = result.domains.stream().map(d -> {
             var deviceDomainPermissionsDTO = new DeviceDomainPermissionsDTOImpl();
             deviceDomainPermissionsDTO.oid = d.oid;

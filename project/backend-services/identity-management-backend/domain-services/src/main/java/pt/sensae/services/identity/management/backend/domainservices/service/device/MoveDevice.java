@@ -1,6 +1,7 @@
 package pt.sensae.services.identity.management.backend.domainservices.service.device;
 
 import org.springframework.stereotype.Service;
+import pt.sensae.services.identity.management.backend.domain.device.DeviceInformation;
 import pt.sensae.services.identity.management.backend.domainservices.mapper.DeviceResultMapper;
 import pt.sensae.services.identity.management.backend.domainservices.mapper.TenantResultMapper;
 import pt.sensae.services.identity.management.backend.domainservices.model.device.DeviceResult;
@@ -23,10 +24,13 @@ public class MoveDevice {
     private final DomainRepository domainRepo;
 
     private final DeviceRepository deviceRepo;
+    
+    private final DeviceInformationCache deviceInformationCache;
 
-    public MoveDevice(DomainRepository domainRepo, DeviceRepository deviceRepo) {
+    public MoveDevice(DomainRepository domainRepo, DeviceRepository deviceRepo, DeviceInformationCache deviceInformationCache) {
         this.domainRepo = domainRepo;
         this.deviceRepo = deviceRepo;
+        this.deviceInformationCache = deviceInformationCache;
     }
 
     public DeviceResult execute(PlaceDeviceInDomainCommand command, IdentityCommand identity) {
@@ -45,7 +49,10 @@ public class MoveDevice {
         device.domains().add(domainId);
 
         var relocateDevice = deviceRepo.relocateDevice(device);
-        return DeviceResultMapper.toResult(relocateDevice);
+
+        var information = deviceInformationCache.findById(relocateDevice.oid());
+
+        return DeviceResultMapper.toResult(relocateDevice, information);
     }
 
     public DeviceResult execute(RemoveDeviceFromDomainCommand command, IdentityCommand identity) {
@@ -69,6 +76,9 @@ public class MoveDevice {
         }
 
         var relocateDevice = deviceRepo.relocateDevice(device);
-        return DeviceResultMapper.toResult(relocateDevice);
+
+        var information = deviceInformationCache.findById(relocateDevice.oid());
+        
+        return DeviceResultMapper.toResult(relocateDevice, information);
     }
 }

@@ -1,7 +1,7 @@
 package pt.sensae.services.identity.management.backend.application.service.device;
 
 import org.springframework.stereotype.Service;
-import pt.sensae.services.identity.management.backend.application.internal.device.DeviceInformationNotifierService;
+import pt.sensae.services.identity.management.backend.application.internal.identity.device.DeviceIdentityNotifierService;
 import pt.sensae.services.identity.management.backend.application.mapper.tenant.TenantMapper;
 import pt.sensae.services.identity.management.backend.application.model.device.ExpelDeviceFromDomainDTO;
 import pt.sensae.services.identity.management.backend.application.model.tenant.AccessTokenDTO;
@@ -22,12 +22,12 @@ public class PlaceDeviceInDomainService {
 
     private final DeviceMapper deviceMapper;
 
-    private final DeviceInformationNotifierService emitter;
+    private final DeviceIdentityNotifierService emitter;
 
     public PlaceDeviceInDomainService(MoveDevice service,
                                       TenantMapper tenantMapper,
                                       DeviceMapper deviceMapper,
-                                      DeviceInformationNotifierService emitter) {
+                                      DeviceIdentityNotifierService emitter) {
         this.service = service;
         this.tenantMapper = tenantMapper;
         this.deviceMapper = deviceMapper;

@@ -8,7 +8,7 @@ import pt.sensae.services.device.management.master.backend.infrastructure.endpoi
 @Service
 public class DeviceInformationRequestConsumer {
 
-    public static final String MASTER_QUEUE = "internal.device.management.master.queue";
+    public static final String QUEUE = "internal.device.management.device.request.queue";
 
     private final DeviceInformationNotifierService informer;
 
@@ -16,7 +16,7 @@ public class DeviceInformationRequestConsumer {
         this.informer = informer;
     }
 
-    @RabbitListener(queues = MASTER_QUEUE)
+    @RabbitListener(queues = QUEUE)
     public void receiveIndexEvent(DeviceDTOImpl dto) {
         informer.notify(dto);
     }

@@ -5,6 +5,9 @@ import pt.sensae.services.identity.management.backend.application.model.device.D
 import java.util.List;
 
 public class DeviceIdDTOImpl implements DeviceIdDTO {
+
     public String oid;
+
+    public String name;
     public List<DeviceDomainPermissionsDTOImpl> domains;
 }

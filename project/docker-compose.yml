@@ -99,7 +99,7 @@ services:
     ports:
       - 443
     depends_on:
-      - sharespot-identity-management-backend
+      - identity-management-backend
   rule-management-frontend:
     build:
       dockerfile: docker/rule-management-frontend/Dockerfile
@@ -277,16 +277,16 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-identity-management-backend:
-    build: backend-services/sharespot-identity-management-backend
-    container_name: sharespot-identity-management-backend
-    image: sharespot-identity-management-backend
+  identity-management-backend:
+    build: backend-services/identity-management-backend
+    container_name: identity-management-backend
+    image: identity-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-identity-management-backend.env
+      - ./secrets/prod/identity-management-backend.env
     networks:
       - sharespot-network
     ports:

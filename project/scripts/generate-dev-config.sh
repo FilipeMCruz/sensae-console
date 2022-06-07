@@ -19,7 +19,7 @@ envsubst < secrets/templates/dev/backend-services/sharespot-data-processor-maste
 envsubst < secrets/templates/dev/backend-services/sharespot-data-processor-slave-backend.properties > backend-services/sharespot-data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-store.properties > backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-fleet-management-backend.properties > backend-services/sharespot-fleet-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/backend-services/sharespot-identity-management-backend.properties > backend-services/sharespot-identity-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/identity-management-backend.properties > backend-services/identity-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-identity-management-slave-backend.properties > backend-services/sharespot-identity-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/smart-irrigation-backend.properties > backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/notification-management-backend.properties > backend-services/notification-management-backend/infrastructure/boot/src/main/resources/application-dev.properties

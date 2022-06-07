@@ -1,4 +1,4 @@
-package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller;
+package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.tenant;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,24 +10,24 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.identity.management.backend.application.RoutingKeysProvider;
-import pt.sensae.services.identity.management.backend.application.internal.device.DeviceIdentitySyncHandler;
-import pt.sensae.services.identity.management.backend.application.internal.device.DeviceIdentityDTO;
+import pt.sensae.services.identity.management.backend.application.internal.tenant.TenantIdentityDTO;
+import pt.sensae.services.identity.management.backend.application.internal.tenant.TenantIdentitySyncHandler;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class DeviceIdentitySyncEmitter implements DeviceIdentitySyncHandler {
-    
+public class TenantIdentitySyncEmitter implements TenantIdentitySyncHandler {
+
     private final AmqpTemplate template;
 
     private final InternalRoutingKeys syncKeys;
 
-    public DeviceIdentitySyncEmitter(RoutingKeysProvider provider, @Qualifier("amqpTemplate") AmqpTemplate template) {
+    public TenantIdentitySyncEmitter(RoutingKeysProvider provider, @Qualifier("amqpTemplate") AmqpTemplate template) {
         this.template = template;
         var syncKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
-                .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
+                .withContextType(ContextTypeOptions.TENANT_IDENTITY)
                 .withOperationType(OperationTypeOptions.SYNC)
                 .build();
         if (syncKeys.isEmpty()) {
@@ -38,8 +38,8 @@ public class DeviceIdentitySyncEmitter implements DeviceIdentitySyncHandler {
 
 
     @Override
-    public void publishState(Stream<DeviceIdentityDTO> devices) {
+    public void publishState(Stream<TenantIdentityDTO> tenants) {
         template.convertAndSend(IoTCoreTopic.INTERNAL_EXCHANGE, syncKeys.toString(),
-                devices.collect(Collectors.toSet()));
+                tenants.collect(Collectors.toSet()));
     }
 }

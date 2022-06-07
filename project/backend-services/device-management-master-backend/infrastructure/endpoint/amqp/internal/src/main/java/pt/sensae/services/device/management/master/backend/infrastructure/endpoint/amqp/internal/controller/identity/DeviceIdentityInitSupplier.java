@@ -1,4 +1,4 @@
-package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller;
+package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.identity;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;

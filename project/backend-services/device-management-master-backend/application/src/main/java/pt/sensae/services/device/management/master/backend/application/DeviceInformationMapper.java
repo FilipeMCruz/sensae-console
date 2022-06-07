@@ -3,7 +3,7 @@ package pt.sensae.services.device.management.master.backend.application;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 
-public interface RecordMapper {
+public interface DeviceInformationMapper {
 
     DeviceInformation dtoToDomain(DeviceInformationDTO dto);
 

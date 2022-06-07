@@ -11,11 +11,11 @@ import pt.sensae.services.device.management.master.backend.domainservices.Device
 import java.util.UUID;
 
 @Service
-public class RecordEraserService {
+public class DeviceInformationEraserService {
 
     private final DeviceInformationEraser eraser;
 
-    private final RecordMapper mapper;
+    private final DeviceInformationMapper mapper;
 
     private final DeviceInformationEventHandlerService publisher;
 
@@ -23,11 +23,11 @@ public class RecordEraserService {
 
     private final DeviceIdentityCache ownerChecker;
 
-    public RecordEraserService(DeviceInformationEraser eraser,
-                               RecordMapper mapper,
-                               DeviceInformationEventHandlerService publisher,
-                               TokenExtractor authHandler,
-                               DeviceIdentityCache ownerChecker) {
+    public DeviceInformationEraserService(DeviceInformationEraser eraser,
+                                          DeviceInformationMapper mapper,
+                                          DeviceInformationEventHandlerService publisher,
+                                          TokenExtractor authHandler,
+                                          DeviceIdentityCache ownerChecker) {
         this.eraser = eraser;
         this.mapper = mapper;
         this.publisher = publisher;

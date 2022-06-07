@@ -11,11 +11,11 @@ import pt.sensae.services.device.management.master.backend.domainservices.Device
 import java.util.UUID;
 
 @Service
-public class RecordRegisterService {
+public class DeviceInformationRegisterService {
 
     private final DeviceInformationHoarder hoarder;
 
-    private final RecordMapper mapper;
+    private final DeviceInformationMapper mapper;
 
     private final DeviceInformationEventHandlerService publisher;
 
@@ -23,10 +23,10 @@ public class RecordRegisterService {
 
     private final DeviceIdentityCache ownerChecker;
 
-    public RecordRegisterService(DeviceInformationHoarder hoarder,
-                                 RecordMapper mapper,
-                                 DeviceInformationEventHandlerService publisher,
-                                 TokenExtractor authHandler, DeviceIdentityCache ownerChecker) {
+    public DeviceInformationRegisterService(DeviceInformationHoarder hoarder,
+                                            DeviceInformationMapper mapper,
+                                            DeviceInformationEventHandlerService publisher,
+                                            TokenExtractor authHandler, DeviceIdentityCache ownerChecker) {
         this.hoarder = hoarder;
         this.mapper = mapper;
         this.publisher = publisher;

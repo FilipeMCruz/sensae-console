@@ -13,9 +13,9 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.identity.management.backend.application.RoutingKeysProvider;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.DeviceIdentityRequestConsumer;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.DeviceIdentityInitConsumer;
-import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.TenantIdentityInitConsumer;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.device.DeviceIdentityRequestConsumer;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.device.DeviceIdentityInitConsumer;
+import pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.tenant.TenantIdentityInitConsumer;
 
 @Configuration
 public class AmqpConfiguration {

@@ -1,4 +1,4 @@
-package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller;
+package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.information;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;

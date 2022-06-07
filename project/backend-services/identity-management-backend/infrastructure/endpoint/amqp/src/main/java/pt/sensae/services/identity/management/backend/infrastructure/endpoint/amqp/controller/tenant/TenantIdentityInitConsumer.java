@@ -1,4 +1,4 @@
-package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller;
+package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.tenant;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

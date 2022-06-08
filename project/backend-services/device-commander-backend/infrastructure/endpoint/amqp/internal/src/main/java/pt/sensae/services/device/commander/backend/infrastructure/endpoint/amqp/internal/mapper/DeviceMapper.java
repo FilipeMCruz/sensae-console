@@ -41,10 +41,6 @@ public class DeviceMapper implements DeviceEventMapper {
         if (notification.type.equals(DeviceNotificationTypeDTOImpl.UPDATE)) {
             var device = notification.information;
 
-            List<RecordEntry> collect = device.entries.stream()
-                    .map(e -> e.type.equals(DeviceRecordEntryTypeDTOImpl.SENSOR_DATA) ? new SensorDataRecordEntry(SensorDataRecordLabel.give(e.label), e.content) : new BasicRecordEntry(e.label, e.content))
-                    .collect(Collectors.toList());
-
             var deviceId = new DeviceId(UUID.fromString(device.deviceId));
             var deviceName = new DeviceName(device.name);
             var deviceDownlink = new DeviceDownlink(device.downlink);
@@ -57,7 +53,7 @@ public class DeviceMapper implements DeviceEventMapper {
                     .map(c -> new CommandEntry(CommandId.of(c.id), CommandName.of(c.name), CommandPayload.of(c.payload), CommandPort.of(c.port), DeviceRef.of(c.subDeviceRef)))
                     .collect(Collectors.toSet());
 
-            var info = new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new Records(collect), new SubDevices(subDevices), new DeviceCommands(commands));
+            var info = new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new SubDevices(subDevices), new DeviceCommands(commands));
             return new DeviceNotification(deviceId, NotificationType.UPDATE, info);
         } else {
             var deviceId = new DeviceId(UUID.fromString(notification.deviceId));

@@ -87,6 +87,8 @@
         >
           <mat-icon mat-list-icon>sensors</mat-icon>
           <div mat-line><strong>Id: </strong>{{ device.id }}</div>
+          <div *ngIf="device.name.length !== 0" mat-line><strong>Name: </strong>{{ device.name }}</div>
+          <div *ngIf="device.name.length === 0" mat-line><strong>Name: </strong><i>unavailable</i></div>
           <button
             mat-icon-button
             #trigger="matMenuTrigger"

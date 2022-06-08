@@ -1,9 +1,9 @@
 FROM node:18-alpine AS build
 WORKDIR /workspace
 COPY package.json ./
-RUN npm install
 COPY . .
-RUN npm run nx build sharespot-data-processor-frontend --prod
+RUN npm install
+RUN npm run nx build sharespot-data-processor-frontend --omit=dev
 
 FROM nginx:1.22.0
 COPY apps/sharespot-data-processor-frontend/nginx/nginx.conf /etc/nginx/conf.d/default.conf

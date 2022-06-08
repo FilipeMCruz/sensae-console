@@ -10,8 +10,6 @@ public class DeviceInformationDTOImpl {
 
     public String downlink;
 
-    public Set<DeviceRecordEntryDTOImpl> entries;
-
     public Set<DeviceSubSensorDTOImpl> subSensors;
 
     public Set<DeviceCommandEntryDTOImpl> commands;

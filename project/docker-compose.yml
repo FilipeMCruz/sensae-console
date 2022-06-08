@@ -25,7 +25,7 @@ services:
       - device-management-frontend
       - sharespot-data-processor-frontend
       - sharespot-data-decoder-frontend
-      - sharespot-fleet-management-frontend
+      - fleet-management-frontend
       - sharespot-identity-management-frontend
       - smart-irrigation-frontend
       - rule-management-frontend
@@ -72,11 +72,11 @@ services:
       - 443
     depends_on:
       - data-decoder-master-backend
-  sharespot-fleet-management-frontend:
+  fleet-management-frontend:
     build:
-      dockerfile: docker/sharespot-fleet-management-frontend/Dockerfile
+      dockerfile: docker/fleet-management-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-fleet-management-frontend
+    image: fleet-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
@@ -85,7 +85,7 @@ services:
     ports:
       - 443
     depends_on:
-      - sharespot-fleet-management-backend
+      - fleet-management-backend
   sharespot-identity-management-frontend:
     build:
       dockerfile: docker/sharespot-identity-management-frontend/Dockerfile
@@ -249,16 +249,16 @@ services:
       - ./secrets/prod/data-validator-backend.env
     networks:
       - sharespot-network
-  sharespot-fleet-management-backend:
-    build: backend-services/sharespot-fleet-management-backend
-    container_name: sharespot-fleet-management-backend
-    image: sharespot-fleet-management-backend
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    container_name: fleet-management-backend
+    image: fleet-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-fleet-management-backend.env
+      - ./secrets/prod/fleet-management-backend.env
     networks:
       - sharespot-network
     ports:

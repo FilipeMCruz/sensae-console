@@ -11,7 +11,7 @@ const SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL = environment.production
 const SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-fleet-management-frontend/remoteEntry.js'
+  '/micro-frontends/fleet-management-frontend/remoteEntry.js'
   : 'http://localhost:4284/remoteEntry.js';
 
 const DEVICE_MANAGEMENT_FRONTEND_URL = environment.production

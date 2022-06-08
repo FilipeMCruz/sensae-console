@@ -18,7 +18,7 @@ envsubst < secrets/templates/dev/backend-services/data-gateway.properties > back
 envsubst < secrets/templates/dev/backend-services/data-processor-master-backend.properties > backend-services/data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-processor-slave-backend.properties > backend-services/data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-store.properties > backend-services/data-store/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/backend-services/sharespot-fleet-management-backend.properties > backend-services/sharespot-fleet-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/fleet-management-backend.properties > backend-services/fleet-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/identity-management-backend.properties > backend-services/identity-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/device-ownership-backend.properties > backend-services/device-ownership-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/smart-irrigation-backend.properties > backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties
@@ -31,7 +31,7 @@ envsubst < secrets/templates/dev/frontend-services/device-management-frontend.ts
 envsubst < secrets/templates/dev/frontend-services/rule-management-frontend.ts > frontend-services/apps/rule-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/sharespot-data-decoder-frontend.ts > frontend-services/apps/sharespot-data-decoder-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/sharespot-data-processor-frontend.ts > frontend-services/apps/sharespot-data-processor-frontend/src/environments/environment.ts
-envsubst < secrets/templates/dev/frontend-services/sharespot-fleet-management-frontend.ts > frontend-services/apps/sharespot-fleet-management-frontend/src/environments/environment.ts
+envsubst < secrets/templates/dev/frontend-services/fleet-management-frontend.ts > frontend-services/apps/fleet-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/sharespot-identity-management-frontend.ts > frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.ts

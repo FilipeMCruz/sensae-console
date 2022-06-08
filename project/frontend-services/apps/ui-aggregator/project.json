@@ -106,7 +106,7 @@
           "nx serve sharespot-data-decoder-frontend",
           "nx serve sharespot-identity-management-frontend",
           "nx serve sharespot-data-processor-frontend",
-          "nx serve sharespot-fleet-management-frontend",
+          "nx serve fleet-management-frontend",
           "nx serve device-management-frontend",
           "nx serve ui-aggregator"
         ]

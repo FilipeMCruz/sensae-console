@@ -100,15 +100,15 @@ services:
       - sharespot-network
     ports:
       - 8088:8080
-  sharespot-fleet-management-backend:
-    build: backend-services/sharespot-fleet-management-backend
-    image: sharespot-fleet-management-backend
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    image: fleet-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-fleet-management-backend.env
+      - ./secrets/prod/fleet-management-backend.env
     networks:
       - sharespot-network
     ports:

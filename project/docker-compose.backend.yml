@@ -5,7 +5,7 @@ services:
     env_file:
       - secrets/prod/message-broker.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 5672:5672
       - 15672:15672
@@ -16,7 +16,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8443:443
   data-gateway:
@@ -27,7 +27,7 @@ services:
     env_file:
       - ./secrets/prod/data-gateway.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080:8080
   data-processor-slave-backend:
@@ -38,7 +38,7 @@ services:
     env_file:
       - ./secrets/prod/data-processor-slave-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8081:8080
   data-processor-master-backend:
@@ -51,7 +51,7 @@ services:
     env_file:
       - ./secrets/prod/data-processor-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8082:8080
   device-management-slave-backend:
@@ -62,7 +62,7 @@ services:
     env_file:
       - ./secrets/prod/device-management-slave-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8087:8080
   device-commander-backend:
@@ -73,7 +73,7 @@ services:
     env_file:
       - ./secrets/prod/device-commander-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8090:8080
   data-validator-backend:
@@ -84,7 +84,7 @@ services:
     env_file:
       - ./secrets/prod/data-validator-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8089:8080
   device-management-master-backend:
@@ -97,7 +97,7 @@ services:
     env_file:
       - ./secrets/prod/device-management-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8088:8080
   fleet-management-backend:
@@ -110,7 +110,7 @@ services:
     env_file:
       - ./secrets/prod/fleet-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8800:8080
   smart-irrigation-backend:
@@ -124,7 +124,7 @@ services:
     env_file:
       - ./secrets/prod/smart-irrigation-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8801:8080
   identity-management-backend:
@@ -138,7 +138,7 @@ services:
     env_file:
       - ./secrets/prod/identity-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8086:8080
   device-ownership-backend:
@@ -149,7 +149,7 @@ services:
     env_file:
       - ./secrets/prod/device-ownership-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8085:8080
   data-decoder-master-backend:
@@ -162,7 +162,7 @@ services:
     env_file:
       - ./secrets/prod/data-decoder-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8084:8080
   data-decoder-slave-backend:
@@ -173,7 +173,7 @@ services:
     env_file:
       - ./secrets/prod/data-decoder-slave-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8083:8080
   rule-management-backend:
@@ -187,7 +187,7 @@ services:
     env_file:
       - ./secrets/prod/rule-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8094:8080
   alert-dispatcher-backend:
@@ -199,7 +199,7 @@ services:
     env_file:
       - ./secrets/prod/alert-dispatcher-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8093:8080
     depends_on:
@@ -215,7 +215,7 @@ services:
     env_file:
       - ./secrets/prod/notification-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8096:8080
   notification-dispatcher-backend:
@@ -227,7 +227,7 @@ services:
     env_file:
       - ./secrets/prod/notification-dispatcher-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8095:8080
   sharespot-common-database:
@@ -237,7 +237,7 @@ services:
     env_file:
       - ./secrets/prod/sharespot-common-database.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 5432:5432
     volumes:
@@ -246,7 +246,7 @@ services:
     image: questdb/questdb:6.3.1
     container_name: questdb
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8812:8812
       - 9000:9000
@@ -257,7 +257,7 @@ services:
     image: questdb/questdb:6.3.1
     container_name: irrigation-database
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8898:8812
       - 9098:9000
@@ -272,7 +272,7 @@ services:
   #   env_file:
   #     - ./secrets/prod/data-store-backend.env
   #   networks:
-  #     - sharespot-network
+  #     - sensae-network
   #   ports:
   #     - 8091:8080
   # data-store-database:
@@ -281,11 +281,11 @@ services:
   #   env_file:
   #     - ./secrets/prod/data-store-database.env
   #   networks:
-  #     - sharespot-network
+  #     - sensae-network
   #   ports:
   #     - 27017:27017
   #   volumes:
   #     - ./databases-data/prod/data-store-database:/data/db
   #     - ./secrets/prod/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
-  sharespot-network:
+  sensae-network:

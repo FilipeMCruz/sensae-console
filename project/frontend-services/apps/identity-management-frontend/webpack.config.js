@@ -23,22 +23,22 @@ sharedMappings.register(
   [
     '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
-    '@frontend-services/fleet-management/model',
-    '@frontend-services/fleet-management/services',
+    '@frontend-services/identity-management/model',
+    '@frontend-services/identity-management/services',
   ],
   workspaceRootPath
 );
 
 module.exports = {
-  experiments: {
-    outputModule: true,
-  },
   output: {
-    uniqueName: 'fleetmanagementfrontend',
+    uniqueName: 'identity-management-frontend',
     publicPath: 'auto',
   },
   optimization: {
     runtimeChunk: false,
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     alias: {
@@ -47,12 +47,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: { type: 'module' },
-      name: 'fleetmanagementfrontend',
+      name: 'identitymanagementfrontend',
       filename: 'remoteEntry.js',
       exposes: {
         './Module':
-          'apps/fleet-management-frontend/src/app/remote-entry/entry.module.ts',
+          'apps/identity-management-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {
@@ -133,6 +132,9 @@ module.exports = {
         },
         ...sharedMappings.getDescriptors(),
       }),
+      library: {
+        type: 'module',
+      },
     }),
     sharedMappings.getPlugin(),
   ],

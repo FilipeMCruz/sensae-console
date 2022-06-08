@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @ComponentScan(basePackages = "pt.sensae.services")
 @EnableJpaRepositories("pt.sensae.services")
-@EntityScan({"sharespot.services", "pt.sensae.services"})
+@EntityScan({"pt.sensae.services"})
 public class DataProcessorMasterApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

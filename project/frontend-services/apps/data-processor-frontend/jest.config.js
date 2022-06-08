@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'device-management-frontend',
+  displayName: 'data-processor-frontend',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +8,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/device-management-frontend',
+  coverageDirectory: '../../coverage/apps/data-processor-frontend',
   transform: {
     '^.+\\.(ts|js|html)$': 'jest-preset-angular',
   },

@@ -10,10 +10,10 @@ import pt.sensae.services.fleet.management.backend.domain.SensorDataRepository;
 @Service
 public class GPSDataArchiver {
 
-    @Value("${sharespot.location.heuristic.motion.detection.time}")
+    @Value("${sensae.location.heuristic.motion.detection.time}")
     public int TIME_SPAN_IN_MINUTES;
 
-    @Value("${sharespot.location.heuristic.motion.detection.distance}")
+    @Value("${sensae.location.heuristic.motion.detection.distance}")
     public double DISTANCE_IN_KM;
 
     private final SensorDataRepository repository;

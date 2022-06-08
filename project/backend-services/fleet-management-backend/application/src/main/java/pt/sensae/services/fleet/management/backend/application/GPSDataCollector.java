@@ -28,10 +28,10 @@ public class GPSDataCollector {
 
     private final TokenExtractor authHandler;
 
-    @Value("${sharespot.location.heuristic.motion.detection.distance}")
+    @Value("${sensae.location.heuristic.motion.detection.distance}")
     public double DISTANCE_IN_KM;
 
-    @Value("${sharespot.location.heuristic.complete.history.maxtime.window}")
+    @Value("${sensae.location.heuristic.complete.history.maxtime.window}")
     public int MAX_TIME_BETWEEN_INFO_IN_SECONDS;
 
     public GPSDataCollector(SensorDataRepository repository, TokenExtractor authHandler) {

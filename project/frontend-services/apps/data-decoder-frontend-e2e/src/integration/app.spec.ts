@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('device-management-frontend', () => {
+describe('data-decoder-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('device-management-frontend', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to device-management-frontend!');
+    getGreeting().contains('Welcome data-decoder-frontend');
   });
 });

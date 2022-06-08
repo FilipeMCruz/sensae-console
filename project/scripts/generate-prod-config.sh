@@ -29,10 +29,10 @@ envsubst < secrets/templates/prod/databases/sharespot-common-database.env > secr
 envsubst < secrets/templates/prod/databases/data-store-database.env > secrets/prod/data-store-database.env
 envsubst < secrets/templates/prod/frontend-services/device-management-frontend.ts > frontend-services/apps/device-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/rule-management-frontend.ts > frontend-services/apps/rule-management-frontend/src/environments/environment.prod.ts
-envsubst < secrets/templates/prod/frontend-services/sharespot-data-decoder-frontend.ts > frontend-services/apps/sharespot-data-decoder-frontend/src/environments/environment.prod.ts
-envsubst < secrets/templates/prod/frontend-services/sharespot-data-processor-frontend.ts > frontend-services/apps/sharespot-data-processor-frontend/src/environments/environment.prod.ts
+envsubst < secrets/templates/prod/frontend-services/data-decoder-frontend.ts > frontend-services/apps/data-decoder-frontend/src/environments/environment.prod.ts
+envsubst < secrets/templates/prod/frontend-services/data-processor-frontend.ts > frontend-services/apps/data-processor-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/fleet-management-frontend.ts > frontend-services/apps/fleet-management-frontend/src/environments/environment.prod.ts
-envsubst < secrets/templates/prod/frontend-services/sharespot-identity-management-frontend.ts > frontend-services/apps/sharespot-identity-management-frontend/src/environments/environment.prod.ts
+envsubst < secrets/templates/prod/frontend-services/identity-management-frontend.ts > frontend-services/apps/identity-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.prod.ts

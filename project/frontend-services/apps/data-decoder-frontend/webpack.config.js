@@ -21,24 +21,24 @@ const sharedMappings = new mf.SharedMappings();
 sharedMappings.register(
   tsConfigPath,
   [
-    '@frontend-services/mutual',
     '@frontend-services/simple-auth-lib',
-    '@frontend-services/fleet-management/model',
-    '@frontend-services/fleet-management/services',
+    '@frontend-services/mutual',
+    '@frontend-services/data-decoder-model',
+    '@frontend-services/data-decoder-services',
   ],
   workspaceRootPath
 );
 
 module.exports = {
-  experiments: {
-    outputModule: true,
-  },
   output: {
-    uniqueName: 'fleetmanagementfrontend',
+    uniqueName: 'datadecoderfrontend',
     publicPath: 'auto',
   },
   optimization: {
     runtimeChunk: false,
+  },
+  experiments: {
+    outputModule: true,
   },
   resolve: {
     alias: {
@@ -47,12 +47,11 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: { type: 'module' },
-      name: 'fleetmanagementfrontend',
+      name: 'datadecoderfrontend',
       filename: 'remoteEntry.js',
       exposes: {
         './Module':
-          'apps/fleet-management-frontend/src/app/remote-entry/entry.module.ts',
+          'apps/data-decoder-frontend/src/app/remote-entry/entry.module.ts',
       },
       shared: share({
         '@angular/animations': {
@@ -105,7 +104,7 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
-        rxjs: { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        rxjs: {singleton: true, strictVersion: true, requiredVersion: 'auto'},
         'rxjs/operators': {
           singleton: true,
           strictVersion: true,
@@ -133,6 +132,9 @@ module.exports = {
         },
         ...sharedMappings.getDescriptors(),
       }),
+      library: {
+        type: 'module',
+      },
     }),
     sharedMappings.getPlugin(),
   ],

@@ -14,7 +14,7 @@ public class SensorController {
 
     private final SensorDataPublisherService service;
 
-    @Value("${sharespot.auth.key}")
+    @Value("${sensae.auth.key}")
     private String secret;
 
     public SensorController(SensorDataPublisherService service) {

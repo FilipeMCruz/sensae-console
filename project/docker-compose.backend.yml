@@ -264,28 +264,28 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/irrigation-database:/root/.questdb/
-  # sharespot-data-store:
-  #   build: backend-services/sharespot-data-store
-  #   image: sharespot-data-store
+  # data-store:
+  #   build: backend-services/data-store
+  #   image: data-store
   #   environment:
   #     spring_profiles_active: prod
   #   env_file:
-  #     - ./secrets/prod/sharespot-data-store-backend.env
+  #     - ./secrets/prod/data-store-backend.env
   #   networks:
   #     - sharespot-network
   #   ports:
   #     - 8091:8080
-  # sharespot-data-store-database:
+  # data-store-database:
   #   image: mongo:latest
-  #   container_name: sharespot-data-store-database
+  #   container_name: data-store-database
   #   env_file:
-  #     - ./secrets/prod/sharespot-data-store-database.env
+  #     - ./secrets/prod/data-store-database.env
   #   networks:
   #     - sharespot-network
   #   ports:
   #     - 27017:27017
   #   volumes:
-  #     - ./databases-data/prod/sharespot-data-store-database:/data/db
-  #     - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  #     - ./databases-data/prod/data-store-database:/data/db
+  #     - ./secrets/prod/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
   sharespot-network:

@@ -142,9 +142,9 @@ services:
       - 443
     depends_on:
       - notification-management-backend
-  sharespot-data-relayer:
-    build: backend-services/sharespot-data-relayer
-    image: sharespot-data-relayer
+  data-relayer:
+    build: backend-services/data-relayer
+    image: data-relayer
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
@@ -153,14 +153,14 @@ services:
     ports:
       - 8443:443
     depends_on:
-      - sharespot-data-gateway
-  sharespot-data-gateway:
-    build: backend-services/sharespot-data-gateway
-    image: sharespot-data-gateway
+      - data-gateway
+  data-gateway:
+    build: backend-services/data-gateway
+    image: data-gateway
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-gateway.env
+      - ./secrets/prod/data-gateway.env
     networks:
       - sharespot-network
     ports:

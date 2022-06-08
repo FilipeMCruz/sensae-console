@@ -14,7 +14,7 @@ envsubst < secrets/templates/dev/backend-services/device-management-slave-backen
 envsubst < secrets/templates/dev/backend-services/rule-management-backend.properties > backend-services/rule-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-decoder-master-backend.properties > backend-services/sharespot-data-decoder-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-decoder-slave-backend.properties > backend-services/sharespot-data-decoder-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/backend-services/sharespot-data-gateway.properties > backend-services/sharespot-data-gateway/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/data-gateway.properties > backend-services/data-gateway/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-processor-master-backend.properties > backend-services/sharespot-data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-processor-slave-backend.properties > backend-services/sharespot-data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/sharespot-data-store.properties > backend-services/sharespot-data-store/infrastructure/boot/src/main/resources/application-dev.properties

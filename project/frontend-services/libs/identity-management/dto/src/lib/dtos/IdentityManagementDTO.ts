@@ -120,6 +120,7 @@ export interface TenantDTO {
 
 export interface DeviceDTO {
   oid: string;
+  name: string;
   domains: DeviceDomainPermissionDTO[];
 }
 

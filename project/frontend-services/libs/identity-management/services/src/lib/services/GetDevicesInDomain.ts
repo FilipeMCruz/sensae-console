@@ -23,6 +23,7 @@ export class GetDevicesInDomain {
       query viewDevicesInDomain($domain: ViewDomain) {
         viewDevicesInDomain(domain: $domain) {
           oid
+          name
           domains {
             oid
           }

@@ -3,7 +3,7 @@ package pt.sensae.services.device.management.master.backend.infrastructure.endpo
 import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
-import pt.sensae.services.device.management.master.backend.application.RecordMapper;
+import pt.sensae.services.device.management.master.backend.application.DeviceInformationMapper;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
@@ -27,7 +27,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class DeviceInformationMapperImpl implements RecordMapper {
+public class DeviceInformationMapperImpl implements DeviceInformationMapper {
 
     @Override
     public DeviceInformation dtoToDomain(DeviceInformationDTO dto) {

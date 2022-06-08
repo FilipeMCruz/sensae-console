@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'sharespot-device-records-frontend',
+  displayName: 'device-management-frontend',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -8,7 +8,7 @@ module.exports = {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/sharespot-device-records-frontend',
+  coverageDirectory: '../../coverage/apps/device-management-frontend',
   transform: {
     '^.+\\.(ts|js|html)$': 'jest-preset-angular',
   },

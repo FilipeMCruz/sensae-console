@@ -1,0 +1,30 @@
+{
+  "root": "apps/data-processor-frontend-e2e",
+  "sourceRoot": "apps/data-processor-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/data-processor-frontend-e2e/cypress.json",
+        "devServerTarget": "data-processor-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "data-processor-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/data-processor-frontend-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["data-processor-frontend"]
+}

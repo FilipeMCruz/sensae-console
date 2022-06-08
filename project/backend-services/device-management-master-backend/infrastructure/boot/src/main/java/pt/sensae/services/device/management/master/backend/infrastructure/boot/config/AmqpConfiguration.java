@@ -8,9 +8,10 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sensae.services.device.management.master.backend.application.RoutingKeysProvider;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceIdentityInfoConsumer;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceIdentitySyncConsumer;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.DeviceInformationRequestConsumer;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.identity.DeviceIdentityInfoConsumer;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.identity.DeviceIdentitySyncConsumer;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.information.DeviceInformationInitConsumer;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.information.DeviceInformationRequestConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
@@ -22,7 +23,7 @@ import static pt.sensae.services.device.management.master.backend.infrastructure
 @Configuration
 public class AmqpConfiguration {
 
-    public static final String IDENTITY_MANAGEMENT_QUEUE = "internal.identity.management.device.queue";
+    public static final String IDENTITY_MANAGEMENT_QUEUE = "internal.identity.management.device.init.queue";
 
     private final RoutingKeysProvider provider;
 
@@ -42,7 +43,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(DeviceInformationRequestConsumer.MASTER_QUEUE)
+        return QueueBuilder.durable(DeviceInformationRequestConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -56,6 +57,26 @@ public class AmqpConfiguration {
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(slaveQueue).to(masterExchange).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue initInformationQueue() {
+        return QueueBuilder.durable(DeviceInformationInitConsumer.QUEUE)
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingInitInformation(Queue initInformationQueue, TopicExchange masterExchange) {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.INFO)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(initInformationQueue).to(masterExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

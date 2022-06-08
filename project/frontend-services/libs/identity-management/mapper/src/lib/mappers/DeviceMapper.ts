@@ -12,13 +12,6 @@ export class DeviceMapper {
       (d) =>
         new DeviceDomainPermission(d.oid)
     );
-    return new DeviceInfo(dto.oid, permissions);
-  }
-
-  static modelToDto(model: DeviceInfo): DeviceDTO {
-    const domains = model.domains.map(d => ({
-      oid: d.domainId,
-    }));
-    return {oid: model.id, domains};
+    return new DeviceInfo(dto.oid, dto.name, permissions);
   }
 }

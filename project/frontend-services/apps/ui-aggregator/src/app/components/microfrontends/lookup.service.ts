@@ -5,13 +5,13 @@ import {environment} from '../../../environments/environment';
 const SHARESPOT_IDENTITY_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-identity-management-frontend/remoteEntry.js'
+  '/micro-frontends/identity-management-frontend/remoteEntry.js'
   : 'http://localhost:4285/remoteEntry.js';
 
 const SHARESPOT_FLEET_MANAGEMENT_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-fleet-management-frontend/remoteEntry.js'
+  '/micro-frontends/fleet-management-frontend/remoteEntry.js'
   : 'http://localhost:4284/remoteEntry.js';
 
 const DEVICE_MANAGEMENT_FRONTEND_URL = environment.production
@@ -23,13 +23,13 @@ const DEVICE_MANAGEMENT_FRONTEND_URL = environment.production
 const SHARESPOT_DATA_PROCESSOR_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-data-processor-frontend/remoteEntry.js'
+  '/micro-frontends/data-processor-frontend/remoteEntry.js'
   : 'http://localhost:4282/remoteEntry.js';
 
 const SHARESPOT_DATA_DECODER_FRONTEND_URL = environment.production
   ? 'https://' +
   environment.domain +
-  '/micro-frontends/sharespot-data-decoder-frontend/remoteEntry.js'
+  '/micro-frontends/data-decoder-frontend/remoteEntry.js'
   : 'http://localhost:4286/remoteEntry.js';
 
 const SMART_IRRIGATION_FRONTEND_URL = environment.production

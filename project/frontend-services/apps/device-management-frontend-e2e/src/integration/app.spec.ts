@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('sharespot-device-records-frontend', () => {
+describe('device-management-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
@@ -8,6 +8,6 @@ describe('sharespot-device-records-frontend', () => {
     cy.login('my-email@something.com', 'myPassword');
 
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to sharespot-device-records-frontend!');
+    getGreeting().contains('Welcome to device-management-frontend!');
   });
 });

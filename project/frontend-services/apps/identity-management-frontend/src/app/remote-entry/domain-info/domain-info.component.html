@@ -1,0 +1,172 @@
+<mat-accordion *ngIf="!entry.item.isNew()" class="item">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Domain: <strong class="with-margin">{{ entry.item.domain.name }}</strong>
+      </mat-panel-title>
+      <mat-panel-description *ngIf="panelOpenState === false">
+        <div class="with-margin" *ngIf="!entry.item.isPublic()">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          {{entry.item.tenants.length}}
+        </div>
+        <div class="with-margin" *ngIf="!entry.item.isUnallocated()">
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          {{entry.item.devices.length}}
+        </div>
+        <div class="with-margin">
+          <mat-icon mat-list-icon>verified_user</mat-icon>
+          {{entry.item.domain.permissions.length}}
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-container *ngIf="!entry.item.isPublic()">
+      <div mat-subheader>Tenants</div>
+      <mat-nav-list class="section" *ngIf="canChangeTenants()" dense>
+        <mat-list-item
+          (click)="trigger.openMenu()"
+          *ngFor="let tenant of entry.item.tenants"
+        >
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <div mat-line><strong>Name: </strong>{{ tenant.name }}</div>
+          <div mat-line><strong>Email: </strong>{{ tenant.email }}</div>
+          <button
+            mat-icon-button
+            #trigger="matMenuTrigger"
+            [matMenuTriggerFor]="tenantMenu"
+            [matMenuTriggerData]="{ tenant: tenant }"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-nav-list *ngIf="!canChangeTenants()" dense>
+        <mat-list-item
+          *ngFor="let tenant of entry.item.tenants"
+        >
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <div mat-line><strong>Name: </strong>{{ tenant.name }}</div>
+          <div mat-line><strong>Email: </strong>{{ tenant.email }}</div>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-menu #tenantMenu="matMenu">
+        <ng-template matMenuContent let-tenant="tenant">
+          <ng-container *ngIf="getValidDomainsForTenant(tenant).length !== 0">
+            <button
+              mat-menu-item
+              [matMenuTriggerFor]="domainMenu"
+              [matMenuTriggerData]="{ tenant: tenant }"
+            >
+              Add to other Domain
+            </button>
+          </ng-container>
+          <button mat-menu-item (click)="removeTenant(tenant)">
+            Remove from this Domain
+          </button>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #domainMenu="matMenu">
+        <ng-template matMenuContent let-tenant="tenant">
+          <button
+            mat-menu-item
+            *ngFor="let domain of getValidDomainsForTenant(tenant)"
+            (click)="addTenant(tenant, domain)"
+          >
+            {{ domain.domain.name }}
+          </button>
+        </ng-template>
+      </mat-menu>
+      <mat-divider></mat-divider>
+    </ng-container>
+    <ng-container *ngIf="!entry.item.isUnallocated()">
+      <div mat-subheader>Devices</div>
+      <mat-nav-list class="section" *ngIf="canChangeDevices()" dense>
+        <mat-list-item
+          (click)="trigger.openMenu()"
+          *ngFor="let device of entry.item.devices"
+        >
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          <div mat-line><strong>Id: </strong>{{ device.id }}</div>
+          <div *ngIf="device.name.length !== 0" mat-line><strong>Name: </strong>{{ device.name }}</div>
+          <div *ngIf="device.name.length === 0" mat-line><strong>Name: </strong><i>unavailable</i></div>
+          <button
+            mat-icon-button
+            #trigger="matMenuTrigger"
+            [matMenuTriggerFor]="deviceMenu"
+            [matMenuTriggerData]="{ device: device }"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-nav-list *ngIf="!canChangeDevices()" dense>
+        <mat-list-item
+          *ngFor="let device of entry.item.devices"
+        >
+          <mat-icon mat-list-icon>sensors</mat-icon>
+          <div mat-line><strong>Id: </strong>{{ device.id }}</div>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-menu #deviceMenu="matMenu">
+        <ng-template matMenuContent let-device="device">
+          <ng-container *ngIf="getValidDomainsForDevice(device).length !== 0">
+            <button
+              mat-menu-item
+              [matMenuTriggerFor]="domainDeviceReadMenu"
+              [matMenuTriggerData]="{ device: device }"
+            >
+              Add to other Domain
+            </button>
+          </ng-container>
+          <button mat-menu-item (click)="removeDevice(device)">
+            Remove from this Domain
+          </button>
+        </ng-template>
+      </mat-menu>
+      <mat-menu #domainDeviceReadMenu="matMenu">
+        <ng-template matMenuContent let-device="device">
+          <button
+            mat-menu-item
+            *ngFor="let domain of getValidDomainsForDevice(device)"
+            (click)="addDevice(device, domain)"
+          >
+            {{ domain.domain.name }}
+          </button>
+        </ng-template>
+      </mat-menu>
+      <mat-divider *ngIf="!entry.item.isUnallocated()"></mat-divider>
+    </ng-container>
+    <ng-container *ngIf="!entry.item.isUnallocated()">
+      <div mat-subheader>Permissions</div>
+      <mat-nav-list class="section" *ngIf="!canChangeDomains() || entry.item.isRoot()" dense>
+        <mat-list-item *ngFor="let perm of currentPermissions">
+          <mat-icon mat-list-icon>checked</mat-icon>
+          <div mat-line>{{perm.perm}}</div>
+        </mat-list-item>
+      </mat-nav-list>
+      <mat-selection-list class="section" *ngIf="canChangeDomains() && !entry.item.isRoot()" dense>
+        <mat-list-option [checkboxPosition]="'before'" [(selected)]="perm.checked" (click)="saveDomainChanges()"
+                         *ngFor="let perm of currentPermissions">
+          {{perm.perm}}
+        </mat-list-option>
+      </mat-selection-list>
+    </ng-container>
+  </mat-expansion-panel>
+</mat-accordion>
+<mat-accordion *ngIf="entry.item.isNew()" class="item">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        New Domain
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field class="big-input">
+      <mat-label>Domain Name</mat-label>
+      <input matInput [(ngModel)]="entry.item.domain.name"/>
+      <mat-icon matSuffix>dns</mat-icon>
+      <mat-hint>e.g. cmm</mat-hint>
+    </mat-form-field>
+    <button class="to-right" mat-stroked-button (click)="newDomain()">Create</button>
+  </mat-expansion-panel>
+</mat-accordion>

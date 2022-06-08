@@ -16,13 +16,13 @@ public class DeviceInformationCollectorService {
 
     private final DeviceInformationCollector collector;
 
-    private final RecordMapper mapper;
+    private final DeviceInformationMapper mapper;
 
     private final TokenExtractor authHandler;
 
     private final DeviceIdentityCache ownerChecker;
 
-    public DeviceInformationCollectorService(DeviceInformationCollector collector, RecordMapper mapper, TokenExtractor authHandler, DeviceIdentityCache deviceIdentityCache) {
+    public DeviceInformationCollectorService(DeviceInformationCollector collector, DeviceInformationMapper mapper, TokenExtractor authHandler, DeviceIdentityCache deviceIdentityCache) {
         this.collector = collector;
         this.mapper = mapper;
         this.authHandler = authHandler;

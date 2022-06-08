@@ -28,6 +28,7 @@ export class RemoveDevice {
       mutation removeDevice($instructions: RemoveDeviceFromDomain) {
         removeDevice(instructions: $instructions) {
           oid
+          name
           domains {
             oid
           }

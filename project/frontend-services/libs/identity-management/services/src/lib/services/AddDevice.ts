@@ -30,6 +30,7 @@ export class AddDevice {
       mutation addDevice($instructions: AddDeviceToDomain) {
         addDevice(instructions: $instructions) {
           oid
+          name
           domains {
             oid
           }

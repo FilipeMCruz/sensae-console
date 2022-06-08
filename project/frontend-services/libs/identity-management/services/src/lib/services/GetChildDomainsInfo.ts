@@ -31,6 +31,7 @@ export class GetChildDomainsInfo {
           }
           devices {
             oid
+            name
             domains {
               oid
             }

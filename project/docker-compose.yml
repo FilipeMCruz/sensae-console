@@ -165,13 +165,13 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-data-processor-slave-backend:
-    build: backend-services/sharespot-data-processor-slave-backend
-    image: sharespot-data-processor-slave-backend
+  data-processor-slave-backend:
+    build: backend-services/data-processor-slave-backend
+    image: data-processor-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-processor-slave-backend.env
+      - ./secrets/prod/data-processor-slave-backend.env
     networks:
       - sharespot-network
   sharespot-data-processor-master-backend:

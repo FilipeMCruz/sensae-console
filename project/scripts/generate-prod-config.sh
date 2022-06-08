@@ -16,7 +16,7 @@ envsubst < secrets/templates/prod/backend-services/data-decoder-master-backend.e
 envsubst < secrets/templates/prod/backend-services/data-decoder-slave-backend.env > secrets/prod/data-decoder-slave-backend.env
 envsubst < secrets/templates/prod/backend-services/data-gateway.env > secrets/prod/data-gateway.env
 envsubst < secrets/templates/prod/backend-services/sharespot-data-processor-master-backend.env > secrets/prod/sharespot-data-processor-master-backend.env
-envsubst < secrets/templates/prod/backend-services/sharespot-data-processor-slave-backend.env > secrets/prod/sharespot-data-processor-slave-backend.env
+envsubst < secrets/templates/prod/backend-services/data-processor-slave-backend.env > secrets/prod/data-processor-slave-backend.env
 envsubst < secrets/templates/prod/backend-services/sharespot-data-store-backend.env > secrets/prod/sharespot-data-store-backend.env
 envsubst < secrets/templates/prod/backend-services/sharespot-fleet-management-backend.env > secrets/prod/sharespot-fleet-management-backend.env
 envsubst < secrets/templates/prod/backend-services/identity-management-backend.env > secrets/prod/identity-management-backend.env

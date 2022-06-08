@@ -14,7 +14,7 @@ kill $(cat ./test-examples/dev-run/pid/rule-management-backend) && rm ./test-exa
 kill $(cat ./test-examples/dev-run/pid/data-decoder-master-backend) && rm ./test-examples/dev-run/pid/data-decoder-master-backend
 kill $(cat ./test-examples/dev-run/pid/data-decoder-slave-backend) && rm ./test-examples/dev-run/pid/data-decoder-slave-backend
 kill $(cat ./test-examples/dev-run/pid/data-gateway) && rm ./test-examples/dev-run/pid/data-gateway
-kill $(cat ./test-examples/dev-run/pid/sharespot-data-processor-master-backend) && rm ./test-examples/dev-run/pid/sharespot-data-processor-master-backend
+kill $(cat ./test-examples/dev-run/pid/data-processor-master-backend) && rm ./test-examples/dev-run/pid/data-processor-master-backend
 kill $(cat ./test-examples/dev-run/pid/data-processor-slave-backend) && rm ./test-examples/dev-run/pid/data-processor-slave-backend
 # kill $(cat ./test-examples/dev-run/pid/sharespot-data-store) && rm ./test-examples/dev-run/pid/sharespot-data-store
 kill $(cat ./test-examples/dev-run/pid/sharespot-fleet-management-backend) && rm ./test-examples/dev-run/pid/sharespot-fleet-management-backend

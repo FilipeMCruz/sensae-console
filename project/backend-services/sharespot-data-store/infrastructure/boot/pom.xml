@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>infrastructure</artifactId>
-        <groupId>sharespot.services</groupId>
+        <groupId>pt.sensae.services</groupId>
         <version>0.8.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -19,12 +19,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>sharespot.services</groupId>
+            <groupId>pt.sensae.services</groupId>
             <artifactId>mongodb</artifactId>
             <version>0.8.0</version>
         </dependency>
         <dependency>
-            <groupId>sharespot.services</groupId>
+            <groupId>pt.sensae.services</groupId>
             <artifactId>amqp</artifactId>
             <version>0.8.0</version>
         </dependency>

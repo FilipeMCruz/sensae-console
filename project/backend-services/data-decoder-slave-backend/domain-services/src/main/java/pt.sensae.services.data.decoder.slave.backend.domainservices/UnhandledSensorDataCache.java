@@ -1,4 +1,4 @@
-package sharespot.services.data.decoder.domainservices;
+package pt.sensae.services.data.decoder.slave.backend.domainservices;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.benmanes.caffeine.cache.Cache;

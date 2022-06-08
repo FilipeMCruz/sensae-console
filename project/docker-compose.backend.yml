@@ -41,15 +41,15 @@ services:
       - sharespot-network
     ports:
       - 8081:8080
-  sharespot-data-processor-master-backend:
-    build: backend-services/sharespot-data-processor-master-backend
-    image: sharespot-data-processor-master-backend
+  data-processor-master-backend:
+    build: backend-services/data-processor-master-backend
+    image: data-processor-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-processor-master-backend.env
+      - ./secrets/prod/data-processor-master-backend.env
     networks:
       - sharespot-network
     ports:

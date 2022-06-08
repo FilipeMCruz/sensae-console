@@ -14,7 +14,7 @@ cd "$ROOT_DIR"/project || exit
 ./scripts/run-backend-silent-dev.sh data-decoder-master-backend
 ./scripts/run-backend-silent-dev.sh data-decoder-slave-backend
 ./scripts/run-backend-silent-dev.sh data-gateway
-./scripts/run-backend-silent-dev.sh sharespot-data-processor-master-backend
+./scripts/run-backend-silent-dev.sh data-processor-master-backend
 ./scripts/run-backend-silent-dev.sh data-processor-slave-backend
 # ./scripts/run-backend-silent-dev.sh sharespot-data-store
 ./scripts/run-backend-silent-dev.sh sharespot-fleet-management-backend

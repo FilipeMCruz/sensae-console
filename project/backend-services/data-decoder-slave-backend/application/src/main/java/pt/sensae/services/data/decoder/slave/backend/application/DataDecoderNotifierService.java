@@ -2,8 +2,8 @@ package pt.sensae.services.data.decoder.slave.backend.application;
 
 import org.springframework.stereotype.Service;
 import pt.sensae.services.data.decoder.slave.backend.domain.NotificationType;
-import sharespot.services.data.decoder.domainservices.DataDecoderCache;
-import sharespot.services.data.decoder.domainservices.UnhandledSensorDataCache;
+import pt.sensae.services.data.decoder.slave.backend.domainservices.DataDecoderCache;
+import pt.sensae.services.data.decoder.slave.backend.domainservices.UnhandledSensorDataCache;
 
 @Service
 public class DataDecoderNotifierService {

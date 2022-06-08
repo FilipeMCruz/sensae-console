@@ -2,11 +2,11 @@ package pt.sensae.services.data.decoder.slave.backend.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
+import pt.sensae.services.data.decoder.slave.backend.domainservices.DataDecoderCache;
+import pt.sensae.services.data.decoder.slave.backend.domainservices.UnhandledSensorDataCache;
 import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 import pt.sensae.services.data.decoder.slave.backend.domain.SensorTypeId;
-import sharespot.services.data.decoder.domainservices.DataDecoderCache;
-import sharespot.services.data.decoder.domainservices.UnhandledSensorDataCache;
 
 @Service
 public class SensorDataHandlerService {

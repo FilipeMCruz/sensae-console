@@ -1,4 +1,4 @@
-package sharespot.services.data.decoder.domainservices;
+package pt.sensae.services.data.decoder.slave.backend.domainservices;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

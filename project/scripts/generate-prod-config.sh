@@ -20,7 +20,7 @@ envsubst < secrets/templates/prod/backend-services/sharespot-data-processor-slav
 envsubst < secrets/templates/prod/backend-services/sharespot-data-store-backend.env > secrets/prod/sharespot-data-store-backend.env
 envsubst < secrets/templates/prod/backend-services/sharespot-fleet-management-backend.env > secrets/prod/sharespot-fleet-management-backend.env
 envsubst < secrets/templates/prod/backend-services/identity-management-backend.env > secrets/prod/identity-management-backend.env
-envsubst < secrets/templates/prod/backend-services/sharespot-identity-management-slave-backend.env > secrets/prod/sharespot-identity-management-slave-backend.env
+envsubst < secrets/templates/prod/backend-services/device-ownership-backend.env > secrets/prod/device-ownership-backend.env
 envsubst < secrets/templates/prod/backend-services/smart-irrigation-backend.env > secrets/prod/smart-irrigation-backend.env
 envsubst < secrets/templates/prod/backend-services/notification-management-backend.env > secrets/prod/notification-management-backend.env
 envsubst < secrets/templates/prod/backend-services/notification-dispatcher-backend.env > secrets/prod/notification-dispatcher-backend.env

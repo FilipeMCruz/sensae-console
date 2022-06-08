@@ -19,6 +19,6 @@ cd "$ROOT_DIR"/project || exit
 # ./scripts/run-backend-silent-dev.sh sharespot-data-store
 ./scripts/run-backend-silent-dev.sh sharespot-fleet-management-backend
 ./scripts/run-backend-silent-dev.sh identity-management-backend
-./scripts/run-backend-silent-dev.sh sharespot-identity-management-slave-backend
+./scripts/run-backend-silent-dev.sh device-ownership-backend
 ./scripts/run-backend-silent-dev.sh smart-irrigation-backend
 ./scripts/run-backend-silent-dev.sh notification-dispatcher-backend

@@ -19,6 +19,6 @@ kill $(cat ./test-examples/dev-run/pid/sharespot-data-processor-slave-backend) &
 # kill $(cat ./test-examples/dev-run/pid/sharespot-data-store) && rm ./test-examples/dev-run/pid/sharespot-data-store
 kill $(cat ./test-examples/dev-run/pid/sharespot-fleet-management-backend) && rm ./test-examples/dev-run/pid/sharespot-fleet-management-backend
 kill $(cat ./test-examples/dev-run/pid/identity-management-backend) && rm ./test-examples/dev-run/pid/identity-management-backend
-kill $(cat ./test-examples/dev-run/pid/sharespot-identity-management-slave-backend) && rm ./test-examples/dev-run/pid/sharespot-identity-management-slave-backend
+kill $(cat ./test-examples/dev-run/pid/device-ownership-backend) && rm ./test-examples/dev-run/pid/device-ownership-backend
 kill $(cat ./test-examples/dev-run/pid/smart-irrigation-backend) && rm ./test-examples/dev-run/pid/smart-irrigation-backend
 kill $(cat ./test-examples/dev-run/pid/notification-dispatcher-backend) && rm ./test-examples/dev-run/pid/notification-dispatcher-backend

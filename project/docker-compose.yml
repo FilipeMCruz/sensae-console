@@ -291,14 +291,14 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-identity-management-slave-backend:
-    build: backend-services/sharespot-identity-management-slave-backend
-    container_name: sharespot-identity-management-slave-backend
-    image: sharespot-identity-management-slave-backend
+  device-ownership-backend:
+    build: backend-services/device-ownership-backend
+    container_name: device-ownership-backend
+    image: device-ownership-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-identity-management-slave-backend.env
+      - ./secrets/prod/device-ownership-backend.env
     networks:
       - sharespot-network
   rule-management-backend:

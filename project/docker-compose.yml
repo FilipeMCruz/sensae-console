@@ -71,7 +71,7 @@ services:
     ports:
       - 443
     depends_on:
-      - sharespot-data-decoder-master-backend
+      - data-decoder-master-backend
   sharespot-fleet-management-frontend:
     build:
       dockerfile: docker/sharespot-fleet-management-frontend/Dockerfile
@@ -187,15 +187,15 @@ services:
       - sharespot-network
     ports:
       - 8080
-  sharespot-data-decoder-master-backend:
-    build: backend-services/sharespot-data-decoder-master-backend
-    image: sharespot-data-decoder-master-backend
+  data-decoder-master-backend:
+    build: backend-services/data-decoder-master-backend
+    image: data-decoder-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-decoder-master-backend.env
+      - ./secrets/prod/data-decoder-master-backend.env
     networks:
       - sharespot-network
     ports:

@@ -12,7 +12,7 @@ envsubst < secrets/templates/prod/backend-services/device-commander-backend.env 
 envsubst < secrets/templates/prod/backend-services/device-management-master-backend.env > secrets/prod/device-management-master-backend.env
 envsubst < secrets/templates/prod/backend-services/device-management-slave-backend.env > secrets/prod/device-management-slave-backend.env
 envsubst < secrets/templates/prod/backend-services/rule-management-backend.env > secrets/prod/rule-management-backend.env
-envsubst < secrets/templates/prod/backend-services/sharespot-data-decoder-master-backend.env > secrets/prod/sharespot-data-decoder-master-backend.env
+envsubst < secrets/templates/prod/backend-services/data-decoder-master-backend.env > secrets/prod/data-decoder-master-backend.env
 envsubst < secrets/templates/prod/backend-services/sharespot-data-decoder-slave-backend.env > secrets/prod/sharespot-data-decoder-slave-backend.env
 envsubst < secrets/templates/prod/backend-services/data-gateway.env > secrets/prod/data-gateway.env
 envsubst < secrets/templates/prod/backend-services/sharespot-data-processor-master-backend.env > secrets/prod/sharespot-data-processor-master-backend.env

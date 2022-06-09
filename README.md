@@ -4,7 +4,7 @@ This document presents all the information needed to install, run and understand
 
 A preview of the project can be accessed at <https://location-tracking.sharespot.dev/>.
 
-Current Version: `0.8.0`
+Current Version: `0.9.0`
 
 The services currently supported are:
 

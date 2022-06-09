@@ -33,7 +33,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public TopicExchange masterExchange() {
+    public TopicExchange internalExchange() {
         return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
@@ -51,14 +51,14 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding bindingMaster(Queue slaveQueue, TopicExchange masterExchange) {
+    Binding bindingMaster(Queue slaveQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .missingAsAny();
         if (keys.isPresent()) {
-            return BindingBuilder.bind(slaveQueue).to(masterExchange).with(keys.get().toString());
+            return BindingBuilder.bind(slaveQueue).to(internalExchange).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

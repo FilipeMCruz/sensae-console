@@ -6,16 +6,15 @@ skinparam Shadowing false
 skinparam componentStyle uml2
 skinparam packageStyle rectangle
 
-component "Rule Engine Frontend" as RULE_FRONT
-component "Rule Engine Backend" as RULE_BACK
-component "Rule Engine Slave" as RULE_SLAVE
-component "Rule Engine Database" as RULE_DB
+component "Rule Management Frontend" as RULE_FRONT
+component "Rule Management Backend" as RULE_BACK
+component "Alert Dispatcher Slave" as RULE_SLAVE
+component "Rule Management Database" as RULE_DB
 component "Message Broker" as BROKER
 
 interface "UI" as UI
-interface "Rule Engine Backend\nAPI" as API
-interface "Rule Engine Database\nAPI" as DB_API
-interface "Rule Engine Database\nAPI" as DB_API
+interface "Rule Management Backend\nAPI" as API
+interface "Rule Management Database\nAPI" as DB_API
 interface "Message Broker API" as BROKER_API
 
 UI -- RULE_FRONT

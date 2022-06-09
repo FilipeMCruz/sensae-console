@@ -111,6 +111,24 @@
           "nx serve ui-aggregator"
         ]
       }
+    },
+    "serve-rule": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve rule-management-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
+    },
+    "serve-device": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve device-management-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
     }
   },
   "tags": []

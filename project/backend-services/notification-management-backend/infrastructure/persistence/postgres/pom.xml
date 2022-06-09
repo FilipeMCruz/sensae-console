@@ -5,7 +5,7 @@
     <parent>
         <artifactId>persistence</artifactId>
         <groupId>pt.sensae.services</groupId>
-        <version>0.8.0</version>
+        <version>0.9.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>pt.sensae.services</groupId>
             <artifactId>application</artifactId>
-            <version>0.8.0</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

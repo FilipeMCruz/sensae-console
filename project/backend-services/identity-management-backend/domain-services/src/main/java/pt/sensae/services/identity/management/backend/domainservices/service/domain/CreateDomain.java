@@ -35,7 +35,7 @@ public class CreateDomain {
         PermissionsValidator.verifyPermissions(tenant, parentDomain, List.of(PermissionType.EDIT_DOMAIN));
 
         var domainName = DomainName.of(command.domainName);
-        if (domainName.isValidName()) {
+        if (!domainName.isValidName()) {
             throw new NotValidException("Invalid Domain Name: unallocated/public/root is reserved");
         }
 

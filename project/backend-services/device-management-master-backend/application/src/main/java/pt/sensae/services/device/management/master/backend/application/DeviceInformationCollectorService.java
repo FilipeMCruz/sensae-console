@@ -34,8 +34,8 @@ public class DeviceInformationCollectorService {
         if (!extract.permissions.contains("device_management:device:read"))
             throw new UnauthorizedException("No Permissions");
 
-        var owns = ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of)).toList();
+        var owns = ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of));
 
-        return collector.collect().filter(i -> owns.contains(i.device().id())).map(mapper::domainToDto);
+        return collector.collect(owns).map(mapper::domainToDto);
     }
 }

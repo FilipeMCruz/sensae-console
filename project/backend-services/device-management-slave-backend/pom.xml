@@ -7,7 +7,7 @@
     <groupId>pt.sensae.services</groupId>
     <artifactId>device-management-slave-backend</artifactId>
     <packaging>pom</packaging>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
     <modules>
         <module>infrastructure</module>
         <module>application</module>

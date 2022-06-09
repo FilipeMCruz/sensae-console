@@ -9,6 +9,7 @@ import pt.sensae.services.device.management.master.backend.infrastructure.persis
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.repository.DeviceInformationRepositoryPostgres;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -67,6 +68,13 @@ public class DeviceInformationRepositoryImpl implements DeviceInformationReposit
     public Stream<DeviceInformation> findAll() {
         return StreamSupport.stream(repositoryPostgres.findAll().spliterator(), false)
                 .map(DeviceInformationMapper::postgresToDomain);
+    }
+
+    @Override
+    @Transactional
+    public Stream<DeviceInformation> findAllById(Stream<DeviceId> deviceIds) {
+        return repositoryPostgres.findAllByDeviceIdIn(deviceIds.map(d -> d.value().toString())
+                .collect(Collectors.toSet())).stream().map(DeviceInformationMapper::postgresToDomain);
     }
 
     @Override

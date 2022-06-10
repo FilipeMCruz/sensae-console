@@ -2,7 +2,7 @@
 
 skinparam Monochrome true
 
-component "Alert Dispatcher" {
+component "Alert Dispatcher Backend" {
     component "Application" as APP
     component "Domain" as DOM
     component "Infrastructure" as INFRA {

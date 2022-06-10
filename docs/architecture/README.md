@@ -4,7 +4,7 @@ This section represents the system architecture from different views and levels 
 
 Current version:
 
-- `system` : `0.8.0`
+- `system` : `0.9.0`
 
 ## Logical View - System Level
 
@@ -45,16 +45,20 @@ The system is composed by the following containers:
 - **Data Gateway**: Backend responsible for proxying sensor data requests to the assigned **Data Processor Slave** or **Data Decoder Slave**;
 - **Identity Management Frontend**: Frontend responsible for requesting user identification (to Azure active directory), provide access to the environment and manage identity/access/ownership issues inside the environment;
 - **Identity Management Backend**: Backend responsible for validating user credentials and handle device ownership, domain/company permissions and users domain;
-- **Identity Management Slave Backend**: Backend that changes the data that goes trough him by adding device ownership information;
+- **Device Ownership Backend**: Backend that changes the data that goes trough him by adding device ownership information;
 - **Identity Management Database**: Database that records information about the structure of the organization;
 - **Data Store**: Backend responsible for recording data in the defined data flow stage, e.g. record every invalid gps data, or, record every data that goes out of data decoder slave;
 - **Data Store Database**: Database that records information given by **Data Store**, has the purpose of acting like a Data Lake;
 - **Device Commander Backend**: Backend that receives internal requests to execute actions and dispatch them to Helium as downlinks;
 - **Data Relayer**: Backend responsible for routing data to **Data Gateway**.
-- **Rule Engine Frontend**: Frontend responsible for interacting with managers. Users can see, create, edit and delete rule scenarios using the UI.
-- **Rule Engine Backend**: Backend responsible for verifying that the submitted rule scenarios can be compiled, if so it notifies that a rule was updated, deleted or added.
-- **Alert Dispatcher**: Backend that is responsible for executing rules when new sensor data arrives to it from the message broker. When facts match a rule condition alarms are produced. This alarms are send to the message broker so that others are notified about them.
-- **Rule Engine Database**: Database that stores all rules.
+- **Rule Management Frontend**: Frontend responsible for interacting with managers. Users can see, create, edit and delete rule scenarios using the UI.
+- **Rule Management Backend**: Backend responsible for verifying that the submitted rule scenarios can be compiled, if so it notifies that a rule was updated, deleted or added.
+- **Alert Dispatcher Backend**: Backend that is responsible for executing rules when new sensor data arrives to it from the message broker. When facts match a rule condition alarms are produced. This alarms are send to the message broker so that others are notified about them.
+- **Rule Management Database**: Database that stores all rules.
+- **Notification Management Frontend**: Frontend responsible for interacting with tenants. Users can see and subscribe to different types of notifications in the UI.
+- **Notification Management Backend**: Backend responsible for serving new/old notifications and manage each tenant subscription configuration.
+- **Notification Dispatcher Backend**: Backend that is responsible for sending notifications to subscribed tenants via email or sms.
+- **Notification Management Database**: Database that stores all notifications and topics that each tenant subscribed to.
 
 In the following diagram a better idea of what each container responsibilities are is presented:
 
@@ -190,11 +194,11 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-data-decoder-frontend](diagrams/logical/logical-view-level3-data-decoder-frontend.svg)
 
-### Identity Management Slave Backend
+### Device Ownership Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-identity-management-slave-backend](diagrams/logical/logical-view-level3-identity-management-slave-backend.svg)
+![logical-view-level3-device-ownership-backend](diagrams/logical/logical-view-level3-device-ownership-backend.svg)
 
 ### Identity Management Master Backend
 
@@ -244,11 +248,29 @@ The following diagram describes it from a logical view.
 
 ![logical-view-level3-rule-management-backend](diagrams/logical/logical-view-level3-rule-management-backend.svg)
 
-### Alert Dispatcher
+### Alert Dispatcher Backend
 
 The following diagram describes it from a logical view.
 
-![logical-view-level3-alert-dispatcher](diagrams/logical/logical-view-level3-alert-dispatcher.svg)
+![logical-view-level3-alert-dispatcher-backend](diagrams/logical/logical-view-level3-alert-dispatcher.svg)
+
+### Notification Management Frontend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-notification-management-frontend](diagrams/logical/logical-view-level3-notification-management-frontend.svg)
+
+### Notification Management Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-notification-management-backend](diagrams/logical/logical-view-level3-notification-management-backend.svg)
+
+### Notification Dispatcher Backend
+
+The following diagram describes it from a logical view.
+
+![logical-view-level3-notification-dispatcher-backend](diagrams/logical/logical-view-level3-notification-dispatcher-backend.svg)
 
 ## Further Discussion
 

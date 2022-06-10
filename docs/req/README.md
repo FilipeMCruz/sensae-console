@@ -38,27 +38,28 @@ This are the currently implemented use cases.
 | **UC14**  | As a tenant I want to authenticate myself                                                                | Identity Management     |
 | **UC15**  | As a Anonymous User I want to access the system                                                          | Identity Management     |
 | **UC16**  | As a tenant I want to see my profile                                                                     | Identity Management     |
-| **UC17**  | As a tenant I want to refresh my authentication token                                                    | Identity Management     |
-| **UC18**  | As a tenant I want to add/remove another tenant to/from a domain i own                                   | Identity Management     |
-| **UC19**  | As a tenant I want to add a new sub-domain to my domain                                                  | Identity Management     |
-| **UC20**  | As a tenant I want to add/remove a device to/from a domain i own                                         | Identity Management     |
-| **UC21**  | As a tenant I want to change the permissions of a domain i own                                           | Identity Management     |
-| **UC22**  | As a tenant I want to see the tenants, devices and permissions of a domain i own                         | Identity Management     |
-| **UC23**  | As a tenant I want to create a gardening area                                                            | Smart Irrigation        |
-| **UC24**  | As a tenant I want to delete a gardening area                                                            | Smart Irrigation        |
-| **UC25**  | As a tenant I want to update a gardening area                                                            | Smart Irrigation        |
-| **UC26**  | As a tenant I want to see all gardening areas                                                            | Smart Irrigation        |
-| **UC27**  | As a tenant I want to open/close a valve                                                                 | Smart Irrigation        |
-| **UC28**  | As a tenant I want to see the latest data of each device inside a garden                                 | Smart Irrigation        |
-| **UC29**  | As a tenant I want to see the past data of a specific device                                             | Smart Irrigation        |
-| **UC30**  | As a manager I want to define a rule scenario so that alerts are sent                                    | Rule Management         |
-| **UC31**  | As a manager I want to see the rule scenarios registered in the system                                   | Rule Management         |
-| **UC32**  | As a manager I want to delete a rule scenario i've added                                                 | Rule Management         |
-| **UC33**  | As a tenant I want to receive live information about notifications                                       | Notification Management |
-| **UC34**  | As a tenant I want to see past information about notifications                                           | Notification Management |
-| **UC35**  | As a tenant I want to define what type of information i subscribe to and what's the delivery method      | Notification Management |
-| **UC36**  | As a tenant I want to see what type of information i am subscribe to and what's the delivery method      | Notification Management |
-| **UC37**  | As a system worker I want to dispatch notifications to subscribed tenants via email/sms/web notification | Notification Management |
+| **UC17**  | As a tenant I want to update my profile                                                                  | Identity Management     |
+| **UC18**  | As a tenant I want to refresh my authentication token                                                    | Identity Management     |
+| **UC19**  | As a tenant I want to add/remove another tenant to/from a domain i own                                   | Identity Management     |
+| **UC20**  | As a tenant I want to add a new sub-domain to my domain                                                  | Identity Management     |
+| **UC21**  | As a tenant I want to add/remove a device to/from a domain i own                                         | Identity Management     |
+| **UC22**  | As a tenant I want to change the permissions of a domain i own                                           | Identity Management     |
+| **UC23**  | As a tenant I want to see the tenants, devices and permissions of a domain i own                         | Identity Management     |
+| **UC24**  | As a tenant I want to create a gardening area                                                            | Smart Irrigation        |
+| **UC25**  | As a tenant I want to delete a gardening area                                                            | Smart Irrigation        |
+| **UC26**  | As a tenant I want to update a gardening area                                                            | Smart Irrigation        |
+| **UC27**  | As a tenant I want to see all gardening areas                                                            | Smart Irrigation        |
+| **UC28**  | As a tenant I want to open/close a valve                                                                 | Smart Irrigation        |
+| **UC29**  | As a tenant I want to see the latest data of each device inside a garden                                 | Smart Irrigation        |
+| **UC30**  | As a tenant I want to see the past data of a specific device                                             | Smart Irrigation        |
+| **UC31**  | As a manager I want to define a rule scenario so that alerts are sent                                    | Rule Management         |
+| **UC32**  | As a manager I want to see the rule scenarios registered in the system                                   | Rule Management         |
+| **UC33**  | As a manager I want to delete a rule scenario i've added                                                 | Rule Management         |
+| **UC34**  | As a tenant I want to receive live information about notifications                                       | Notification Management |
+| **UC35**  | As a tenant I want to see past information about notifications                                           | Notification Management |
+| **UC36**  | As a tenant I want to define what type of information i subscribe to and what's the delivery method      | Notification Management |
+| **UC37**  | As a tenant I want to see what type of information i am subscribe to and what's the delivery method      | Notification Management |
+| **UC38**  | As a system worker I want to dispatch notifications to subscribed tenants via email/sms/web notification | Notification Management |
 
 ## Further Discussion
 

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import {Observable} from 'rxjs';
-import {TenantProfileResultDTO, TenantProfileUpdateResultDTO} from '../dto/CredentialsDTO';
+import {TenantProfileUpdateResultDTO} from '../dto/CredentialsDTO';
 import {HttpHeaders} from '@angular/common/http';
 import {filter, map} from "rxjs/operators";
 import {extract, isNonNull} from "@frontend-services/core";

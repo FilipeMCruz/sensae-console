@@ -6,7 +6,7 @@ As explained in identity-management [docs](../identity-management/README.md) all
 
 Current version:
 
-- `system` : `0.8.0`
+- `system` : `0.9.0`
 
 ## Data Gateway API
 
@@ -262,17 +262,20 @@ Since the communication is made using GraphQL, and there are no `subscriptions` 
 ### Index a Device Information (new or updated device)
 
 ``` graphql
-mutation index($records: DeviceRecordsInput) {
-  index(records: $records) {
+mutation index($instructions: DeviceInformationInput) {
+  index(instructions: $instructions) {
     device {
       id
       name
       downlink
     }
-    entries {
+    records {
       label
       content
-      type
+    }
+    staticData {
+      label
+      content
     }
     subDevices {
       id
@@ -294,17 +297,20 @@ This is the resource used to index a new or edited device information to the dat
 ### Consult all Devices Information
 
 ``` graphql
-query deviceRecords {
-  deviceRecords {
+query deviceInformation {
+  deviceInformation {
     device {
       id
       name
       downlink
     }
-    entries {
+    records {
       label
       content
-      type
+    }
+    staticData {
+      label
+      content
     }
     subDevices {
       id
@@ -335,6 +341,125 @@ mutation delete($device: DeviceInput){
 ```
 
 This is the resource used to remove a device information from the cache and database.
+
+## Notification Management Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.
+
+As pointed in the current [problems](../problems/README.md) the JWT token has to be sent as a GraphQL Input parameter, Authorization, and not as an usual HTTP Header.
+The value of `Authorization` has to be 'Bearer <Token>'.
+
+### Consult Live Notifications
+
+**Query**:
+
+``` graphql
+subscription notification($Authorization: String){
+  notification(Authorization: $Authorization){
+    id
+    reportedAt
+    contentType{
+      category
+      subCategory
+      level
+    }
+    description
+  }
+}
+```
+
+This is the resource used to subscribe to new notifications.
+
+### Consult Past Notifications
+
+**Query**:
+
+``` graphql
+query history($filters: HistoryQuery){
+  history(filters: $filters){
+    id
+    reportedAt
+    contentType{
+      category
+      subCategory
+      level
+    }
+    description
+  }
+}
+```
+
+The filter, HistoryQuery, has the following structure:
+
+```ts
+export interface HistoryQuery {
+  startTime: string
+  endTime: string
+}
+```
+
+This is the resource used to fetch old notifications.
+
+### Consult Tenant Subscription Configuration
+
+**Query**:
+
+``` graphql
+query config{
+  config{
+    entries{
+      deliveryType
+      contentType{
+        category
+        subCategory
+        level
+      }
+      mute
+    }
+  }
+}
+```
+
+This is the resource used to fetch the current configuration that determines what notifications and how a user is subscribed to them.
+
+### Change Tenant Subscription Configuration
+
+**Query**:
+
+``` graphql
+mutation config($instructions: AddresseeConfigCommandInput){
+  config(instructions: $instructions){
+    entries{
+      deliveryType
+      contentType{
+        category
+        subCategory
+        level
+      }
+      mute
+    }
+  }
+}
+```
+
+The filter, AddresseeConfigCommandInput, has the following structure:
+
+```ts
+export interface AddresseeConfigCommandInput {
+  entries: {
+    deliveryType: DeliveryTypeDTO
+    contentType: {
+      category: string
+      subCategory: string
+      level: NotificationLevelDTO
+    }
+    mute: boolean
+  }
+}
+```
+
+This is the resource used to change the configuration in use by the tenant.
 
 ## Fleet Management Backend API
 
@@ -904,9 +1029,9 @@ Since the communication is made using GraphQL, and there are no `subscriptions` 
 mutation addDevice($instructions: AddDeviceToDomain) {
   addDevice(instructions: $instructions) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -920,13 +1045,8 @@ The `instructions` data has the following format:
 export interface AddDeviceToDomain {
   deviceOid: string;
   domainOid: string;
-  writePermission: boolean;
 }
 ```
-
-The `deviceOid` variable expects a device id.
-The `domainOid` variable expects a domain id.
-the `writePermission` variable expects a boolean value, `false` -> `read`, `true` -> `read and write`.
 
 ### Add a Tenant to a Domain
 
@@ -950,9 +1070,6 @@ export interface AddTenantToDomain {
   domainOid: string;
 }
 ```
-
-The `tenantOid` variable expects a tenant id.
-The `domainOid` variable expects a domain id.
 
 ### Change Domain Permissions
 
@@ -1017,9 +1134,9 @@ query viewChildDomainsInfo($domain: ViewDomain) {
     }
     devices {
       oid
+      name
       domains {
         oid
-        permission
       }
     }
     tenants {
@@ -1047,9 +1164,9 @@ export interface ViewDomain {
 query viewDevicesInDomain($domain: ViewDomain) {
   viewDevicesInDomain(domain: $domain) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -1070,9 +1187,9 @@ query viewDomainInfo($domain: ViewDomain) {
     }
     devices {
       oid
+      name
       domains {
         oid
-        permission
       }
     }
     tenants {
@@ -1121,9 +1238,9 @@ This is the resource used to check all information about tenants in the domain.
 mutation removeDevice($instructions: RemoveDeviceFromDomain) {
   removeDevice(instructions: $instructions) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -1166,14 +1283,79 @@ export interface RemoveTenantFromDomain {
 ### Authenticate User
 
 ```graphql
-query authenticate {
-  authenticate {
+query authenticate($provider: String) {
+  authenticate(provider: $provider) {
     token
   }
 }
 ```
 
-This is the resource used to exchange an `id token` from microsoft for an `access token` from `sensae` as explained in identity-management [docs](../identity-management/README.md).
+This is the resource used to exchange an `id token` from microsoft/google for an `access token` from `sensae` as explained in identity-management [docs](../identity-management/README.md).
+
+The `$provider` param can have the values **Google** or **Microsoft**.
+
+### Authenticate Anonymous User
+
+```graphql
+query anonymous {
+  anonymous {
+    token
+  }
+}
+```
+
+This is the resource used to fetch an `access token` for an anonymous user.
+
+### Refresh Access Token
+
+```graphql
+query refresh {
+  refresh {
+    token
+  }
+}
+```
+
+This is the resource used to fetch a new `access token`.
+
+### Fetch User Profile
+
+```graphql
+query profile {
+  profile {
+    oid
+    email
+    name
+    phoneNumber
+  }
+}
+```
+
+This is the resource used to fetch the profile of the currently authenticated user.
+
+### Update User Profile
+
+```graphql
+mutation updateTenant($instructions: TenantUpdateCommandInput) {
+  updateTenant(instructions: $instructions) {
+    oid
+    email
+    name
+    phoneNumber
+  }
+}
+```
+
+This is the resource used to update the profile of the currently authenticated user.
+
+The `TenantUpdateCommandInput` data has the following format:
+
+```ts
+export interface TenantUpdateCommandInput {
+  name: string;
+  phoneNumber: string;
+}
+```
 
 ## Further Discussion
 

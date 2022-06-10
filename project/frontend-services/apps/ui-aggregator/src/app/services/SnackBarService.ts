@@ -1,5 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Router} from "@angular/router";
+import {MatSnackBarConfig} from "@angular/material/snack-bar/snack-bar-config";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class SnackbarService {
 
   constructor(
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private router: Router) {
   }
 
   default(message: string) {
@@ -15,15 +18,6 @@ export class SnackbarService {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 3000,
-    });
-  }
-
-  critical(message: string) {
-    return this._snackBar.open(message, undefined, {
-      horizontalPosition: 'right',
-      verticalPosition: 'bottom',
-      duration: 7000,
-      panelClass: ['critical-snackbar']
     });
   }
 
@@ -36,8 +30,16 @@ export class SnackbarService {
     });
   }
 
+  critical(message: string) {
+    return this.notification(message, {
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+      panelClass: ['critical-snackbar']
+    });
+  }
+
   warning(message: string) {
-    return this._snackBar.open(message, undefined, {
+    return this.notification(message, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 6000,
@@ -46,7 +48,7 @@ export class SnackbarService {
   }
 
   advisory(message: string) {
-    return this._snackBar.open(message, undefined, {
+    return this.notification(message, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 5000,
@@ -55,7 +57,7 @@ export class SnackbarService {
   }
 
   watch(message: string) {
-    return this._snackBar.open(message, undefined, {
+    return this.notification(message, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 4000,
@@ -64,11 +66,21 @@ export class SnackbarService {
   }
 
   information(message: string) {
-    return this._snackBar.open(message, undefined, {
+    return this.notification(message, {
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
       duration: 3000,
       panelClass: ['information-snackbar']
     });
+  }
+
+  private notification(message: string, config: MatSnackBarConfig) {
+    const snackBar = this._snackBar
+      .open(message, 'view', config);
+
+    snackBar.onAction()
+      .subscribe(() => this.router.navigate(['notification-management']))
+
+    return snackBar;
   }
 }

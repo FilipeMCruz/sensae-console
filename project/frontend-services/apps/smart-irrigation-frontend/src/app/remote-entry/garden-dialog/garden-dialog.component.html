@@ -65,6 +65,14 @@
                 <mat-icon>{{valve.getFirstDataIcon()}}</mat-icon>
                 {{valve.getFirstDataDetails()}}
               </mat-chip>
+              <mat-chip *ngIf="canInteractWithValve(valve)" class="play_arrow">
+                <mat-icon>play_arrow</mat-icon>
+                control
+              </mat-chip>
+              <mat-chip *ngIf="!canInteractWithValve(valve)" class="close">
+                <mat-icon>close</mat-icon>
+                <s>control</s>
+              </mat-chip>
               <mat-chip class="schedule">
                 <mat-icon>schedule</mat-icon>
                 {{valve.timeAgo()}}

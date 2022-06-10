@@ -6,8 +6,7 @@ import {extract, isNonNull} from '@frontend-services/core';
 import {HttpHeaders} from '@angular/common/http';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {
-  AddresseeConfiguration,
-  NotificationHistoryQuery
+  AddresseeConfiguration
 } from "@frontend-services/notification-management/model";
 import {AddresseeConfigResultDTO} from "@frontend-services/notification-management/dto";
 import {OperationsMapper} from "@frontend-services/notification-management/mapper";

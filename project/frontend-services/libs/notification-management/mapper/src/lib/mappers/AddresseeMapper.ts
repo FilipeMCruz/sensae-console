@@ -29,6 +29,8 @@ export class AddresseeMapper {
         return DeliveryTypeDTO.SMS;
       case DeliveryType.EMAIL:
         return DeliveryTypeDTO.EMAIL;
+      case DeliveryType.UI:
+        return DeliveryTypeDTO.UI;
     }
   }
 
@@ -40,6 +42,8 @@ export class AddresseeMapper {
         return DeliveryType.SMS;
       case DeliveryTypeDTO.EMAIL:
         return DeliveryType.EMAIL;
+      case DeliveryTypeDTO.UI:
+        return DeliveryType.UI;
     }
   }
 }

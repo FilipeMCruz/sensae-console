@@ -4,4 +4,5 @@ public enum DeliveryType {
     SMS,
     EMAIL,
     NOTIFICATION,
+    UI
 }

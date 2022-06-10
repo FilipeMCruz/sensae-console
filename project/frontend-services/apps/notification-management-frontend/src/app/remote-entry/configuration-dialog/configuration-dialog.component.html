@@ -22,6 +22,16 @@
           </td>
         </ng-container>
 
+        <ng-container matColumnDef="history">
+          <th class="center-cell" mat-header-cell *matHeaderCellDef>Show Old Notifications</th>
+          <td class="center-cell" mat-cell *matCellDef="let element">
+            <section>
+              <mat-checkbox [color]="'primary'" [(ngModel)]="element.history"
+                            class="example-margin"></mat-checkbox>
+            </section>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="ui">
           <th class="center-cell" mat-header-cell *matHeaderCellDef>Send UI Notification</th>
           <td class="center-cell" mat-cell *matCellDef="let element">
@@ -36,7 +46,8 @@
           <th class="center-cell" mat-header-cell *matHeaderCellDef>Send Email</th>
           <td class="center-cell" mat-cell *matCellDef="let element">
             <section>
-              <mat-checkbox [color]="'primary'" [(ngModel)]="element.email" class="example-margin"></mat-checkbox>
+              <mat-checkbox [color]="'primary'" [(ngModel)]="element.email"
+                            class="example-margin"></mat-checkbox>
             </section>
           </td>
         </ng-container>
@@ -45,7 +56,8 @@
           <th class="center-cell" mat-header-cell *matHeaderCellDef>Send SMS</th>
           <td class="center-cell" mat-cell *matCellDef="let element">
             <section>
-              <mat-checkbox [color]="'primary'" [(ngModel)]="element.sms" class="example-margin"></mat-checkbox>
+              <mat-checkbox [color]="'primary'" [(ngModel)]="element.sms"
+                            class="example-margin"></mat-checkbox>
             </section>
           </td>
         </ng-container>

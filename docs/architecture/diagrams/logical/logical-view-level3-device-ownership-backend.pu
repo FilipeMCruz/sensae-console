@@ -1,8 +1,8 @@
-@startuml logical-view-level3-identity-management-slave-backend
+@startuml logical-view-level3-device-ownership-backend
 
 skinparam Monochrome true
 
-component "Identity Management Slave Backend" {
+component "Device Ownership Backend" {
     component "Application" as APP
     component "Domain" as DOM
     component "Domain Services" as DOM_SERV

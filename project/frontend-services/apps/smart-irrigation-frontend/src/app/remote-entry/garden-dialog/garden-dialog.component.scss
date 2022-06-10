@@ -51,6 +51,15 @@
   background-color: #c2c5aa;
 }
 
+.close {
+  background-color: grey;
+}
+
+.play_arrow {
+  background-color: grey;
+}
+
+
 .data-list {
   flex-grow: 1;
   overflow: auto;
@@ -69,10 +78,13 @@
 }
 
 #loader {
-  position:absolute; top:0; bottom:0; width:100%;
-  background:rgba(255, 255, 255, 1);
-  transition:background 1s ease-out;
-  -webkit-transition:background 1s ease-out;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 1);
+  transition: background 1s ease-out;
+  -webkit-transition: background 1s ease-out;
 }
 
 #loader.done {

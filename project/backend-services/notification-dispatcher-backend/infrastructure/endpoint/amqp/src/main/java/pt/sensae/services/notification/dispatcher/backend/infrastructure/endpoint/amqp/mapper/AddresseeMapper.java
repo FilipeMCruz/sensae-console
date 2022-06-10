@@ -39,6 +39,7 @@ public class AddresseeMapper {
             case EMAIL -> DeliveryType.EMAIL;
             case NOTIFICATION -> DeliveryType.NOTIFICATION;
             case SMS -> DeliveryType.SMS;
+            case UI -> DeliveryType.UI;
         };
     }
 }

@@ -92,8 +92,12 @@ export class GardenDialogComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  canInteractWithValve(sensorData: Data) {
+    return sensorData.device.remoteControl && !sensorData.device.switchQueued && this.switchValveService.canDo();
+  }
+
   onSelect(sensorData: Data) {
-    if (sensorData.device.remoteControl && !sensorData.device.switchQueued && this.switchValveService.canDo()) {
+    if (this.canInteractWithValve(sensorData)) {
       const dialogRef = this.dialog.open(ValveDialogComponent, {
         width: '350px',
         data: sensorData,

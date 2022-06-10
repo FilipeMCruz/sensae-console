@@ -33,6 +33,7 @@ public class AddresseeCommandMapperImpl implements AddresseeCommandMapper {
             case NOTIFICATION -> DeliveryType.NOTIFICATION;
             case SMS -> DeliveryType.SMS;
             case EMAIL -> DeliveryType.EMAIL;
+            case UI -> DeliveryType.UI;
         };
     }
 }

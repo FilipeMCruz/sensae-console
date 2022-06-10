@@ -4,7 +4,7 @@ This document describes how `identity management` functions inside the system, a
 
 Current version:
 
-- `system` : `0.8.0`
+- `system` : `0.9.0`
 
 ## Introduction
 
@@ -25,20 +25,22 @@ Rules:
 
 - `root` domain has full control over everything.
 - `root/unallocated` has access to nothing (stores people that have not been added to any company)
+- `root/public` is a public domain that anyone, even anonymous users belong to, any device/permission can be added to this domain
 - `root/{{others}}/unallocated` stores people that have not been assigned to any organization department and don't have access to anything.
 - new people are sent to the `root/unallocated` domain and then are moved to `root/{{others}}/unallocated` depending on the organization that they belong.
 - new devices are sent to the `root` domain and then moved to `root/{{others}}` depending on the organization that they belong to.
 - a domain has access to all devices in him and in his subdomains.
 - a domain can only inherit his parent domain permissions.
-- if a domain has a __WRITE\*__ permission then the __READ\*__ permission will also be provided.
 - a tenant has all the domain permissions that he is registered in.
 - a tenant can only see the devices that the domains he is registered in have access to.
 
 ## Authentication
 
-Authentication is ensured by an external identity provider, microsoft.
-For a user to preform any action in the system he needs to log in the `AAD`.
+Authentication is ensured by an external identity provider, microsoft or google.
+For a user to preform any action in the system he needs to log in the chosen provider.
 An `access token` is generated and requested in each endpoint to ensure that the user is authenticated.
+
+A user can also access the platform as an anonymous user, this user has access to anything in the `public domain` only.
 
 ## Authorization
 

@@ -4,4 +4,5 @@ public enum DeliveryTypeDTOImpl {
     SMS,
     EMAIL,
     NOTIFICATION,
+    UI,
 }

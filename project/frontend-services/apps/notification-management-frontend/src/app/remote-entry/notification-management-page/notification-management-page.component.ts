@@ -109,11 +109,16 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   openConfiguration() {
     this.dialog.open(ConfigurationDialogComponent, {
       width: '70%',
-      height: '70%',
+      height: '75%',
       data: this.sortedData.map(s => s.contentType).filter(({category, subCategory, severity}, index, a) =>
         a.findIndex(e => category === e.category &&
           severity === e.severity &&
           subCategory === e.subCategory) === index)
-    });
+    }).afterClosed().subscribe(result => {
+        if (result && result === true) {
+          this.fetchLastMonthNotifications();
+        }
+      }
+    );
   }
 }

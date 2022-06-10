@@ -5,31 +5,36 @@ skinparam sequenceMessageAlign center
 skinparam componentStyle uml2
 skinparam packageStyle rectangle
 
-
 [System] as S
 [Helium Console] as HC
 [Azure Active Directory] as AAD
+[Google Identity Platform] as GIP
 
 () "UI" as UI
 () "Helium Console\nRest API" as OUT_ENDPOINT
 () "Sensae Console\nRest API" as IN_ENDPOINT
 note bottom: Console integration\nendpoint
 
-() "AAD API" as AUTH_ENDPOINT
+() "AAD API" as AZURE_ENDPOINT
+() "Google API" as GOOGLE_ENDPOINT
 
 actor "Manager" as Client
 actor "Tenant" as Tenant
+actor "Anonymous User" as Anonymous
 
 Client --( UI
 Tenant --( UI
+Anonymous --( UI
 
 UI -- S
 S -- IN_ENDPOINT
 HC - OUT_ENDPOINT
-S - AUTH_ENDPOINT
+S -( AZURE_ENDPOINT
+S --( GOOGLE_ENDPOINT
 
 IN_ENDPOINT )- HC
 OUT_ENDPOINT )- S
-AUTH_ENDPOINT )- AAD
+AZURE_ENDPOINT - AAD
+GOOGLE_ENDPOINT - GIP
 
 @enduml

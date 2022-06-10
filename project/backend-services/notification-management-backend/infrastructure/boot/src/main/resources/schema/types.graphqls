@@ -32,7 +32,8 @@ type AddresseeConfig {
 enum DeliveryType {
     SMS,
     EMAIL,
-    NOTIFICATION
+    NOTIFICATION,
+    UI
 }
 
 input ContentTypeInput {

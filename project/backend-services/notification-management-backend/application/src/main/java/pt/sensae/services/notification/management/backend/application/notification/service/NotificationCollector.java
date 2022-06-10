@@ -27,16 +27,19 @@ public class NotificationCollector {
 
     private final NotificationRepository repository;
 
+    private final AddresseeRepository addresseeRepository;
+
     private final NotificationHistoryQueryCommandMapper commandMapper;
 
     private final NotificationMapper mapper;
 
     public NotificationCollector(TokenExtractor authHandler,
                                  NotificationRepository repository,
-                                 NotificationHistoryQueryCommandMapper commandMapper,
+                                 AddresseeRepository addresseeRepository, NotificationHistoryQueryCommandMapper commandMapper,
                                  NotificationMapper mapper) {
         this.authHandler = authHandler;
         this.repository = repository;
+        this.addresseeRepository = addresseeRepository;
         this.commandMapper = commandMapper;
         this.mapper = mapper;
     }
@@ -53,7 +56,11 @@ public class NotificationCollector {
                 .map(DomainId::of)
                 .collect(Collectors.toSet());
 
-        var notificationStream = repository.find(NotificationQuery.of(queryCommand.start, queryCommand.end, Domains.of(domainIds)));
+        var id = AddresseeId.of(extract.oid);
+        var addressee = addresseeRepository.findById(id);
+
+        var notificationStream = repository.find(NotificationQuery.of(queryCommand.start, queryCommand.end, Domains.of(domainIds)))
+                .filter(notification -> addressee.canSendVia(notification, DeliveryType.UI));
 
         return notificationStream.map(mapper::toDto);
     }

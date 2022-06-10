@@ -14,6 +14,7 @@ export class AddresseeConfiguration {
       normalView.push(new AddresseeConfigurationEntry(DeliveryType.SMS, row.contentType, !row.sms))
       normalView.push(new AddresseeConfigurationEntry(DeliveryType.EMAIL, row.contentType, !row.email))
       normalView.push(new AddresseeConfigurationEntry(DeliveryType.NOTIFICATION, row.contentType, !row.notification))
+      normalView.push(new AddresseeConfigurationEntry(DeliveryType.UI, row.contentType, !row.history))
     });
     return new AddresseeConfiguration(normalView);
   }
@@ -38,23 +39,14 @@ export class AddresseeConfiguration {
       const notification = group.find(g => g.deliveryType === DeliveryType.NOTIFICATION);
       const email = group.find(g => g.deliveryType === DeliveryType.EMAIL);
       const sms = group.find(g => g.deliveryType === DeliveryType.SMS);
+      const history = group.find(g => g.deliveryType === DeliveryType.UI);
 
-      let smsValue = false;
-      if (sms !== undefined) {
-        smsValue = !sms.mute;
-      }
-      let emailValue = false;
-      if (email !== undefined) {
-        emailValue = !email.mute;
-      }
-      let notificationValue = false;
-      if (notification !== undefined) {
-        notificationValue = !notification.mute;
-      }
+      const historyValue = history !== undefined ? !history.mute : false;
+      const notificationValue = notification !== undefined ? !notification.mute : false;
+      const emailValue = email !== undefined ? !email.mute : false;
+      const smsValue = sms !== undefined ? !sms.mute : false;
 
-      const contentType = group[0].contentType;
-
-      tableView.push(new AddresseeConfigurationTableView(contentType, smsValue, emailValue, notificationValue));
+      tableView.push(new AddresseeConfigurationTableView(group[0].contentType, smsValue, emailValue, notificationValue, historyValue));
     }
     return tableView;
   }

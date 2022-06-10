@@ -41,6 +41,7 @@ public class AddresseeDTOMapper implements InternalAddresseeDTOMapper {
             case NOTIFICATION -> DeliveryTypeDTO.NOTIFICATION;
             case SMS -> DeliveryTypeDTO.SMS;
             case EMAIL -> DeliveryTypeDTO.EMAIL;
+            case UI -> DeliveryTypeDTO.UI;
         };
     }
 

@@ -38,6 +38,7 @@ public class AddresseeMapperImpl implements AddresseeDTOMapper {
             case NOTIFICATION -> DeliveryTypeDTOImpl.NOTIFICATION;
             case SMS -> DeliveryTypeDTOImpl.SMS;
             case EMAIL -> DeliveryTypeDTOImpl.EMAIL;
+            case UI -> DeliveryTypeDTOImpl.UI;
         };
     }
 }

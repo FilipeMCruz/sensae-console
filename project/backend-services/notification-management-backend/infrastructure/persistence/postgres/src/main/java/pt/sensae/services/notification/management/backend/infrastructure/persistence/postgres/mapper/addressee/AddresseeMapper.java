@@ -47,6 +47,11 @@ public class AddresseeMapper {
                             .findFirst()
                             .map(c -> !c.mute())
                             .orElse(false);
+                    addresseePostgres.showInUI = contentTypList.stream()
+                            .filter(conf -> conf.deliveryType().equals(DeliveryType.UI))
+                            .findFirst()
+                            .map(c -> !c.mute())
+                            .orElse(false);
                     return addresseePostgres;
                 });
     }
@@ -60,6 +65,7 @@ public class AddresseeMapper {
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.EMAIL, !conf.sendEmail));
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.SMS, !conf.sendSms));
                 configs.add(AddresseeConfig.of(contentType, DeliveryType.NOTIFICATION, !conf.sendNotification));
+                configs.add(AddresseeConfig.of(contentType, DeliveryType.UI, !conf.showInUI));
             });
             return Addressee.of(id, configs);
         });

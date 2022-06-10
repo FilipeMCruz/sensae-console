@@ -22,6 +22,9 @@ public class AddresseePostgres {
     @Column("level")
     public String level;
 
+    @Column("show_ui")
+    public boolean showInUI;
+
     @Column("send_sms")
     public boolean sendSms;
 

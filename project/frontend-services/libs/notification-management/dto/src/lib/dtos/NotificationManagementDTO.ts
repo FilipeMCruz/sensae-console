@@ -56,7 +56,8 @@ export interface AddresseeConfigDTO {
 export enum DeliveryTypeDTO {
   SMS = "SMS",
   EMAIL = "EMAIL",
-  NOTIFICATION = "NOTIFICATION"
+  NOTIFICATION = "NOTIFICATION",
+  UI = "UI"
 }
 
 export interface HistoryQueryDTO {

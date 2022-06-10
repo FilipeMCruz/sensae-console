@@ -16,7 +16,7 @@ import {MatTable} from "@angular/material/table";
 })
 export class ConfigurationDialogComponent implements AfterViewInit {
 
-  displayedColumns = ['category', 'subCategory', 'severity', 'ui', 'email', 'sms', 'actions'];
+  displayedColumns = ['category', 'subCategory', 'severity', 'history', 'ui', 'email', 'sms', 'actions'];
 
   configuration: AddresseeConfiguration = AddresseeConfiguration.empty();
 
@@ -37,7 +37,7 @@ export class ConfigurationDialogComponent implements AfterViewInit {
 
   onNoClick(): void {
     AddresseeConfiguration.fromTableView(this.dataSource);
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
 
   ngAfterViewInit(): void {
@@ -45,6 +45,7 @@ export class ConfigurationDialogComponent implements AfterViewInit {
       this.data.forEach(content => {
         if (!next.contains(content)) {
           next.add(new AddresseeConfigurationEntry(DeliveryType.NOTIFICATION, content, false));
+          next.add(new AddresseeConfigurationEntry(DeliveryType.UI, content, false));
         }
       })
       this.configuration = next;
@@ -58,7 +59,7 @@ export class ConfigurationDialogComponent implements AfterViewInit {
   save() {
     const config = AddresseeConfiguration.fromTableView(this.dataSource);
     this.mutateConfiguration.execute(config).subscribe();
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
 
   toCamelCase(value: string) {
@@ -99,7 +100,7 @@ export class ConfigurationDialogComponent implements AfterViewInit {
       }
     }
     const contentType = new ContentType(this.toCamelCase(this.newCategory), this.toCamelCase(this.newSubCategory), severity);
-    return new AddresseeConfigurationTableView(contentType, false, false, false);
+    return new AddresseeConfigurationTableView(contentType, false, false, false, true);
   }
 
   validEntry() {
@@ -114,11 +115,11 @@ export class ConfigurationDialogComponent implements AfterViewInit {
   }
 
   getCategoryOptions() {
-    return this.dataSource.map(e => e.contentType.getCategory());
+    return new Set(this.dataSource.map(e => e.contentType.getCategory()));
   }
 
   getSubCategoryOptions() {
-    return this.dataSource.map(e => e.contentType.getSubCategory());
+    return new Set(this.dataSource.map(e => e.contentType.getSubCategory()));
   }
 
   removeEntry(elem: AddresseeConfigurationTableView) {

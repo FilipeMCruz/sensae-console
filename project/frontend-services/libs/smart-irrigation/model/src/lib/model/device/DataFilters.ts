@@ -1,7 +1,7 @@
 import {DeviceId} from "./DeviceId";
-import {GardeningAreaId} from "../garden/GardeningAreaId";
+import {IrrigationZoneId} from "../garden/IrrigationZoneId";
 
 export class DataFilters {
-  constructor(public devices: Array<DeviceId>, public gardens: Array<GardeningAreaId>, public content: string) {
+  constructor(public devices: Array<DeviceId>, public gardens: Array<IrrigationZoneId>, public content: string) {
   }
 }

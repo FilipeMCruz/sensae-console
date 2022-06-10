@@ -72,14 +72,14 @@ type GPSDataDetails {
 
 input HistoryQueryFilters {
     devices : [String]
-    gardens : [String]
+    irrigationZones : [String]
     startTime : String
     endTime : String
 }
 
 input LatestDataQueryFilters {
     devices : [String]
-    gardens : [String]
+    irrigationZones : [String]
 }
 
 type SensorDataHistory {
@@ -120,7 +120,7 @@ type ValveDataHistoryDetails implements SensorDataHistoryDetails {
     valve : ValveStatusDataDetails
 }
 
-type GardeningArea {
+type IrrigationZone {
     id : String
     name : String
     area : [AreaBoundary]
@@ -133,18 +133,18 @@ type AreaBoundary {
     altitude : String
 }
 
-input CreateGardeningAreaCommand {
+input CreateIrrigationZoneCommand {
     name : String
     area : [AreaBoundaryCommandDetails]
 }
 
-input UpdateGardeningAreaCommand {
+input UpdateIrrigationZoneCommand {
     id : String
     name : String
     area : [AreaBoundaryCommandDetails]
 }
 
-input DeleteGardeningAreaCommand {
+input DeleteIrrigationZoneCommand {
     id : String
 }
 
@@ -162,7 +162,7 @@ enum DeviceType {
 }
 
 input LiveDataFilter {
-    gardens : [String]
+    irrigationZones : [String]
     devices : [String]
     content : String
 }

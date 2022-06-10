@@ -4,13 +4,13 @@ type Subscription {
 
 type Query {
     history(filters: HistoryQueryFilters) : [SensorDataHistory]
-    fetchGardens : [GardeningArea]
+    fetchIrrigationZones : [IrrigationZone]
     fetchLatestData(filters: LatestDataQueryFilters): [SensorData]
 }
 
 type Mutation {
-    createGarden(instructions: CreateGardeningAreaCommand) : GardeningArea
-    updateGarden(instructions: UpdateGardeningAreaCommand) : GardeningArea
-    deleteGarden(instructions: DeleteGardeningAreaCommand) : GardeningArea
+    createIrrigationZone(instructions: CreateIrrigationZoneCommand) : IrrigationZone
+    updateIrrigationZone(instructions: UpdateIrrigationZoneCommand) : IrrigationZone
+    deleteIrrigationZone(instructions: DeleteIrrigationZoneCommand) : IrrigationZone
     switchValve(instructions: ValvesToSwitch): Boolean
 }

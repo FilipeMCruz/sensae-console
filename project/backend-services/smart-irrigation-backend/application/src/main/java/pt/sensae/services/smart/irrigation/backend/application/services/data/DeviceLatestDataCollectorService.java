@@ -9,10 +9,9 @@ import pt.sensae.services.smart.irrigation.backend.application.model.data.Sensor
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.Ownership;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.irrigationZone.IrrigationZoneId;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.LatestDataCollector;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.LatestDataQuery;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -33,14 +32,14 @@ public class DeviceLatestDataCollectorService {
         this.mapper = mapper;
     }
 
-    public Stream<SensorReadingDTO> fetch(Stream<String> gardenIds, Stream<String> deviceIds, AccessTokenDTO claims) {
+    public Stream<SensorReadingDTO> fetch(Stream<String> irrigationZoneIds, Stream<String> deviceIds, AccessTokenDTO claims) {
         var domainFilter = Ownership.of(getDomainFilter(claims));
 
         var deviceFilter = deviceIds.map(UUID::fromString).map(DeviceId::new).collect(Collectors.toSet());
 
-        var gardenFilter = gardenIds.map(UUID::fromString).map(GardeningAreaId::new).collect(Collectors.toSet());
+        var irrigationZoneFilter = irrigationZoneIds.map(UUID::fromString).map(IrrigationZoneId::new).collect(Collectors.toSet());
 
-        var query = new LatestDataQuery(gardenFilter, deviceFilter, domainFilter);
+        var query = new LatestDataQuery(irrigationZoneFilter, deviceFilter, domainFilter);
 
         return collector.fetch(query).map(mapper::toDto);
     }

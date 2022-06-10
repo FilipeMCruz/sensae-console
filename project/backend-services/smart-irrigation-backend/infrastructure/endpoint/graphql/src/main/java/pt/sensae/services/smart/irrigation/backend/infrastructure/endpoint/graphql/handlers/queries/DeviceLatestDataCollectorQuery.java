@@ -23,7 +23,7 @@ public class DeviceLatestDataCollectorQuery {
 
     @DgsQuery
     public List<SensorReadingDTO> fetchLatestData(@InputArgument("filters") LatestDataQueryFiltersDTOImpl filters, @RequestHeader("Authorization") String auth) {
-        return service.fetch(filters.gardens.stream(),
+        return service.fetch(filters.irrigationZones.stream(),
                         filters.devices.stream(),
                         AuthMiddleware.buildAccessToken(auth))
                 .collect(Collectors.toList());

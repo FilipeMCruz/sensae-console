@@ -11,7 +11,6 @@ import {
   GetAllDeviceInformation,
   IndexDeviceInformation,
 } from '@frontend-services/device-management/services';
-import {AuthService} from "@frontend-services/simple-auth-lib";
 import {DeviceDialogComponent} from "../device-dialog/device-dialog.component";
 
 @Component({
@@ -36,8 +35,7 @@ export class DeviceManagementPageComponent implements OnInit {
     public dialog: MatDialog,
     private recordsCollector: GetAllDeviceInformation,
     private indexer: IndexDeviceInformation,
-    private eraser: DeleteDeviceInformation,
-    private authService: AuthService
+    private eraser: DeleteDeviceInformation
   ) {
   }
 
@@ -102,11 +100,11 @@ export class DeviceManagementPageComponent implements OnInit {
   }
 
   canEdit() {
-    return this.authService.isAllowed(Array.of("device_management:device:edit"))
+    return this.indexer.canDo();
   }
 
   canDelete() {
-    return this.authService.isAllowed(Array.of("device_management:device:delete"))
+    return this.eraser.canDo();
   }
 
   groupBy() {

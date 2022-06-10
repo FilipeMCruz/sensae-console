@@ -1,8 +1,8 @@
-import {GardeningAreaId} from "../garden/GardeningAreaId";
+import {IrrigationZoneId} from "../garden/IrrigationZoneId";
 import {DeviceId} from "../device/DeviceId";
 
 export class HistoryQueryFilters {
-  constructor(public devices: Array<DeviceId>, public gardens: Array<GardeningAreaId>, public startTime: Date, public endTime: Date) {
+  constructor(public devices: Array<DeviceId>, public gardens: Array<IrrigationZoneId>, public startTime: Date, public endTime: Date) {
   }
 
   static defaultDevice(id: DeviceId): HistoryQueryFilters {

@@ -76,7 +76,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding gardenBinding(Queue parkQueue, TopicExchange topic) {
+    Binding parkBinding(Queue parkQueue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)

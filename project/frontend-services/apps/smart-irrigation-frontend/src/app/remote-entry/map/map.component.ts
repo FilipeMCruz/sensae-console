@@ -3,22 +3,22 @@ import * as mapboxgl from 'mapbox-gl';
 import {Subscription} from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {
-  CreateGardeningAreaCommand, Data, DeleteGardeningAreaCommand,
-  GardeningArea,
-  LatestDataQueryFilters, UpdateGardeningAreaCommand
+  CreateIrrigationZoneCommand, Data, DeleteIrrigationZoneCommand,
+  IrrigationZone,
+  LatestDataQueryFilters, UpdateIrrigationZoneCommand
 } from "@frontend-services/smart-irrigation/model";
 import {
-  CreateGarden,
-  DeleteGarden,
-  FetchGardens,
+  CreateIrrigationZone,
+  DeleteIrrigationZone,
+  FetchIrrigationZones,
   FetchLatestData,
-  UpdateGarden
+  UpdateIrrigationZone
 } from "@frontend-services/smart-irrigation/services";
 import * as MapboxDraw from "@mapbox/mapbox-gl-draw";
 import {Point, Polygon} from "geojson";
 import {GeoJSONSource, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {MatDialog} from "@angular/material/dialog";
-import {GardenDialogComponent} from "../garden-dialog/garden-dialog.component";
+import {ZoneDialogComponent} from "../zone-dialog/zone-dialog.component";
 
 @Component({
   selector: 'frontend-services-map',
@@ -37,7 +37,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public latestData: Data[] = [];
 
-  public gardens: Array<GardeningArea> = [];
+  public gardens: Array<IrrigationZone> = [];
 
   public loadingGardens = true;
 
@@ -48,18 +48,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public gardenName = "";
 
-  public editing!: GardeningArea;
+  public editing!: IrrigationZone;
 
   style = 'Light';
 
   styles: string[] = ['Light', 'Satellite'];
 
-  constructor(private fetchGardensService: FetchGardens,
-              private createGardenService: CreateGarden,
-              private deleteGardenService: DeleteGarden,
-              private updateGardenService: UpdateGarden,
+  constructor(private fetchIrrigationZoneService: FetchIrrigationZones,
+              private createIrrigationZoneService: CreateIrrigationZone,
+              private deleteIrrigationZoneService: DeleteIrrigationZone,
+              private updateIrrigationZoneService: UpdateIrrigationZone,
               private fetchLatestDataService: FetchLatestData,
-              public dialog: MatDialog) {
+              private dialog: MatDialog) {
   }
 
   ngAfterViewInit(): void {
@@ -71,18 +71,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   private fetchGardens() {
     this.loadingGardens = true;
     this.map.on('load', () => {
-      this.fetchGardensService.getData().subscribe(
+      this.fetchIrrigationZoneService.getData().subscribe(
         next => {
           this.gardens = next;
           this.drawGardens();
-          this.map.on('click', 'gardens', (e) => {
+          this.map.on('click', 'zones', (e) => {
             if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
-              this.openGardenDetails(e.features[0].properties["id"]);
+              this.openIrrigationZoneDetails(e.features[0].properties["id"]);
           });
-          this.map.on('mouseenter', 'gardens', () => {
+          this.map.on('mouseenter', 'zones', () => {
             this.map.getCanvas().style.cursor = 'pointer';
           });
-          this.map.on('mouseleave', 'gardens', () => {
+          this.map.on('mouseleave', 'zones', () => {
             this.map.getCanvas().style.cursor = '';
           });
         },
@@ -93,20 +93,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private drawGardens() {
-    if (this.map.getLayer('gardens-outline')) {
-      this.map.removeLayer('gardens-outline');
+    if (this.map.getLayer('zones-outline')) {
+      this.map.removeLayer('zones-outline');
     }
-    if (this.map.getLayer('gardens-labels')) {
-      this.map.removeLayer('gardens-labels');
+    if (this.map.getLayer('zones-labels')) {
+      this.map.removeLayer('zones-labels');
     }
-    if (this.map.getLayer('gardens')) {
-      this.map.removeLayer('gardens');
+    if (this.map.getLayer('zones')) {
+      this.map.removeLayer('zones');
     }
-    if (this.map.getSource('gardens')) {
-      this.map.removeSource('gardens');
+    if (this.map.getSource('zones')) {
+      this.map.removeSource('zones');
     }
 
-    this.map.addSource("gardens", {
+    this.map.addSource("zones", {
       'type': 'geojson',
       'data': {
         'type': 'FeatureCollection',
@@ -114,22 +114,22 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       }
     })
 
-    this.map.addLayer(GardeningArea.getBoundaryStyle("gardens"));
-    this.map.addLayer(GardeningArea.getLabelStyle("gardens"));
-    this.map.addLayer(GardeningArea.getAreaStyle("gardens"));
+    this.map.addLayer(IrrigationZone.getBoundaryStyle("zones"));
+    this.map.addLayer(IrrigationZone.getLabelStyle("zones"));
+    this.map.addLayer(IrrigationZone.getAreaStyle("zones"));
     this.loadingGardens = false;
   }
 
   private updateGardensSource() {
-    const source = this.map.getSource("gardens") as GeoJSONSource;
+    const source = this.map.getSource("zones") as GeoJSONSource;
     source.setData({
       'type': 'FeatureCollection',
       'features': this.gardens.map(g => g.asFeature())
     });
   }
 
-  openGardenDetails(id: string) {
-    this.dialog.open(GardenDialogComponent, {
+  openIrrigationZoneDetails(id: string) {
+    this.dialog.open(ZoneDialogComponent, {
       width: '70%',
       height: '80%',
       data: this.gardens.find(g => g.id.value == id),
@@ -167,7 +167,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.buildMap();
   }
 
-  startGardenSketch() {
+  startIrrigationZoneSketch() {
     this.draw = new MapboxDraw({
       displayControlsDefault: false,
       defaultMode: 'draw_polygon'
@@ -178,7 +178,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.isDrawing = true;
   }
 
-  deleteGardenSketch() {
+  deleteIrrigationZoneSketch() {
     const data = this.draw.getAll();
     if (data.features.length > 0) {
       const id = data.features[0].id;
@@ -246,10 +246,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.addLayer(Data.getDataStyle("devices"));
   }
 
-  buildGarden() {
-    const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
-    const command = CreateGardeningAreaCommand.build(this.gardenName, gardenArea.coordinates[0]);
-    this.createGardenService.execute(command).subscribe(
+  buildIrrigationZone() {
+    const zoneArea = this.draw.getSelected().features[0].geometry as Polygon;
+    const command = CreateIrrigationZoneCommand.build(this.gardenName, zoneArea.coordinates[0]);
+    this.createIrrigationZoneService.execute(command).subscribe(
       next => {
         this.isDrawing = false
         this.map.removeControl(this.draw);
@@ -260,13 +260,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       error => error);
   }
 
-  onSelect(garden: GardeningArea) {
+  onSelect(garden: IrrigationZone) {
     this.map.fitBounds(garden.bounds() as LngLatBoundsLike, {padding: 100});
   }
 
-  onDelete(event: MouseEvent, garden: GardeningArea) {
+  onDelete(event: MouseEvent, garden: IrrigationZone) {
     event.stopPropagation();
-    this.deleteGardenService.getData(new DeleteGardeningAreaCommand(garden.id)).subscribe(
+    this.deleteIrrigationZoneService.getData(new DeleteIrrigationZoneCommand(garden.id)).subscribe(
       next => {
         this.gardens = this.gardens.filter(elem => elem.id.value !== next.id.value);
         this.updateGardensSource();
@@ -274,7 +274,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     )
   }
 
-  onEdit(event: MouseEvent, garden: GardeningArea) {
+  onEdit(event: MouseEvent, garden: IrrigationZone) {
     event.stopPropagation();
     this.draw = new MapboxDraw({
       displayControlsDefault: false,
@@ -298,7 +298,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  deleteGardenEditSketch() {
+  deleteIrrigationZoneEditSketch() {
     const data = this.draw.getAll();
     if (data.features.length > 0) {
       const id = data.features[0].id;
@@ -311,10 +311,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.isEditing = false;
   }
 
-  editGarden() {
-    const gardenArea = this.draw.getSelected().features[0].geometry as Polygon;
-    const command = UpdateGardeningAreaCommand.build(this.editing.id.value, this.editing.name.value, gardenArea.coordinates[0]);
-    this.updateGardenService.execute(command).subscribe(
+  editIrrigationZone() {
+    const zoneArea = this.draw.getSelected().features[0].geometry as Polygon;
+    const command = UpdateIrrigationZoneCommand.build(this.editing.id.value, this.editing.name.value, zoneArea.coordinates[0]);
+    this.updateIrrigationZoneService.execute(command).subscribe(
       next => {
         this.isDrawing = false
         this.isEditing = false;
@@ -340,14 +340,14 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   canDelete() {
-    return this.deleteGardenService.canDo();
+    return this.deleteIrrigationZoneService.canDo();
   }
 
   canEdit() {
-    return this.createGardenService.canDo();
+    return this.createIrrigationZoneService.canDo();
   }
 
   canCreate() {
-    return this.createGardenService.canDo();
+    return this.createIrrigationZoneService.canDo();
   }
 }

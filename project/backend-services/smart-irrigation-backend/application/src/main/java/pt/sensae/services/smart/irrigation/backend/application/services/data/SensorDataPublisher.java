@@ -11,8 +11,8 @@ import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDa
 import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
-import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.irrigationZone.IrrigationZoneId;
+import pt.sensae.services.smart.irrigation.backend.domainservices.irrigationZone.IrrigationZoneCache;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
@@ -36,14 +36,14 @@ public class SensorDataPublisher {
 
     private final SensorDataMapper mapper;
 
-    private final GardeningAreaCache gardenCache;
+    private final IrrigationZoneCache irrigationZoneCache;
 
     private final LiveDataMapper filterMapper;
 
-    public SensorDataPublisher(TokenExtractor authHandler, SensorDataMapper mapper, GardeningAreaCache gardenCache, LiveDataMapper filterMapper) {
+    public SensorDataPublisher(TokenExtractor authHandler, SensorDataMapper mapper, IrrigationZoneCache irrigationZoneCache, LiveDataMapper filterMapper) {
         this.authHandler = authHandler;
         this.mapper = mapper;
-        this.gardenCache = gardenCache;
+        this.irrigationZoneCache = irrigationZoneCache;
         this.filterMapper = filterMapper;
     }
 
@@ -69,15 +69,15 @@ public class SensorDataPublisher {
     private Predicate<SensorDataDTO> withFilter(LiveDataFilter filter, AccessTokenDTO claims) {
         return getDeviceDomainFilter(claims)
                 .and(withContent(filter.content()))
-                .and(insideGardeningArea(filter.gardens()))
+                .and(insideGardeningArea(filter.irrigationZones()))
                 .and(withDeviceId(filter.devices()));
     }
 
-    private Predicate<SensorDataDTO> insideGardeningArea(Set<GardeningAreaId> gardenIds) {
-        if (gardenIds.isEmpty()) {
+    private Predicate<SensorDataDTO> insideGardeningArea(Set<IrrigationZoneId> irrigationZoneIds) {
+        if (irrigationZoneIds.isEmpty()) {
             return data -> true;
         }
-        return data -> this.gardenCache.fetchByIds(gardenIds.stream())
+        return data -> this.irrigationZoneCache.fetchByIds(irrigationZoneIds.stream())
                 .anyMatch(g -> g.area().contains(GPSPoint.from(data.getSensorData().gps)));
     }
 

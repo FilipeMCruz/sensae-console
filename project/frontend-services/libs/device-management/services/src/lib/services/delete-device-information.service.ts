@@ -16,8 +16,12 @@ export class DeleteDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["device_management:device:delete"])
+  }
+
   delete(event: DeviceInformation): Observable<Device> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:delete"]))
+    if (!this.canDo())
       return EMPTY;
 
     const mutation = gql`

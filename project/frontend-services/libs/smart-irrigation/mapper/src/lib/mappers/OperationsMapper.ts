@@ -1,33 +1,33 @@
 import {
-  CreateGardenParamsDTO,
-  CreateGardenResultDTO, DeleteGardenParamsDTO, DeleteGardenResultDTO,
-  QueryGardensResultDTO,
+  CreateIrrigationZoneParamsDTO,
+  CreateIrrigationZoneResultDTO, DeleteIrrigationZoneParamsDTO, DeleteIrrigationZoneResultDTO,
+  QueryIrrigationZonesResultDTO,
   QueryHistoryDataParamsDTO,
   QueryHistoryResultDTO,
   QueryLatestDataParamsDTO,
   QueryLatestDataResultDTO,
   SubscribeToDataParamsDTO,
   SubscribeToDataResultDTO,
-  UpdateGardenParamsDTO,
-  UpdateGardenResultDTO
+  UpdateIrrigationZoneParamsDTO,
+  UpdateIrrigationZoneResultDTO
 } from "@frontend-services/smart-irrigation/dto";
 import {
-  Data, DeleteGardeningAreaCommand,
-  GardeningArea,
+  Data, DeleteIrrigationZoneCommand,
+  IrrigationZone,
   SensorDataHistory,
-  UpdateGardeningAreaCommand
+  UpdateIrrigationZoneCommand
 } from "@frontend-services/smart-irrigation/model";
 import {LatestDataQueryFilters} from "@frontend-services/smart-irrigation/model";
 import {HistoryQueryFilters} from "@frontend-services/smart-irrigation/model";
-import {CreateGardeningAreaCommand} from "@frontend-services/smart-irrigation/model";
+import {CreateIrrigationZoneCommand} from "@frontend-services/smart-irrigation/model";
 import {DataFilters} from "@frontend-services/smart-irrigation/model";
-import {GardenMapper} from "./GardenMapper";
+import {IrrigationZoneMapper} from "./IrrigationZoneMapper";
 import {DataMapper} from "./DataMapper";
 import {DataHistoryMapper} from "./DataHistoryMapper";
 
 export class OperationsMapper {
-  static fetchGardenDtoToModel(dto: QueryGardensResultDTO): Array<GardeningArea> {
-    return dto.fetchGardens.map(g => GardenMapper.dtoToModel(g));
+  static fetchIrrigationZoneDtoToModel(dto: QueryIrrigationZonesResultDTO): Array<IrrigationZone> {
+    return dto.fetchIrrigationZones.map(g => IrrigationZoneMapper.dtoToModel(g));
   }
 
   static fetchLatestDataDtoToModel(dto: QueryLatestDataResultDTO): Array<Data> {
@@ -35,14 +35,14 @@ export class OperationsMapper {
   }
 
   static latestDataFiltersModelToDto(model: LatestDataQueryFilters): QueryLatestDataParamsDTO {
-    return {filters: {devices: model.devices.map(d => d.value), gardens: model.gardens.map(g => g.value)}}
+    return {filters: {devices: model.devices.map(d => d.value), irrigationZones: model.gardens.map(g => g.value)}}
   }
 
   static historyFiltersModelToDto(model: HistoryQueryFilters): QueryHistoryDataParamsDTO {
     return {
       filters: {
         devices: model.devices.map(d => d.value),
-        gardens: model.gardens.map(g => g.value),
+        irrigationZones: model.gardens.map(g => g.value),
         endTime: Math.round(model.endTime.getTime() / 1000).toString(),
         startTime: Math.round(model.startTime.getTime() / 1000).toString(),
       }
@@ -53,11 +53,11 @@ export class OperationsMapper {
     return data.history.map(h => DataHistoryMapper.dtoToModel(h));
   }
 
-  static createGardenDtoToModel(dto: CreateGardenResultDTO): GardeningArea {
-    return GardenMapper.dtoToModel(dto.createGarden);
+  static createIrrigationZoneDtoToModel(dto: CreateIrrigationZoneResultDTO): IrrigationZone {
+    return IrrigationZoneMapper.dtoToModel(dto.createIrrigationZone);
   }
 
-  static createGardenInstructions(model: CreateGardeningAreaCommand): CreateGardenParamsDTO {
+  static createIrrigationZoneInstructions(model: CreateIrrigationZoneCommand): CreateIrrigationZoneParamsDTO {
     const area = model.area.map(b => {
         return {
           position: b.position,
@@ -70,19 +70,19 @@ export class OperationsMapper {
     return {instructions: {area, name: model.name.value}}
   }
 
-  static deleteGardenInstructions(model: DeleteGardeningAreaCommand): DeleteGardenParamsDTO {
+  static deleteIrrigationZoneInstructions(model: DeleteIrrigationZoneCommand): DeleteIrrigationZoneParamsDTO {
     return {instructions: {id: model.id.value}}
   }
 
-  static updateGardenDtoToModel(dto: UpdateGardenResultDTO): GardeningArea {
-    return GardenMapper.dtoToModel(dto.updateGarden);
+  static updateIrrigationZoneDtoToModel(dto: UpdateIrrigationZoneResultDTO): IrrigationZone {
+    return IrrigationZoneMapper.dtoToModel(dto.updateIrrigationZone);
   }
 
-  static deleteGardenDtoToModel(dto: DeleteGardenResultDTO): GardeningArea {
-    return GardenMapper.dtoToModel(dto.deleteGarden);
+  static deleteIrrigationZoneDtoToModel(dto: DeleteIrrigationZoneResultDTO): IrrigationZone {
+    return IrrigationZoneMapper.dtoToModel(dto.deleteIrrigationZone);
   }
 
-  static updateGardenInstructions(model: UpdateGardeningAreaCommand): UpdateGardenParamsDTO {
+  static updateIrrigationZoneInstructions(model: UpdateIrrigationZoneCommand): UpdateIrrigationZoneParamsDTO {
     const area = model.area.map(b => {
         return {
           position: b.position,
@@ -102,7 +102,7 @@ export class OperationsMapper {
   static dataFiltersModelToDto(filters: DataFilters): SubscribeToDataParamsDTO {
     return {
       devices: filters.devices.map(d => d.value),
-      gardens: filters.gardens.map(g => g.value),
+      irrigationZones: filters.gardens.map(g => g.value),
       content: filters.content
     };
   }

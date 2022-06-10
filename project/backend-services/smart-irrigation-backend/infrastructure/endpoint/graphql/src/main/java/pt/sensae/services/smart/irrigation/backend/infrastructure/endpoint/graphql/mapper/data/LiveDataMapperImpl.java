@@ -5,7 +5,7 @@ import pt.sensae.services.smart.irrigation.backend.application.mapper.data.LiveD
 import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilter;
 import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDataFilterDTO;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningAreaId;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.irrigationZone.IrrigationZoneId;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.LiveDataFilterDTOImpl;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class LiveDataMapperImpl implements LiveDataMapper {
     @Override
     public LiveDataFilter dtoToModel(LiveDataFilterDTO dto) {
         var filter = (LiveDataFilterDTOImpl) dto;
-        return new LiveDataFilter(filter.gardens.stream().map(UUID::fromString).map(GardeningAreaId::new).collect(Collectors.toSet()),
+        return new LiveDataFilter(filter.irrigationZones.stream().map(UUID::fromString).map(IrrigationZoneId::new).collect(Collectors.toSet()),
                 filter.devices.stream().map(UUID::fromString).map(DeviceId::new).collect(Collectors.toSet()), filter.content);
     }
 }

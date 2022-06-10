@@ -16,8 +16,12 @@ export class GetAllDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["device_management:device:read"])
+  }
+
   getData(): Observable<Array<DeviceInformation>> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:read"]))
+    if (!this.canDo())
       return EMPTY;
 
     const query = gql`

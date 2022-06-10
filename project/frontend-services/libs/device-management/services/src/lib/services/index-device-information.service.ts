@@ -16,8 +16,12 @@ export class IndexDeviceInformation {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAuthenticated() && this.auth.isAllowed(["device_management:device:edit"])
+  }
+
   index(event: DeviceInformation): Observable<DeviceInformation> {
-    if (!this.auth.isAuthenticated() || !this.auth.isAllowed(["device_management:device:edit"]))
+    if (!this.canDo())
       return EMPTY;
 
     const mutation = gql`

@@ -1,21 +1,21 @@
-export interface CreateGardenResultDTO {
-  createGarden: GardeningAreaDTO
+export interface CreateIrrigationZoneResultDTO {
+  createIrrigationZone: IrrigationZoneDTO
 }
 
-export interface UpdateGardenResultDTO {
-  updateGarden: GardeningAreaDTO
+export interface UpdateIrrigationZoneResultDTO {
+  updateIrrigationZone: IrrigationZoneDTO
 }
 
-export interface DeleteGardenResultDTO {
-  deleteGarden: GardeningAreaDTO
+export interface DeleteIrrigationZoneResultDTO {
+  deleteIrrigationZone: IrrigationZoneDTO
 }
 
 export interface QueryHistoryResultDTO {
   history: SensorDataHistoryDTO[]
 }
 
-export interface QueryGardensResultDTO {
-  fetchGardens: GardeningAreaDTO[]
+export interface QueryIrrigationZonesResultDTO {
+  fetchIrrigationZones: IrrigationZoneDTO[]
 }
 
 export interface QueryLatestDataResultDTO {
@@ -30,16 +30,16 @@ export interface SubscribeToDataResultDTO {
   data: SensorDataDTO
 }
 
-export interface UpdateGardenParamsDTO {
-  instructions: UpdateGardeningAreaCommandDTO
+export interface UpdateIrrigationZoneParamsDTO {
+  instructions: UpdateIrrigationZoneCommandDTO
 }
 
-export interface DeleteGardenParamsDTO {
-  instructions: DeleteGardeningAreaCommandDTO
+export interface DeleteIrrigationZoneParamsDTO {
+  instructions: DeleteIrrigationZoneCommandDTO
 }
 
-export interface CreateGardenParamsDTO {
-  instructions: CreateGardeningAreaCommandDTO
+export interface CreateIrrigationZoneParamsDTO {
+  instructions: CreateIrrigationZoneCommandDTO
 }
 
 export interface QueryLatestDataParamsDTO {
@@ -51,35 +51,35 @@ export interface QueryHistoryDataParamsDTO {
 }
 
 export interface SubscribeToDataParamsDTO {
-  gardens: string[]
+  irrigationZones: string[]
   devices: string[]
   content: string
 }
 
 export interface HistoryQueryFiltersDTO {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
   startTime: string
   endTime: string
 }
 
 export interface LatestDataQueryFiltersDTO {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
 }
 
-export interface CreateGardeningAreaCommandDTO {
+export interface CreateIrrigationZoneCommandDTO {
   name: string
   area: AreaBoundaryDTO[]
 }
 
-export interface UpdateGardeningAreaCommandDTO {
+export interface UpdateIrrigationZoneCommandDTO {
   id: string
   name: string
   area: AreaBoundaryDTO[]
 }
 
-export interface DeleteGardeningAreaCommandDTO {
+export interface DeleteIrrigationZoneCommandDTO {
   id: string
 }
 
@@ -193,7 +193,7 @@ export interface ValveDataHistoryDetailsDTO extends SensorDataHistoryDetailsDTO 
   valve: ValveStatusDataDetailsDTO
 }
 
-export interface GardeningAreaDTO {
+export interface IrrigationZoneDTO {
   id: string
   name: string
   area: AreaBoundaryDTO[]

@@ -24,7 +24,7 @@ public class DeviceHistoryCollectorQuery {
 
     @DgsQuery
     public List<SensorDataHistoryDTO> history(@InputArgument("filters") HistoryQueryFiltersDTOImpl filters, @RequestHeader("Authorization") String auth) {
-        return service.fetch(filters.gardens.stream(),
+        return service.fetch(filters.irrigationZones.stream(),
                         filters.devices.stream(),
                         Instant.ofEpochSecond(Long.parseLong(filters.startTime)),
                         Instant.ofEpochSecond(Long.parseLong(filters.endTime)),

@@ -138,6 +138,15 @@
           "nx serve ui-aggregator"
         ]
       }
+    },
+    "serve-notification": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve notification-management-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
     }
   },
   "tags": []

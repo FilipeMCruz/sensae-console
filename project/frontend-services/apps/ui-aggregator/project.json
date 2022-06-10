@@ -129,6 +129,15 @@
           "nx serve ui-aggregator"
         ]
       }
+    },
+    "serve-irrigation": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve smart-irrigation-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
     }
   },
   "tags": []

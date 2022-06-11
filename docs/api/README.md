@@ -15,7 +15,7 @@ This information can be consulted [here](http://localhost:8080/swagger-ui/index.
 The **endpoint** to register new sensor data is `/sensor-data/{infoType}/{sensorType}`.
 In production this endpoint can't be accessed, instead requests must be made to **Data Relayer**.
 
-### Register new sensor data
+### Register new sensor data (*deprecated*)
 
 **Endpoint**: POST to `/sensor-data/{infoType}/{sensorType}`
 
@@ -103,7 +103,86 @@ In production this endpoint can't be accessed, instead requests must be made to 
 
 This is the resource to point to, as an `http integration`, in helium console for sensor data.
 
-If a secret key was defined to prevent malicious use, an HTTP Authorization Header has to be sent with the secret key.
+If a secret key was defined to prevent malicious use, an HTTP `Authorization` Header has to be sent with the secret key.
+
+The `channel` that the data will travel though is `default`.
+
+### Register new sensor data
+
+**Endpoint**: POST to `/sensor-data/{channel}/{infoType}/{sensorType}`
+
+**Path Variables**:
+
+- **channel**: any string related to the service this data is to be sent.
+- **infoType**: `decoded` or `encoded`
+- **sensorType**: any string that represents a sensor type (this will later be correlated with the sensor type configured with the data processor and decoder)
+
+Both **channel** and **sensorType** strings must match the following regex: `[a-zA-Z0-9]{2,15}`
+
+**Data Example**:
+
+``` json
+{
+  "app_eui": "16217534746BD1D3",
+  "dev_eui": "A84041CB91826E2F",
+  "devaddr": "06000048",
+  "downlink_url": "https://console.helium.com/api/v1/down/806c3543-450d-4d34-9948-582d130a38d2/ekQ508Ijd1Ip8L2nM6JjRBmOxs2luTz6/1194ea60-9a40-447a-b535-affba26da111",
+  "fcnt": 188,
+  "hotspots": [
+    {
+      "channel": 2,
+      "frequency": 868.5,
+      "id": "11Weepe1gHxjcaSq8cmh2QE8a9GxssEPXgbVifRvyNkprWc83BJ",
+      "lat": 38.75500733680766,
+      "long": -9.241637744431221,
+      "name": "modern-gauze-rattlesnake",
+      "reported_at": 1616349557723,
+      "rssi": -113.0,
+      "snr": -14.800000190734863,
+      "spreading": "SF12BW125",
+      "status": "success"
+    }
+  ],
+  "id": "1194ea60-9a40-447a-b535-affba26ea111",
+  "metadata": {
+    "adr_allowed": false,
+    "labels": [
+      {
+        "id": "036650d9-fb6c-48f3-99df-55773d816a5e",
+        "name": "LGT_Decoder",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "303896f0-8799-4328-a6fc-685c541b9cad",
+        "name": "Cargo",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "cac06b4e-b6fb-41d5-8861-ec836d2c8de0",
+        "name": "IntegrationTest",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "f5f80b55-f41b-41af-9e70-f7be1c5df928",
+        "name": "Domus",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      }
+    ],
+    "multi_buy": 1,
+    "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+  },
+  "name": "Sharespot_Fernao #4",
+  "payload": "Ak9IJP9zLKQL+yM=",
+  "payload_size": 11,
+  "port": 2,
+  "reported_at": 1616349557723,
+  "uuid": "979abd51-e754-4b02-a405-41e5c41c4b89"
+}
+```
+
+This is the resource to point to, as an `http integration`, in helium console for sensor data.
+
+If a secret key was defined to prevent malicious use, an HTTP `Authorization` Header has to be sent with the secret key.
 
 ## Data Processor Master Backend API
 

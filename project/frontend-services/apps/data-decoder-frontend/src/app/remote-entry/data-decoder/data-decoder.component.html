@@ -6,7 +6,7 @@
       [(ngModel)]="dataDecoder.data.type"
       matInput
     />
-    <mat-hint>e.g. LGT 92</mat-hint>
+    <mat-hint>can only contain letters and numbers, e.g. lgt92</mat-hint>
   </mat-form-field>
   <ng-container
     *ngIf="dataDecoderView === dataDecoderViewType.Edit && canDelete"

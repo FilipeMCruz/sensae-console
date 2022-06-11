@@ -1,5 +1,7 @@
 package pt.sensae.services.data.decoder.master.backend.application.auth;
 
+import pt.sensae.services.data.decoder.master.backend.domain.exceptions.ExceptionDetail;
+
 public class UnauthorizedException extends RuntimeException {
 
     private final ExceptionDetail error;

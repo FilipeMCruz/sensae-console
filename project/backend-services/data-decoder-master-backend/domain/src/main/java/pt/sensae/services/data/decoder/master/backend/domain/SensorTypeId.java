@@ -1,5 +1,7 @@
 package pt.sensae.services.data.decoder.master.backend.domain;
 
+import pt.sensae.services.data.decoder.master.backend.domain.exceptions.InvalidDecoderException;
+
 import java.util.Objects;
 
 public class SensorTypeId {
@@ -7,6 +9,9 @@ public class SensorTypeId {
     private final String value;
 
     private SensorTypeId(String value) {
+        if (!value.matches("[a-zA-Z\\d]+")) {
+            throw new InvalidDecoderException("Invalid Id: value must have numbers and letters only");
+        }
         this.value = value;
     }
 

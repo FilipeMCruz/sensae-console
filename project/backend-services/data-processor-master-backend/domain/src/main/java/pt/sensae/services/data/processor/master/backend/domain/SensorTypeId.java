@@ -1,5 +1,7 @@
 package pt.sensae.services.data.processor.master.backend.domain;
 
+import pt.sensae.services.data.processor.master.backend.domain.exceptions.InvalidTransformationException;
+
 import java.util.Objects;
 
 public class SensorTypeId {
@@ -7,6 +9,9 @@ public class SensorTypeId {
     private final String value;
 
     private SensorTypeId(String value) {
+        if (!value.matches("[a-zA-Z\\d]+")) {
+            throw new InvalidTransformationException("Invalid Id: value must have numbers and letters only");
+        }
         this.value = value;
     }
 

@@ -17,7 +17,7 @@ export class DataDecoder {
 
   isValid() {
     return (
-      this.data.type.trim().length !== 0 &&
+      this.data.isValid() &&
       this.script.content.trim().length !== 0
     );
   }

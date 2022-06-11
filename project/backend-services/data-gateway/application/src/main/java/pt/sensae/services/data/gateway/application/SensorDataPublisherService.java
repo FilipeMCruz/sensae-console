@@ -30,11 +30,11 @@ public class SensorDataPublisherService {
             throw new NotValidException("Info Type must be of value encoded or decoded");
         }
 
-        if (!channel.matches("[a-zA-Z\\d]+") || channel.length() > 15) {
+        if (!channel.matches("[a-zA-Z\\d]{2,15}")) {
             throw new NotValidException("Channel info can only have a max of 15 letters or numbers");
         }
 
-        if (!sensorType.matches("[a-zA-Z\\d]+") || sensorType.length() > 15) {
+        if (!sensorType.matches("[a-zA-Z\\d]{2,15}")) {
             throw new NotValidException("Sensor Type info can only have a max of 15 letters or numbers");
         }
 

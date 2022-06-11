@@ -11,7 +11,7 @@ export class StoveSensorDataDetails extends SensorDataDetails {
   override getDataDetailsInHTML() {
     return `<strong>Device Type:</strong> Sensor</br>
 <strong>Temperature:</strong> ${this.temperature.celsius} ºC</br>
-<strong>Air Humidity:</strong> ${this.humidity.gramsPerCubicMeter} g/m3
+<strong>Air Humidity:</strong> ${this.humidity.relativePercentage} %
 `
   }
 }

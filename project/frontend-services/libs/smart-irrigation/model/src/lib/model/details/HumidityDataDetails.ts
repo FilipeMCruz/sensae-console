@@ -1,4 +1,4 @@
 export class HumidityDataDetails {
-  constructor(public gramsPerCubicMeter: number) {
+  constructor(public relativePercentage: number) {
   }
 }

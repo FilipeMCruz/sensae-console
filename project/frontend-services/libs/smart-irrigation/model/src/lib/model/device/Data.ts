@@ -18,7 +18,13 @@ export class Data {
       source,
       paint: {
         'circle-color': ['get', 'color'],
-        'circle-radius': 4,
+        'circle-radius': {
+          "stops": [
+            [0, 0],
+            [12, 0],
+            [14, 4]
+          ]
+        },
         'circle-stroke-width': 1,
         'circle-stroke-color': '#582f0e'
       }
@@ -214,7 +220,7 @@ export class Data {
 
   getFirstDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return this.data.soilMoisture.percentage + "%";
+      return this.data.soilMoisture.relativePercentage + "%";
     } else if (this.data instanceof StoveSensorDataDetails) {
       return this.data.temperature.celsius + "ºC";
     } else if (this.data instanceof ValveDataDetails) {
@@ -228,7 +234,7 @@ export class Data {
     if (this.data instanceof ParkSensorDataDetails) {
       return this.data.illuminance.lux + "";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return this.data.humidity.gramsPerCubicMeter + "g/m3";
+      return this.data.humidity.relativePercentage + "%";
     } else {
       return "";
     }
@@ -246,9 +252,9 @@ export class Data {
 
   asFeature(): Feature {
     const illuminance = this.data instanceof ParkSensorDataDetails ? this.data.illuminance.lux / 50 : 0;
-    const soilMoisture = this.data instanceof ParkSensorDataDetails ? this.data.soilMoisture.percentage * 2 : 0;
+    const soilMoisture = this.data instanceof ParkSensorDataDetails ? this.data.soilMoisture.relativePercentage * 2 : 0;
     const temperature = this.data instanceof StoveSensorDataDetails ? this.data.temperature.celsius / 60 * 2000 : 0;
-    const humidity = this.data instanceof StoveSensorDataDetails ? this.data.humidity.gramsPerCubicMeter / 30 * 2000 : 0;
+    const humidity = this.data instanceof StoveSensorDataDetails ? this.data.humidity.relativePercentage / 30 * 2000 : 0;
 
     return {
       type: 'Feature',

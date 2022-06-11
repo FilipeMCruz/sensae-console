@@ -44,7 +44,7 @@ export class FetchLatestData {
             }
             ...on ParkSensorDataDetails {
               soilMoisture {
-                percentage
+                relativePercentage
               }
               illuminance {
                 lux
@@ -55,7 +55,7 @@ export class FetchLatestData {
                 celsius
               }
               humidity {
-                gramsPerCubicMeter
+                relativePercentage
               }
             }
             ...on ValveDataDetails {

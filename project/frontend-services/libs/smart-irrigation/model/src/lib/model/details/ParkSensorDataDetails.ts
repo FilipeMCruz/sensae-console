@@ -11,7 +11,7 @@ export class ParkSensorDataDetails extends SensorDataDetails {
   override getDataDetailsInHTML() {
     return `<strong>Device Type:</strong> Sensor</br>
 <strong>Illuminance:</strong> ${this.illuminance.lux} lux</br>
-<strong>Soil Moisture:</strong> ${this.soilMoisture.percentage} %
+<strong>Soil Moisture:</strong> ${this.soilMoisture.relativePercentage} %
 `
   }
 }

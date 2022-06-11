@@ -53,11 +53,11 @@ enum ValveStatusDataDetailsType {
 }
 
 type HumidityDataDetails {
-    gramsPerCubicMeter : Float
+    relativePercentage : Float
 }
 
 type SoilMoistureDataDetails {
-    percentage : Float
+    relativePercentage : Float
 }
 
 type IlluminanceDataDetails {

@@ -138,11 +138,11 @@ export enum ValveStatusDataDetailsTypeDTO {
 }
 
 export interface HumidityDataDetailsDTO {
-  gramsPerCubicMeter: number
+  relativePercentage: number
 }
 
 export interface SoilMoistureDataDetailsDTO {
-  percentage: number
+  relativePercentage: number
 }
 
 export interface IlluminanceDataDetailsDTO {

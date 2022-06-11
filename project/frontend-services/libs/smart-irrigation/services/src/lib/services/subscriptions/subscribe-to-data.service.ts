@@ -47,7 +47,7 @@ export class SubscribeToData {
             }
             ...on ParkSensorDataDetails {
               soilMoisture {
-                percentage
+                relativePercentage
               }
               illuminance {
                 lux
@@ -58,7 +58,7 @@ export class SubscribeToData {
                 celsius
               }
               humidity {
-                gramsPerCubicMeter
+                relativePercentage
               }
             }
             ...on ValveDataDetails {

@@ -41,7 +41,7 @@ export class FetchHistory {
               reportedAt
               ...on ParkSensorDataHistoryDetails {
                 soilMoisture {
-                  percentage
+                  relativePercentage
                 }
                 illuminance {
                   lux
@@ -52,7 +52,7 @@ export class FetchHistory {
                   celsius
                 }
                 humidity {
-                  gramsPerCubicMeter
+                  relativePercentage
                 }
               }
               ...on ValveDataHistoryDetails {

@@ -35,6 +35,9 @@ public class AmqpConfiguration {
     @Value("#{'${sensae.alert.categories.close.valve}'.split(',')}")
     private List<String> closeValveCategories;
 
+    @Value("${sensae.channel}")
+    public String channel;
+    
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -85,6 +88,7 @@ public class AmqpConfiguration {
                 .withSoilMoisture(SoilMoistureDataOptions.WITH_SOIL_MOISTURE_DATA)
                 .withIlluminance(IlluminanceDataOptions.WITH_ILLUMINANCE_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -103,6 +107,7 @@ public class AmqpConfiguration {
                 .withAirHumidity(AirHumidityDataOptions.WITH_AIR_HUMIDITY_DATA)
                 .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -120,6 +125,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withTrigger(TriggerDataOptions.WITH_TRIGGER_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {

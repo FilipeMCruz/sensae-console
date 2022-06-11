@@ -16,9 +16,9 @@ Business Domain:
 
 This service inputs are:
 
-- **Sensor Topic**: valid data with `gps` and `trigger` readings (for valves);
-- **Sensor Topic**: valid data with `gps`, `temperature` and `air humidity` readings (for stove sensors);
-- **Sensor Topic**: valid data with `gps`, `illuminance` and `soil moisture` readings (for park sensors);
+- **Sensor Topic**: valid data with `gps` and `trigger` readings (for valves) and the channel `irrigation`;
+- **Sensor Topic**: valid data with `gps`, `temperature` and `air humidity` readings (for stove sensors) and the channel `irrigation`;
+- **Sensor Topic**: valid data with `gps`, `illuminance` and `soil moisture` readings (for park sensors) and the channel `irrigation`;
 
 - **Alert Topic**: alerts with the category `smartIrrigation` and sub category `drySoil` (to open all valves in a garden);
 - **Alert Topic**: alerts with the category `smartIrrigation` and sub category `valveOpenForLengthyPeriod` or `moistSoil` (to close all valves in a garden);

@@ -10,7 +10,7 @@ Current version:
 
 This service inputs are:
 
-- **Sensor Topic**: valid data with `gps` readings;
+- **Sensor Topic**: valid data with `gps` readings and the channel `fleet`;
 
 ## Further Discussion
 

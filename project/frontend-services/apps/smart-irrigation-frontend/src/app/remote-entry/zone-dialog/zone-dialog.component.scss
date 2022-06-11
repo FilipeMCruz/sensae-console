@@ -36,12 +36,13 @@
 
 .data-list {
   overflow: auto;
+  max-height: 300px;
+  width: 90%;
 }
 
 .container {
   display: grid;
-  min-height: calc(100% - 102px);
-  max-height: calc(100% - 102px);
+  height: calc(100% - 102px);
   grid-template-columns: 0.8fr 1.2fr;
   grid-template-rows: 1.2fr 0.8fr;
   grid-template-areas:

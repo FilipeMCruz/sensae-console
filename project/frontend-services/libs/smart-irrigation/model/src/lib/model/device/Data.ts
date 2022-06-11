@@ -260,7 +260,7 @@ export class Data {
         description: `
 <strong>Device Name:</strong> ${this.device.name.value}</br>
 <strong>Device Id:</strong> ${this.device.id.value}</br>
-<strong>Reported:</strong> ${this.timeAgo()}</br>
+<strong>Reported:</strong> ${this.timeAgo()} ago</br>
 ${this.data.getDataDetailsInHTML()}
 `,
         id: this.device.id.value,

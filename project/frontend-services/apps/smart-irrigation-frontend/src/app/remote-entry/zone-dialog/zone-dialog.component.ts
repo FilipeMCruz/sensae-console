@@ -73,7 +73,7 @@ export class ZoneDialogComponent implements AfterViewInit, OnDestroy {
   buildMap(): void {
     this.map = new mapboxgl.Map({
       container: 'map-details',
-      style: environment.mapbox.style,
+      style: 'mapbox://styles/mapbox/satellite-v9',
       center: this.data.center() as LngLatLike,
       bounds: this.data.bounds() as LngLatBoundsLike,
       interactive: false

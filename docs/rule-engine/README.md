@@ -104,6 +104,13 @@ The following diagram represents the idealized architecture:
 
 Some [examples](assets) of possible rules are provided.
 
+## Rule Scenarios in use
+
+Currently this two rule scenarios are in use:
+
+- P#001 - Aviário: [scenario](assets/Project#001/scenario.drl)
+- P#002 - Estufa Shiitake: [scenario](assets/Project#002/scenario.drl)
+
 ## Further Discussion
 
 As always, changes/improvements to the rule engine are expected.

@@ -2,7 +2,7 @@
   height: 100%;
 }
 
-.garden-card {
+.zones-card {
   display: block;
   position: relative;
   width: 20%;
@@ -35,4 +35,9 @@
   border-radius: 10px;
   z-index: 2;
   margin-bottom: 2%;
+}
+
+.data-list {
+  overflow: auto;
+  max-height: 300px;
 }

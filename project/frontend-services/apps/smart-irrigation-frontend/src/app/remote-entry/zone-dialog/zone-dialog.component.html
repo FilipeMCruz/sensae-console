@@ -1,20 +1,17 @@
 <h1 mat-dialog-title>{{data.name.value}}</h1>
-<mat-grid-list class="dialog-content" gutterSize="10" mat-dialog-content cols="2" rowHeight="fit">
-  <mat-grid-tile [colspan]="1"
-                 [rowspan]="1">
-    <mat-grid-tile-header>
-      Sensors
-    </mat-grid-tile-header>
+<mat-dialog-content class="container">
+  <div class="sensor">
     <ng-container *ngIf="loadingInfo">
       Loading ...
     </ng-container>
+    <div mat-subheader>Sensors</div>
     <ng-container *ngIf="!loadingInfo && sensorsData.length !== 0">
       <mat-list class="data-list" dense>
         <mat-list-item (mouseenter)="onHoverEnter(sensor)" (mouseleave)="onHoverLeave(sensor)"
                        (click)="openDeviceHistory(sensor)" *ngFor="let sensor of sensorsData">
           <mat-icon [ngStyle]="sensor.getColor()" mat-list-icon>sensors</mat-icon>
           <div mat-line>
-            <strong>{{sensor.device.name.value | truncate : 25}}</strong>
+            <strong>{{sensor.device.name.value}}</strong>
           </div>
           <div mat-line>
             <mat-chip-list>
@@ -28,7 +25,7 @@
               </mat-chip>
               <mat-chip class="schedule">
                 <mat-icon>schedule</mat-icon>
-                {{sensor.timeAgo()}}
+                {{sensor.timeAgo()}} ago
               </mat-chip>
             </mat-chip-list>
           </div>
@@ -36,29 +33,29 @@
       </mat-list>
     </ng-container>
     <ng-container *ngIf="!loadingInfo && sensorsData.length === 0">
-      No Sensor Data Found
+      <mat-list class="data-list" dense>
+        <mat-list-item>
+          No Sensor Data Found
+        </mat-list-item>
+      </mat-list>
     </ng-container>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="1"
-                 [rowspan]="2">
-    <div class="map-details"
-         id="map-details"></div>
+  </div>
+  <div class="map-tile">
+        <div class="map-details"
+             id="map-details"></div>
     <div id='loader'><span class='message'>loading</span></div>
-  </mat-grid-tile>
-  <mat-grid-tile [colspan]="1"
-                 [rowspan]="1">
-    <mat-grid-tile-header>
-      Valves
-    </mat-grid-tile-header>
+  </div>
+  <div class="valve">
     <ng-container *ngIf="loadingInfo">
       Loading ...
     </ng-container>
+    <div mat-subheader>Valves</div>
     <ng-container *ngIf="!loadingInfo && valvesData.length !== 0">
       <mat-list class="data-list" dense>
         <mat-list-item (mouseenter)="onHoverEnter(valve)" (mouseleave)="onHoverLeave(valve)" (click)="onSelect(valve)"
                        *ngFor="let valve of valvesData">
           <mat-icon mat-list-icon>water_drop</mat-icon>
-          <div mat-line><strong>{{valve.device.name.value | truncate : 25}}</strong></div>
+          <div mat-line><strong>{{valve.device.name.value}}</strong></div>
           <div mat-line>
             <mat-chip-list>
               <mat-chip class="{{valve.getFirstDataIcon()}}">
@@ -75,7 +72,7 @@
               </mat-chip>
               <mat-chip class="schedule">
                 <mat-icon>schedule</mat-icon>
-                {{valve.timeAgo()}}
+                {{valve.timeAgo()}} ago
               </mat-chip>
             </mat-chip-list>
           </div>
@@ -83,10 +80,14 @@
       </mat-list>
     </ng-container>
     <ng-container *ngIf="!loadingInfo && valvesData.length === 0">
-      No Valve Data Found
+      <mat-list class="data-list" dense>
+        <mat-list-item>
+          No Valve Data Found
+        </mat-list-item>
+      </mat-list>
     </ng-container>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</mat-dialog-content>
 <div mat-dialog-actions class="to-right">
   <button mat-stroked-button [mat-dialog-close]="true">Close</button>
 </div>

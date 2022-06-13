@@ -1,5 +1,7 @@
 package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.controller.information;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
@@ -7,6 +9,8 @@ import pt.sensae.services.device.management.master.backend.application.DeviceIni
 
 @Service
 public class DeviceInformationInitConsumer {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(DeviceInformationInitConsumer.class);
 
     public static final String QUEUE = "internal.device.management.device.init.queue";
 
@@ -18,6 +22,7 @@ public class DeviceInformationInitConsumer {
 
     @RabbitListener(queues = QUEUE)
     public void receiveUpdate(Message in) {
+        LOGGER.info("Received DEVICE_MANAGEMENT init request");
         this.service.publishCurrentState();
     }
 }

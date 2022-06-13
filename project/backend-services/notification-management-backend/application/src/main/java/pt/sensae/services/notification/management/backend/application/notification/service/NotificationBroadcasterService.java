@@ -3,12 +3,15 @@ package pt.sensae.services.notification.management.backend.application.notificat
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.domain.FullNotification;
 import pt.sensae.services.notification.management.backend.domain.Recipient;
+import pt.sensae.services.notification.management.backend.domain.adressee.Addressee;
+import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeConfig;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeRepository;
 import pt.sensae.services.notification.management.backend.domain.adressee.DeliveryType;
 import pt.sensae.services.notification.management.backend.domain.tenant.TenantCache;
 
 import javax.annotation.PostConstruct;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +41,15 @@ public class NotificationBroadcasterService {
             var tenantsInDomains = repository.findTenantsInDomains(notification.context().domains())
                     .map(tenant -> new Recipient(tenant, addresseeRepository.findById(tenant.id())))
                     .collect(Collectors.toSet());
+
+            var configUpdates = tenantsInDomains.stream()
+                    .filter(recipient -> recipient.addressee().isNewType(notification))
+                    .map(recipient -> new Addressee(recipient.addressee().id(), Set.of(
+                            new AddresseeConfig(notification.type(), DeliveryType.UI, false),
+                            new AddresseeConfig(notification.type(), DeliveryType.NOTIFICATION, false))))
+                    .collect(Collectors.toSet());
+
+            addresseeRepository.update(configUpdates);
 
             var uiRecipients = tenantsInDomains.stream()
                     .filter(recipient -> recipient.addressee().canSendVia(notification, DeliveryType.NOTIFICATION))

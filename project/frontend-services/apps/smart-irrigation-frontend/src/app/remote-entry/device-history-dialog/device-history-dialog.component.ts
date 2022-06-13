@@ -53,9 +53,9 @@ export class DeviceHistoryDialogComponent implements OnInit {
     }).sort((a, b) => a[0].valueOf() - b[0].valueOf());
     const measure2 = data.ledger.flatMap(entry => entry.data).map((details: SensorDataHistoryDetails) => {
       if (deviceType === DeviceType.PARK_SENSOR) {
-        return [details.reportedAt, (details as ParkSensorDataHistoryDetails).soilMoisture.percentage];
+        return [details.reportedAt, (details as ParkSensorDataHistoryDetails).soilMoisture.relativePercentage];
       } else {
-        return [details.reportedAt, (details as StoveSensorDataHistoryDetails).humidity.gramsPerCubicMeter];
+        return [details.reportedAt, (details as StoveSensorDataHistoryDetails).humidity.relativePercentage];
       }
     }).sort((a, b) => a[0].valueOf() - b[0].valueOf());
 

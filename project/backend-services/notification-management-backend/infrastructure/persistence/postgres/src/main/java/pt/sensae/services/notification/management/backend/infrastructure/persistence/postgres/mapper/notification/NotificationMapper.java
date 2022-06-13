@@ -9,22 +9,27 @@ import pt.sensae.services.notification.management.backend.domain.notification.No
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.notification.NotificationPostgres;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NotificationMapper {
 
     public static Notification daoToModel(NotificationPostgres postgres) {
-        var domains = Arrays.stream(postgres.domains.substring(1, postgres.domains.length() - 2).split(","))
+
+        var domains = postgres.domains.length() <= 2 ? new HashSet<DomainId>() : Arrays.stream(postgres.domains.substring(1, postgres.domains.length() - 2)
+                        .split(","))
                 .map(UUID::fromString)
                 .map(DomainId::of)
                 .collect(Collectors.toSet());
-        
-        var devices = Arrays.stream(postgres.deviceIds.substring(1, postgres.deviceIds.length() - 2).split(","))
+
+        var devices = postgres.deviceIds.length() <= 2 ? new HashSet<UUID>() : Arrays.stream(postgres.deviceIds.substring(1, postgres.deviceIds.length() - 2)
+                        .split(","))
                 .map(UUID::fromString)
                 .collect(Collectors.toSet());
 
-        var datas = Arrays.stream(postgres.dataIds.substring(1, postgres.dataIds.length() - 2).split(","))
+        var datas = postgres.dataIds.length() <= 2 ? new HashSet<UUID>() : Arrays.stream(postgres.dataIds.substring(1, postgres.dataIds.length() - 2)
+                        .split(","))
                 .map(UUID::fromString)
                 .collect(Collectors.toSet());
 

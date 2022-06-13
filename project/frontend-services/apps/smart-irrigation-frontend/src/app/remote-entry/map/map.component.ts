@@ -37,9 +37,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   public latestData: Data[] = [];
 
-  public gardens: Array<IrrigationZone> = [];
+  public irrigationZones: Array<IrrigationZone> = [];
 
-  public loadingGardens = true;
+  public loadingZones = true;
 
   public isDrawing = false;
   public isEditing = false;
@@ -69,11 +69,11 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private fetchGardens() {
-    this.loadingGardens = true;
+    this.loadingZones = true;
     this.map.on('load', () => {
       this.fetchIrrigationZoneService.getData().subscribe(
         next => {
-          this.gardens = next;
+          this.irrigationZones = next;
           this.drawGardens();
           this.map.on('click', 'zones', (e) => {
             if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties["id"])
@@ -87,7 +87,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
           });
         },
         error => error,
-        () => this.loadingGardens = false
+        () => this.loadingZones = false
       );
     });
   }
@@ -110,21 +110,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       'type': 'geojson',
       'data': {
         'type': 'FeatureCollection',
-        'features': this.gardens.map(g => g.asFeature())
+        'features': this.irrigationZones.map(g => g.asFeature())
       }
     })
 
     this.map.addLayer(IrrigationZone.getBoundaryStyle("zones"));
     this.map.addLayer(IrrigationZone.getLabelStyle("zones"));
     this.map.addLayer(IrrigationZone.getAreaStyle("zones"));
-    this.loadingGardens = false;
+    this.loadingZones = false;
   }
 
   private updateGardensSource() {
     const source = this.map.getSource("zones") as GeoJSONSource;
     source.setData({
       'type': 'FeatureCollection',
-      'features': this.gardens.map(g => g.asFeature())
+      'features': this.irrigationZones.map(g => g.asFeature())
     });
   }
 
@@ -132,7 +132,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.dialog.open(ZoneDialogComponent, {
       width: '70%',
       height: '80%',
-      data: this.gardens.find(g => g.id.value == id),
+      data: this.irrigationZones.find(g => g.id.value == id),
     });
   }
 
@@ -254,7 +254,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.isDrawing = false
         this.map.removeControl(this.draw);
         this.gardenName = "";
-        this.gardens.push(next);
+        this.irrigationZones.push(next);
         this.updateGardensSource();
       },
       error => error);
@@ -268,7 +268,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     this.deleteIrrigationZoneService.getData(new DeleteIrrigationZoneCommand(garden.id)).subscribe(
       next => {
-        this.gardens = this.gardens.filter(elem => elem.id.value !== next.id.value);
+        this.irrigationZones = this.irrigationZones.filter(elem => elem.id.value !== next.id.value);
         this.updateGardensSource();
       }
     )
@@ -284,7 +284,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map.on('draw.create', () => this.checkIfSketchIsValid());
     this.map.on('draw.update', () => this.checkIfSketchIsValid());
     this.editing = garden;
-    this.gardens = this.gardens.filter(elem => elem.id.value !== garden.id.value);
+    this.irrigationZones = this.irrigationZones.filter(elem => elem.id.value !== garden.id.value);
     this.updateGardensSource();
     this.isDrawing = true;
     this.isEditing = true;
@@ -305,7 +305,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       if (id) this.draw.delete(id.toLocaleString());
     }
     this.map.removeControl(this.draw);
-    this.gardens.push(this.editing);
+    this.irrigationZones.push(this.editing);
     this.updateGardensSource();
     this.isDrawing = false
     this.isEditing = false;
@@ -319,7 +319,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.isDrawing = false
         this.isEditing = false;
         this.map.removeControl(this.draw);
-        this.gardens.push(next);
+        this.irrigationZones.push(next);
         this.updateGardensSource();
       },
       error => error);

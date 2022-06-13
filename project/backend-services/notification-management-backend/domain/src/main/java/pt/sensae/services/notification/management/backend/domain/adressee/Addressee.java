@@ -6,6 +6,10 @@ import java.util.Set;
 
 public record Addressee(AddresseeId id, Set<AddresseeConfig> configs) {
 
+    public boolean isNewType(Notification notification) {
+        return configs.stream().noneMatch(config -> config.contentType().equals(notification.type()));
+    }
+
     public boolean canSendVia(Notification notification, DeliveryType deliveryType) {
         if (deliveryType.equals(DeliveryType.NOTIFICATION)) {
             if (configs.stream().noneMatch(config -> config.contentType().equals(notification.type()))) {

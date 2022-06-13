@@ -36,10 +36,6 @@ public class DeviceDomainCache {
 
     public Optional<List<DeviceWithAllPermissions>> findAllById(Stream<DeviceId> devices) {
         var possibleDevices = devices.map(this::findById).toList();
-        if (possibleDevices.isEmpty()) {
-            return this.findById(DeviceId.root()).map(List::of);
-        }
-
         if (possibleDevices.stream().anyMatch(Optional::isEmpty)) {
             return Optional.empty();
         } else {

@@ -73,7 +73,7 @@ public class AmqpConfiguration {
     Binding bindingInitInformation(Queue initInformationQueue, TopicExchange masterExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.INFO)
+                .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(initInformationQueue).to(masterExchange).with(keys.get().toString());

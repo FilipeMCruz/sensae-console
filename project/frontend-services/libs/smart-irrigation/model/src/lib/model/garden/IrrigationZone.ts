@@ -2,7 +2,7 @@ import {AreaBoundary} from "./AreaBoundary";
 import {IrrigationZoneName} from "./IrrigationZoneName";
 import {IrrigationZoneId} from "./IrrigationZoneId";
 import center from "@turf/center";
-import {Feature, Position} from "geojson";
+import {Feature} from "geojson";
 import * as mapboxgl from "mapbox-gl";
 import bbox from "@turf/bbox";
 

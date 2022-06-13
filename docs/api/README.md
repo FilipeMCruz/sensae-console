@@ -814,26 +814,26 @@ The filter, LiveDataFilter, has the following structure:
 
 ```ts
 export interface SubscribeToDataParams {
-  gardens: string[]
+  irrigationZones: string[]
   devices: string[]
   content: string
 }
 ```
 
 The `device` variable expects a list of device ids.
-The `gardens` variable expects a list of garden ids.
+The `irrigationZones` variable expects a list of irrigation zone ids.
 The `content` variable expects a string, related to device management's records.
 All filters are combined with a `AND` operand.
 
 This is the resource used to subscribe to new device data.
 
-### Create a new Gardening Area
+### Create a new Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation createGarden($instructions: CreateGardeningAreaCommand){
-  createGarden(instructions: $instructions){
+mutation createIrrigationZone($instructions: CreateIrrigationZoneCommand){
+  createIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -846,10 +846,10 @@ mutation createGarden($instructions: CreateGardeningAreaCommand){
 }
 ```
 
-The instructions, CreateGardeningAreaCommand, have the following structure:
+The instructions, CreateIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface CreateGardeningAreaCommand {
+export interface CreateIrrigationZoneCommand {
   name: string
   area: AreaBoundary[]
 }
@@ -862,15 +862,15 @@ export interface AreaBoundary {
 }
 ```
 
-This is the resource used to create a new gardening area.
+This is the resource used to create a new irrigation zone.
 
-### Update a new Gardening Area
+### Update a new Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation updateGarden($instructions: UpdateGardeningAreaCommand){
-  updateGarden(instructions: $instructions){
+mutation updateIrrigationZone($instructions: UpdateIrrigationZoneCommand){
+  updateIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -883,10 +883,10 @@ mutation updateGarden($instructions: UpdateGardeningAreaCommand){
 }
 ```
 
-The instructions, UpdateGardeningAreaCommand, have the following structure:
+The instructions, UpdateIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface UpdateGardeningAreaCommand {
+export interface UpdateIrrigationZoneCommand {
   id: string
   name: string
   area: AreaBoundary[]
@@ -900,15 +900,15 @@ export interface AreaBoundary {
 }
 ```
 
-This is the resource used to update a gardening area information.
+This is the resource used to update an irrigation zone information.
 
-### Delete a new Gardening Area
+### Delete an Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
-  deleteGarden(instructions: $instructions){
+mutation deleteIrrigationZone($instructions: DeleteIrrigationZoneCommand){
+  deleteIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -921,15 +921,15 @@ mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
 }
 ```
 
-The instructions, DeleteGardeningAreaCommand, have the following structure:
+The instructions, DeleteIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface DeleteGardeningAreaCommand {
+export interface DeleteIrrigationZoneCommand {
   id: string
 }
 ```
 
-This is the resource used to delete a gardening area information by id.
+This is the resource used to delete an irrigation zone information by id.
 
 ### Switch Valve from Open/Close to Close/Open
 
@@ -951,13 +951,13 @@ export interface ValvesToSwitch {
 
 This is the resource used to open/close a valve.
 
-### Fetch All Gardens
+### Fetch All Irrigation Zones
 
 **Query**:
 
 ``` graphql
-query fetchGardens{
-  fetchGardens{
+query fetchIrrigationZones{
+  fetchIrrigationZones{
     id
     name
     area{
@@ -970,7 +970,7 @@ query fetchGardens{
 }
 ```
 
-This is the resource used to see all available gardens.
+This is the resource used to see all available irrigation zones.
 
 ### Fetch Latest Device Data
 
@@ -1028,7 +1028,7 @@ The filters, LatestDataQueryFilters, have the following structure:
 ``` ts
 export interface LatestDataQueryFilters {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
 }
 ```
 
@@ -1089,7 +1089,7 @@ The filters, HistoryQueryFilters, have the following structure:
 ``` ts
 export interface HistoryQueryFilters {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
   startTime: string
   endTime: string
 }

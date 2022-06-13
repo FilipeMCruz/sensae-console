@@ -1,4 +1,4 @@
-package pt.sensae.services.data.processor.master.backend.application.auth;
+package pt.sensae.services.data.processor.master.backend.domain.exceptions;
 
 public class ExceptionDetail {
 

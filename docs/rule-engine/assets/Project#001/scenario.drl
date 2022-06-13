@@ -1,0 +1,193 @@
+package rules.project.one;
+
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
+import java.util.List;
+import java.util.UUID
+import pt.sharespot.iot.core.alert.model.AlertLevel
+
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
+
+dialect "mvel"
+
+declare Sensor
+    @role( event )
+    deviceId : UUID
+    name : String
+end
+
+declare SensorData
+    @role( event )
+    deviceId : UUID
+    dataId : UUID
+    temperature : Float
+    co2 : Integer
+    humidity : Float
+end
+
+declare Alarm
+    @role( event )
+    @expires ( 20m )
+    type : String
+    deviceId : UUID
+end
+
+//to ensure that only one alarm per device is sent
+rule "Create new stove sensor devices that belongs to Project #001"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
+        not(Sensor(deviceId == $data.device.id))
+    then 
+        Sensor sensor = new Sensor();
+        sensor.setDeviceId($data.device.id);
+        sensor.setName($data.device.name);
+        insert(sensor)
+end
+
+//if the data is from a stove sensor and is not duplicated add it
+rule "Collect sensor data that belongs to Project #001"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE),
+            !getSensorData().hasProperty(PropertyName.CO2)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
+        not(SensorData(dataId == $data.dataId))
+    then
+        SensorData reading = new SensorData();
+        reading.setDeviceId($data.device.id);
+        reading.setDataId($data.dataId);
+        reading.setCo2(0);
+        reading.setTemperature($data.getSensorData().temperature.celsius);
+        reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
+        insert(reading)
+end
+
+rule "Collect co2 sensor data that belongs to Project #001"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE),
+            getSensorData().hasProperty(PropertyName.CO2)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
+        not(SensorData(dataId == $data.dataId))
+    then
+        SensorData reading = new SensorData();
+        reading.setDeviceId($data.device.id);
+        reading.setDataId($data.dataId);
+        reading.setCo2($data.getSensorData().co2.ppm.intValue());
+        reading.setTemperature($data.getSensorData().temperature.celsius);
+        reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
+        insert(reading)
+end
+
+rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
+    when
+        $sensor : Sensor()
+        $data : SensorData(deviceId == $sensor.deviceId)
+        $secData: SensorData(
+            this != $data,
+            deviceId == $sensor.deviceId,
+            $data.humidity - humidity >= 9,
+            this after[0s,11m] $data
+        )
+    then
+        Alarm alarm = new Alarm();
+        alarm.deviceId = $sensor.deviceId;
+        alarm.type = "Humidity";
+        insert(alarm);
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("fireDetention")
+                            .setSubCategory("humidityWithHighRateOfChange")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nHumidity changed from " + $data.humidity + "% to " + $secData.humidity + "%.")
+                            .setLevel(AlertLevel.WARNING)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($sensor.deviceId)
+                                .setOther("Project #001")
+                                .build())
+                            .build());
+end
+
+rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
+    when
+        $sensor : Sensor()
+        $data : SensorData(deviceId == $sensor.deviceId)
+        $secData: SensorData(
+            this != $data,
+            deviceId == $sensor.deviceId,
+            temperature - $data.temperature >= 1.5,
+            this after[0s,11m] $data
+        )
+    then
+        Alarm alarm = new Alarm();
+        alarm.deviceId = $sensor.deviceId;
+        alarm.type = "Temperature";
+        insert(alarm);
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("fireDetention")
+                            .setSubCategory("temperatureWithHighRateOfChange")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nTemperature changed from " + $data.temperature + "ºC to " + $secData.temperature + "ºC.")
+                            .setLevel(AlertLevel.WARNING)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($sensor.deviceId)
+                                .setOther("Project #001")
+                                .build())
+                            .build());
+end
+
+rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
+    when
+        $sensor : Sensor()
+        $data : SensorData(deviceId == $sensor.deviceId)
+        $secData: SensorData(
+            this != $data,
+            deviceId == $sensor.deviceId,
+            co2 - $data.co2 >= 250,
+            this after[0s,11m] $data
+        )
+    then
+        Alarm alarm = new Alarm();
+        alarm.deviceId = $sensor.deviceId;
+        alarm.type = "CO2";
+        insert(alarm);
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("fireDetention")
+                            .setSubCategory("co2WithHighRateOfChange")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nCO2 changed from " + $data.co2 + " ppm to " + $secData.co2 + " ppm.")
+                            .setLevel(AlertLevel.WARNING)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($sensor.deviceId)
+                                .setOther("Project #001")
+                                .build())
+                            .build());
+end
+
+rule "Dispatch Fire Alarm - Multiple Alarms collected in short amount of time - scenario 1 - Project #001"
+    when
+        $alarm : Alarm()
+        $secAlarm: Alarm(
+            this != $alarm,
+            this after[0s,15m] $alarm
+        )
+    then
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("fireDetention")
+                            .setSubCategory("multipleAlarmsCollected")
+                            .setDescription("Project #001 - High Number of alarms detected")
+                            .setLevel(AlertLevel.CRITICAL)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($alarm.deviceId)
+                                .setOther("Project #001")
+                                .build())
+                            .build());
+end

@@ -16,7 +16,7 @@ export class DataTransformation {
 
   isValid() {
     return (
-      this.data.type.trim().length !== 0 &&
+      this.data.isValid() &&
       this.entries.filter((e) => !e.isValid()).length == 0
     );
   }

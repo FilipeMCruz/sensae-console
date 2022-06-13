@@ -1,35 +1,35 @@
 <div>
   <div id="map" class="map"></div>
-  <mat-card *ngIf="!isDrawing" class="garden-card mat-elevation-z2">
+  <mat-card *ngIf="!isDrawing" class="zones-card mat-elevation-z2">
     <mat-card-title>
       Zones
     </mat-card-title>
     <mat-card-content>
-      <ng-container *ngIf="loadingGardens">
+      <ng-container *ngIf="loadingZones">
         Loading ...
       </ng-container>
-      <ng-container *ngIf="!loadingGardens && gardens.length !== 0">
-        <mat-list dense>
-          <mat-list-item (click)="onSelect(garden)" *ngFor="let garden of gardens">
+      <ng-container *ngIf="!loadingZones && irrigationZones.length !== 0">
+        <mat-list class="data-list" dense>
+          <mat-list-item (click)="onSelect(zone)" *ngFor="let zone of irrigationZones">
             <div style="display:flex; justify-content:space-between;align-items:center">
               <div style="display:flex;align-items:center">
                 <mat-icon mat-list-icon>yard</mat-icon>
                 <div style="display:flex; flex-direction:column">
                   <div>
-                    <h3 matLine> {{garden.name.value}}</h3>
+                    <h3 matLine> {{zone.name.value}}</h3>
                   </div>
                   <div style="margin-top:-30px">
                     <p matLine>
-                      {{garden.id.value | truncate:30}}
+                      {{zone.id.value | truncate:30}}
                     </p>
                   </div>
                 </div>
               </div>
               <div>
-                <button *ngIf="canEdit()" mat-icon-button (click)="onEdit($event, garden)">
+                <button *ngIf="canEdit()" mat-icon-button (click)="onEdit($event, zone)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button *ngIf="canDelete()" mat-icon-button (click)="onDelete($event, garden)">
+                <button *ngIf="canDelete()" mat-icon-button (click)="onDelete($event, zone)">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -37,7 +37,7 @@
           </mat-list-item>
         </mat-list>
       </ng-container>
-      <ng-container *ngIf="!loadingGardens && gardens.length === 0">
+      <ng-container *ngIf="!loadingZones && irrigationZones.length === 0">
         No Zones Found
       </ng-container>
     </mat-card-content>
@@ -45,7 +45,7 @@
       <button mat-stroked-button *ngIf="canCreate()" (click)="startIrrigationZoneSketch()">Create Zone</button>
     </mat-card-actions>
   </mat-card>
-  <mat-card *ngIf="isDrawing && !isEditing" class="garden-card">
+  <mat-card *ngIf="isDrawing && !isEditing" class="zones-card">
     <mat-card-title>
       New Zone
     </mat-card-title>
@@ -60,13 +60,14 @@
       </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-stroked-button [disabled]="!isSketchValid || gardenName.trim().length === 0" (click)="buildIrrigationZone()">
+      <button mat-stroked-button [disabled]="!isSketchValid || gardenName.trim().length === 0"
+              (click)="buildIrrigationZone()">
         Save
       </button>
       <button mat-stroked-button (click)="deleteIrrigationZoneSketch()">Cancel</button>
     </mat-card-actions>
   </mat-card>
-  <mat-card *ngIf="isDrawing && isEditing" class="garden-card">
+  <mat-card *ngIf="isDrawing && isEditing" class="zones-card">
     <mat-card-title>
       Edit Zone
     </mat-card-title>

@@ -29,11 +29,11 @@ export class DataDetailsMapper {
   }
 
   static soilMoistureDtoToModel(dto: SoilMoistureDataDetailsDTO): SoilMoistureDataDetails {
-    return new SoilMoistureDataDetails(dto.percentage);
+    return new SoilMoistureDataDetails(dto.relativePercentage);
   }
 
   static humidityDtoToModel(dto: HumidityDataDetailsDTO): HumidityDataDetails {
-    return new HumidityDataDetails(dto.gramsPerCubicMeter);
+    return new HumidityDataDetails(dto.relativePercentage);
   }
 
   static illuminanceDtoToModel(dto: IlluminanceDataDetailsDTO): IlluminanceDataDetails {

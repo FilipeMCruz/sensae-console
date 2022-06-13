@@ -6,9 +6,11 @@ import pt.sensae.services.notification.management.backend.domain.adressee.Addres
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeId;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeRepository;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.mapper.addressee.AddresseeMapper;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.addressee.AddresseePostgres;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.repository.AddresseeRepositoryPostgres;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -44,5 +46,11 @@ public class AddresseeRepositoryImpl implements AddresseeRepository {
 
         return AddresseeMapper.daoToModel(StreamSupport.stream(addresseePostgres.spliterator(), false))
                 .findFirst().orElse(Addressee.of(addressee.id(), new HashSet<>()));
+    }
+
+    @Override
+    public void update(Set<Addressee> configUpdates) {
+        var updates = configUpdates.stream().flatMap(AddresseeMapper::modelToDao).collect(Collectors.toSet());
+        repositoryPostgres.saveAll(updates);
     }
 }

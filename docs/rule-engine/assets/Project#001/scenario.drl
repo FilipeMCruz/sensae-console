@@ -17,6 +17,7 @@ dialect "mvel"
 declare Sensor
     @role( event )
     deviceId : UUID
+    name : String
 end
 
 declare SensorData
@@ -24,12 +25,13 @@ declare SensorData
     deviceId : UUID
     dataId : UUID
     temperature : Float
-    co2 : Float
+    co2 : Integer
     humidity : Float
 end
 
 declare Alarm
     @role( event )
+    @expires ( 20m )
     type : String
     deviceId : UUID
 end
@@ -46,6 +48,7 @@ rule "Create new stove sensor devices that belongs to Project #001"
     then 
         Sensor sensor = new Sensor();
         sensor.setDeviceId($data.device.id);
+        sensor.setName($data.device.name);
         insert(sensor)
 end
 
@@ -67,11 +70,6 @@ rule "Collect sensor data that belongs to Project #001"
         reading.setTemperature($data.getSensorData().temperature.celsius);
         reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
         insert(reading)
-        dispatcher.publish(AlertBuilder.create()
-                          .setCategory("data")
-                          .setSubCategory("new")
-                          .setLevel(AlertLevel.INFORMATION)
-                          .build());
 end
 
 rule "Collect co2 sensor data that belongs to Project #001"
@@ -87,15 +85,10 @@ rule "Collect co2 sensor data that belongs to Project #001"
         SensorData reading = new SensorData();
         reading.setDeviceId($data.device.id);
         reading.setDataId($data.dataId);
-        reading.setCo2($data.getSensorData().co2.ppm);
+        reading.setCo2($data.getSensorData().co2.ppm.intValue());
         reading.setTemperature($data.getSensorData().temperature.celsius);
         reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
         insert(reading)
-        dispatcher.publish(AlertBuilder.create()
-                        .setCategory("data")
-                        .setSubCategory("new")
-                        .setLevel(AlertLevel.INFORMATION)
-                        .build());
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
@@ -105,7 +98,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            Math.abs( humidity - $data.humidity ) >= 9,
+            $data.humidity - humidity >= 9,
             this after[0s,11m] $data
         )
     then
@@ -116,7 +109,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("humidityWithHighRateOfChange")
-                            .setDescription("Project #001 - Humidity changed from " + $data.humidity + "% to " + $secData.humidity + "%")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nHumidity changed from " + $data.humidity + "% to " + $secData.humidity + "%.")
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
@@ -132,7 +125,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            Math.abs( temperature - $data.temperature ) >= 1.5,
+            temperature - $data.temperature >= 1.5,
             this after[0s,11m] $data
         )
     then
@@ -143,7 +136,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("temperatureWithHighRateOfChange")
-                            .setDescription("Project #001 - Temperature changed from " + $data.temperature + "ºC to " + $secData.temperature + "ºC")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nTemperature changed from " + $data.temperature + "ºC to " + $secData.temperature + "ºC.")
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
@@ -159,7 +152,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            Math.abs( co2 - $data.co2 ) >= 250,
+            co2 - $data.co2 >= 250,
             this after[0s,11m] $data
         )
     then
@@ -170,7 +163,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("co2WithHighRateOfChange")
-                            .setDescription("Project #001 - CO2 changed from " + $data.co2 + "ppm to " + $secData.co2 + "ppm")
+                            .setDescription("Project #001 - Device " + $sensor.name + "\nCO2 changed from " + $data.co2 + " ppm to " + $secData.co2 + " ppm.")
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
@@ -179,12 +172,14 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
                             .build());
 end
 
-rule "Dispatch Fire Alarm - Multiple Alarms collected in short ammount of time - senario 1 - Project #001"
+rule "Dispatch Fire Alarm - Multiple Alarms collected in short amount of time - scenario 1 - Project #001"
     when
-        $alarms : List( size >= 2 )
-                      from collect( Alarm() over window:time(15m))
         $alarm : Alarm()
-    then 
+        $secAlarm: Alarm(
+            this != $alarm,
+            this after[0s,15m] $alarm
+        )
+    then
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("multipleAlarmsCollected")

@@ -1,4 +1,4 @@
-package rules;
+package rules.project.two;
 
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;

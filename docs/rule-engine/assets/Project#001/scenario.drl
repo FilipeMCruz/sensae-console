@@ -1,4 +1,4 @@
-package rules;
+package rules.project.one;
 
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
@@ -44,7 +44,7 @@ rule "Create new stove sensor devices that belongs to Project #001"
         exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
         not(Sensor(deviceId == $data.device.id))
     then 
-        rules.Sensor sensor = new rules.Sensor();
+        Sensor sensor = new Sensor();
         sensor.setDeviceId($data.device.id);
         insert(sensor)
 end
@@ -60,32 +60,42 @@ rule "Collect sensor data that belongs to Project #001"
         exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
         not(SensorData(dataId == $data.dataId))
     then
-        rules.SensorData reading = new rules.SensorData();
+        SensorData reading = new SensorData();
         reading.setDeviceId($data.device.id);
         reading.setDataId($data.dataId);
-        reading.setCo2(0F);
+        reading.setCo2(0);
         reading.setTemperature($data.getSensorData().temperature.celsius);
         reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
         insert(reading)
+        dispatcher.publish(AlertBuilder.create()
+                          .setCategory("data")
+                          .setSubCategory("new")
+                          .setLevel(AlertLevel.INFORMATION)
+                          .build());
 end
 
 rule "Collect co2 sensor data that belongs to Project #001"
-       when
-           $data : SensorDataDTO(
-               getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
-               getSensorData().hasProperty(PropertyName.TEMPERATURE),
-               getSensorData().hasProperty(PropertyName.CO2)
-           )
-           exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
-           not(SensorData(dataId == $data.dataId))
-       then
-           rules.SensorData reading = new rules.SensorData();
-           reading.setDeviceId($data.device.id);
-           reading.setDataId($data.dataId);
-           reading.setCo2($data.getSensorData().co2.ppm);
-           reading.setTemperature($data.getSensorData().temperature.celsius);
-           reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
-           insert(reading)
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE),
+            getSensorData().hasProperty(PropertyName.CO2)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#001") from $data.device.records
+        not(SensorData(dataId == $data.dataId))
+    then
+        SensorData reading = new SensorData();
+        reading.setDeviceId($data.device.id);
+        reading.setDataId($data.dataId);
+        reading.setCo2($data.getSensorData().co2.ppm);
+        reading.setTemperature($data.getSensorData().temperature.celsius);
+        reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
+        insert(reading)
+        dispatcher.publish(AlertBuilder.create()
+                        .setCategory("data")
+                        .setSubCategory("new")
+                        .setLevel(AlertLevel.INFORMATION)
+                        .build());
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
@@ -99,7 +109,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
             this after[0s,11m] $data
         )
     then
-        rules.Alarm alarm = new rules.Alarm();
+        Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
         alarm.type = "Humidity";
         insert(alarm);
@@ -126,7 +136,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
             this after[0s,11m] $data
         )
     then
-        rules.Alarm alarm = new rules.Alarm();
+        Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
         alarm.type = "Temperature";
         insert(alarm);
@@ -153,7 +163,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
             this after[0s,11m] $data
         )
     then
-        rules.Alarm alarm = new rules.Alarm();
+        Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
         alarm.type = "CO2";
         insert(alarm);
@@ -171,9 +181,9 @@ end
 
 rule "Dispatch Fire Alarm - Multiple Alarms collected in short ammount of time - senario 1 - Project #001"
     when
-        $alarm : Alarm()
         $alarms : List( size >= 2 )
                       from collect( Alarm() over window:time(15m))
+        $alarm : Alarm()
     then 
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")

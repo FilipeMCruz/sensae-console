@@ -48,6 +48,10 @@ tr.element-row:not(.expanded-row):active {
   font-weight: 500;
 }
 
+.description-content {
+  white-space: pre-line;
+}
+
 .page {
   margin: 20px;
   position: relative;

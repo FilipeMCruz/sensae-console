@@ -113,8 +113,13 @@ export class ZoneDialogComponent implements AfterViewInit, OnDestroy {
     const filter = new LatestDataQueryFilters([], [this.data.id]);
     this.fetchLatestDataService.getData(filter).subscribe(
       next => {
-        this.valvesData.push(...next.filter(d => d.device.type === DeviceType.VALVE));
-        this.sensorsData.push(...next.filter(d => d.device.type !== DeviceType.VALVE));
+        next.forEach(data => {
+          if (data.device.type.valueOf() === DeviceType.VALVE.valueOf()) {
+            ZoneDialogComponent.onNewData(this.valvesData, data);
+          } else {
+            ZoneDialogComponent.onNewData(this.sensorsData, data);
+          }
+        });
         this.drawDevices();
         this.updateDeviceSource();
       },

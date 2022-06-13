@@ -1,5 +1,7 @@
 package pt.sensae.services.identity.management.backend.infrastructure.endpoint.amqp.controller.device;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 @Service
 public class DeviceInformationInitSupplier {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(DeviceInformationInitSupplier.class);
+
     private final AmqpTemplate template;
 
     private final RoutingKeysProvider provider;
@@ -28,6 +32,7 @@ public class DeviceInformationInitSupplier {
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        LOGGER.info("Sent DEVICE_MANAGEMENT init request");
         var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INIT)

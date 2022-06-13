@@ -8,6 +8,8 @@ import pt.sensae.services.device.ownership.backend.domain.device.DeviceId;
 import pt.sensae.services.device.ownership.backend.domainservices.DeviceDomainCache;
 import pt.sensae.services.device.ownership.backend.domainservices.UnhandledAlertCache;
 
+import java.util.stream.Collectors;
+
 @Service
 public class AlertHandlerService {
 
@@ -30,7 +32,13 @@ public class AlertHandlerService {
     }
 
     public void info(MessageConsumed<AlertDTO, AlertRoutingKeys> message) {
-        var deviceIds = message.data.context.deviceIds.stream().map(DeviceId::of).toList();
+        var deviceIds = message.data.context.deviceIds.stream().map(DeviceId::of).collect(Collectors.toList());
+        if (deviceIds.isEmpty()) {
+            var root = DeviceId.root();
+            deviceIds.add(root);
+            message.data.context.deviceIds.add(root.value());
+        }
+
         if (cache.findAllById(deviceIds.stream()).isPresent()) {
             dataPublisher.publish(message);
             deviceIds.forEach(notificationPublisher::publishPing);

@@ -1,7 +1,9 @@
 services:
   message-broker:
-    image: rabbitmq:3.10
+    image: rabbitmq:3.10.5-management
     container_name: message-broker
+    env_file:
+      - secrets/dev/message-broker.env
     ports:
       - 5672:5672
       - 15672:15672
@@ -32,13 +34,13 @@ services:
       - 9003
     volumes:
       - ./databases-data/prod/irrigation-database:/root/.questdb/
-  # sharespot-data-store-database:
+  # data-store-database:
   #   image: mongo:latest
-  #   container_name: sharespot-data-store-database
+  #   container_name: data-store-database
   #   ports:
   #     - 27017:27017
   #   volumes:
-  #     - ./databases-data/prod/sharespot-data-store-database:/data/db
-  #     - ./secrets/dev/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  #     - ./databases-data/prod/data-store-database:/data/db
+  #     - ./secrets/dev/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
   #   env_file:
-  #     - ./secrets/dev/sharespot-data-store-database.env
+  #     - ./secrets/dev/data-store-database.env

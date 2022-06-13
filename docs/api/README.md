@@ -6,7 +6,7 @@ As explained in identity-management [docs](../identity-management/README.md) all
 
 Current version:
 
-- `system` : `0.8.0`
+- `system` : `0.9.0`
 
 ## Data Gateway API
 
@@ -15,7 +15,7 @@ This information can be consulted [here](http://localhost:8080/swagger-ui/index.
 The **endpoint** to register new sensor data is `/sensor-data/{infoType}/{sensorType}`.
 In production this endpoint can't be accessed, instead requests must be made to **Data Relayer**.
 
-### Register new sensor data
+### Register new sensor data (*deprecated*)
 
 **Endpoint**: POST to `/sensor-data/{infoType}/{sensorType}`
 
@@ -103,7 +103,86 @@ In production this endpoint can't be accessed, instead requests must be made to 
 
 This is the resource to point to, as an `http integration`, in helium console for sensor data.
 
-If a secret key was defined to prevent malicious use, an HTTP Authorization Header has to be sent with the secret key.
+If a secret key was defined to prevent malicious use, an HTTP `Authorization` Header has to be sent with the secret key.
+
+The `channel` that the data will travel though is `default`.
+
+### Register new sensor data
+
+**Endpoint**: POST to `/sensor-data/{channel}/{infoType}/{sensorType}`
+
+**Path Variables**:
+
+- **channel**: any string related to the service this data is to be sent.
+- **infoType**: `decoded` or `encoded`
+- **sensorType**: any string that represents a sensor type (this will later be correlated with the sensor type configured with the data processor and decoder)
+
+Both **channel** and **sensorType** strings must match the following regex: `[a-zA-Z0-9]{2,15}`
+
+**Data Example**:
+
+``` json
+{
+  "app_eui": "16217534746BD1D3",
+  "dev_eui": "A84041CB91826E2F",
+  "devaddr": "06000048",
+  "downlink_url": "https://console.helium.com/api/v1/down/806c3543-450d-4d34-9948-582d130a38d2/ekQ508Ijd1Ip8L2nM6JjRBmOxs2luTz6/1194ea60-9a40-447a-b535-affba26da111",
+  "fcnt": 188,
+  "hotspots": [
+    {
+      "channel": 2,
+      "frequency": 868.5,
+      "id": "11Weepe1gHxjcaSq8cmh2QE8a9GxssEPXgbVifRvyNkprWc83BJ",
+      "lat": 38.75500733680766,
+      "long": -9.241637744431221,
+      "name": "modern-gauze-rattlesnake",
+      "reported_at": 1616349557723,
+      "rssi": -113.0,
+      "snr": -14.800000190734863,
+      "spreading": "SF12BW125",
+      "status": "success"
+    }
+  ],
+  "id": "1194ea60-9a40-447a-b535-affba26ea111",
+  "metadata": {
+    "adr_allowed": false,
+    "labels": [
+      {
+        "id": "036650d9-fb6c-48f3-99df-55773d816a5e",
+        "name": "LGT_Decoder",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "303896f0-8799-4328-a6fc-685c541b9cad",
+        "name": "Cargo",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "cac06b4e-b6fb-41d5-8861-ec836d2c8de0",
+        "name": "IntegrationTest",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      },
+      {
+        "id": "f5f80b55-f41b-41af-9e70-f7be1c5df928",
+        "name": "Domus",
+        "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+      }
+    ],
+    "multi_buy": 1,
+    "organization_id": "4004095e-8a2c-46a5-b9ef-7dbc4dbb1258"
+  },
+  "name": "Sharespot_Fernao #4",
+  "payload": "Ak9IJP9zLKQL+yM=",
+  "payload_size": 11,
+  "port": 2,
+  "reported_at": 1616349557723,
+  "uuid": "979abd51-e754-4b02-a405-41e5c41c4b89"
+}
+```
+
+This is the resource to point to, as an `http integration`, in helium console for sensor data.
+
+If a secret key was defined to prevent malicious use, an HTTP `Authorization` Header has to be sent with the secret key.
 
 ## Data Processor Master Backend API
 
@@ -262,17 +341,20 @@ Since the communication is made using GraphQL, and there are no `subscriptions` 
 ### Index a Device Information (new or updated device)
 
 ``` graphql
-mutation index($records: DeviceRecordsInput) {
-  index(records: $records) {
+mutation index($instructions: DeviceInformationInput) {
+  index(instructions: $instructions) {
     device {
       id
       name
       downlink
     }
-    entries {
+    records {
       label
       content
-      type
+    }
+    staticData {
+      label
+      content
     }
     subDevices {
       id
@@ -294,17 +376,20 @@ This is the resource used to index a new or edited device information to the dat
 ### Consult all Devices Information
 
 ``` graphql
-query deviceRecords {
-  deviceRecords {
+query deviceInformation {
+  deviceInformation {
     device {
       id
       name
       downlink
     }
-    entries {
+    records {
       label
       content
-      type
+    }
+    staticData {
+      label
+      content
     }
     subDevices {
       id
@@ -335,6 +420,125 @@ mutation delete($device: DeviceInput){
 ```
 
 This is the resource used to remove a device information from the cache and database.
+
+## Notification Management Backend API
+
+This section will present every endpoint available in this service.
+Since the communication is made using GraphQL the only two endpoints are `/graphql` to request a subscription and `/subscriptions`.
+
+As pointed in the current [problems](../problems/README.md) the JWT token has to be sent as a GraphQL Input parameter, Authorization, and not as an usual HTTP Header.
+The value of `Authorization` has to be 'Bearer <Token>'.
+
+### Consult Live Notifications
+
+**Query**:
+
+``` graphql
+subscription notification($Authorization: String){
+  notification(Authorization: $Authorization){
+    id
+    reportedAt
+    contentType{
+      category
+      subCategory
+      level
+    }
+    description
+  }
+}
+```
+
+This is the resource used to subscribe to new notifications.
+
+### Consult Past Notifications
+
+**Query**:
+
+``` graphql
+query history($filters: HistoryQuery){
+  history(filters: $filters){
+    id
+    reportedAt
+    contentType{
+      category
+      subCategory
+      level
+    }
+    description
+  }
+}
+```
+
+The filter, HistoryQuery, has the following structure:
+
+```ts
+export interface HistoryQuery {
+  startTime: string
+  endTime: string
+}
+```
+
+This is the resource used to fetch old notifications.
+
+### Consult Tenant Subscription Configuration
+
+**Query**:
+
+``` graphql
+query config{
+  config{
+    entries{
+      deliveryType
+      contentType{
+        category
+        subCategory
+        level
+      }
+      mute
+    }
+  }
+}
+```
+
+This is the resource used to fetch the current configuration that determines what notifications and how a user is subscribed to them.
+
+### Change Tenant Subscription Configuration
+
+**Query**:
+
+``` graphql
+mutation config($instructions: AddresseeConfigCommandInput){
+  config(instructions: $instructions){
+    entries{
+      deliveryType
+      contentType{
+        category
+        subCategory
+        level
+      }
+      mute
+    }
+  }
+}
+```
+
+The filter, AddresseeConfigCommandInput, has the following structure:
+
+```ts
+export interface AddresseeConfigCommandInput {
+  entries: {
+    deliveryType: DeliveryTypeDTO
+    contentType: {
+      category: string
+      subCategory: string
+      level: NotificationLevelDTO
+    }
+    mute: boolean
+  }
+}
+```
+
+This is the resource used to change the configuration in use by the tenant.
 
 ## Fleet Management Backend API
 
@@ -610,26 +814,26 @@ The filter, LiveDataFilter, has the following structure:
 
 ```ts
 export interface SubscribeToDataParams {
-  gardens: string[]
+  irrigationZones: string[]
   devices: string[]
   content: string
 }
 ```
 
 The `device` variable expects a list of device ids.
-The `gardens` variable expects a list of garden ids.
+The `irrigationZones` variable expects a list of irrigation zone ids.
 The `content` variable expects a string, related to device management's records.
 All filters are combined with a `AND` operand.
 
 This is the resource used to subscribe to new device data.
 
-### Create a new Gardening Area
+### Create a new Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation createGarden($instructions: CreateGardeningAreaCommand){
-  createGarden(instructions: $instructions){
+mutation createIrrigationZone($instructions: CreateIrrigationZoneCommand){
+  createIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -642,10 +846,10 @@ mutation createGarden($instructions: CreateGardeningAreaCommand){
 }
 ```
 
-The instructions, CreateGardeningAreaCommand, have the following structure:
+The instructions, CreateIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface CreateGardeningAreaCommand {
+export interface CreateIrrigationZoneCommand {
   name: string
   area: AreaBoundary[]
 }
@@ -658,15 +862,15 @@ export interface AreaBoundary {
 }
 ```
 
-This is the resource used to create a new gardening area.
+This is the resource used to create a new irrigation zone.
 
-### Update a new Gardening Area
+### Update a new Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation updateGarden($instructions: UpdateGardeningAreaCommand){
-  updateGarden(instructions: $instructions){
+mutation updateIrrigationZone($instructions: UpdateIrrigationZoneCommand){
+  updateIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -679,10 +883,10 @@ mutation updateGarden($instructions: UpdateGardeningAreaCommand){
 }
 ```
 
-The instructions, UpdateGardeningAreaCommand, have the following structure:
+The instructions, UpdateIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface UpdateGardeningAreaCommand {
+export interface UpdateIrrigationZoneCommand {
   id: string
   name: string
   area: AreaBoundary[]
@@ -696,15 +900,15 @@ export interface AreaBoundary {
 }
 ```
 
-This is the resource used to update a gardening area information.
+This is the resource used to update an irrigation zone information.
 
-### Delete a new Gardening Area
+### Delete an Irrigation Zone
 
 **Query**:
 
 ``` graphql
-mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
-  deleteGarden(instructions: $instructions){
+mutation deleteIrrigationZone($instructions: DeleteIrrigationZoneCommand){
+  deleteIrrigationZone(instructions: $instructions){
     id
     name
     area{
@@ -717,15 +921,15 @@ mutation deleteGarden($instructions: DeleteGardeningAreaCommand){
 }
 ```
 
-The instructions, DeleteGardeningAreaCommand, have the following structure:
+The instructions, DeleteIrrigationZoneCommand, have the following structure:
 
 ```ts
-export interface DeleteGardeningAreaCommand {
+export interface DeleteIrrigationZoneCommand {
   id: string
 }
 ```
 
-This is the resource used to delete a gardening area information by id.
+This is the resource used to delete an irrigation zone information by id.
 
 ### Switch Valve from Open/Close to Close/Open
 
@@ -747,13 +951,13 @@ export interface ValvesToSwitch {
 
 This is the resource used to open/close a valve.
 
-### Fetch All Gardens
+### Fetch All Irrigation Zones
 
 **Query**:
 
 ``` graphql
-query fetchGardens{
-  fetchGardens{
+query fetchIrrigationZones{
+  fetchIrrigationZones{
     id
     name
     area{
@@ -766,7 +970,7 @@ query fetchGardens{
 }
 ```
 
-This is the resource used to see all available gardens.
+This is the resource used to see all available irrigation zones.
 
 ### Fetch Latest Device Data
 
@@ -824,7 +1028,7 @@ The filters, LatestDataQueryFilters, have the following structure:
 ``` ts
 export interface LatestDataQueryFilters {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
 }
 ```
 
@@ -885,7 +1089,7 @@ The filters, HistoryQueryFilters, have the following structure:
 ``` ts
 export interface HistoryQueryFilters {
   devices: string[]
-  gardens: string[]
+  irrigationZones: string[]
   startTime: string
   endTime: string
 }
@@ -904,9 +1108,9 @@ Since the communication is made using GraphQL, and there are no `subscriptions` 
 mutation addDevice($instructions: AddDeviceToDomain) {
   addDevice(instructions: $instructions) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -920,13 +1124,8 @@ The `instructions` data has the following format:
 export interface AddDeviceToDomain {
   deviceOid: string;
   domainOid: string;
-  writePermission: boolean;
 }
 ```
-
-The `deviceOid` variable expects a device id.
-The `domainOid` variable expects a domain id.
-the `writePermission` variable expects a boolean value, `false` -> `read`, `true` -> `read and write`.
 
 ### Add a Tenant to a Domain
 
@@ -950,9 +1149,6 @@ export interface AddTenantToDomain {
   domainOid: string;
 }
 ```
-
-The `tenantOid` variable expects a tenant id.
-The `domainOid` variable expects a domain id.
 
 ### Change Domain Permissions
 
@@ -1017,9 +1213,9 @@ query viewChildDomainsInfo($domain: ViewDomain) {
     }
     devices {
       oid
+      name
       domains {
         oid
-        permission
       }
     }
     tenants {
@@ -1047,9 +1243,9 @@ export interface ViewDomain {
 query viewDevicesInDomain($domain: ViewDomain) {
   viewDevicesInDomain(domain: $domain) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -1070,9 +1266,9 @@ query viewDomainInfo($domain: ViewDomain) {
     }
     devices {
       oid
+      name
       domains {
         oid
-        permission
       }
     }
     tenants {
@@ -1121,9 +1317,9 @@ This is the resource used to check all information about tenants in the domain.
 mutation removeDevice($instructions: RemoveDeviceFromDomain) {
   removeDevice(instructions: $instructions) {
     oid
+    name
     domains {
       oid
-      permission
     }
   }
 }
@@ -1166,14 +1362,79 @@ export interface RemoveTenantFromDomain {
 ### Authenticate User
 
 ```graphql
-query authenticate {
-  authenticate {
+query authenticate($provider: String) {
+  authenticate(provider: $provider) {
     token
   }
 }
 ```
 
-This is the resource used to exchange an `id token` from microsoft for an `access token` from `sensae` as explained in identity-management [docs](../identity-management/README.md).
+This is the resource used to exchange an `id token` from microsoft/google for an `access token` from `sensae` as explained in identity-management [docs](../identity-management/README.md).
+
+The `$provider` param can have the values **Google** or **Microsoft**.
+
+### Authenticate Anonymous User
+
+```graphql
+query anonymous {
+  anonymous {
+    token
+  }
+}
+```
+
+This is the resource used to fetch an `access token` for an anonymous user.
+
+### Refresh Access Token
+
+```graphql
+query refresh {
+  refresh {
+    token
+  }
+}
+```
+
+This is the resource used to fetch a new `access token`.
+
+### Fetch User Profile
+
+```graphql
+query profile {
+  profile {
+    oid
+    email
+    name
+    phoneNumber
+  }
+}
+```
+
+This is the resource used to fetch the profile of the currently authenticated user.
+
+### Update User Profile
+
+```graphql
+mutation updateTenant($instructions: TenantUpdateCommandInput) {
+  updateTenant(instructions: $instructions) {
+    oid
+    email
+    name
+    phoneNumber
+  }
+}
+```
+
+This is the resource used to update the profile of the currently authenticated user.
+
+The `TenantUpdateCommandInput` data has the following format:
+
+```ts
+export interface TenantUpdateCommandInput {
+  name: string;
+  phoneNumber: string;
+}
+```
 
 ## Further Discussion
 

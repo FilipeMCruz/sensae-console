@@ -3,11 +3,11 @@ export class ChartConfigs {
   }
 
   public static getTemperatureConfig() {
-    return new ChartConfigs("#ee9b00", "Temperature", "ºC", -20, 60);
+    return new ChartConfigs("#ee9b00", "Temperature", "ºC", 0, 50);
   }
 
   public static getAirHumidityConfig() {
-    return new ChartConfigs("#34a0a4", "AirHumidity", "g/cm3", 0, 80);
+    return new ChartConfigs("#34a0a4", "AirHumidity", "%", 0, 100);
   }
 
   public static getIlluminanceConfig() {

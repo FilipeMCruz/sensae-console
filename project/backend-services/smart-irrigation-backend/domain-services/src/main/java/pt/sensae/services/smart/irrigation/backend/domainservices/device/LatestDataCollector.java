@@ -5,12 +5,11 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceWithData;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.LedgerEntryWithData;
-import pt.sensae.services.smart.irrigation.backend.domain.model.business.garden.GardeningArea;
+import pt.sensae.services.smart.irrigation.backend.domain.model.business.irrigationZone.IrrigationZone;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
 import pt.sensae.services.smart.irrigation.backend.domainservices.device.model.LatestDataQuery;
-import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
+import pt.sensae.services.smart.irrigation.backend.domainservices.irrigationZone.IrrigationZoneCache;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -25,16 +24,16 @@ public class LatestDataCollector {
 
     private final DeviceRepository deviceRepository;
 
-    private final GardeningAreaCache gardenCache;
+    private final IrrigationZoneCache irrigationZoneCache;
 
-    public LatestDataCollector(DataRepository repository, DeviceRepository deviceRepository, GardeningAreaCache gardenCache) {
+    public LatestDataCollector(DataRepository repository, DeviceRepository deviceRepository, IrrigationZoneCache irrigationZoneCache) {
         this.repository = repository;
         this.deviceRepository = deviceRepository;
-        this.gardenCache = gardenCache;
+        this.irrigationZoneCache = irrigationZoneCache;
     }
 
     public Stream<DeviceWithData> fetch(LatestDataQuery query) {
-        var gardens = gardenCache.fetchByIds(query.gardens().stream()).collect(Collectors.toSet());
+        var irrigationZones = irrigationZoneCache.fetchByIds(query.irrigationZones().stream()).collect(Collectors.toSet());
 
         var deviceMap = deviceRepository.fetchLatest(query.value())
                 .filter(withDevicesIn(query))
@@ -45,7 +44,7 @@ public class LatestDataCollector {
                 .forEach(data -> deviceMap.get(data.deviceId())
                         .ledger()
                         .getEntryIn(data)
-                        .filter(filterByGarden(gardens))
+                        .filter(filterByIrrigationZones(irrigationZones))
                         .ifPresent(entry -> entry.addData(data)));
 
         return deviceMap.values().stream()
@@ -61,10 +60,10 @@ public class LatestDataCollector {
         return d -> filter.deviceIds().contains(d.id());
     }
 
-    private Predicate<LedgerEntryWithData> filterByGarden(Set<GardeningArea> gardens) {
-        if (gardens.isEmpty()) {
+    private Predicate<LedgerEntryWithData> filterByIrrigationZones(Set<IrrigationZone> irrigationZones) {
+        if (irrigationZones.isEmpty()) {
             return d -> true;
         }
-        return d -> gardens.stream().anyMatch(g -> g.area().contains(d.content().coordinates()));
+        return d -> irrigationZones.stream().anyMatch(g -> g.area().contains(d.content().coordinates()));
     }
 }

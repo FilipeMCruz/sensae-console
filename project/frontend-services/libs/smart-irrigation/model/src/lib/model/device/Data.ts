@@ -5,6 +5,7 @@ import {StoveSensorDataDetails} from "../details/StoveSensorDataDetails";
 import {ValveDataDetails} from "../details/ValveDataDetails";
 import {Feature} from "geojson";
 import * as mapboxgl from "mapbox-gl";
+import {DateFormat} from "@frontend-services/core";
 
 export class Data {
   constructor(public id: string, public device: Device, public reportedAt: Date, public data: SensorDataDetails) {
@@ -17,7 +18,13 @@ export class Data {
       source,
       paint: {
         'circle-color': ['get', 'color'],
-        'circle-radius': 4,
+        'circle-radius': {
+          "stops": [
+            [0, 0],
+            [12, 0],
+            [14, 4]
+          ]
+        },
         'circle-stroke-width': 1,
         'circle-stroke-color': '#582f0e'
       }
@@ -191,6 +198,10 @@ export class Data {
     this.data = update.data;
   }
 
+  public timeAgo(): string {
+    return DateFormat.timeAgo(this.reportedAt);
+  }
+
   getColor() {
     return {'color': this.data.color}
   }
@@ -209,7 +220,7 @@ export class Data {
 
   getFirstDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return this.data.soilMoisture.percentage + "%";
+      return this.data.soilMoisture.relativePercentage + "%";
     } else if (this.data instanceof StoveSensorDataDetails) {
       return this.data.temperature.celsius + "ºC";
     } else if (this.data instanceof ValveDataDetails) {
@@ -223,7 +234,7 @@ export class Data {
     if (this.data instanceof ParkSensorDataDetails) {
       return this.data.illuminance.lux + "";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return this.data.humidity.gramsPerCubicMeter + "g/m3";
+      return this.data.humidity.relativePercentage + "%";
     } else {
       return "";
     }
@@ -241,9 +252,9 @@ export class Data {
 
   asFeature(): Feature {
     const illuminance = this.data instanceof ParkSensorDataDetails ? this.data.illuminance.lux / 50 : 0;
-    const soilMoisture = this.data instanceof ParkSensorDataDetails ? this.data.soilMoisture.percentage * 2 : 0;
+    const soilMoisture = this.data instanceof ParkSensorDataDetails ? this.data.soilMoisture.relativePercentage * 2 : 0;
     const temperature = this.data instanceof StoveSensorDataDetails ? this.data.temperature.celsius / 60 * 2000 : 0;
-    const humidity = this.data instanceof StoveSensorDataDetails ? this.data.humidity.gramsPerCubicMeter / 30 * 2000 : 0;
+    const humidity = this.data instanceof StoveSensorDataDetails ? this.data.humidity.relativePercentage / 30 * 2000 : 0;
 
     return {
       type: 'Feature',
@@ -255,7 +266,7 @@ export class Data {
         description: `
 <strong>Device Name:</strong> ${this.device.name.value}</br>
 <strong>Device Id:</strong> ${this.device.id.value}</br>
-<strong>Reported At:</strong> ${this.reportedAt.toLocaleString()}</br>
+<strong>Reported:</strong> ${this.timeAgo()} ago</br>
 ${this.data.getDataDetailsInHTML()}
 `,
         id: this.device.id.value,

@@ -4,13 +4,13 @@ This section describes the **Fleet Management** service according to the latest 
 
 Current version:
 
-- `system` : `0.8.0`
+- `system` : `0.9.0`
 
 ## Internal System Inputs/Outputs
 
 This service inputs are:
 
-- **Sensor Topic**: valid data with gps coordinates;
+- **Sensor Topic**: valid data with `gps` readings and the channel `fleet`;
 
 ## Further Discussion
 

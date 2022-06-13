@@ -1,6 +1,7 @@
 package pt.sensae.services.data.validator.backend.application;
 
 import org.junit.jupiter.api.Test;
+import pt.sharespot.iot.core.keys.RoutingKeys;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
@@ -25,7 +26,7 @@ public class DataValidatorServiceTest {
         RoutingKeysProvider external = new ExternalRoutingKeysMock();
 
         var opt = external.getBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .from("proce.0.1.17.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
+                .from("proce.0.1.18.data.p.lgt92.default.n.u.u.y.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.n.#");
         if (opt.isPresent()) {
             externalKeys = opt.get();
         } else {

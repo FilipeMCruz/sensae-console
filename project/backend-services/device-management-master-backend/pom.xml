@@ -7,7 +7,7 @@
     <groupId>pt.sensae.services</groupId>
     <artifactId>device-management-master-backend</artifactId>
     <packaging>pom</packaging>
-    <version>0.8.0</version>
+    <version>0.9.0</version>
     <modules>
         <module>infrastructure</module>
         <module>application</module>
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>pt.sharespot</groupId>
             <artifactId>iot-core</artifactId>
-            <version>0.1.17</version>
+            <version>0.1.18</version>
         </dependency>
         <!--        here so that dgs does not retrieve the wrong versions-->
         <dependency>

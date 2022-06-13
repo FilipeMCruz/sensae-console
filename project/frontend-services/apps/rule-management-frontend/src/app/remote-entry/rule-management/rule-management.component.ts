@@ -24,7 +24,7 @@ export class RuleManagementComponent implements OnChanges {
   ngOnChanges(): void {
     if (this.entry) {
       this.ruleScenarioView = RuleScenarioViewType.Edit;
-      this.ruleScenario = this.entry;
+      this.ruleScenario = this.entry.copy();
     }
     if (this.ruleScenarioViewType) {
       this.ruleScenarioView = this.ruleScenarioViewType;
@@ -33,16 +33,9 @@ export class RuleManagementComponent implements OnChanges {
 
   saveRuleScenario() {
     this.newRuleScenarioEvent.emit(this.ruleScenario);
-    this.resetView();
   }
 
   deleteRuleScenario() {
     this.deleteRuleScenarioEvent.emit(this.ruleScenario);
-    this.resetView();
-  }
-
-  private resetView() {
-    this.ruleScenarioView = this.scenarioViewType.New;
-    this.ruleScenario = RuleScenario.empty();
   }
 }

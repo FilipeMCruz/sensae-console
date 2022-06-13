@@ -12,7 +12,7 @@ class StoveSensor as "Stove Sensor"
 
 class Valve
 
-class Garden as "Gardening Area"
+class Garden as "Irrigation Zone"
 
 class GardenName as "Name"
 
@@ -33,6 +33,7 @@ class CloseDate
 class Name
 
 class Id
+class Id2 as "Id"
 
 class GPSPoint
 
@@ -50,10 +51,12 @@ ParkSensor --|> Device : is
 StoveSensor --|> Device : is
 Device "1" -- "*" LedgerEntry: has info >
 Device "1" -- "1" Id: has >
+Garden "1" -- "1" Id2: has >
 LedgerEntry "1" -- "1" OpenDate: has >
 LedgerEntry "1" -- "0..1" CloseDate: has >
 LedgerEntry "1" -- "1" Content: refer to >
 LedgerEntry "1" -- "1" Ownership: belongs to >
+Garden "1" -- "1" Ownership: belongs to >
 Content "1" -- "*" Record: has >
 Content "1" -- "1" Name: has >
 Content "1" - "1" GPSPoint: has >

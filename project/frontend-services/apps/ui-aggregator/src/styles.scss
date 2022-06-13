@@ -53,3 +53,57 @@ body {
 .search-bar {
   width: 100%;
 }
+
+.critical-snackbar {
+  background: #E03C32;
+  color: #000000;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #000000;
+  }
+}
+
+.error-snackbar {
+  background: #E03C32;
+  color: #000000;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #000000;
+  }
+}
+
+.warning-snackbar {
+  background: #FF8C01;
+  color: #000000;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #000000;
+  }
+}
+
+.advisory-snackbar {
+  background: #FFD301;
+  color: #000000;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #000000;
+  }
+}
+
+.watch-snackbar {
+  background: #7BB662;
+  color: #000000;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #000000;
+  }
+}
+
+.information-snackbar {
+  background: #006B3E;
+  color: #ffffff;
+  white-space: pre-wrap;
+  .mat-simple-snackbar-action {
+    color: #ffffff;
+  }
+}

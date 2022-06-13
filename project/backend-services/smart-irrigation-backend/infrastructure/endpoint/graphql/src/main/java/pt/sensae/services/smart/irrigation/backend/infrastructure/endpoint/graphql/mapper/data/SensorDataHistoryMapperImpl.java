@@ -31,7 +31,6 @@ public class SensorDataHistoryMapperImpl implements SensorDataHistoryMapper {
                     .map(e -> new RecordEntryDTOImpl(e.label(), e.content()))
                     .collect(Collectors.toSet());
 
-
             var alt = ledgerEntry.content().coordinates().altitude() != null ?
                     ledgerEntry.content().coordinates().altitude().toString() :
                     "0";
@@ -51,7 +50,7 @@ public class SensorDataHistoryMapperImpl implements SensorDataHistoryMapper {
                 }
                 var stove = (StovePayload) dataEntry.payload();
                 var temperature = new TemperatureDataDetails(stove.temperature().celsius());
-                var humidity = new HumidityDataDetails(stove.humidity().gramsPerCubicMeter());
+                var humidity = new HumidityDataDetails(stove.humidity().relativePercentage());
 
                 return new StoveSensorDataHistoryDetails(dataEntry.id().value().toString(),
                         dataEntry.reportedAt().value().getEpochSecond(), temperature, humidity);

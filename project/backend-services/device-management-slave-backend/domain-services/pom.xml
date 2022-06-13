@@ -5,7 +5,7 @@
     <parent>
         <groupId>pt.sensae.services</groupId>
         <artifactId>device-management-slave-backend</artifactId>
-        <version>0.8.0</version>
+        <version>0.9.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,13 +14,13 @@
         <dependency>
             <groupId>pt.sensae.services</groupId>
             <artifactId>domain</artifactId>
-            <version>0.8.0</version>
+            <version>0.9.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
-            <version>3.1.0</version>
+            <version>3.1.1</version>
         </dependency>
     </dependencies>
 

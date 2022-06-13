@@ -1,5 +1,5 @@
 @startuml data-flow
-'left to right direction
+
 skinparam Monochrome true
 
 note "Data after going though Data Gateway is wrapped\n inside an Environment Message, this message is\n'open' in each container so that data can be accessed.\n Then, once the work is done the message is 'sealed',\n routing keys are changed and the message is sent.\nFor brevity this process is not detailed everywhere" as N1
@@ -9,9 +9,9 @@ state "Data Gateway" as DataGateway
 state decoded_or_encoded <<choice>>
 state "Data Processor Slave" as Processor
 state "Data Decoder Slave" as Decoder
-state "Identity Management Slave" as Identity
+state "Device Ownership" as Identity
 state "Data Validator" as Validator
-state "Device Management Slave" as Records
+state "Device Management Slave" as Device
 state data_type <<choice>>
 state "Fleet Management" as Fleet
 state "Smart Irrigation" as Irrigation
@@ -38,8 +38,8 @@ Identity : added to the data
 Validator : Data is examined to determine
 Validator : if it is valid or not
 
-Records : Device information details
-Records : are added to the data
+Device : Device information details
+Device : are added to the data
 
 Fleet : Data is stored
 Fleet : and sent to Frontend
@@ -59,11 +59,11 @@ decoded_or_encoded --> Decoder : encoded data
 Decoder --> Identity
 Processor --> Identity
 
-Identity -> Records
+Identity -> Device
 
-Records --> Validator
+Device --> Validator
 
-Records ---> Identity : each sub device\ndata is sub processed
+Device ---> Identity : each sub device\ndata is sub processed
 
 Validator --> data_type
 

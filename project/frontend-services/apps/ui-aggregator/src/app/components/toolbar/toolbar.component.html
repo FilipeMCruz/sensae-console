@@ -1,4 +1,4 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="toolbar mat-elevation-z1">
   <a mat-button routerLink="/">
     <mat-icon aria-label="home">home</mat-icon>
   </a>
@@ -14,19 +14,50 @@
     *ngIf="canShowAny(microfrontendTools)"
     class="menu"
     mat-button
-    [matMenuTriggerFor]="menu"
+    [matMenuTriggerFor]="tools"
   >
     Tools
   </button>
-  <mat-menu #menu="matMenu">
+  <mat-menu #tools="matMenu">
     <div *ngFor="let mfe of microfrontendTools">
       <button mat-menu-item *ngIf="canShow(mfe)" [routerLink]="mfe.routePath">
-        {{ mfe.displayName }}
+        <mat-icon>{{ mfe.icon }}</mat-icon>
+        <span>{{ mfe.displayName }}</span>
       </button>
     </div>
   </mat-menu>
   <span *ngIf="canShowAny(microfrontendTools)" class="spacer"></span>
 
-  <button mat-button *ngIf="!loginDisplay" (click)="login()">Login</button>
-  <button mat-button *ngIf="loginDisplay" (click)="logout()">Logout</button>
+  <button mat-button *ngIf="!loginDisplay" [matMenuTriggerFor]="login">
+    Login
+  </button>
+  <mat-menu #login="matMenu">
+    <button (click)="logInAsAnonymous()" mat-menu-item>
+      <mat-icon>no_accounts</mat-icon>
+      <span>Anonymous</span>
+    </button>
+    <button (click)="logInWithGoogle()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Google</span>
+    </button>
+    <button (click)="loginWithMicrosoft()" mat-menu-item>
+      <mat-icon>login</mat-icon>
+      <span>With Microsoft</span>
+    </button>
+  </mat-menu>
+
+  <button mat-icon-button *ngIf="loginDisplay" [matMenuTriggerFor]="account">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #account="matMenu">
+    <button *ngIf="!isAnonymous()" (click)="profile()" mat-menu-item>
+      <mat-icon>badge</mat-icon>
+      <span>Profile</span>
+    </button>
+    <button (click)="logout()" mat-menu-item>
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+
 </mat-toolbar>

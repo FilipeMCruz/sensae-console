@@ -24,7 +24,11 @@ interface "UI" as UI
 interface "Sensae Console\nRest API" as IN_ENDPOINT
 interface "Helium Console\nRest API" as OUT_ENDPOINT
 
+interface "Twilio SMS Disptacher API" as SMS_ENDPOINT
+interface "SMTP Server" as SMTP_ENDPOINT
+
 interface "Azure Active Directory API" as AUTH_ENDPOINT
+interface "Google Identity Platform API" as GOOGLE_ENDPOINT
 
 component "Environment" <<System>> {
     component "UI Aggregator" as UIAG <<Container>> #c77e21 {
@@ -35,10 +39,12 @@ component "Environment" <<System>> {
         component "Data Decoder Frontend" as DDF <<Container>> #d79921
         component "Identity Management Frontend" as IAMF <<Container>> #d79921
         component "Rule Management Frontend" as RULE_MAN_FRONT <<Container>> #d79921
+        component "Notification Management Frontend" as NOTIF_MAN_FRONT <<Container>> #d79921
     }
+    component "Message Broker" as MB <<Container>> #fb4d34
+
     component "Fleet Management Backend" as LTB <<Container>> #83a598
     component "Smart Irrigation Backend" as SIB <<Container>> #83a598
-    component "Message Broker" as MB <<Container>> #fb4d34
     component "Device Management Master Backend" as DRB <<Container>> #83a598
     component "Device Management Slave Backend" as DRSB <<Container>> #d3869b
     component "Data Gateway" as DDG <<Container>> #d3869b
@@ -58,11 +64,16 @@ component "Environment" <<System>> {
     component "Smart Irrigation Data Database" as SIDDB <<Container>> #98971a
     component "Smart Irrigation Business Database" as SIBDB <<Container>> #98971a
     component "Identity Management Backend" as IAMB <<Container>> #83a598
-    component "Identity Management Slave Backend" as IAMSB <<Container>> #d3869b
+    component "Device Ownership Backend" as IAMSB <<Container>> #d3869b
     component "Device Commander Backend" as DCB <<Container>> #d3869b
+
     component "Rule Management Backend" as RULE_MAN_BACK <<Container>> #83a598
     component "Rule Management Database" as RULE_MAN_DB <<Container>> #98971a
     component "Alert Dispatcher Backend" as ALERT_BACK <<Container>>  #d3869b
+
+    component "Notification Management Backend" as NOTIF_MAN_BACK <<Container>> #83a598
+    component "Notification Management Database" as NOTIF_MAN_DB <<Container>> #98971a
+    component "Notification Dispatcher Backend" as NOTIF_BACK <<Container>>  #d3869b
 
     interface "Message Broker\nAPI" as MB_API
     interface "Fleet Management Backend\nAPI" as LTB_API
@@ -82,9 +93,12 @@ component "Environment" <<System>> {
     interface "Identity Management Backend\nAPI" as IAMB_API
     interface "Rule Management Backend\nAPI" as RULE_MAN_BACK_API
     interface "Rule Management Database\nAPI" as RULE_MAN_DB_API
+    interface "Notification Management Backend\nAPI" as NOTIF_MAN_BACK_API
+    interface "Notification Management Database\nAPI" as NOTIF_MAN_DB_API
 
     LTB --( QUESTDB_API
     RULE_MAN_BACK --( RULE_MAN_DB_API
+    NOTIF_MAN_BACK --( NOTIF_MAN_DB_API
     SIB --( SIDDB_API
     SIBDB_API )- SIB
     DS --( MONGODB_API
@@ -98,6 +112,7 @@ component "Environment" <<System>> {
     DDDB_API - DDDB
     IAMDB_API - IAMDB
     RULE_MAN_BACK_API -- RULE_MAN_BACK
+    NOTIF_MAN_BACK_API -- NOTIF_MAN_BACK
     LTB_API -- LTB
     SIB_API -- SIB
     IAMB_API -- IAMB
@@ -105,6 +120,7 @@ component "Environment" <<System>> {
     MONGODB_API - MONGODB
     QUESTDB_API - QUESTDB
     RULE_MAN_DB_API - RULE_MAN_DB
+    NOTIF_MAN_DB_API - NOTIF_MAN_DB
     SIDDB_API - SIDDB
     SIBDB_API -- SIBDB
     DRB --( DRDB_API
@@ -122,6 +138,7 @@ component "Environment" <<System>> {
     DRF --( DRB_API
     IAMF --( IAMB_API
     RULE_MAN_FRONT --( RULE_MAN_BACK_API
+    NOTIF_MAN_FRONT --( NOTIF_MAN_BACK_API
 
     LTB ---( MB_API
     SIB ---( MB_API
@@ -130,6 +147,7 @@ component "Environment" <<System>> {
     DDB ---( MB_API
     IAMB ---( MB_API
     RULE_MAN_BACK ---( MB_API
+    NOTIF_MAN_BACK ---( MB_API
     MB_API )--- DS
     MB_API )--- DDG
     MB_API )--- DVB
@@ -139,12 +157,18 @@ component "Environment" <<System>> {
     MB_API )--- IAMSB
     MB_API )--- DCB
     MB_API )--- ALERT_BACK
+    MB_API )--- NOTIF_BACK
 
     DR -- IN_ENDPOINT
     DDG_API )-- DR
     DCB ----( OUT_ENDPOINT
-    IAMF -- AUTH_ENDPOINT
-    AUTH_ENDPOINT -- IAMB
+    IAMF --( AUTH_ENDPOINT
+    AUTH_ENDPOINT )-- IAMB
+    IAMF --( GOOGLE_ENDPOINT
+    GOOGLE_ENDPOINT )-- IAMB
+
+    NOTIF_BACK ----( SMS_ENDPOINT
+    NOTIF_BACK ----( SMTP_ENDPOINT
 
     IAMB --[hidden]- IAMSB
     DRB --[hidden]- DRSB

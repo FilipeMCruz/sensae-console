@@ -1,0 +1,242 @@
+package rules.project.two;
+
+import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
+import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
+import java.util.List;
+import java.util.UUID
+import pt.sharespot.iot.core.alert.model.AlertLevel
+
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
+
+dialect "mvel"
+
+declare Zone
+    @role( event )
+    id : String
+end
+
+declare ValveDevice
+    @role( event )
+    deviceId : UUID
+    zone : String
+end
+
+declare ValveDeviceData
+    @role( event )
+    deviceId : UUID
+    dataId : UUID
+    zone : String
+    on : Boolean
+end
+
+declare StoveSensor
+    @role( event )
+    deviceId : UUID
+    zone : String
+end
+
+declare StoveSensorData
+    @role( event )
+    deviceId : UUID
+    dataId : UUID
+    zone : String
+    temperature : Float
+    humidity : Float
+end
+
+rule "Create new zone that belongs to Project #002"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.TRIGGER) || (
+                getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)
+                               && getSensorData().hasProperty(PropertyName.TEMPERATURE)
+            )
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
+        exists DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        $zone : DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        not(Zone(id == $zone.content))
+    then
+        Zone zone = new Zone();
+        zone.setId($zone.content);
+        insert(zone)
+end
+
+rule "Create new valve device that belongs to Project #002"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.TRIGGER)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
+        exists DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        not(ValveDevice(deviceId == $data.device.id))
+        $zone : DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+    then
+        ValveDevice valve = new ValveDevice();
+        valve.setDeviceId($data.device.id);
+        valve.setZone($zone.content);
+        insert(valve)
+end
+
+//if the data is from a valve device and is not duplicated add it
+rule "Collect valve device data that belongs to Project #002"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.TRIGGER)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
+        exists DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        not(ValveDeviceData(dataId == $data.dataId))
+        $zone : DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+    then
+        ValveDeviceData reading = new ValveDeviceData();
+        reading.setDeviceId($data.device.id);
+        reading.setDataId($data.dataId);
+        reading.setOn($data.getSensorData().trigger.value);
+        reading.setZone($zone.content);
+        insert(reading)
+end
+
+//to ensure that only one alarm per device is sent
+rule "Create new stove sensor devices that belongs to Project #002"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
+        exists DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        not(StoveSensor(deviceId == $data.device.id))
+        $zone : DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+    then 
+        StoveSensor sensor = new StoveSensor();
+        sensor.setDeviceId($data.device.id);
+        sensor.setZone($zone.content);
+        insert(sensor)
+end
+
+//if the data is from a stove sensor and is not duplicated add it
+rule "Collect stove sensor data that belongs to Project #002"
+    when
+        $data : SensorDataDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE)
+        )
+        exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
+        exists DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+        not(StoveSensorData(dataId == $data.dataId))
+        $zone : DeviceRecordEntryDTO(label == "Túnel") from $data.device.records
+    then
+        StoveSensorData reading = new StoveSensorData();
+        reading.setDeviceId($data.device.id);
+        reading.setDataId($data.dataId);
+        reading.setTemperature($data.getSensorData().temperature.celsius);
+        reading.setHumidity($data.getSensorData().airHumidity.relativePercentage);
+        reading.setZone($zone.content);
+        insert(reading)
+end
+
+//if we can find any stove sensor with
+// - an humidity value of less than 50,
+// - a temperature value of more than 26,
+// - this conditions are maintained by 10 minutes
+// - any valve is closed in the following 10 minutes
+// then fire an alarm 
+rule "Dispatch Stove Alarm - Dry Soil Scenario - Project #002"
+    when
+        $z : Zone()
+        $s : StoveSensorData(zone == $z.id, temperature > 26, humidity < 50)
+        not(
+            StoveSensorData(
+                this != $s,
+                zone == $z.id,
+                temperature < 26,
+                humidity > 50,
+                this after[0s,11m] $s
+            )
+        )
+        ValveDeviceData(
+            zone == $z.id,
+            on == false,
+            this after[0s,11m] $s
+        )
+    then 
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("smartIrrigation")
+                            .setSubCategory("drySoilDetected")
+                            .setDescription("Project #002 - Túnel "+ $z.id +" has low humidity/high temperature and should be watered")
+                            .setLevel(AlertLevel.ADVISORY)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($s.deviceId)
+                                .setOther("Project #002")
+                                .build())
+                            .build());
+end
+
+//if we can find a stove sensor with
+// - an humidity value of more than 70,
+// - a temperature value of less than 24,
+// - this conditions are maintained by 10 minutes
+// - any valve is open in the following 10 minutes
+// then fire an alarm 
+rule "Dispatch Stove Alarm - Moist Soil Scenario - Project #002"
+    when
+        $z : Zone()
+        $s : StoveSensorData(zone == $z.id, temperature < 24, humidity > 70)
+        not(
+            StoveSensorData(
+                this != $s,
+                zone == $z.id,
+                temperature > 24,
+                humidity < 70,
+                this after[0s,11m] $s
+            )
+        )
+        ValveDeviceData(
+            zone == $z.id,
+            on == true,
+            this after[0s,11m] $s
+        )
+    then 
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("smartIrrigation")
+                            .setSubCategory("moistSoil")
+                            .setDescription("Project #002 - Túnel "+ $z.id +" has high humidity/low temperature and irrigation can be turned off")
+                            .setLevel(AlertLevel.ADVISORY)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($s.deviceId)
+                                .setOther("Project #002")
+                                .build())
+                            .build());
+end
+
+rule "Dispatch Valve Alarm - Valve Open For Lengthy Period Scenario - Project #002"
+    when
+        $v : ValveDevice()
+        $data: ValveDeviceData(deviceId == $v.deviceId, zone == $v.zone, on == true)
+        not(
+            ValveDeviceData(
+                this != $data,
+                deviceId == $v.deviceId,
+                zone == $v.zone,
+                on == false,
+                this after[0s,60m] $data
+            )
+        )
+    then
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("smartIrrigation")
+                            .setSubCategory("valveOpenForLengthyPeriod")
+                            .setDescription("Project #002 - Túnel "+ $v.zone +" - Valve has been open for an hour, needs to be closed.\nThis can indicate that:\n - The windows are not open;\n - The system can't close the valves")
+                            .setLevel(AlertLevel.WARNING)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($v.deviceId)
+                                .setDataIds($data.dataId)
+                                .setOther("Project #002")
+                                .build())
+                            .build());
+end

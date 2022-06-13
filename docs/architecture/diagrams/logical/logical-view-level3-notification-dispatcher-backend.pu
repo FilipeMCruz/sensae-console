@@ -1,0 +1,41 @@
+@startuml logical-view-level3-notification-dispatcher-backend
+
+skinparam Monochrome true
+
+component "Notification Dispatcher Backend" {
+    component "Application" as APP
+    component "Domain" as DOM
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Endpoint" as ENDPOINT {
+            component "AMQP" as AMQP
+            interface "AMQP API" as AMQP_API
+            component "SMS" as SMS
+            interface "SMS API" as SMS_API
+            component "EMAIL" as EMAIL
+            interface "EMAIL API" as EMAIL_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Application API" as APP_API
+    interface "Domain API" as DOM_API
+
+    DOM_API -- DOM
+
+    APP_API -- APP
+    BOOT_API -- BOOT
+    AMQP_API -- AMQP
+    SMS_API -- SMS
+    EMAIL_API -- EMAIL
+
+    AMQP --( APP_API
+    SMS --( APP_API
+    EMAIL --( APP_API
+    APP --( DOM_API
+    BOOT --( AMQP_API
+    BOOT --( SMS_API
+    BOOT --( EMAIL_API
+}
+
+@enduml

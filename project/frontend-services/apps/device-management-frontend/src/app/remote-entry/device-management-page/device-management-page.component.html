@@ -17,7 +17,7 @@
   >
     Group Devices by =>
   </button>
-  <mat-form-field>
+  <mat-form-field class="top-input">
     <mat-label>Label</mat-label>
     <input matInput placeholder="Ex. Project" [(ngModel)]="label">
     <button *ngIf="label" matSuffix mat-icon-button aria-label="Clear" (click)="clearGroupBy()">
@@ -27,7 +27,7 @@
   <div *ngIf="!this.loading && this.grouped">
     <div class="grouped-list" *ngFor="let group of this.groups">
       <div mat-subheader><b>{{group.entry.label}}</b>: {{group.entry.content}}</div>
-      <mat-card *ngFor="let record of group.devices" class="item">
+      <mat-card *ngFor="let record of group.devices" class="item mat-elevation-z2">
         <mat-card-title>Device Information</mat-card-title>
         <mat-card-content>
           <frontend-services-device-record
@@ -44,7 +44,7 @@
       <mat-divider></mat-divider>
     </div>
     <div mat-subheader>New</div>
-    <mat-card *ngIf="canEdit()" class="item">
+    <mat-card *ngIf="canEdit()" class="item mat-elevation-z2">
       <mat-card-title>New Device Information</mat-card-title>
       <mat-card-content>
         <frontend-services-device-record

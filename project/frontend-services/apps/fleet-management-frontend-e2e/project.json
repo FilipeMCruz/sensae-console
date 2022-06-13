@@ -1,0 +1,30 @@
+{
+  "root": "apps/fleet-management-frontend-e2e",
+  "sourceRoot": "apps/fleet-management-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/fleet-management-frontend-e2e/cypress.json",
+        "devServerTarget": "fleet-management-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "fleet-management-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/fleet-management-frontend-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["fleet-management-frontend"]
+}

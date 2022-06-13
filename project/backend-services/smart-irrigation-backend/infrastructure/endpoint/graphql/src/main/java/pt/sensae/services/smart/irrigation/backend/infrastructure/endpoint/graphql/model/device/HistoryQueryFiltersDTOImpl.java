@@ -6,7 +6,7 @@ public class HistoryQueryFiltersDTOImpl {
 
     public List<String> devices;
 
-    public List<String> gardens;
+    public List<String> irrigationZones;
 
     public String startTime;
 

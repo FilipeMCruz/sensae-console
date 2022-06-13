@@ -10,7 +10,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
-import pt.sensae.services.smart.irrigation.backend.domainservices.garden.GardeningAreaCache;
+import pt.sensae.services.smart.irrigation.backend.domainservices.irrigationZone.IrrigationZoneCache;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 
 import java.util.HashSet;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class AlertHandlerService {
 
-    Logger logger = LoggerFactory.getLogger(AlertHandlerService.class);
+    private final Logger logger = LoggerFactory.getLogger(AlertHandlerService.class);
 
     private final DeviceRepository deviceRepository;
 
@@ -29,16 +29,16 @@ public class AlertHandlerService {
 
     private final DeviceCommandPublisher publisher;
 
-    private final GardeningAreaCache gardenCache;
+    private final IrrigationZoneCache irrigationZoneCache;
 
     public AlertHandlerService(DeviceRepository deviceRepository,
                                DataRepository dataRepository,
                                DeviceCommandPublisher publisher,
-                               GardeningAreaCache gardenCache) {
+                               IrrigationZoneCache irrigationZoneCache) {
         this.deviceRepository = deviceRepository;
         this.dataRepository = dataRepository;
         this.publisher = publisher;
-        this.gardenCache = gardenCache;
+        this.irrigationZoneCache = irrigationZoneCache;
     }
 
     public void handle(AlertDTO data, ValveStatusType toOpenValve) {
@@ -67,15 +67,15 @@ public class AlertHandlerService {
                 .map(entry -> entry.content().coordinates())
                 .collect(Collectors.toSet());
 
-        var gardeningAreasInvolved = gardenCache.fetchAll(Ownership.system())
+        var irrigationZonesInvolved = irrigationZoneCache.fetchAll(Ownership.system())
                 .filter(area -> deviceCoordinates.stream().anyMatch(cord -> area.area().contains(cord))).toList();
 
-        if (gardeningAreasInvolved.size() != 1) {
-            logger.info("Invalid correlation provided: devices don't mentioned refer a single gardening area");
+        if (irrigationZonesInvolved.size() != 1) {
+            logger.info("Invalid correlation provided: devices don't mentioned refer a single irrigation zone");
             return;
         }
 
-        var gardeningArea = gardeningAreasInvolved.get(0);
+        var irrigationZone = irrigationZonesInvolved.get(0);
 
 
         Set<Device> valvesToTrigger = new HashSet<>();
@@ -85,7 +85,7 @@ public class AlertHandlerService {
                 var entry = device.ledger().entries().stream().findFirst();
                 if (entry.isPresent() &&
                         entry.get().content().remoteControl().value() &&
-                        gardeningArea.area().contains(entry.get().content().coordinates())) {
+                        irrigationZone.area().contains(entry.get().content().coordinates())) {
                     valvesToTrigger.add(device);
                 }
             }

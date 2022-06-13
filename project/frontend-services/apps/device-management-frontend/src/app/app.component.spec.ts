@@ -16,10 +16,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'sharespot-device-records-frontend'`, () => {
+  it(`should have as title 'device-management-frontend'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sharespot-device-records-frontend');
+    expect(app.title).toEqual('device-management-frontend');
   });
 
   it('should render title', () => {
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome to sharespot-device-records-frontend!'
+      'Welcome to device-management-frontend!'
     );
   });
 });

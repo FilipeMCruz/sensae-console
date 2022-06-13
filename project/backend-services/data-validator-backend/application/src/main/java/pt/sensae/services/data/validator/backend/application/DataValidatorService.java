@@ -3,6 +3,7 @@ package pt.sensae.services.data.validator.backend.application;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.data.validator.backend.application.validators.DataValidator;
 import pt.sensae.services.data.validator.backend.application.validators.ValidatorsFactory;
+import pt.sharespot.iot.core.keys.RoutingKeys;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;

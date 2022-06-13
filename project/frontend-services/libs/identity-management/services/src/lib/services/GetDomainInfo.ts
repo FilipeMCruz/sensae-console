@@ -30,6 +30,7 @@ export class GetDomainInfo {
           }
           devices {
             oid
+            name
             domains {
               oid
             }

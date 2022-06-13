@@ -2,8 +2,10 @@ services:
   message-broker:
     image: rabbitmq:3.10
     container_name: message-broker
+    env_file:
+      - secrets/prod/message-broker.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 5672
       - 15672
@@ -16,17 +18,18 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443:443
     depends_on:
       - device-management-frontend
-      - sharespot-data-processor-frontend
-      - sharespot-data-decoder-frontend
-      - sharespot-fleet-management-frontend
-      - sharespot-identity-management-frontend
+      - data-processor-frontend
+      - data-decoder-frontend
+      - fleet-management-frontend
+      - identity-management-frontend
       - smart-irrigation-frontend
       - rule-management-frontend
+      - notification-frontend
   device-management-frontend:
     build:
       dockerfile: docker/device-management-frontend/Dockerfile
@@ -36,67 +39,67 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
       - device-management-master-backend
-  sharespot-data-processor-frontend:
+  data-processor-frontend:
     build:
-      dockerfile: docker/sharespot-data-processor-frontend/Dockerfile
+      dockerfile: docker/data-processor-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-data-processor-frontend
+    image: data-processor-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
-      - sharespot-data-processor-master-backend
-  sharespot-data-decoder-frontend:
+      - data-processor-master-backend
+  data-decoder-frontend:
     build:
-      dockerfile: docker/sharespot-data-decoder-frontend/Dockerfile
+      dockerfile: docker/data-decoder-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-data-decoder-frontend
+    image: data-decoder-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
-      - sharespot-data-decoder-master-backend
-  sharespot-fleet-management-frontend:
+      - data-decoder-master-backend
+  fleet-management-frontend:
     build:
-      dockerfile: docker/sharespot-fleet-management-frontend/Dockerfile
+      dockerfile: docker/fleet-management-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-fleet-management-frontend
+    image: fleet-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
-      - sharespot-fleet-management-backend
-  sharespot-identity-management-frontend:
+      - fleet-management-backend
+  identity-management-frontend:
     build:
-      dockerfile: docker/sharespot-identity-management-frontend/Dockerfile
+      dockerfile: docker/identity-management-frontend/Dockerfile
       context: frontend-services
-    image: sharespot-identity-management-frontend
+    image: identity-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
-      - sharespot-identity-management-backend
+      - identity-management-backend
   rule-management-frontend:
     build:
       dockerfile: docker/rule-management-frontend/Dockerfile
@@ -106,7 +109,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
@@ -120,67 +123,81 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 443
     depends_on:
       - smart-irrigation-backend
-  sharespot-data-relayer:
-    build: backend-services/sharespot-data-relayer
-    image: sharespot-data-relayer
+  notification-management-frontend:
+    build:
+      dockerfile: docker/notification-management-frontend/Dockerfile
+      context: frontend-services
+    image: notification-management-frontend
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
-      - sharespot-network
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - notification-management-backend
+  data-relayer:
+    build: backend-services/data-relayer
+    image: data-relayer
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
     ports:
       - 8443:443
     depends_on:
-      - sharespot-data-gateway
-  sharespot-data-gateway:
-    build: backend-services/sharespot-data-gateway
-    image: sharespot-data-gateway
+      - data-gateway
+  data-gateway:
+    build: backend-services/data-gateway
+    image: data-gateway
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-gateway.env
+      - ./secrets/prod/data-gateway.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
-  sharespot-data-processor-slave-backend:
-    build: backend-services/sharespot-data-processor-slave-backend
-    image: sharespot-data-processor-slave-backend
+  data-processor-slave-backend:
+    build: backend-services/data-processor-slave-backend
+    image: data-processor-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-processor-slave-backend.env
+      - ./secrets/prod/data-processor-slave-backend.env
     networks:
-      - sharespot-network
-  sharespot-data-processor-master-backend:
-    build: backend-services/sharespot-data-processor-master-backend
-    image: sharespot-data-processor-master-backend
+      - sensae-network
+  data-processor-master-backend:
+    build: backend-services/data-processor-master-backend
+    image: data-processor-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-processor-master-backend.env
+      - ./secrets/prod/data-processor-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
-  sharespot-data-decoder-master-backend:
-    build: backend-services/sharespot-data-decoder-master-backend
-    image: sharespot-data-decoder-master-backend
+  data-decoder-master-backend:
+    build: backend-services/data-decoder-master-backend
+    image: data-decoder-master-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-decoder-master-backend.env
+      - ./secrets/prod/data-decoder-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
   device-management-slave-backend:
@@ -191,7 +208,7 @@ services:
     env_file:
       - ./secrets/prod/device-management-slave-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
   device-commander-backend:
     build: backend-services/device-commander-backend
     image: device-commander-backend
@@ -200,16 +217,16 @@ services:
     env_file:
       - ./secrets/prod/device-commander-backend.env
     networks:
-      - sharespot-network
-  sharespot-data-decoder-slave-backend:
-    build: backend-services/sharespot-data-decoder-slave-backend
-    image: sharespot-data-decoder-slave-backend
+      - sensae-network
+  data-decoder-slave-backend:
+    build: backend-services/data-decoder-slave-backend
+    image: data-decoder-slave-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-data-decoder-slave-backend.env
+      - ./secrets/prod/data-decoder-slave-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
   device-management-master-backend:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend
@@ -220,7 +237,7 @@ services:
     env_file:
       - ./secrets/prod/device-management-master-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
   data-validator-backend:
@@ -231,19 +248,19 @@ services:
     env_file:
       - ./secrets/prod/data-validator-backend.env
     networks:
-      - sharespot-network
-  sharespot-fleet-management-backend:
-    build: backend-services/sharespot-fleet-management-backend
-    container_name: sharespot-fleet-management-backend
-    image: sharespot-fleet-management-backend
+      - sensae-network
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    container_name: fleet-management-backend
+    image: fleet-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-fleet-management-backend.env
+      - ./secrets/prod/fleet-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
   smart-irrigation-backend:
@@ -257,33 +274,33 @@ services:
     env_file:
       - ./secrets/prod/smart-irrigation-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
-  sharespot-identity-management-backend:
-    build: backend-services/sharespot-identity-management-backend
-    container_name: sharespot-identity-management-backend
-    image: sharespot-identity-management-backend
+  identity-management-backend:
+    build: backend-services/identity-management-backend
+    container_name: identity-management-backend
+    image: identity-management-backend
     volumes:
       - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-identity-management-backend.env
+      - ./secrets/prod/identity-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
-  sharespot-identity-management-slave-backend:
-    build: backend-services/sharespot-identity-management-slave-backend
-    container_name: sharespot-identity-management-slave-backend
-    image: sharespot-identity-management-slave-backend
+  device-ownership-backend:
+    build: backend-services/device-ownership-backend
+    container_name: device-ownership-backend
+    image: device-ownership-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/sharespot-identity-management-slave-backend.env
+      - ./secrets/prod/device-ownership-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
   rule-management-backend:
     build: backend-services/rule-management-backend
     container_name: rule-management-backend
@@ -295,7 +312,7 @@ services:
     env_file:
       - ./secrets/prod/rule-management-backend.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8080
   alert-dispatcher-backend:
@@ -307,9 +324,31 @@ services:
     env_file:
       - ./secrets/prod/alert-dispatcher-backend.env
     networks:
-      - sharespot-network
-    depends_on:
-      - rule-management-backend
+      - sensae-network
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8080
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-dispatcher-backend.env
+    networks:
+      - sensae-network
   sharespot-common-database:
     build: databases/sharespot-common-database
     image: sharespot-common-database
@@ -317,7 +356,7 @@ services:
     env_file:
       - ./secrets/prod/sharespot-common-database.env
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 5432:5432
     volumes:
@@ -326,7 +365,7 @@ services:
     image: questdb/questdb:6.3.1
     container_name: questdb
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8812
       - 9000
@@ -337,35 +376,35 @@ services:
     image: questdb/questdb:6.3.1
     container_name: irrigation-database
     networks:
-      - sharespot-network
+      - sensae-network
     ports:
       - 8812
       - 9000
       - 9003
     volumes:
       - ./databases-data/prod/irrigation-database:/root/.questdb/
-  # sharespot-data-store:
-  #   build: backend-services/sharespot-data-store
-  #   image: sharespot-data-store
+  # data-store:
+  #   build: backend-services/data-store
+  #   image: data-store
   #   environment:
   #     spring_profiles_active: prod
   #   env_file:
-  #     - ./secrets/prod/sharespot-data-store-backend.env
+  #     - ./secrets/prod/data-store-backend.env
   #   networks:
-  #     - sharespot-network
+  #     - sensae-network
   #   ports:
   #     - 8080
-  # sharespot-data-store-database:
+  # data-store-database:
   #   image: mongo:latest
-  #   container_name: sharespot-data-store-database
+  #   container_name: data-store-database
   #   env_file:
-  #     - ./secrets/prod/sharespot-data-store-database.env
+  #     - ./secrets/prod/data-store-database.env
   #   networks:
-  #     - sharespot-network
+  #     - sensae-network
   #   ports:
   #     - 27017
   #   volumes:
-  #     - ./databases-data/prod/sharespot-data-store-database:/data/db
-  #     - ./secrets/prod/init-sharespot-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  #     - ./databases-data/prod/data-store-database:/data/db
+  #     - ./secrets/prod/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
-  sharespot-network:
+  sensae-network:

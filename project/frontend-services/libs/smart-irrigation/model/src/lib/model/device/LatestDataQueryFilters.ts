@@ -1,7 +1,7 @@
 import {DeviceId} from "./DeviceId";
-import {GardeningAreaId} from "../garden/GardeningAreaId";
+import {IrrigationZoneId} from "../garden/IrrigationZoneId";
 
 export class LatestDataQueryFilters {
-  constructor(public devices: Array<DeviceId>, public gardens: Array<GardeningAreaId>) {
+  constructor(public devices: Array<DeviceId>, public gardens: Array<IrrigationZoneId>) {
   }
 }

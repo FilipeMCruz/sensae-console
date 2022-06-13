@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {LoadingPageComponent} from "./components/loading-page/loading-page.component";
+import {ProfileComponent} from "./components/profile/profile.component";
 
 export const APP_ROUTES: Routes = [
   {
@@ -12,6 +13,11 @@ export const APP_ROUTES: Routes = [
   {
     path: 'loading',
     component: LoadingPageComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     pathMatch: 'full',
   },
 ];

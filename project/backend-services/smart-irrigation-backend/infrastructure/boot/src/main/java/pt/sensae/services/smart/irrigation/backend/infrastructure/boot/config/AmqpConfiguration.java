@@ -12,6 +12,7 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.ingress.data.ValveSensorDataConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
+import pt.sharespot.iot.core.alert.routing.keys.AlertSubCategoryOptions;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
@@ -20,7 +21,6 @@ import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.sensor.routing.keys.data.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static pt.sensae.services.smart.irrigation.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
@@ -35,6 +35,9 @@ public class AmqpConfiguration {
     @Value("#{'${sensae.alert.categories.close.valve}'.split(',')}")
     private List<String> closeValveCategories;
 
+    @Value("${sensae.channel}")
+    public String channel;
+    
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {
@@ -76,7 +79,7 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding gardenBinding(Queue parkQueue, TopicExchange topic) {
+    Binding parkBinding(Queue parkQueue, TopicExchange topic) {
         var keys = provider.getBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withInfoType(InfoTypeOptions.PROCESSED)
                 .withRecords(RecordsOptions.WITH_RECORDS)
@@ -85,6 +88,7 @@ public class AmqpConfiguration {
                 .withSoilMoisture(SoilMoistureDataOptions.WITH_SOIL_MOISTURE_DATA)
                 .withIlluminance(IlluminanceDataOptions.WITH_ILLUMINANCE_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -103,6 +107,7 @@ public class AmqpConfiguration {
                 .withAirHumidity(AirHumidityDataOptions.WITH_AIR_HUMIDITY_DATA)
                 .withTemperature(TemperatureDataOptions.WITH_TEMPERATURE_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -120,6 +125,7 @@ public class AmqpConfiguration {
                 .withGps(GPSDataOptions.WITH_GPS_DATA)
                 .withTrigger(TriggerDataOptions.WITH_TRIGGER_DATA)
                 .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withChannel(channel)
                 .missingAsAny();
 
         if (keys.isPresent()) {
@@ -154,7 +160,8 @@ public class AmqpConfiguration {
         var bindings = openValveCategories.stream().map(category -> {
             var keys = provider.getAlertBuilder(RoutingKeysBuilderOptions.CONSUMER)
                     .withOwnershipType(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
-                    .withCategoryType(AlertCategoryOptions.of(category))
+                    .withCategoryType(AlertCategoryOptions.of("smartIrrigation"))
+                    .withSubCategoryType(AlertSubCategoryOptions.of(category))
                     .missingAsAny();
 
             if (keys.isPresent()) {
@@ -170,7 +177,8 @@ public class AmqpConfiguration {
         var bindings = closeValveCategories.stream().map(category -> {
             var keys = provider.getAlertBuilder(RoutingKeysBuilderOptions.CONSUMER)
                     .withOwnershipType(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
-                    .withCategoryType(AlertCategoryOptions.of(category))
+                    .withCategoryType(AlertCategoryOptions.of("smartIrrigation"))
+                    .withSubCategoryType(AlertSubCategoryOptions.of(category))
                     .missingAsAny();
 
             if (keys.isPresent()) {

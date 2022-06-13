@@ -5,7 +5,7 @@ import pt.sensae.services.smart.irrigation.backend.application.model.data.LiveDa
 import java.util.Set;
 
 public class LiveDataFilterDTOImpl implements LiveDataFilterDTO {
-    public Set<String> gardens;
+    public Set<String> irrigationZones;
     public Set<String> devices;
     public String content;
 }

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
-import {Observable} from 'rxjs';
+import {EMPTY, Observable} from 'rxjs';
 import {HttpHeaders} from '@angular/common/http';
 import {AuthService} from '@frontend-services/simple-auth-lib';
 import {filter, map} from 'rxjs/operators';
@@ -16,11 +16,19 @@ export class RemoveDevice {
   constructor(private apollo: Apollo, private auth: AuthService) {
   }
 
+  canDo() {
+    return this.auth.isAllowed(Array.of("identity_management:device:write"))
+  }
+
   mutate(deviceId: string, domainId: string): Observable<DeviceInfo> {
+    if (!this.canDo())
+      return EMPTY;
+
     const mutation = gql`
       mutation removeDevice($instructions: RemoveDeviceFromDomain) {
         removeDevice(instructions: $instructions) {
           oid
+          name
           domains {
             oid
           }

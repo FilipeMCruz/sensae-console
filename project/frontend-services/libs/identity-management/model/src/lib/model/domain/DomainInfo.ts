@@ -23,7 +23,7 @@ export class DomainInfo {
   }
 
   public canHaveNewChild(): boolean {
-    return this.domain.name != 'unallocated';
+    return this.domain.name != 'unallocated' && this.domain.name != 'public';
   }
 
   public isUnallocated(): boolean {
@@ -32,5 +32,9 @@ export class DomainInfo {
 
   public isRoot(): boolean {
     return this.domain.path.length == 1;
+  }
+
+  public isPublic() {
+    return this.domain.name == 'public';
   }
 }

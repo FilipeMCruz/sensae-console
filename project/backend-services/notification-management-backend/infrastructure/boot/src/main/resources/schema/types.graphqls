@@ -1,0 +1,58 @@
+type Notification {
+    id : String
+    reportedAt : String
+    contentType : ContentType
+    description : String
+}
+
+enum NotificationLevel {
+    INFORMATION,
+    WATCH,
+    ADVISORY,
+    WARNING,
+    CRITICAL
+}
+
+type ContentType {
+    category : String
+    subCategory : String
+    level: NotificationLevel
+}
+
+type Addressee {
+    entries : [AddresseeConfig]
+}
+
+type AddresseeConfig {
+    deliveryType : DeliveryType
+    contentType : ContentType
+    mute : Boolean
+}
+
+enum DeliveryType {
+    SMS,
+    EMAIL,
+    NOTIFICATION,
+    UI
+}
+
+input ContentTypeInput {
+    category : String
+    subCategory : String
+    level: NotificationLevel
+}
+
+input AddresseeConfigCommandInput {
+    entries : [AddresseeConfigInput]
+}
+
+input AddresseeConfigInput {
+    deliveryType : DeliveryType
+    contentType : ContentTypeInput
+    mute : Boolean
+}
+
+input HistoryQuery {
+    startTime : String
+    endTime : String
+}

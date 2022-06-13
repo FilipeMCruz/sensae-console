@@ -1,0 +1,44 @@
+@startuml logical-view-level3-notification-management-backend
+
+skinparam Monochrome true
+
+component "Notification Management Backend" {
+    component "Domain" as DOM
+    component "Application" as APP
+    component "Infrastructure" as INFRA {
+        component "Boot" as BOOT
+        component "Persistence" as PERS {
+            component "Postgres" as POST
+            interface "Postgres API" as POST_API
+        }
+        component "Endpoint" as ENDPOINT {
+            component "GraphQL" as GRAPH
+            component "AMQP" as AMQP
+            interface "GraphQL API" as GRAPH_API
+            interface "AMQP API" as AMQP_API
+        }
+        interface "Boot API" as BOOT_API
+    }
+
+    interface "Domain API" as DOM_API
+    interface "Application API" as APP_API
+
+    DOM_API -- DOM
+    APP_API -- APP
+    BOOT_API -- BOOT
+    AMQP_API -- AMQP
+    GRAPH_API -- GRAPH
+    POST_API -- POST
+
+    APP --( DOM_API
+    BOOT --( GRAPH_API
+    BOOT --( AMQP_API
+    BOOT --( POST_API
+
+    GRAPH --( APP_API
+    AMQP   --( APP_API
+    POST --( APP_API
+
+}
+
+@enduml

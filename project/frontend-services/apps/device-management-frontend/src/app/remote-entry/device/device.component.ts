@@ -5,8 +5,7 @@ import {
   DeviceViewType,
   EntryViewType,
   RecordEntry,
-  RecordEntryType,
-  SensorDataRecordLabel, SubDevice,
+  SensorDataRecordLabel, StaticDataEntry, SubDevice,
 } from '@frontend-services/device-management/model';
 
 @Component({
@@ -26,6 +25,7 @@ export class DeviceComponent implements OnChanges {
 
   device = DeviceInformation.empty();
   currentEntry = RecordEntry.empty();
+  currentStaticData = StaticDataEntry.empty();
   currentSubDevice = SubDevice.empty();
   currentCommand = DeviceCommand.empty();
 
@@ -38,12 +38,10 @@ export class DeviceComponent implements OnChanges {
 
   viewType = EntryViewType;
 
-  typeType = RecordEntryType;
-
   sensorDataType: Array<string> = Object.values(SensorDataRecordLabel);
-  recordType: Array<string> = Object.values(RecordEntryType);
 
-  currentEntryIndex = -1;
+  currentRecordEntryIndex = -1;
+  currentStaticDataEntryIndex = -1;
   currentSubDeviceIndex = -1;
   currentCommandIndex = -1;
 
@@ -70,14 +68,14 @@ export class DeviceComponent implements OnChanges {
 
   addEntry() {
     if (this.currentEntry.isValid()) {
-      this.device.entries.push(this.currentEntry);
+      this.device.records.push(this.currentEntry);
       this.refreshEntries();
     }
   }
 
   saveEntryEdit() {
     if (this.currentEntry.isValid()) {
-      this.device.entries[this.currentEntryIndex] = this.currentEntry;
+      this.device.records[this.currentRecordEntryIndex] = this.currentEntry;
       this.refreshEntries();
     }
   }
@@ -85,20 +83,14 @@ export class DeviceComponent implements OnChanges {
   removeEntry(event: Event, index: number) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    this.device.entries.splice(index, 1);
+    this.device.records.splice(index, 1);
     this.refreshEntries();
-  }
-
-  getEntryType(entry: RecordEntry) {
-    return entry.type == RecordEntryType.SENSOR_DATA
-      ? 'share_location'
-      : 'visibility';
   }
 
   editEntry(index: number) {
     if (this.deviceView != this.deviceViewType.Compare) {
-      this.currentEntryIndex = index;
-      this.currentEntry = this.device.entries[index].clone();
+      this.currentRecordEntryIndex = index;
+      this.currentEntry = this.device.records[index].clone();
       this.entryView = EntryViewType.Edit;
     }
   }
@@ -116,28 +108,20 @@ export class DeviceComponent implements OnChanges {
   }
 
   private resetOptions() {
-    const usedSensorDataLabels = this.device.entries
-      .filter((e: RecordEntry) => e.type == RecordEntryType.SENSOR_DATA)
-      .map((e: RecordEntry) => e.label.toString());
+    const usedSensorDataLabels = this.device.staticData
+      .map((e: StaticDataEntry) => e.label.toString());
 
     this.sensorDataType = Object.values(SensorDataRecordLabel).filter(
       (v) => !usedSensorDataLabels.includes(v)
     );
-    if (this.sensorDataType.length == 0) {
-      this.recordType = Object.values(RecordEntryType).filter(
-        (v) => v != RecordEntryType.SENSOR_DATA.toString()
-      );
-    } else {
-      this.recordType = Object.values(RecordEntryType);
-    }
   }
 
   private clearEntryFields() {
     this.currentEntry = RecordEntry.empty();
+    this.currentStaticData = StaticDataEntry.empty();
   }
 
   editDevice(index: number) {
-    console.log(this.device)
     if (this.deviceView != this.deviceViewType.Compare) {
       this.currentSubDeviceIndex = index;
       this.currentSubDevice = this.device.subDevices[index].clone();
@@ -217,5 +201,44 @@ export class DeviceComponent implements OnChanges {
 
   private clearCommandFields() {
     this.currentCommand = DeviceCommand.empty();
+  }
+
+  editStaticData(index: number) {
+    if (this.deviceView != this.deviceViewType.Compare) {
+      this.currentStaticDataEntryIndex = index;
+      this.currentStaticData = this.device.staticData[index].clone();
+      this.entryView = EntryViewType.Edit;
+    }
+  }
+
+  removeStaticData(event: MouseEvent, index: number) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    this.device.staticData.splice(index, 1);
+    this.refreshEntries();
+  }
+
+  saveStaticDataEdit() {
+    if (this.currentStaticData.isValid()) {
+      this.device.staticData[this.currentStaticDataEntryIndex] = this.currentStaticData;
+      this.refreshEntries();
+    }
+  }
+
+  addStaticData() {
+    if (this.currentStaticData.isValid()) {
+      this.device.staticData.push(this.currentStaticData);
+      this.refreshEntries();
+    }
+  }
+
+  newStaticData() {
+    this.entryView = this.viewType.New;
+    const usedSensorDataLabels = this.device.staticData
+      .map((e: StaticDataEntry) => e.label.toString());
+
+    this.sensorDataType = Object.values(SensorDataRecordLabel)
+      .filter((v) => !usedSensorDataLabels.includes(v))
+      .filter(v => v !== SensorDataRecordLabel.ERROR);
   }
 }

@@ -1,6 +1,6 @@
 <div class="container">
   <button
-    class="bottom"
+    class="top-button"
     mat-stroked-button
     color="primary"
     (click)="fetchAllRuleScenarios()"
@@ -10,7 +10,7 @@
   <div class="list" *ngIf="!this.loading">
     <mat-card
       *ngFor="let scenario of this.ruleScenarios"
-      class="item"
+      class="item mat-elevation-z2"
     >
       <mat-card-title-group>
         <mat-card-title>Rule Scenario</mat-card-title>
@@ -32,7 +32,7 @@
         ></frontend-services-rule-management>
       </mat-card-content>
     </mat-card>
-    <mat-card *ngIf="canEdit()" class="item">
+    <mat-card *ngIf="canEdit()" class="item mat-elevation-z2">
       <mat-card-title-group>
         <mat-card-title>New Rule Scenario</mat-card-title>
         <mat-chip-list>
@@ -45,6 +45,7 @@
       <mat-card-content>
         <frontend-services-rule-management
           (newRuleScenarioEvent)="addItem($event)"
+          [entry]="emptyScenario"
           [ruleScenarioViewType]="ruleScenarioViewType.New"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"

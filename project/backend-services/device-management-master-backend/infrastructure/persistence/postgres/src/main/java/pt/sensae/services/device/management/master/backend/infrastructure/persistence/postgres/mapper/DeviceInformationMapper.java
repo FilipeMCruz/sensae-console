@@ -6,13 +6,17 @@ import pt.sensae.services.device.management.master.backend.domain.model.device.D
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
-import pt.sensae.services.device.management.master.backend.domain.model.records.*;
+import pt.sensae.services.device.management.master.backend.domain.model.records.BasicRecordEntry;
+import pt.sensae.services.device.management.master.backend.domain.model.records.DeviceRecords;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.DeviceStaticData;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.DeviceStaticDataEntry;
+import pt.sensae.services.device.management.master.backend.domain.model.staticData.StaticDataLabel;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.DeviceRef;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.SubDevice;
 import pt.sensae.services.device.management.master.backend.domain.model.subDevices.SubDevices;
 import pt.sensae.services.device.management.master.backend.infrastructure.persistence.postgres.model.*;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,16 +26,23 @@ public class DeviceInformationMapper {
         postgres.deviceId = records.device().id().value().toString();
         postgres.name = records.device().name().value();
         postgres.downlink = records.device().downlink().value();
-        postgres.entries = records.records().entries().stream().map(e -> {
+        postgres.entries = records.deviceRecords().entries().stream().map(e -> {
             var entry = new DeviceRecordEntryPostgres();
-            entry.type = e instanceof BasicRecordEntry ?
-                    DeviceRecordEntryTypePostgres.basic() :
-                    DeviceRecordEntryTypePostgres.sensorData();
-            entry.content = e.getContent();
-            entry.label = e.getLabel();
+            entry.type = DeviceRecordEntryTypePostgres.basic();
+            entry.content = e.content();
+            entry.label = e.label();
             entry.records = postgres;
             return entry;
         }).collect(Collectors.toSet());
+
+        postgres.entries.addAll(records.staticData().entries().stream().map(e -> {
+            var entry = new DeviceRecordEntryPostgres();
+            entry.type = DeviceRecordEntryTypePostgres.sensorData();
+            entry.content = e.content();
+            entry.label = e.label().value();
+            entry.records = postgres;
+            return entry;
+        }).collect(Collectors.toSet()));
 
         postgres.subSensors = records.subDevices().entries().stream().map(sub -> {
             var entry = new DeviceSubSensorPostgres();
@@ -55,25 +66,29 @@ public class DeviceInformationMapper {
         return postgres;
     }
 
-    public static DeviceInformation postgresToDomain(DeviceInformationPostgres records) {
-        List<RecordEntry> collect = records.entries.stream()
-                .map(e -> e.type.equals(DeviceRecordEntryTypePostgres.sensorData()) ?
-                        new SensorDataRecordEntry(SensorDataRecordLabel.give(e.label), e.content) :
-                        new BasicRecordEntry(e.label, e.content))
-                .collect(Collectors.toList());
+    public static DeviceInformation postgresToDomain(DeviceInformationPostgres information) {
+        Set<BasicRecordEntry> records = information.entries.stream()
+                .filter(e -> e.type.equals(DeviceRecordEntryTypePostgres.basic()))
+                .map(e -> new BasicRecordEntry(e.label, e.content))
+                .collect(Collectors.toSet());
 
-        var deviceId = new DeviceId(UUID.fromString(records.deviceId));
-        var deviceName = new DeviceName(records.name);
-        var deviceDownlink = new DeviceDownlink(records.downlink);
+        Set<DeviceStaticDataEntry> staticData = information.entries.stream()
+                .filter(e -> e.type.equals(DeviceRecordEntryTypePostgres.sensorData()))
+                .map(e -> new DeviceStaticDataEntry(StaticDataLabel.give(e.label), e.content))
+                .collect(Collectors.toSet());
 
-        var subDevices = records.subSensors.stream()
+        var deviceId = new DeviceId(UUID.fromString(information.deviceId));
+        var deviceName = new DeviceName(information.name);
+        var deviceDownlink = new DeviceDownlink(information.downlink);
+
+        var subDevices = information.subSensors.stream()
                 .map(sub -> new SubDevice(new DeviceId(UUID.fromString(sub.subDeviceId)), new DeviceRef(sub.subDeviceRef)))
                 .collect(Collectors.toSet());
 
-        var commands = records.commands.stream()
+        var commands = information.commands.stream()
                 .map(c -> new CommandEntry(CommandId.of(c.id), CommandName.of(c.name), CommandPayload.of(c.payload), CommandPort.of(c.port), DeviceRef.of(c.subDeviceRef)))
                 .collect(Collectors.toSet());
 
-        return new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new Records(collect), new SubDevices(subDevices), new DeviceCommands(commands));
+        return new DeviceInformation(new Device(deviceId, deviceName, deviceDownlink), new DeviceRecords(records), new DeviceStaticData(staticData), new SubDevices(subDevices), new DeviceCommands(commands));
     }
 }

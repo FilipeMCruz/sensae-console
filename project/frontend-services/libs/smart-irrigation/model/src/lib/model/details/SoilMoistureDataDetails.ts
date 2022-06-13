@@ -1,4 +1,4 @@
 export class SoilMoistureDataDetails {
-  constructor(public percentage: number) {
+  constructor(public relativePercentage: number) {
   }
 }

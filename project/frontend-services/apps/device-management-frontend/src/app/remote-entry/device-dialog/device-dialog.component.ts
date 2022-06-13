@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {
-  DeviceRecordPair,
+  DeviceInformationPair,
   DeviceViewType,
 } from '@frontend-services/device-management/model';
 
@@ -15,7 +15,7 @@ export class DeviceDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DeviceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DeviceRecordPair
+    @Inject(MAT_DIALOG_DATA) public data: DeviceInformationPair
   ) {
   }
 }

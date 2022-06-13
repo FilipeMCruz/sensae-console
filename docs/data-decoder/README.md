@@ -4,8 +4,8 @@ This document describes how to create `data decoder`s according to the latest ve
 
 Current version:
 
-- `iot-core` : `0.1.17`
-- `system` : `0.8.0`
+- `iot-core` : `0.1.18`
+- `system` : `0.9.0`
 
 ## Introduction
 
@@ -63,7 +63,13 @@ const base64ToHex = (() => {
 })();
 ```
 
-As a full example the current `lgt92` sensor decoder can be seen [here](assets/lgt92.js).
+## Decoder Examples
+
+Some examples can be found in the `assets` folder.
+
+- `lgt92`: [decoder](assets/lgt92.js).
+- `em300-th`: [decoder](assets/em300-th.js).
+- `em500-co2`: [decoder](assets/em500-co2.js).
 
 ## Further Discussion
 

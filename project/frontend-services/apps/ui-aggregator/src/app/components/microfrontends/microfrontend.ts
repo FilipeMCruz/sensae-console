@@ -6,6 +6,7 @@ export type Microfrontend = LoadRemoteModuleOptions & {
   ngModuleName: string;
   type: string;
   details: MicrofrontendDetails;
+  icon: string;
 };
 
 export type MicrofrontendDetails = {

@@ -1,0 +1,95 @@
+.to-right {
+  float: right;
+}
+
+.grass {
+  background-color: #656d4a;
+}
+
+.thermostat {
+  background-color: #ee9b00;
+}
+
+.warning {
+  background-color: #bb3e03;
+}
+
+.wb_sunny {
+  background-color: #f9c74f;
+}
+
+.opacity {
+  background-color: #34a0a4;
+}
+
+.schedule {
+  background-color: #c2c5aa;
+}
+
+.close {
+  background-color: grey;
+}
+
+.play_arrow {
+  background-color: grey;
+}
+
+.data-list {
+  overflow: auto;
+  max-height: 300px;
+  width: 90%;
+}
+
+.container {
+  display: grid;
+  height: calc(100% - 102px);
+  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-rows: 1.2fr 0.8fr;
+  grid-template-areas:
+    "sensor map-tile"
+    "valve map-tile";
+}
+
+.map-tile {
+  grid-area: map-tile;
+}
+
+.sensor {
+  grid-area: sensor;
+}
+
+.valve {
+  grid-area: valve;
+}
+
+.map-details {
+  position: sticky;
+  width: 100%;
+  height: 100%;
+}
+
+.loading {
+  position: sticky;
+  width: 0;
+  height: 0;
+}
+
+#loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 1);
+  transition: background 1s ease-out;
+  -webkit-transition: background 1s ease-out;
+}
+
+#loader.done {
+  background: rgba(255, 255, 255, 0);
+}
+
+#loader.hide {
+  display: none;
+}
+
+#loader .message {
+}

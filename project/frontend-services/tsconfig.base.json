@@ -77,6 +77,18 @@
         "libs/identity-management/services/src/index.ts"
       ],
       "@frontend-services/mutual": ["libs/mutual/src/index.ts"],
+      "@frontend-services/notification-management/dto": [
+        "libs/notification-management/dto/src/index.ts"
+      ],
+      "@frontend-services/notification-management/mapper": [
+        "libs/notification-management/mapper/src/index.ts"
+      ],
+      "@frontend-services/notification-management/model": [
+        "libs/notification-management/model/src/index.ts"
+      ],
+      "@frontend-services/notification-management/services": [
+        "libs/notification-management/services/src/index.ts"
+      ],
       "@frontend-services/rule-management/dto": [
         "libs/rule-management/dto/src/index.ts"
       ],

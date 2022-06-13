@@ -1,0 +1,104 @@
+{
+  "projectType": "application",
+  "root": "apps/data-processor-frontend",
+  "sourceRoot": "apps/data-processor-frontend/src",
+  "prefix": "frontend-services",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/data-processor-frontend",
+        "index": "apps/data-processor-frontend/src/index.html",
+        "main": "apps/data-processor-frontend/src/main.ts",
+        "polyfills": "apps/data-processor-frontend/src/polyfills.ts",
+        "tsConfig": "apps/data-processor-frontend/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/data-processor-frontend/src/favicon.ico",
+          "apps/data-processor-frontend/src/assets"
+        ],
+        "styles": ["apps/data-processor-frontend/src/styles.scss"],
+        "scripts": [],
+        "customWebpackConfig": {
+          "path": "apps/data-processor-frontend/webpack.config.js"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/data-processor-frontend/src/environments/environment.ts",
+              "with": "apps/data-processor-frontend/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all",
+          "customWebpackConfig": {
+            "path": "apps/data-processor-frontend/webpack.prod.config.js"
+          }
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nrwl/angular:webpack-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "data-processor-frontend:build:production"
+        },
+        "development": {
+          "browserTarget": "data-processor-frontend:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "publicHost": "http://localhost:4282",
+        "port": 4282
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "data-processor-frontend:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/data-processor-frontend/src/**/*.ts",
+          "apps/data-processor-frontend/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/data-processor-frontend"],
+      "options": {
+        "jestConfig": "apps/data-processor-frontend/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

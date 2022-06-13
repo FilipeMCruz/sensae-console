@@ -1,0 +1,30 @@
+{
+  "root": "apps/data-decoder-frontend-e2e",
+  "sourceRoot": "apps/data-decoder-frontend-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/data-decoder-frontend-e2e/cypress.json",
+        "devServerTarget": "data-decoder-frontend:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "data-decoder-frontend:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/data-decoder-frontend-e2e/**/*.{js,ts}"
+        ]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["data-decoder-frontend"]
+}

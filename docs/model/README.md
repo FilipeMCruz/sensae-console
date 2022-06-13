@@ -4,8 +4,8 @@ This document describes the latest version of the data model used in the system.
 
 Current version:
 
-- `iot-core` : `0.1.17`
-- `system` : `0.8.0`
+- `iot-core` : `0.1.18`
+- `system` : `0.9.0`
 
 ## Introduction
 
@@ -286,13 +286,13 @@ The units used to measure the given values are:
 - `measures.{number}.distance.minMillimeters`: value representing the minimum distance the sensor can be to a given point in millimeters;
 - `device.commands.{number}.payload`: base64 string;
 
-Due to lack a of discussion and tests some data types may be missing a well-defined unit of measurement.
+Due to a lack of discussion and tests some data types may be missing a well-defined unit of measurement.
 
 ## Support for Controllers
 
 In order to support Controllers, devices that aggregate various sensors, `measures` and `device.commands` can link to a sub device.
 
-The value 0 is reserved for the controller/main device, any other number can be used to reference a sub device.
+The value **0** is reserved for the controller/main device, any other number can be used to reference a sub device.
 
 As an example imagine a controller that has 3 sub devices, a valve and two sensors, one with temperature values and other with humidity values.
 We could map the `valve` to sub device **1**, the `temperature sensor` to sub device **2** and the `humidity sensor` to sub device **3**.

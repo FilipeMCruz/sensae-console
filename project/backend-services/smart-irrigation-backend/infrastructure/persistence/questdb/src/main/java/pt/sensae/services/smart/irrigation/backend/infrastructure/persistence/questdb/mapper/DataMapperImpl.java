@@ -45,7 +45,7 @@ public class DataMapperImpl {
             dataQuestDB.illuminance = parkPayload.illuminance().lux();
             dataQuestDB.deviceType = "park_sensor";
         } else if (model.payload() instanceof StovePayload stovePayload) {
-            dataQuestDB.humidity = stovePayload.humidity().gramsPerCubicMeter();
+            dataQuestDB.humidity = stovePayload.humidity().relativePercentage();
             dataQuestDB.temperature = stovePayload.temperature().celsius();
             dataQuestDB.deviceType = "stove_sensor";
         } else if (model.payload() instanceof ValvePayload valvePayload) {

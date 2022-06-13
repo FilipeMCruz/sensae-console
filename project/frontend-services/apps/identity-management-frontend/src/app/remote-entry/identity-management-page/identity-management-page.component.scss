@@ -1,0 +1,23 @@
+.item {
+  border-radius: 10px;
+  margin: 10px;
+  min-width: 500px;
+}
+
+.list {
+  max-width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.container {
+  margin: 20px;
+  position: relative;
+  top: 64px;
+}
+
+.example-tree-progress-bar {
+  margin-left: 30px;
+}

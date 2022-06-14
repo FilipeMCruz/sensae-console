@@ -17,6 +17,6 @@ export const environment = {
   },
   mapbox: {
     accessToken: "$SENSAE_MAPBOX_ACCESS_TOKEN",
-    style: "mapbox://styles/mapbox/light-v10",
+    simpleStyle: "$SENSAE_MAPBOX_SIMPLE_STYLE",
   },
 };

@@ -180,7 +180,7 @@ export class MapComponent implements OnInit, OnDestroy {
   buildMap(): void {
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: environment.mapbox.style,
+      style: environment.mapbox.simpleStyle,
       zoom: 8,
       center: [this.lng, this.lat],
     });

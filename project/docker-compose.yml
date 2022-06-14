@@ -29,7 +29,7 @@ services:
       - identity-management-frontend
       - smart-irrigation-frontend
       - rule-management-frontend
-      - notification-frontend
+      - notification-management-frontend
   device-management-frontend:
     build:
       dockerfile: docker/device-management-frontend/Dockerfile

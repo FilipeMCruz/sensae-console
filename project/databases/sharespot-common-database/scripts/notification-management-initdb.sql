@@ -75,6 +75,7 @@ CREATE TABLE public.addressee_config (
     category character varying(255),
     sub_category character varying(255),
     level character varying(255),
+    show_ui boolean,
     send_sms boolean,
     send_email boolean,
     send_notification boolean

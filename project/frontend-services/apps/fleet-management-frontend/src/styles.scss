@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../../../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@fontsource/roboto";
 
 html,
 body {
@@ -8,7 +9,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 * {
@@ -16,7 +17,7 @@ body {
 }
 
 .mapboxgl-popup-content {
-  font-family: 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 //cool one -> https://coolors.co/006466-065a60-0b525b-144552-1b3a4b-212f45-272640-312244-3e1f47-4d194d

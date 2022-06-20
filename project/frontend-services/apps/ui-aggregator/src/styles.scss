@@ -3,6 +3,7 @@
 @import 'styles/roboto.scss';
 @import 'styles/material-icons.scss';
 @import "styles/mapbox.scss";
+@import "styles/fira-code.bold.scss";
 
 html, body {
   height: 100%;
@@ -22,10 +23,6 @@ body {
   top: 64px;
   bottom: 0;
   width: 100%;
-}
-
-.mapboxgl-popup-content {
-  font-family: "Roboto", sans-serif;
 }
 
 .follow-button {

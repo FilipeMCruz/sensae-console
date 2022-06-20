@@ -144,7 +144,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   buildMap(): void {
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: environment.mapbox.style,
+      style: environment.mapbox.simpleStyle,
       zoom: 8,
       center: [this.lng, this.lat],
     });
@@ -329,9 +329,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     this.style = value;
     if (this.style === "Light") {
-      this.map.setStyle('mapbox://styles/mapbox/light-v10');
+      this.map.setStyle(environment.mapbox.simpleStyle);
     } else {
-      this.map.setStyle('mapbox://styles/mapbox/satellite-v9');
+      this.map.setStyle(environment.mapbox.satelliteStyle);
     }
     this.map.on('style.load', () => {
       this.drawGardens();

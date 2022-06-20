@@ -52,6 +52,8 @@ File: `project/secrets/dev.conf`
 
 ``` conf
 export SENSAE_MAPBOX_ACCESS_TOKEN=
+export SENSAE_MAPBOX_SIMPLE_STYLE=
+export SENSAE_MAPBOX_SATELLITE_STYLE=
 
 export SENSAE_BROKER_USERNAME=
 export SENSAE_BROKER_PASSWORD=
@@ -114,6 +116,8 @@ File: `project/secrets/prod.conf`
 
 ``` conf
 export SENSAE_MAPBOX_ACCESS_TOKEN=
+export SENSAE_MAPBOX_SIMPLE_STYLE=
+export SENSAE_MAPBOX_SATELLITE_STYLE=
 
 export SENSAE_BROKER_USERNAME=
 export SENSAE_BROKER_PASSWORD=

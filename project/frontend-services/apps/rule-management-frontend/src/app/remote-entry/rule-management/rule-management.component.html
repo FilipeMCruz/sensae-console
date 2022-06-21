@@ -4,7 +4,7 @@
     <input [disabled]="ruleScenarioView !== scenarioViewType.New"
            [(ngModel)]="ruleScenario.id.value"
            matInput/>
-    <mat-hint>Project #003 - Irrigation</mat-hint>
+    <mat-hint *ngIf="ruleScenarioView === scenarioViewType.New">e.g. Project #003 - Irrigation</mat-hint>
   </mat-form-field>
   <ng-container *ngIf="ruleScenarioView === scenarioViewType.Edit && canDelete">
     <button class="to-right"

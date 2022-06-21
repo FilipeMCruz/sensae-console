@@ -54,8 +54,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     this.isIframe = window !== window.parent && !window.opener;
     this.delay(500).then(() => {
       if (this.googleLogIn.isAuthenticated()) {
+        console.log("Google authenticated")
         this.logInInternallyWithGoogle();
       } else {
+        console.log("Microsoft authenticated")
         /**
          * You can subscribe to MSAL events as shown below. For more info,
          * visit: https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-angular/docs/v2-docs/events.md
@@ -90,25 +92,28 @@ export class ToolbarComponent implements OnInit, OnDestroy {
           .subscribe(() => {
             this.checkAndSetActiveAccount();
           });
-        this.lookupService.lookup().then((microfrontends) => {
-          const routes = buildRoutes(microfrontends);
-          this.router.resetConfig(routes);
-          this.microfrontendServices = microfrontends.filter(
-            (m) => m.details.type === MicrofrontendType.SERVICE
-          );
-          this.microfrontendTools = microfrontends.filter(
-            (m) => m.details.type === MicrofrontendType.TOOL
-          );
-        });
       }
     });
   }
 
-  async subscribeToNotifications() {
-    await this.delay(500);
-    this.notificationSubscription = this.notifications.getCurrentData()
-      .pipe(filter(next => !next.isEmpty()))
-      .subscribe(next => this.sendNotification(next));
+  private lookupServices() {
+    this.lookupService.lookup().then((microfrontends) => {
+      const routes = buildRoutes(microfrontends);
+      this.router.resetConfig(routes);
+      this.microfrontendServices = microfrontends.filter(
+        (m) => m.details.type === MicrofrontendType.SERVICE
+      );
+      this.microfrontendTools = microfrontends.filter(
+        (m) => m.details.type === MicrofrontendType.TOOL
+      );
+    });
+  }
+
+  subscribeToNotifications() {
+    this.delay(500)
+      .then(() => this.notificationSubscription = this.notifications.getCurrentData()
+        .pipe(filter(next => !next.isEmpty()))
+        .subscribe(next => this.sendNotification(next)));
   }
 
   sendNotification(notification: Notification) {
@@ -140,26 +145,15 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       const accounts = this.externalAuthService.instance.getAllAccounts();
       this.externalAuthService.instance.setActiveAccount(accounts[0]);
     }
-
-    if (activeAccount) {
-      this.externalAuthService.instance
-        .acquireTokenSilent({scopes: ['profile']})
-        .then((token) =>
-          this.authService.login(token.idToken, 'Microsoft').subscribe((value) => {
-            value
-              ? this._snackBar.default('Valid Credentials')
-              : this._snackBar.default('Invalid Credentials');
-            this.subscribeToNotifications();
-            this.loginDisplay = this.authService.isAuthenticated();
-          })
-        );
-    }
+    this.logInInternallyWithMicrosoft();
   }
 
-  async goTo(url: string) {
-    await this.router.navigate(['loading']);
-    await this.delay(500);
-    await this.router.navigate([url]);
+  goTo(url: string) {
+    this.router.navigate(['loading'])
+      .then(() => this.delay(500)
+        .then(() => this.router.navigate([url])));
+    // await this.delay(500);
+    // await this.router.navigate([url]);
   }
 
   delay(milliseconds: number) {
@@ -187,24 +181,44 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             );
           });
       }
+      this.logInInternallyWithMicrosoft();
     } else {
       if (this.msalGuardConfig.authRequest) {
         this.externalAuthService.loginRedirect({
           ...this.msalGuardConfig.authRequest,
         } as RedirectRequest);
       } else {
-        this.externalAuthService.loginRedirect();
+        this.externalAuthService.loginRedirect()
+          .subscribe(() => this.logInInternallyWithMicrosoft());
       }
     }
   }
 
-  logout() {
+  private logInInternallyWithMicrosoft() {
+    const activeAccount = this.externalAuthService.instance.getActiveAccount();
+    if (activeAccount) {
+      this.externalAuthService.instance
+        .acquireTokenSilent({scopes: ['profile']})
+        .then((token) =>
+          this.authService.login(token.idToken, 'Microsoft').subscribe((value) => {
+            value
+              ? this._snackBar.default('Valid Credentials')
+              : this._snackBar.default('Invalid Credentials');
+            this.subscribeToNotifications();
+            this.loginDisplay = this.authService.isAuthenticated();
+            this.lookupServices();
+          })
+        );
+    }
+  }
+
+  async logout() {
     if (this.authService.isProviderMicrosoft()) this.externalAuthService.logout();
-    if (this.authService.isProviderGoogle()) this.googleLogIn.instance.revokeTokenAndLogout();
+    if (this.authService.isProviderGoogle()) await this.googleLogIn.instance.revokeTokenAndLogout();
     this.authService.logout();
     if (this.notificationSubscription) this.notificationSubscription.unsubscribe();
     this.loginDisplay = this.authService.isAuthenticated();
-    this.router.navigate(['']);
+    await this.router.navigate(['']);
   }
 
   // unsubscribe to events when component is destroyed
@@ -227,8 +241,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     );
   }
 
-  profile() {
-    this.router.navigate(['profile']);
+  async profile() {
+    await this.router.navigate(['profile']);
   }
 
   logInAsAnonymous() {
@@ -267,6 +281,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         : this._snackBar.default('Invalid Credentials');
       this.subscribeToNotifications();
       this.loginDisplay = this.authService.isAuthenticated();
+      this.lookupServices();
     });
   }
 

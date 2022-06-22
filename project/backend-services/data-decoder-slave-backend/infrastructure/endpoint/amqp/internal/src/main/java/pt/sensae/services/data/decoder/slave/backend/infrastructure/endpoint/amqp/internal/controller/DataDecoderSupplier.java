@@ -8,10 +8,28 @@ import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sensae.services.data.decoder.slave.backend.application.DataDecoderEventMapper;
 import pt.sensae.services.data.decoder.slave.backend.application.SensorDataNotificationPublisherService;
 
+import javax.annotation.PostConstruct;
+
 @Service
 public class DataDecoderSupplier {
 
-    public DataDecoderSupplier(AmqpTemplate template, SensorDataNotificationPublisherService service, DataDecoderEventMapper deviceMapper, ObjectMapper mapper) {
+    private final AmqpTemplate template;
+    private final SensorDataNotificationPublisherService service;
+    private final DataDecoderEventMapper deviceMapper;
+    private final ObjectMapper mapper;
+
+    public DataDecoderSupplier(AmqpTemplate template,
+                               SensorDataNotificationPublisherService service,
+                               DataDecoderEventMapper deviceMapper,
+                               ObjectMapper mapper) {
+        this.template = template;
+        this.service = service;
+        this.deviceMapper = deviceMapper;
+        this.mapper = mapper;
+    }
+
+    @PostConstruct
+    private void init() {
         service.getPublisher().subscribe(outData -> {
             var deviceDTO = deviceMapper.domainToDto(outData.type());
             try {

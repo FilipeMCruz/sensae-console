@@ -19,13 +19,12 @@ public class SensorDataConsumer {
     private static final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
     private final SensorDataHandlerService handler;
-    public static final String INGRESS_QUEUE = "sensor.data.decoder.slave.queue";
 
     public SensorDataConsumer(SensorDataHandlerService handler) {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = INGRESS_QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDataQueueName()}")
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException, JsonProcessingException {
         var consumed = MessageMapper.toUnprocessedModel(in.getBody());
         logConsumedMessage(consumed);

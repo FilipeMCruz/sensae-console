@@ -17,15 +17,13 @@ public class SensorDataConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
-    public static final String QUEUE = "sensor.identity.management.slave.queue";
-
     private final SensorDataHandlerService handler;
 
     public SensorDataConsumer(SensorDataHandlerService handler) {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDeviceQueueName()}")
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);

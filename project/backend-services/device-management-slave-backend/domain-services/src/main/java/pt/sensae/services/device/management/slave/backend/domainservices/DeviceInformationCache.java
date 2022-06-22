@@ -17,7 +17,7 @@ public class DeviceInformationCache {
     public DeviceInformationCache() {
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(50)
+                .maximumSize(200)
                 .build();
     }
 

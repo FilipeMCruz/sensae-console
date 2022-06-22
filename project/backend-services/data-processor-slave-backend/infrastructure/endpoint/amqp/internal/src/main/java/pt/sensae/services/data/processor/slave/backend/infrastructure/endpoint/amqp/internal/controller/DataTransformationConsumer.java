@@ -12,8 +12,6 @@ import java.io.IOException;
 @Service
 public class DataTransformationConsumer {
 
-    public static final String QUEUE = "internal.data.processor.slave.queue";
-
     private final DataTransformationNotifierService notifier;
 
     private final ObjectMapper mapper;
@@ -23,7 +21,7 @@ public class DataTransformationConsumer {
         this.mapper = mapper;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDataProcessorQueueName()}")
     public void receiveIndexEvent(Message in) throws IOException {
         var dto = mapper.readValue(in.getBody(), DataTransformationNotificationDTOImpl.class);
         notifier.info(dto);

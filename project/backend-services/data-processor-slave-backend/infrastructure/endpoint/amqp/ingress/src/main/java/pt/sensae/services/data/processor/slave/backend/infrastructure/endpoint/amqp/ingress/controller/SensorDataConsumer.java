@@ -16,9 +16,7 @@ import pt.sensae.services.data.processor.slave.backend.application.SensorDataHan
 @Service
 public class SensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
-
-    public static final String INGRESS_QUEUE = "sensor.data.processor.slave.queue";
+    private final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
     private final SensorDataHandlerService handler;
 
@@ -26,7 +24,7 @@ public class SensorDataConsumer {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = INGRESS_QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDataQueueName()}")
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException, JsonProcessingException {
         var consumed = MessageMapper.toUnprocessedModel(in.getBody());
         logConsumedMessage(consumed);

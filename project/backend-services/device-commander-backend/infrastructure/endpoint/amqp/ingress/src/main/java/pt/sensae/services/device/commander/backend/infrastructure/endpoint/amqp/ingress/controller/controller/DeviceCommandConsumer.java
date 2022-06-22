@@ -15,9 +15,7 @@ import java.io.IOException;
 @Service
 public class DeviceCommandConsumer {
 
-    Logger logger = LoggerFactory.getLogger(DeviceCommandConsumer.class);
-
-    public static final String COMMANDS_QUEUE = "commands.device.commander.queue";
+    private final Logger logger = LoggerFactory.getLogger(DeviceCommandConsumer.class);
 
     private final DeviceCommandHandlerService handler;
     private final ObjectMapper mapper;
@@ -27,7 +25,7 @@ public class DeviceCommandConsumer {
         this.mapper = mapper;
     }
 
-    @RabbitListener(queues = COMMANDS_QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getCommandQueueName()}")
     public void receiveUpdate(Message in) throws IOException {
         var consumed = mapper.readValue(in.getBody(), DeviceCommandDTOImpl.class);
         logConsumedMessage(consumed);

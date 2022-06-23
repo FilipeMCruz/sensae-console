@@ -20,10 +20,15 @@ public class AmqpConfiguration {
     private final RoutingKeysProvider provider;
 
     private final QueueNamingService service;
-    
+
     public AmqpConfiguration(RoutingKeysProvider provider, QueueNamingService service) {
         this.provider = provider;
         this.service = service;
+    }
+
+    @Bean
+    public TopicExchange dataTopic() {
+        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
     }
 
     @Bean
@@ -35,16 +40,12 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public TopicExchange dataTopic() {
-        return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
-    }
-
-    @Bean
-    Binding bindingMaster() {
-        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.INFO)
+    Binding dataBinding() {
+        var keys = provider.getSensorTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withInfoType(InfoTypeOptions.PROCESSED)
+                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
+                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
+                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(dataQueue()).to(dataTopic()).with(keys.get().toString());
@@ -54,7 +55,7 @@ public class AmqpConfiguration {
 
     @Bean
     public TopicExchange internalTopic() {
-        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
+        return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
     @Bean
@@ -67,12 +68,11 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding binding() {
-        var keys = provider.getSensorTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withInfoType(InfoTypeOptions.PROCESSED)
-                .withRecords(RecordsOptions.UNIDENTIFIED_RECORDS)
-                .withOwnership(OwnershipOptions.WITH_DOMAIN_OWNERSHIP)
-                .withLegitimacyType(DataLegitimacyOptions.UNKNOWN)
+    Binding internalBinding() {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.INFO)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(internalQueue()).to(internalTopic()).with(keys.get().toString());

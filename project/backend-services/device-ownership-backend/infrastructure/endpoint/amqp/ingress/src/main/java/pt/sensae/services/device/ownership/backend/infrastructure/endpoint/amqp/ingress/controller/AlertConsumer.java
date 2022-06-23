@@ -19,8 +19,6 @@ public class AlertConsumer {
 
     Logger logger = LoggerFactory.getLogger(AlertConsumer.class);
 
-    public static final String QUEUE = "alert.identity.management.slave.queue";
-
     private final ObjectMapper mapper;
 
     public final AlertHandlerService handler;
@@ -30,7 +28,7 @@ public class AlertConsumer {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getAlertQueueName()}")
     public void receiveUpdate(Message in) throws IOException {
         var consumed = mapper.readValue(in.getBody(), new TypeReference<MessageConsumed<AlertDTO, AlertRoutingKeys>>() {
         });

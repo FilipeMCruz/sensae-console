@@ -12,8 +12,6 @@ import java.io.IOException;
 @Service
 public class DataDecoderConsumer {
 
-    public static final String QUEUE = "internal.data.decoder.slave.queue";
-
     private final DataDecoderNotifierService notifier;
 
     private final ObjectMapper mapper;
@@ -23,7 +21,7 @@ public class DataDecoderConsumer {
         this.mapper = mapper;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDataDecoderQueueName()}")
     public void receiveIndexEvent(Message in) throws IOException {
         var dto = mapper.readValue(in.getBody(), DataDecoderNotificationDTOImpl.class);
         notifier.info(dto);

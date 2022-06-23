@@ -14,14 +14,12 @@ public class AddresseeSyncConsumer {
 
     private final AddresseeRepository cache;
 
-    public static final String QUEUE = "internal.notification.dispatcher.addressee.sync.queue";
-
     public AddresseeSyncConsumer(AddresseeRepository cache) {
         this.cache = cache;
     }
 
-    @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(Set<AddresseeDTO> in) {
+    @RabbitListener(queues = "#{queueNamingService.getAttendeesConfigurationSyncQueueName()}")
+    public void receiveSync(Set<AddresseeDTO> in) {
         cache.refresh(in.stream().map(AddresseeMapper::dtoToDomain).collect(Collectors.toSet()));
     }
 }

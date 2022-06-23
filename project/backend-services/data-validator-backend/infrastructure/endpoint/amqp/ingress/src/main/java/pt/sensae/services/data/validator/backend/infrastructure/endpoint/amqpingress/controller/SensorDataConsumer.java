@@ -15,9 +15,7 @@ import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 @Service
 public class SensorDataConsumer {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
-
-    public static final String INGRESS_QUEUE = "sensor.data.validator.queue";
+    private final Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
 
     private final SensorDataHandlerService handler;
 
@@ -25,7 +23,7 @@ public class SensorDataConsumer {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = INGRESS_QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDataQueueName()}")
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);

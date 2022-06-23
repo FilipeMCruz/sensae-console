@@ -12,8 +12,6 @@ import java.io.IOException;
 @Service
 public class DeviceIdentityInfoConsumer {
 
-    public static final String QUEUE = "internal.identity.management.slave.queue";
-
     private final DeviceOwnershipNotifierService updater;
 
     private final ObjectMapper mapper;
@@ -23,7 +21,7 @@ public class DeviceIdentityInfoConsumer {
         this.mapper = mapper;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDeviceOwnershipQueueName()}")
     public void receiveIndexEvent(Message in) throws IOException {
         var dto = mapper.readValue(in.getBody(), DeviceNotificationDTOImpl.class);
         updater.info(dto);

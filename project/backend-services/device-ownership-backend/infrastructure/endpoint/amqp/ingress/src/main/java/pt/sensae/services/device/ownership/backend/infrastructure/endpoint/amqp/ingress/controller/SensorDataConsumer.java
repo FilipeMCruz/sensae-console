@@ -23,7 +23,7 @@ public class SensorDataConsumer {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = "#{queueNamingService.getDeviceQueueName()}")
+    @RabbitListener(queues = "#{queueNamingService.getDataQueueName()}")
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException {
         var consumed = MessageMapper.toModel(in.getBody());
         logConsumedMessage(consumed);

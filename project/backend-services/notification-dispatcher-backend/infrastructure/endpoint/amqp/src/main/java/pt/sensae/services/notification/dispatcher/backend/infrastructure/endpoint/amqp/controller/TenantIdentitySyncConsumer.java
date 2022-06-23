@@ -14,14 +14,12 @@ public class TenantIdentitySyncConsumer {
 
     private final TenantRepository cache;
 
-    public static final String QUEUE = "internal.notification.dispatcher.tenant.sync.queue";
-
     public TenantIdentitySyncConsumer(TenantRepository cache) {
         this.cache = cache;
     }
 
-    @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(Set<TenantIdentityDTO> in) {
+    @RabbitListener(queues = "#{queueNamingService.getTenantIdentitySyncQueueName()}")
+    public void receiveSync(Set<TenantIdentityDTO> in) {
         cache.refresh(in.stream().map(TenantIdentityMapper::dtoToDomain).collect(Collectors.toSet()));
     }
 }

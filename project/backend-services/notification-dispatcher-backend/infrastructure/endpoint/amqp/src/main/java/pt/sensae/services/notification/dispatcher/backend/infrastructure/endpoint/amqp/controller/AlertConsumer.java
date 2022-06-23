@@ -15,15 +15,13 @@ public class AlertConsumer {
 
     private final Logger logger = LoggerFactory.getLogger(AlertConsumer.class);
 
-    public static final String QUEUE = "alert.notification.dispatcher.queue";
-
     private final NotificationPublisher publisher;
 
     public AlertConsumer(NotificationPublisher publisher) {
         this.publisher = publisher;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getNotificationQueueName()}")
     public void receiveUpdate(MessageConsumed<AlertDTO, AlertRoutingKeys> in) {
         logConsumedMessage(in);
         publisher.publish(AlertNotificationMapper.dtoToDomain(in.data));

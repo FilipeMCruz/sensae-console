@@ -11,14 +11,12 @@ public class TenantIdentityInfoConsumer {
 
     private final TenantCache cache;
 
-    public static final String QUEUE = "internal.notification.management.tenant.info.queue";
-
     public TenantIdentityInfoConsumer(TenantCache cache) {
         this.cache = cache;
     }
 
-    @RabbitListener(queues = QUEUE)
-    public void receiveUpdate(TenantIdentityDTO in) {
+    @RabbitListener(queues = "#{queueNamingService.getTenantIdentityInfoQueueName()}")
+    public void receiveInfo(TenantIdentityDTO in) {
         cache.index(TenantIdentityMapper.dtoToDomain(in));
     }
 }

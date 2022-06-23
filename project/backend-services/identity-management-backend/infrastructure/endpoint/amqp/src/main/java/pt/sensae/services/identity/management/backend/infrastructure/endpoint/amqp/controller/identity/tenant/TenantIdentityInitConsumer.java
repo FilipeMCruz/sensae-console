@@ -7,7 +7,7 @@ import pt.sensae.services.identity.management.backend.application.internal.ident
 
 @Service
 public class TenantIdentityInitConsumer {
-    public static final String QUEUE = "internal.identity.management.tenant.queue";
+    public static final String QUEUE = "identity-management.internal.tenant-identity.init.queue";
 
     private final TenantInitNotificationHandler service;
 

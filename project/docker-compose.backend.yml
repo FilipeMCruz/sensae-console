@@ -231,8 +231,7 @@ services:
     ports:
       - 8095:8080
   sharespot-common-database:
-    build: databases/sharespot-common-database
-    image: sharespot-common-database
+    build: databases
     container_name: sharespot-common-database
     env_file:
       - ./secrets/prod/sharespot-common-database.env

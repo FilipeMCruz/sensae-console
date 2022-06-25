@@ -147,6 +147,15 @@
           "nx serve ui-aggregator"
         ]
       }
+    },
+    "serve-identity": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve identity-management-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
     }
   },
   "tags": []

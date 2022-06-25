@@ -7,6 +7,7 @@ import {
   DeviceViewType,
 } from '@frontend-services/device-management/model';
 import {
+  CommandDeviceService,
   DeleteDeviceInformation,
   GetAllDeviceInformation,
   IndexDeviceInformation,
@@ -35,7 +36,8 @@ export class DeviceManagementPageComponent implements OnInit {
     public dialog: MatDialog,
     private recordsCollector: GetAllDeviceInformation,
     private indexer: IndexDeviceInformation,
-    private eraser: DeleteDeviceInformation
+    private eraser: DeleteDeviceInformation,
+    private commander: CommandDeviceService,
   ) {
   }
 
@@ -116,5 +118,9 @@ export class DeviceManagementPageComponent implements OnInit {
     this.label = "";
     this.groupBy();
     this.grouped = false;
+  }
+
+  canCommand() {
+    return this.commander.canDo();
   }
 }

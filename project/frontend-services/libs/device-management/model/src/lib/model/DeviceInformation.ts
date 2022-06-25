@@ -12,6 +12,10 @@ export class DeviceInformation {
     return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<StaticDataEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>());
   }
 
+  clone() {
+    return new DeviceInformation(this.device.clone(), this.records.map(r => r.clone()), this.staticData.map(s => s.clone()), this.subDevices.map(s => s.clone()), this.commands.map(c => c.clone()));
+  }
+
   isValid() {
     return this.records.filter((e) => !e.isValid()).length == 0 &&
       this.staticData.filter((e) => !e.isValid()).length == 0 &&

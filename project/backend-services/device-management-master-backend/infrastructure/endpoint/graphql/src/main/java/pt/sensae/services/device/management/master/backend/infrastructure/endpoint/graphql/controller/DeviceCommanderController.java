@@ -1,7 +1,7 @@
 package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.graphql.controller;
 
 import com.netflix.graphql.dgs.DgsComponent;
-import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.InputArgument;
 import org.springframework.web.bind.annotation.RequestHeader;
 import pt.sensae.services.device.management.master.backend.application.DeviceCommandEmitterService;
@@ -17,7 +17,7 @@ public class DeviceCommanderController {
         this.service = service;
     }
 
-    @DgsQuery(field = "deviceCommand")
+    @DgsMutation(field = "deviceCommand")
     public CommandDTOImpl deviceCommand(@InputArgument(value = "instructions") CommandDTOImpl dto, @RequestHeader("Authorization") String auth) {
         service.command(dto, AuthMiddleware.buildAccessToken(auth));
         return dto;

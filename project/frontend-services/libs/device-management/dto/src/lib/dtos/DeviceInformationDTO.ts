@@ -57,3 +57,11 @@ export interface SubDevice {
   id: string
   ref: number
 }
+
+export interface CommandDevice {
+  deviceCommand: CommandDTO
+}
+export interface CommandDTO {
+  deviceId: string
+  commandId: string
+}

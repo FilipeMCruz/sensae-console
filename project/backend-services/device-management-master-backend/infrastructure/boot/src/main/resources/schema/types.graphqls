@@ -87,11 +87,11 @@ input DeviceCommandInput {
 }
 
 input CommandInput {
-    deviceId: String
+    deviceId : String
     commandId : String
 }
 
 type Command {
-    deviceId: String
+    deviceId : String
     commandId : String
 }

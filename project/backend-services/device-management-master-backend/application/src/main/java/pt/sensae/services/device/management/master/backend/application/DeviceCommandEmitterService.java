@@ -50,7 +50,7 @@ public class DeviceCommandEmitterService {
         var owns = ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of))
                 .filter(d -> d.equals(deviceCommand.id()));
 
-        collector.collect(owns)
+        var deviceCommandDTO = collector.collect(owns)
                 .filter(info -> info.device().downlink().exists())
                 .filter(info -> info.commands()
                         .entries()
@@ -58,6 +58,9 @@ public class DeviceCommandEmitterService {
                         .anyMatch(c -> c.id().equals(deviceCommand.commandId())))
                 .findAny()
                 .map(a -> eventMapper.domainToCommandDto(deviceCommand))
-                .ifPresent(commandTestService::send);
+                .orElseThrow(() -> new RuntimeException("Command " + deviceCommand.commandId()
+                        .value() + " in device " + deviceCommand.id().value() + " not Found"));
+
+        commandTestService.send(deviceCommandDTO);
     }
 }

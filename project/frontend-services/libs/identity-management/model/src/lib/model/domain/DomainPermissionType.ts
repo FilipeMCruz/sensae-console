@@ -2,6 +2,7 @@ export enum DomainPermissionType {
   READ_DEVICE_INFORMATION = 'Device Management | See Devices Info',
   EDIT_DEVICE_INFORMATION = "Device Management | Delete Devices Info",
   DELETE_DEVICE_INFORMATION = "Device Management | Edit Devices Info",
+  COMMAND_DEVICE_DEVICE_INFORMATION = "Device Management | Command Device",
 
   READ_DATA_TRANSFORMATION = 'Data Transformation | See Mappers',
   DELETE_DATA_TRANSFORMATION = 'Data Transformation | Delete Mappers',

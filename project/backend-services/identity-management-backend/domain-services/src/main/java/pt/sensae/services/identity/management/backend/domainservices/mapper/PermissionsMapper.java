@@ -12,6 +12,7 @@ public class PermissionsMapper {
                     case READ_DEVICE_INFORMATION -> "device_management:device:read";
                     case EDIT_DEVICE_INFORMATION -> "device_management:device:edit";
                     case DELETE_DEVICE_INFORMATION -> "device_management:device:delete";
+                    case COMMAND_DEVICE_DEVICE_INFORMATION -> "device_management:device:command";
 
                     case READ_DATA_TRANSFORMATION -> "data_transformations:transformations:read";
                     case EDIT_DATA_TRANSFORMATION -> "data_transformations:transformations:edit";
@@ -63,6 +64,7 @@ public class PermissionsMapper {
                     case "device_management:device:read" -> PermissionType.READ_DEVICE_INFORMATION;
                     case "device_management:device:edit" -> PermissionType.EDIT_DEVICE_INFORMATION;
                     case "device_management:device:delete" -> PermissionType.DELETE_DEVICE_INFORMATION;
+                    case "device_management:device:command" -> PermissionType.COMMAND_DEVICE_DEVICE_INFORMATION;
 
                     case "data_transformations:transformations:read" -> PermissionType.READ_DATA_TRANSFORMATION;
                     case "data_transformations:transformations:edit" -> PermissionType.EDIT_DATA_TRANSFORMATION;

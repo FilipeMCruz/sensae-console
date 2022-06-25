@@ -74,7 +74,7 @@ export const environment = {
     },
     notificationManagement: {
       backend: {
-        domain: "localhost",
+        domain: "$SENSAE_PROD_PUBLIC_DOMAIN",
         http: {
           scheme: "https://",
           path: "/notification-management/graphql",

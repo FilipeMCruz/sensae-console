@@ -24,9 +24,7 @@ envsubst < secrets/templates/prod/backend-services/device-ownership-backend.env 
 envsubst < secrets/templates/prod/backend-services/smart-irrigation-backend.env > secrets/prod/smart-irrigation-backend.env
 envsubst < secrets/templates/prod/backend-services/notification-management-backend.env > secrets/prod/notification-management-backend.env
 envsubst < secrets/templates/prod/backend-services/notification-dispatcher-backend.env > secrets/prod/notification-dispatcher-backend.env
-envsubst < secrets/templates/prod/databases/init-data-store-database.js > secrets/prod/init-data-store-database.js
-envsubst < secrets/templates/prod/databases/sharespot-common-database.env > secrets/prod/sharespot-common-database.env
-envsubst < secrets/templates/prod/databases/data-store-database.env > secrets/prod/data-store-database.env
+
 envsubst < secrets/templates/prod/frontend-services/device-management-frontend.ts > frontend-services/apps/device-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/rule-management-frontend.ts > frontend-services/apps/rule-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/data-decoder-frontend.ts > frontend-services/apps/data-decoder-frontend/src/environments/environment.prod.ts
@@ -36,4 +34,15 @@ envsubst < secrets/templates/prod/frontend-services/identity-management-frontend
 envsubst < secrets/templates/prod/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.prod.ts
 envsubst < secrets/templates/prod/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.prod.ts
+
 envsubst < secrets/templates/prod/message-broker/message-broker.env > secrets/prod/message-broker.env
+
+envsubst < secrets/templates/prod/databases/init-data-store-database.js > secrets/prod/init-data-store-database.js
+envsubst < secrets/templates/prod/databases/data-store-database.env > secrets/prod/data-store-database.env
+envsubst < secrets/templates/prod/databases/data-decoder-database.env > secrets/prod/data-decoder-database.env
+envsubst < secrets/templates/prod/databases/data-processor-database.env > secrets/prod/data-processor-database.env
+envsubst < secrets/templates/prod/databases/device-management-database.env > secrets/prod/device-management-database.env
+envsubst < secrets/templates/prod/databases/identity-management-database.env > secrets/prod/identity-management-database.env
+envsubst < secrets/templates/prod/databases/notification-management-database.env > secrets/prod/notification-management-database.env
+envsubst < secrets/templates/prod/databases/rule-management-database.env > secrets/prod/rule-management-database.env
+envsubst < secrets/templates/prod/databases/smart-irrigation-business-database.env > secrets/prod/smart-irrigation-business-database.env

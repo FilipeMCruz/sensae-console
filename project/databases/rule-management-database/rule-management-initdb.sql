@@ -9,14 +9,14 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS rules;
+DROP DATABASE IF EXISTS rule;
 
-CREATE DATABASE rules WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
+CREATE DATABASE rule WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
 
 
-ALTER DATABASE rules OWNER TO "user";
+ALTER DATABASE rule OWNER TO "user";
 
-\connect rules
+\connect rule
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

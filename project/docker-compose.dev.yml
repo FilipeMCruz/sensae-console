@@ -8,8 +8,7 @@ services:
       - 5672:5672
       - 15672:15672
   sharespot-common-database:
-    build: databases/sharespot-common-database
-    image: sharespot-common-database
+    build: databases
     container_name: sharespot-common-database
     env_file:
       - ./secrets/prod/sharespot-common-database.env
@@ -17,23 +16,78 @@ services:
       - 5432:5432
     volumes:
       - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
-  questdb:
+  data-processor-database:
+    build: databases/data-processor-database
+    env_file:
+      - ./secrets/prod/data-processor-database.env
+    ports:
+      - 5482:5432
+    volumes:
+      - ./databases-data/prod/data-processor-database:/var/lib/postgresql/data/
+  data-decoder-database:
+    build: databases/data-decoder-database
+    env_file:
+      - ./secrets/prod/data-decoder-database.env
+    ports:
+      - 5484:5432
+    volumes:
+      - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
+  identity-management-database:
+    build: databases/identity-management-database
+    env_file:
+      - ./secrets/prod/identity-management-database.env
+    ports:
+      - 5486:5432
+    volumes:
+      - ./databases-data/prod/identity-management-database:/var/lib/postgresql/data/
+  device-management-database:
+    build: databases/device-management-database
+    env_file:
+      - ./secrets/prod/device-management-database.env
+    ports:
+      - 5488:5432
+    volumes:
+      - ./databases-data/prod/device-management-database:/var/lib/postgresql/data/
+  rule-management-database:
+    build: databases/rule-management-database
+    env_file:
+      - ./secrets/prod/rule-management-database.env
+    ports:
+      - 5494:5432
+    volumes:
+      - ./databases-data/prod/rule-management-database:/var/lib/postgresql/data/
+  notification-management-database:
+    build: databases/notification-management-database
+    env_file:
+      - ./secrets/prod/notification-management-database.env
+    ports:
+      - 5496:5432
+    volumes:
+      - ./databases-data/prod/notification-management-database:/var/lib/postgresql/data/
+  smart-irrigation-business-database:
+    build: databases/smart-irrigation-business-database
+    env_file:
+      - ./secrets/prod/smart-irrigation-business-database.env
+    ports:
+      - 5401:5432
+    volumes:
+      - ./databases-data/prod/smart-irrigation-business-database:/var/lib/postgresql/data/
+  fleet-management-data-database:
     image: questdb/questdb:6.3.1
     ports:
       - 8812:8812
       - 9000:9000
       - 9003
     volumes:
-      - ./databases-data/prod/questdb:/root/.questdb/
-  irrigation-database:
+      - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
+  smart-irrigation-data-database:
     image: questdb/questdb:6.3.1
-    container_name: irrigation-database
     ports:
       - 8898:8812
       - 9098:9000
       - 9003
     volumes:
-      - ./databases-data/prod/irrigation-database:/root/.questdb/
+      - ./databases-data/prod/smart-irrigation-data-database:/root/.questdb/
   # data-store-database:
   #   image: mongo:latest
   #   container_name: data-store-database

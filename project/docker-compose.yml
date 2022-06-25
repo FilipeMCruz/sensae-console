@@ -1,4 +1,5 @@
 services:
+  # Common Context
   message-broker:
     image: rabbitmq:3.10
     container_name: message-broker
@@ -30,118 +31,6 @@ services:
       - smart-irrigation-frontend
       - rule-management-frontend
       - notification-management-frontend
-  device-management-frontend:
-    build:
-      dockerfile: docker/device-management-frontend/Dockerfile
-      context: frontend-services
-    image: device-management-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - device-management-master-backend
-  data-processor-frontend:
-    build:
-      dockerfile: docker/data-processor-frontend/Dockerfile
-      context: frontend-services
-    image: data-processor-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - data-processor-master-backend
-  data-decoder-frontend:
-    build:
-      dockerfile: docker/data-decoder-frontend/Dockerfile
-      context: frontend-services
-    image: data-decoder-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - data-decoder-master-backend
-  fleet-management-frontend:
-    build:
-      dockerfile: docker/fleet-management-frontend/Dockerfile
-      context: frontend-services
-    image: fleet-management-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - fleet-management-backend
-  identity-management-frontend:
-    build:
-      dockerfile: docker/identity-management-frontend/Dockerfile
-      context: frontend-services
-    image: identity-management-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - identity-management-backend
-  rule-management-frontend:
-    build:
-      dockerfile: docker/rule-management-frontend/Dockerfile
-      context: frontend-services
-    image: rule-management-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - rule-management-backend
-  smart-irrigation-frontend:
-    build:
-      dockerfile: docker/smart-irrigation-frontend/Dockerfile
-      context: frontend-services
-    image: smart-irrigation-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - smart-irrigation-backend
-  notification-management-frontend:
-    build:
-      dockerfile: docker/notification-management-frontend/Dockerfile
-      context: frontend-services
-    image: notification-management-frontend
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt/
-      - /etc/nginx/ssl:/etc/nginx/ssl/
-    networks:
-      - sensae-network
-    ports:
-      - 443
-    depends_on:
-      - notification-management-backend
   data-relayer:
     build: backend-services/data-relayer
     image: data-relayer
@@ -165,6 +54,21 @@ services:
       - sensae-network
     ports:
       - 8080
+  # Data Processor Context
+  data-processor-frontend:
+    build:
+      dockerfile: docker/data-processor-frontend/Dockerfile
+      context: frontend-services
+    image: data-processor-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - data-processor-master-backend
   data-processor-slave-backend:
     build: backend-services/data-processor-slave-backend
     image: data-processor-slave-backend
@@ -187,6 +91,41 @@ services:
       - sensae-network
     ports:
       - 8080
+  data-processor-database:
+    build: databases/data-processor-database
+    container_name: data-processor-database
+    env_file:
+      - ./secrets/prod/data-processor-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5482:5432
+    volumes:
+      - ./databases-data/prod/data-processor-database:/var/lib/postgresql/data/
+  # Data Decoder Context
+  data-decoder-frontend:
+    build:
+      dockerfile: docker/data-decoder-frontend/Dockerfile
+      context: frontend-services
+    image: data-decoder-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - data-decoder-master-backend
+  data-decoder-slave-backend:
+    build: backend-services/data-decoder-slave-backend
+    image: data-decoder-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-decoder-slave-backend.env
+    networks:
+      - sensae-network
   data-decoder-master-backend:
     build: backend-services/data-decoder-master-backend
     image: data-decoder-master-backend
@@ -200,6 +139,91 @@ services:
       - sensae-network
     ports:
       - 8080
+  data-decoder-database:
+    build: databases/data-decoder-database
+    container_name: data-decoder-database
+    env_file:
+      - ./secrets/prod/data-decoder-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5484:5432
+    volumes:
+      - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
+  # Data Validator Context
+  data-validator-backend:
+    build: backend-services/data-validator-backend
+    image: data-validator-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-validator-backend.env
+    networks:
+      - sensae-network
+  # Identity Management Context
+  identity-management-frontend:
+    build:
+      dockerfile: docker/identity-management-frontend/Dockerfile
+      context: frontend-services
+    image: identity-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - identity-management-backend
+  device-ownership-backend:
+    build: backend-services/device-ownership-backend
+    image: device-ownership-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-ownership-backend.env
+    networks:
+      - sensae-network
+  identity-management-backend:
+    build: backend-services/identity-management-backend
+    container_name: identity-management-backend
+    image: identity-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/identity-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8080
+  identity-management-database:
+    build: databases/identity-management-database
+    container_name: identity-management-database
+    env_file:
+      - ./secrets/prod/identity-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5486:5432
+    volumes:
+      - ./databases-data/prod/identity-management-database:/var/lib/postgresql/data/
+  # Device Management Context
+  device-management-frontend:
+    build:
+      dockerfile: docker/device-management-frontend/Dockerfile
+      context: frontend-services
+    image: device-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - device-management-master-backend
   device-management-slave-backend:
     build: backend-services/device-management-slave-backend
     image: device-management-slave-backend
@@ -218,15 +242,6 @@ services:
       - ./secrets/prod/device-commander-backend.env
     networks:
       - sensae-network
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
-    networks:
-      - sensae-network
   device-management-master-backend:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend
@@ -240,65 +255,40 @@ services:
       - sensae-network
     ports:
       - 8080
-  data-validator-backend:
-    build: backend-services/data-validator-backend
-    image: data-validator-backend
-    environment:
-      spring_profiles_active: prod
+  device-management-database:
+    build: databases/device-management-database
+    container_name: device-management-database
     env_file:
-      - ./secrets/prod/data-validator-backend.env
-    networks:
-      - sensae-network
-  fleet-management-backend:
-    build: backend-services/fleet-management-backend
-    container_name: fleet-management-backend
-    image: fleet-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/fleet-management-backend.env
+      - ./secrets/prod/device-management-database.env
     networks:
       - sensae-network
     ports:
-      - 8080
-  smart-irrigation-backend:
-    build: backend-services/smart-irrigation-backend
-    container_name: smart-irrigation-backend
-    image: smart-irrigation-backend
+      - 5488:5432
     volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/smart-irrigation-backend.env
+      - ./databases-data/prod/device-management-database:/var/lib/postgresql/data/
+  # Rule Management Context
+  rule-management-frontend:
+    build:
+      dockerfile: docker/rule-management-frontend/Dockerfile
+      context: frontend-services
+    image: rule-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
     networks:
       - sensae-network
     ports:
-      - 8080
-  identity-management-backend:
-    build: backend-services/identity-management-backend
-    container_name: identity-management-backend
-    image: identity-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - 443
+    depends_on:
+      - rule-management-backend
+  alert-dispatcher-backend:
+    build: backend-services/alert-dispatcher-backend
+    container_name: alert-dispatcher-backend
+    image: alert-dispatcher-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/identity-management-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8080
-  device-ownership-backend:
-    build: backend-services/device-ownership-backend
-    container_name: device-ownership-backend
-    image: device-ownership-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/device-ownership-backend.env
+      - ./secrets/prod/alert-dispatcher-backend.env
     networks:
       - sensae-network
   rule-management-backend:
@@ -315,14 +305,40 @@ services:
       - sensae-network
     ports:
       - 8080
-  alert-dispatcher-backend:
-    build: backend-services/alert-dispatcher-backend
-    container_name: alert-dispatcher-backend
-    image: alert-dispatcher-backend
+  rule-management-database:
+    build: databases/rule-management-database
+    container_name: rule-management-database
+    env_file:
+      - ./secrets/prod/rule-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5494:5432
+    volumes:
+      - ./databases-data/prod/rule-management-database:/var/lib/postgresql/data/
+  # Notification Management Context
+  notification-management-frontend:
+    build:
+      dockerfile: docker/notification-management-frontend/Dockerfile
+      context: frontend-services
+    image: notification-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - notification-management-backend
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/alert-dispatcher-backend.env
+      - ./secrets/prod/notification-dispatcher-backend.env
     networks:
       - sensae-network
   notification-management-backend:
@@ -339,31 +355,99 @@ services:
       - sensae-network
     ports:
       - 8080
-  notification-dispatcher-backend:
-    build: backend-services/notification-dispatcher-backend
-    container_name: notification-dispatcher-backend
-    image: notification-dispatcher-backend
+  notification-management-database:
+    build: databases/notification-management-database
+    container_name: notification-management-database
+    env_file:
+      - ./secrets/prod/notification-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5496:5432
+    volumes:
+      - ./databases-data/prod/notification-management-database:/var/lib/postgresql/data/
+  # Smart Irrigation Context
+  smart-irrigation-frontend:
+    build:
+      dockerfile: docker/smart-irrigation-frontend/Dockerfile
+      context: frontend-services
+    image: smart-irrigation-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - smart-irrigation-backend
+  smart-irrigation-backend:
+    build: backend-services/smart-irrigation-backend
+    container_name: smart-irrigation-backend
+    image: smart-irrigation-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
-      - ./secrets/prod/notification-dispatcher-backend.env
+      - ./secrets/prod/smart-irrigation-backend.env
     networks:
       - sensae-network
-  sharespot-common-database:
-    build: databases/sharespot-common-database
-    image: sharespot-common-database
-    container_name: sharespot-common-database
+    ports:
+      - 8080
+  smart-irrigation-data-database:
+    image: questdb/questdb:6.3.1
+    container_name: smart-irrigation-data-database
+    networks:
+      - sensae-network
+    ports:
+      - 8812
+      - 9000
+      - 9003
+    volumes:
+      - ./databases-data/prod/smart-irrigation-data-database:/root/.questdb/
+  smart-irrigation-business-database:
+    build: databases/smart-irrigation-business-database
+    container_name: smart-irrigation-business-database
     env_file:
-      - ./secrets/prod/sharespot-common-database.env
+      - ./secrets/prod/smart-irrigation-business-database.env
     networks:
       - sensae-network
     ports:
-      - 5432:5432
+      - 5401:5432
     volumes:
-      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
-  questdb:
+      - ./databases-data/prod/smart-irrigation-business-database:/var/lib/postgresql/data/
+  # Fleet Management Context
+  fleet-management-frontend:
+    build:
+      dockerfile: docker/fleet-management-frontend/Dockerfile
+      context: frontend-services
+    image: fleet-management-frontend
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - /etc/nginx/ssl:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 443
+    depends_on:
+      - fleet-management-backend
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    image: fleet-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/fleet-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8080
+  fleet-management-data-database:
     image: questdb/questdb:6.3.1
-    container_name: questdb
+    container_name: fleet-management-data-database
     networks:
       - sensae-network
     ports:
@@ -371,18 +455,7 @@ services:
       - 9000
       - 9003
     volumes:
-      - ./databases-data/prod/questdb:/root/.questdb/
-  irrigation-database:
-    image: questdb/questdb:6.3.1
-    container_name: irrigation-database
-    networks:
-      - sensae-network
-    ports:
-      - 8812
-      - 9000
-      - 9003
-    volumes:
-      - ./databases-data/prod/irrigation-database:/root/.questdb/
+      - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
   # data-store:
   #   build: backend-services/data-store
   #   image: data-store

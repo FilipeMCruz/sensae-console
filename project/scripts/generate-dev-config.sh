@@ -24,9 +24,7 @@ envsubst < secrets/templates/dev/backend-services/device-ownership-backend.prope
 envsubst < secrets/templates/dev/backend-services/smart-irrigation-backend.properties > backend-services/smart-irrigation-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/notification-management-backend.properties > backend-services/notification-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/notification-dispatcher-backend.properties > backend-services/notification-dispatcher-backend/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/databases/init-data-store-database.js > secrets/dev/init-data-store-database.js
-envsubst < secrets/templates/dev/databases/sharespot-common-database.env > secrets/dev/sharespot-common-database.env
-envsubst < secrets/templates/dev/databases/data-store-database.env > secrets/dev/data-store-database.env
+
 envsubst < secrets/templates/dev/frontend-services/device-management-frontend.ts > frontend-services/apps/device-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/rule-management-frontend.ts > frontend-services/apps/rule-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/data-decoder-frontend.ts > frontend-services/apps/data-decoder-frontend/src/environments/environment.ts
@@ -36,4 +34,15 @@ envsubst < secrets/templates/dev/frontend-services/identity-management-frontend.
 envsubst < secrets/templates/dev/frontend-services/smart-irrigation-frontend.ts > frontend-services/apps/smart-irrigation-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/notification-management-frontend.ts > frontend-services/apps/notification-management-frontend/src/environments/environment.ts
 envsubst < secrets/templates/dev/frontend-services/ui-aggregator.ts > frontend-services/apps/ui-aggregator/src/environments/environment.ts
+
 envsubst < secrets/templates/dev/message-broker/message-broker.env > secrets/dev/message-broker.env
+
+envsubst < secrets/templates/dev/databases/init-data-store-database.js > secrets/dev/init-data-store-database.js
+envsubst < secrets/templates/dev/databases/data-store-database.env > secrets/dev/data-store-database.env
+envsubst < secrets/templates/dev/databases/data-decoder-database.env > secrets/dev/data-decoder-database.env
+envsubst < secrets/templates/dev/databases/data-processor-database.env > secrets/dev/data-processor-database.env
+envsubst < secrets/templates/dev/databases/device-management-database.env > secrets/dev/device-management-database.env
+envsubst < secrets/templates/dev/databases/identity-management-database.env > secrets/dev/identity-management-database.env
+envsubst < secrets/templates/dev/databases/notification-management-database.env > secrets/dev/notification-management-database.env
+envsubst < secrets/templates/dev/databases/rule-management-database.env > secrets/dev/rule-management-database.env
+envsubst < secrets/templates/dev/databases/smart-irrigation-database.env > secrets/dev/smart-irrigation-database.env

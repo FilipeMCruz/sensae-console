@@ -7,7 +7,7 @@ import pt.sensae.services.identity.management.backend.application.internal.ident
 
 @Service
 public class DeviceIdentityInitConsumer {
-    public static final String QUEUE = "internal.identity.management.device.init.queue";
+    public static final String QUEUE = "identity-management-master.internal.device-identity.init.queue";
 
     private final DeviceIdentityInitNotificationHandler service;
 

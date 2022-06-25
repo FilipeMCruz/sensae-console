@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationMapper;
+import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
@@ -183,5 +184,11 @@ public class DeviceInformationMapperImpl implements DeviceInformationMapper {
         var deviceDTO = new DeviceDTOImpl();
         deviceDTO.id = domain.value().toString();
         return deviceDTO;
+    }
+
+    @Override
+    public DeviceCommand dtoToDomain(DeviceCommandDTO command) {
+        var dto = (CommandDTOImpl) command;
+        return new DeviceCommand(DeviceId.of(UUID.fromString(dto.deviceId)), CommandId.of(dto.commandId));
     }
 }

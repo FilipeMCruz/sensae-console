@@ -85,3 +85,13 @@ input DeviceCommandInput {
     port : Int
     payload : String
 }
+
+input CommandInput {
+    deviceId: String
+    commandId : String
+}
+
+type Command {
+    deviceId: String
+    commandId : String
+}

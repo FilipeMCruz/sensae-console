@@ -4,21 +4,33 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceEventMapper;
 import pt.sensae.services.device.management.master.backend.application.DeviceNotificationDTO;
+import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
 import pt.sensae.services.device.management.master.backend.application.ownership.DeviceWithAllOwnerDomains;
 import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
+import pt.sensae.services.device.management.master.backend.domain.model.commands.DeviceCommand;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceDownlink;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceId;
 import pt.sensae.services.device.management.master.backend.domain.model.device.DeviceName;
 import pt.sensae.services.device.management.master.backend.domain.model.staticData.StaticDataLabel;
-import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.*;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.DeviceNotificationTypeDTOImpl;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.command.DeviceCommandDTOImpl;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.device.*;
+import pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.identity.DeviceIdentityDTOImpl;
 
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class DeviceInformationMapper implements DeviceEventMapper {
+    @Override
+    public DeviceCommandDTO domainToCommandDto(DeviceCommand domain) {
+        var info = new DeviceCommandDTOImpl();
+        info.deviceId = domain.id().value();
+        info.commandId = domain.commandId().value();
+        return info;
+    }
 
     @Override
     public DeviceNotificationDTO domainToUpdatedDto(DeviceInformation domain) {

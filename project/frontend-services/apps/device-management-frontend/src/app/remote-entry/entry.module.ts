@@ -24,6 +24,7 @@ import {DeviceComponent} from "./device/device.component";
 import {DeviceDialogComponent} from "./device-dialog/device-dialog.component";
 import {DeviceManagementPageComponent} from "./device-management-page/device-management-page.component";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {MatChipsModule} from "@angular/material/chips";
         MatGridListModule,
         MatTabsModule,
         MatChipsModule,
+        MatTooltipModule,
     ],
   providers: [],
 })

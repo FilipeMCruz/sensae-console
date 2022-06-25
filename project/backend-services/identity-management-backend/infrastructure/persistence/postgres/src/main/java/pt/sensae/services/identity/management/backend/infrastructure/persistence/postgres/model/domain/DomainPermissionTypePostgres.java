@@ -52,6 +52,7 @@ public class DomainPermissionTypePostgres {
             case READ_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(1);
             case DELETE_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(15);
             case EDIT_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(2);
+            case COMMAND_DEVICE_DEVICE_INFORMATION -> new DomainPermissionTypePostgres(35);
             case READ_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(3);
             case DELETE_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(17);
             case EDIT_DATA_TRANSFORMATION -> new DomainPermissionTypePostgres(4);
@@ -122,6 +123,7 @@ public class DomainPermissionTypePostgres {
             case 32 -> PermissionType.READ_LIVE_DATA_NOTIFICATION_MANAGEMENT;
             case 33 -> PermissionType.READ_CONFIG_NOTIFICATION_MANAGEMENT;
             case 34 -> PermissionType.WRITE_CONFIG_NOTIFICATION_MANAGEMENT;
+            case 35 -> PermissionType.COMMAND_DEVICE_DEVICE_INFORMATION;
             default -> throw new RuntimeException("Invalid Value");
         };
     }

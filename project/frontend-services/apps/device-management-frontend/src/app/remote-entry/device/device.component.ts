@@ -5,8 +5,12 @@ import {
   DeviceViewType,
   EntryViewType,
   RecordEntry,
-  SensorDataRecordLabel, StaticDataEntry, SubDevice,
+  SensorDataRecordLabel,
+  StaticDataEntry,
+  SubDevice,
 } from '@frontend-services/device-management/model';
+import {CommandDeviceService} from "@frontend-services/device-management/services";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'frontend-services-device-record',
@@ -18,6 +22,7 @@ export class DeviceComponent implements OnChanges {
   @Input() deviceViewEntry!: DeviceViewType;
   @Input() canEdit = false;
   @Input() canDelete = false;
+  @Input() canCommand = false;
   @Input() devices: DeviceInformation[] = [];
 
   @Output() newDeviceEvent = new EventEmitter<DeviceInformation>();
@@ -45,10 +50,13 @@ export class DeviceComponent implements OnChanges {
   currentSubDeviceIndex = -1;
   currentCommandIndex = -1;
 
+  constructor(private service: CommandDeviceService, private _snackBar: MatSnackBar) {
+  }
+
   ngOnChanges(): void {
     if (this.deviceEntry) {
       this.deviceView = DeviceViewType.Edit;
-      this.device = this.deviceEntry;
+      this.device = this.deviceEntry.clone();
       this.resetOptions();
     }
     if (this.deviceViewEntry) {
@@ -240,5 +248,18 @@ export class DeviceComponent implements OnChanges {
     this.sensorDataType = Object.values(SensorDataRecordLabel)
       .filter((v) => !usedSensorDataLabels.includes(v))
       .filter(v => v !== SensorDataRecordLabel.ERROR);
+  }
+
+  sendCommand($event: MouseEvent, index: number) {
+    this.service.command(this.device.commands[index].clone(), this.device.device)
+      .subscribe(() => this._snackBar.open("Command Sent", undefined, {
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        duration: 5000
+      }));
+  }
+
+  canSendCommand(index: number): boolean {
+    return this.device.device.downlink.trim().length !== 0 && this.deviceEntry?.commands[index] !== undefined;
   }
 }

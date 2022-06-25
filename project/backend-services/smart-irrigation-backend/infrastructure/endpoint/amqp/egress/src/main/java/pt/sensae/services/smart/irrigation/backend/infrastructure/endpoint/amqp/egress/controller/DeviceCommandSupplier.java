@@ -11,12 +11,25 @@ import pt.sensae.services.smart.irrigation.backend.application.services.command.
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.egress.model.DeviceCommandDTOImpl;
 import pt.sharespot.iot.core.IoTCoreTopic;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class DeviceCommandSupplier {
 
+    private final AmqpTemplate template;
+    private final ObjectMapper mapper;
+    private final DeviceCommandPublisher service;
     Logger logger = LoggerFactory.getLogger(DeviceCommandSupplier.class);
 
     public DeviceCommandSupplier(AmqpTemplate template, ObjectMapper mapper, DeviceCommandPublisher service) {
+        this.template = template;
+        this.mapper = mapper;
+        this.service = service;
+    }
+
+
+    @PostConstruct
+    private void init() {
         service.getPublisher().subscribe(command -> {
             try {
                 template.convertAndSend(IoTCoreTopic.COMMAND_EXCHANGE, "valve", mapper.writeValueAsBytes(command));

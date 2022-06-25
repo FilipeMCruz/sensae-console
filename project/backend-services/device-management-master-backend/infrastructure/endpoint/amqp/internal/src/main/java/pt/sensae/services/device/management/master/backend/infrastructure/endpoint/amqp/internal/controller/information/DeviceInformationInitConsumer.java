@@ -12,15 +12,13 @@ public class DeviceInformationInitConsumer {
 
     private final Logger LOGGER = LoggerFactory.getLogger(DeviceInformationInitConsumer.class);
 
-    public static final String QUEUE = "internal.device.management.device.init.queue";
-
     private final DeviceInitNotificationHandler service;
 
     public DeviceInformationInitConsumer(DeviceInitNotificationHandler service) {
         this.service = service;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getDeviceManagementInitQueueName()}")
     public void receiveUpdate(Message in) {
         LOGGER.info("Received DEVICE_MANAGEMENT init request");
         this.service.publishCurrentState();

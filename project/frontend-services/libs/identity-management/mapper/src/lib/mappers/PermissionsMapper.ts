@@ -9,6 +9,8 @@ export class PermissionsMapper {
         return DomainPermissionType.DELETE_DEVICE_INFORMATION;
       case "device_management:device:delete" :
         return DomainPermissionType.EDIT_DEVICE_INFORMATION;
+      case "device_management:device:command" :
+        return DomainPermissionType.COMMAND_DEVICE_DEVICE_INFORMATION;
 
       case "data_transformations:transformations:read" :
         return DomainPermissionType.READ_DATA_TRANSFORMATION;
@@ -95,6 +97,8 @@ export class PermissionsMapper {
         return "device_management:device:edit";
       case DomainPermissionType.EDIT_DEVICE_INFORMATION :
         return "device_management:device:delete";
+      case DomainPermissionType.COMMAND_DEVICE_DEVICE_INFORMATION:
+        return "device_management:device:command";
 
       case DomainPermissionType.READ_DATA_TRANSFORMATION :
         return "data_transformations:transformations:read";

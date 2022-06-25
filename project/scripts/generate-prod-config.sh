@@ -45,4 +45,4 @@ envsubst < secrets/templates/prod/databases/device-management-database.env > sec
 envsubst < secrets/templates/prod/databases/identity-management-database.env > secrets/prod/identity-management-database.env
 envsubst < secrets/templates/prod/databases/notification-management-database.env > secrets/prod/notification-management-database.env
 envsubst < secrets/templates/prod/databases/rule-management-database.env > secrets/prod/rule-management-database.env
-envsubst < secrets/templates/prod/databases/smart-irrigation-database.env > secrets/prod/smart-irrigation-database.env
+envsubst < secrets/templates/prod/databases/smart-irrigation-business-database.env > secrets/prod/smart-irrigation-business-database.env

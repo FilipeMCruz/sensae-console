@@ -9,14 +9,14 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS notifications;
+DROP DATABASE IF EXISTS notification;
 
-CREATE DATABASE notifications WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
+CREATE DATABASE notification WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
 
 
-ALTER DATABASE notifications OWNER TO "user";
+ALTER DATABASE notification OWNER TO "user";
 
-\connect notifications
+\connect notification
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

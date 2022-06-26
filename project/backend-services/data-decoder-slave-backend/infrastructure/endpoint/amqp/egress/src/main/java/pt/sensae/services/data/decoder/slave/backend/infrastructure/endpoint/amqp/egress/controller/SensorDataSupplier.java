@@ -28,13 +28,12 @@ public class SensorDataSupplier {
 
     @PostConstruct
     private void init() {
-        service.getSinglePublisher()
-                .subscribe(outData -> {
-                    logSuppliedMessage(outData);
-                    template.send(IoTCoreTopic.DATA_EXCHANGE,
-                            outData.routingKeys.toString(),
-                            new Message(MessageMapper.toBuf(outData).toByteArray()));
-                });
+        service.getSinglePublisher().subscribe(outData -> {
+            logSuppliedMessage(outData);
+            template.send(IoTCoreTopic.DATA_EXCHANGE,
+                    outData.routingKeys.toString(),
+                    new Message(MessageMapper.toBuf(outData).toByteArray()));
+        });
     }
 
     private void logSuppliedMessage(MessageSupplied<SensorDataDTO, SensorRoutingKeys> in) {

@@ -8,4 +8,11 @@ export class NotificationHistoryQuery {
     start.setMonth(start.getMonth() - 1);
     return new NotificationHistoryQuery(start, current);
   }
+
+  static lastWeek() {
+    const current = new Date();
+    const start = new Date();
+    start.setDate(start.getDate() - 7);
+    return new NotificationHistoryQuery(start, current);
+  }
 }

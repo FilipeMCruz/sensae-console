@@ -130,6 +130,11 @@ module.exports = {
           strictVersion: true,
           requiredVersion: 'auto',
         },
+        'monaco-editor': {
+          singleton: true,
+          strictVersion: true,
+          requiredVersion: 'auto',
+        },
         ...sharedMappings.getDescriptors(),
       }),
       library: {

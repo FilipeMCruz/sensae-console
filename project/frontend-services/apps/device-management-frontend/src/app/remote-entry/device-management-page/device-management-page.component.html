@@ -36,6 +36,7 @@
             [deviceViewEntry]="deviceViewType.Edit"
             [canEdit]="canEdit()"
             [canDelete]="canDelete()"
+            [canCommand]="canCommand()"
             (newDeviceEvent)="updateItem($event)"
             (deleteDeviceEvent)="deleteItem($event)"
           ></frontend-services-device-record>
@@ -53,6 +54,7 @@
           [deviceViewEntry]="deviceViewType.New"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"
+          [canCommand]="canCommand()"
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>
@@ -67,6 +69,7 @@
           [deviceViewEntry]="deviceViewType.Edit"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"
+          [canCommand]="canCommand()"
           (newDeviceEvent)="updateItem($event)"
           (deleteDeviceEvent)="deleteItem($event)"
         ></frontend-services-device-record>
@@ -81,6 +84,7 @@
           [deviceViewEntry]="deviceViewType.New"
           [canEdit]="canEdit()"
           [canDelete]="canDelete()"
+          [canCommand]="canCommand()"
         ></frontend-services-device-record>
       </mat-card-content>
     </mat-card>

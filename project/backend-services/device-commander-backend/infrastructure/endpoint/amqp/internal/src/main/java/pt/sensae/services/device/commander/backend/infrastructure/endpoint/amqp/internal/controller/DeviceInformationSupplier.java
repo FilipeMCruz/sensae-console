@@ -8,10 +8,29 @@ import pt.sensae.services.device.commander.backend.application.DeviceCommandNoti
 import pt.sensae.services.device.commander.backend.infrastructure.endpoint.amqp.internal.mapper.DeviceMapper;
 import pt.sharespot.iot.core.IoTCoreTopic;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class DeviceInformationSupplier {
 
-    public DeviceInformationSupplier(AmqpTemplate template, DeviceCommandNotificationPublisherService service, DeviceMapper deviceMapper, ObjectMapper mapper) {
+    private final AmqpTemplate template;
+    private final DeviceCommandNotificationPublisherService service;
+    private final DeviceMapper deviceMapper;
+    private final ObjectMapper mapper;
+
+    public DeviceInformationSupplier(AmqpTemplate template,
+                                     DeviceCommandNotificationPublisherService service,
+                                     DeviceMapper deviceMapper,
+                                     ObjectMapper mapper) {
+
+        this.template = template;
+        this.service = service;
+        this.deviceMapper = deviceMapper;
+        this.mapper = mapper;
+    }
+
+    @PostConstruct
+    private void init() {
         service.getPublisher().subscribe(outData -> {
             var deviceDTO = deviceMapper.domainToDto(outData.device());
             try {

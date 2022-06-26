@@ -19,7 +19,7 @@ public class SensorDataSupplier {
 
     private final AmqpTemplate template;
     private final SensorDataPublisherService service;
-    Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
+    private final Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
 
     public SensorDataSupplier(AmqpTemplate template, SensorDataPublisherService service) {
         this.template = template;

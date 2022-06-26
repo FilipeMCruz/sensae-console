@@ -6,6 +6,10 @@ export class Device {
     return new Device('', '', '');
   }
 
+  clone() {
+    return new Device(this.id, this.name, this.downlink);
+  }
+
   same(device: Device) {
     return this.name == device.name && this.id == device.id;
   }

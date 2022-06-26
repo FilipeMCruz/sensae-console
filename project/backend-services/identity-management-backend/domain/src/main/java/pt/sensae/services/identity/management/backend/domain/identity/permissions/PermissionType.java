@@ -8,6 +8,8 @@ public enum PermissionType {
     DELETE_DEVICE_INFORMATION,
     EDIT_DEVICE_INFORMATION,
 
+    COMMAND_DEVICE_DEVICE_INFORMATION,
+
     READ_DATA_TRANSFORMATION,
     DELETE_DATA_TRANSFORMATION,
     EDIT_DATA_TRANSFORMATION,
@@ -57,7 +59,7 @@ public enum PermissionType {
 
     public static void reviewPermissions(Set<PermissionType> permissions) {
 
-        reviewDeviceRecordsPermissions(permissions);
+        reviewDeviceInformationPermissions(permissions);
 
         reviewDataDecoderPermissions(permissions);
 
@@ -124,7 +126,11 @@ public enum PermissionType {
         }
     }
 
-    private static void reviewDeviceRecordsPermissions(Set<PermissionType> permissions) {
+    private static void reviewDeviceInformationPermissions(Set<PermissionType> permissions) {
+        if (permissions.contains(PermissionType.COMMAND_DEVICE_DEVICE_INFORMATION)) {
+            permissions.add(PermissionType.READ_DEVICE_INFORMATION);
+        }
+
         if (permissions.contains(PermissionType.DELETE_DEVICE_INFORMATION)) {
             permissions.add(PermissionType.EDIT_DEVICE_INFORMATION);
         }

@@ -1,4 +1,313 @@
 services:
+  # Data Processor Context
+  data-processor-slave-backend:
+    build: backend-services/data-processor-slave-backend
+    image: data-processor-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-processor-slave-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8081:8080
+  data-processor-master-backend:
+    build: backend-services/data-processor-master-backend
+    image: data-processor-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-processor-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8082:8080
+  data-processor-database:
+    build: databases/data-processor-database
+    container_name: data-processor-database
+    env_file:
+      - ./secrets/prod/data-processor-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5482:5432
+    volumes:
+      - ./databases-data/prod/data-processor-database:/var/lib/postgresql/data/
+  # Data Decoder Context
+  data-decoder-slave-backend:
+    build: backend-services/data-decoder-slave-backend
+    image: data-decoder-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-decoder-slave-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8083:8080
+  data-decoder-master-backend:
+    build: backend-services/data-decoder-master-backend
+    image: data-decoder-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-decoder-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8084:8080
+  data-decoder-database:
+    build: databases/data-decoder-database
+    container_name: data-decoder-database
+    env_file:
+      - ./secrets/prod/data-decoder-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5484:5432
+    volumes:
+      - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
+  # Data Validator Context
+  data-validator-backend:
+    build: backend-services/data-validator-backend
+    image: data-validator-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/data-validator-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8089:8080
+  # Identity Management Context
+  device-ownership-backend:
+    build: backend-services/device-ownership-backend
+    image: device-ownership-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-ownership-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8085:8080
+  identity-management-backend:
+    build: backend-services/identity-management-backend
+    container_name: identity-management-backend
+    image: identity-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/identity-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8086:8080
+  identity-management-database:
+    build: databases/identity-management-database
+    container_name: identity-management-database
+    env_file:
+      - ./secrets/prod/identity-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5486:5432
+    volumes:
+      - ./databases-data/prod/identity-management-database:/var/lib/postgresql/data/
+  # Device Management Context
+  device-management-slave-backend:
+    build: backend-services/device-management-slave-backend
+    image: device-management-slave-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-management-slave-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8087:8080
+  device-commander-backend:
+    build: backend-services/device-commander-backend
+    image: device-commander-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-commander-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8090:8080
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/device-management-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8088:8080
+  device-management-database:
+    build: databases/device-management-database
+    container_name: device-management-database
+    env_file:
+      - ./secrets/prod/device-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5488:5432
+    volumes:
+      - ./databases-data/prod/device-management-database:/var/lib/postgresql/data/
+  # Rule Management Context
+  alert-dispatcher-backend:
+    build: backend-services/alert-dispatcher-backend
+    container_name: alert-dispatcher-backend
+    image: alert-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/alert-dispatcher-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8093:8080
+    depends_on:
+      - rule-management-backend
+  rule-management-backend:
+    build: backend-services/rule-management-backend
+    container_name: rule-management-backend
+    image: rule-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/rule-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8094:8080
+  rule-management-database:
+    build: databases/rule-management-database
+    container_name: rule-management-database
+    env_file:
+      - ./secrets/prod/rule-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5494:5432
+    volumes:
+      - ./databases-data/prod/rule-management-database:/var/lib/postgresql/data/
+  # Notification Management Context
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-dispatcher-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8095:8080
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/notification-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8096:8080
+  notification-management-database:
+    build: databases/notification-management-database
+    container_name: notification-management-database
+    env_file:
+      - ./secrets/prod/notification-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5496:5432
+    volumes:
+      - ./databases-data/prod/notification-management-database:/var/lib/postgresql/data/
+  # Smart Irrigation Context
+  smart-irrigation-backend:
+    build: backend-services/smart-irrigation-backend
+    container_name: smart-irrigation-backend
+    image: smart-irrigation-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/smart-irrigation-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8801:8080
+  smart-irrigation-data-database:
+    image: questdb/questdb:6.3.1
+    container_name: smart-irrigation-data-database
+    networks:
+      - sensae-network
+    ports:
+      - 8898:8812
+      - 9098:9000
+      - 9003
+    volumes:
+      - ./databases-data/prod/smart-irrigation-data-database:/root/.questdb/
+  smart-irrigation-business-database:
+    build: databases/smart-irrigation-business-database
+    container_name: smart-irrigation-business-database
+    env_file:
+      - ./secrets/prod/smart-irrigation-business-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5401:5432
+    volumes:
+      - ./databases-data/prod/smart-irrigation-business-database:/var/lib/postgresql/data/
+  # Fleet Management Context
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    image: fleet-management-backend
+    volumes:
+      - ./secrets/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/prod/fleet-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8800:8080
+  fleet-management-data-database:
+    image: questdb/questdb:6.3.1
+    container_name: fleet-management-data-database
+    networks:
+      - sensae-network
+    ports:
+      - 8812:8812
+      - 9000:9000
+      - 9003:9003
+    volumes:
+      - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
+  # Common Context
   message-broker:
     image: rabbitmq:3.10.5-management
     container_name: message-broker
@@ -30,240 +339,6 @@ services:
       - sensae-network
     ports:
       - 8080:8080
-  data-processor-slave-backend:
-    build: backend-services/data-processor-slave-backend
-    image: data-processor-slave-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-processor-slave-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8081:8080
-  data-processor-master-backend:
-    build: backend-services/data-processor-master-backend
-    image: data-processor-master-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-processor-master-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8082:8080
-  device-management-slave-backend:
-    build: backend-services/device-management-slave-backend
-    image: device-management-slave-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/device-management-slave-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8087:8080
-  device-commander-backend:
-    build: backend-services/device-commander-backend
-    image: device-commander-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/device-commander-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8090:8080
-  data-validator-backend:
-    build: backend-services/data-validator-backend
-    image: data-validator-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-validator-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8089:8080
-  device-management-master-backend:
-    build: backend-services/device-management-master-backend
-    image: device-management-master-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/device-management-master-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8088:8080
-  fleet-management-backend:
-    build: backend-services/fleet-management-backend
-    image: fleet-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/fleet-management-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8800:8080
-  smart-irrigation-backend:
-    build: backend-services/smart-irrigation-backend
-    container_name: smart-irrigation-backend
-    image: smart-irrigation-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/smart-irrigation-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8801:8080
-  identity-management-backend:
-    build: backend-services/identity-management-backend
-    container_name: identity-management-backend
-    image: identity-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/identity-management-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8086:8080
-  device-ownership-backend:
-    build: backend-services/device-ownership-backend
-    image: device-ownership-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/device-ownership-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8085:8080
-  data-decoder-master-backend:
-    build: backend-services/data-decoder-master-backend
-    image: data-decoder-master-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-decoder-master-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8084:8080
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8083:8080
-  rule-management-backend:
-    build: backend-services/rule-management-backend
-    container_name: rule-management-backend
-    image: rule-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/rule-management-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8094:8080
-  alert-dispatcher-backend:
-    build: backend-services/alert-dispatcher-backend
-    container_name: alert-dispatcher-backend
-    image: alert-dispatcher-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/alert-dispatcher-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8093:8080
-    depends_on:
-      - rule-management-backend
-  notification-management-backend:
-    build: backend-services/notification-management-backend
-    container_name: notification-management-backend
-    image: notification-management-backend
-    volumes:
-      - ./secrets/keys:/etc/ssh/app
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/notification-management-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8096:8080
-  notification-dispatcher-backend:
-    build: backend-services/notification-dispatcher-backend
-    container_name: notification-dispatcher-backend
-    image: notification-dispatcher-backend
-    environment:
-      spring_profiles_active: prod
-    env_file:
-      - ./secrets/prod/notification-dispatcher-backend.env
-    networks:
-      - sensae-network
-    ports:
-      - 8095:8080
-  sharespot-common-database:
-    build: databases/sharespot-common-database
-    image: sharespot-common-database
-    container_name: sharespot-common-database
-    env_file:
-      - ./secrets/prod/sharespot-common-database.env
-    networks:
-      - sensae-network
-    ports:
-      - 5432:5432
-    volumes:
-      - ./databases-data/prod/sharespot-common-database:/var/lib/postgresql/data/
-  questdb:
-    image: questdb/questdb:6.3.1
-    container_name: questdb
-    networks:
-      - sensae-network
-    ports:
-      - 8812:8812
-      - 9000:9000
-      - 9003:9003
-    volumes:
-      - ./databases-data/prod/questdb:/root/.questdb/
-  irrigation-database:
-    image: questdb/questdb:6.3.1
-    container_name: irrigation-database
-    networks:
-      - sensae-network
-    ports:
-      - 8898:8812
-      - 9098:9000
-      - 9003
-    volumes:
-      - ./databases-data/prod/irrigation-database:/root/.questdb/
   # data-store:
   #   build: backend-services/data-store
   #   image: data-store

@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/angular:webpack-browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/ui-aggregator",
         "index": "apps/ui-aggregator/src/index.html",
@@ -16,9 +18,16 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/ui-aggregator/src/favicon.ico",
-          "apps/ui-aggregator/src/assets"
+          "apps/ui-aggregator/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/monaco-editor",
+            "output": "assets/monaco-editor"
+          }
         ],
-        "styles": ["apps/ui-aggregator/src/styles.scss"],
+        "styles": [
+          "apps/ui-aggregator/src/styles.scss"
+        ],
         "scripts": [],
         "customWebpackConfig": {
           "path": "apps/ui-aggregator/webpack.config.js"
@@ -90,7 +99,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/ui-aggregator"],
+      "outputs": [
+        "coverage/apps/ui-aggregator"
+      ],
       "options": {
         "jestConfig": "apps/ui-aggregator/jest.config.js",
         "passWithNoTests": true
@@ -121,6 +132,15 @@
         ]
       }
     },
+    "serve-decoder": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve data-decoder-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
+    },
     "serve-device": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
@@ -144,6 +164,15 @@
       "options": {
         "commands": [
           "nx serve notification-management-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
+    },
+    "serve-identity": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve identity-management-frontend",
           "nx serve ui-aggregator"
         ]
       }

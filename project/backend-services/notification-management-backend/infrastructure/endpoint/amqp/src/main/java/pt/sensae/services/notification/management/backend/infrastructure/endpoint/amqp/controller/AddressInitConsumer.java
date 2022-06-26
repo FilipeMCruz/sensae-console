@@ -10,13 +10,11 @@ public class AddressInitConsumer {
 
     private final AddresseeInitNotificationHandler handler;
 
-    public static final String QUEUE = "internal.notification.management.addressee.init.queue";
-
     public AddressInitConsumer(AddresseeInitNotificationHandler handler) {
         this.handler = handler;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getAttendeesConfigurationInitQueueName()}")
     public void receiveUpdate(Message in) {
         this.handler.publishCurrentState();
     }

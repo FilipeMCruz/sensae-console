@@ -11,13 +11,11 @@ public class AddresseeInfoConsumer {
 
     private final AddresseeRepository cache;
 
-    public static final String QUEUE = "internal.notification.dispatcher.addressee.info.queue";
-
     public AddresseeInfoConsumer(AddresseeRepository cache) {
         this.cache = cache;
     }
 
-    @RabbitListener(queues = QUEUE)
+    @RabbitListener(queues = "#{queueNamingService.getAttendeesConfigurationInfoQueueName()}")
     public void receiveUpdate(AddresseeDTO in) {
         cache.index(AddresseeMapper.dtoToDomain(in));
     }

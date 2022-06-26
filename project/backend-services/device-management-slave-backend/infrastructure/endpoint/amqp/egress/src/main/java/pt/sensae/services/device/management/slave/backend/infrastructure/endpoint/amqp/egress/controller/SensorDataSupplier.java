@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 @Component
 public class SensorDataSupplier {
 
-    Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
+    private final Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
     private final AmqpTemplate template;
     private final SensorDataPublisherService service;
 

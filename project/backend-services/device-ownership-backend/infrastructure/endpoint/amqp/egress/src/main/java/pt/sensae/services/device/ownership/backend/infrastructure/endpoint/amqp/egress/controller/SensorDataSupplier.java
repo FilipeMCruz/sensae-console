@@ -12,19 +12,28 @@ import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 import pt.sensae.services.device.ownership.backend.application.SensorDataPublisherService;
 
+import javax.annotation.PostConstruct;
+
 @Component
 public class SensorDataSupplier {
 
     public final Logger logger = LoggerFactory.getLogger(SensorDataSupplier.class);
+    private final AmqpTemplate template;
+    private final SensorDataPublisherService service;
 
     public SensorDataSupplier(AmqpTemplate template, SensorDataPublisherService service) {
-        service.getSinglePublisher()
-                .subscribe(outData -> {
-                    logSuppliedMessage(outData);
-                    template.send(IoTCoreTopic.DATA_EXCHANGE,
-                            outData.routingKeys.toString(),
-                            new Message(MessageMapper.toBuf(outData).toByteArray()));
-                });
+        this.template = template;
+        this.service = service;
+    }
+
+    @PostConstruct
+    private void init() {
+        service.getSinglePublisher().subscribe(outData -> {
+            logSuppliedMessage(outData);
+            template.send(IoTCoreTopic.DATA_EXCHANGE,
+                    outData.routingKeys.toString(),
+                    new Message(MessageMapper.toBuf(outData).toByteArray()));
+        });
     }
 
     private void logSuppliedMessage(MessageSupplied<SensorDataDTO, SensorRoutingKeys> in) {

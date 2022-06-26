@@ -4,7 +4,9 @@ import java.util.stream.Stream;
 
 public interface NotificationRepository {
 
-    Stream<Notification> find(NotificationQuery query);
+    Stream<Notification> find(NotificationTemporalQuery query);
+
+    Stream<Notification> find(NotificationBasicQuery query);
 
     void save(Notification notification);
 }

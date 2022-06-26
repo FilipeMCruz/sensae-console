@@ -8,12 +8,15 @@ import pt.sensae.services.notification.management.backend.application.notificati
 import pt.sensae.services.notification.management.backend.application.notification.mapper.NotificationMapper;
 import pt.sensae.services.notification.management.backend.application.notification.model.NotificationDTO;
 import pt.sensae.services.notification.management.backend.application.notification.model.NotificationHistoryQueryCommandDTO;
+import pt.sensae.services.notification.management.backend.application.notification.model.NotificationHistoryQueryCommandType;
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.Domains;
+import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeConfig;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeId;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeRepository;
 import pt.sensae.services.notification.management.backend.domain.adressee.DeliveryType;
-import pt.sensae.services.notification.management.backend.domain.notification.NotificationQuery;
+import pt.sensae.services.notification.management.backend.domain.notification.NotificationBasicQuery;
+import pt.sensae.services.notification.management.backend.domain.notification.NotificationTemporalQuery;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationRepository;
 
 import java.util.UUID;
@@ -56,12 +59,18 @@ public class NotificationCollector {
                 .map(DomainId::of)
                 .collect(Collectors.toSet());
 
-        var id = AddresseeId.of(extract.oid);
-        var addressee = addresseeRepository.findById(id);
+        var configs = addresseeRepository.findById(AddresseeId.of(extract.oid)).configs().stream()
+                .filter(c -> !c.mute())
+                .filter(c -> c.deliveryType().equals(DeliveryType.UI))
+                .map(AddresseeConfig::contentType)
+                .collect(Collectors.toList());
 
-        var notificationStream = repository.find(NotificationQuery.of(queryCommand.start, queryCommand.end, Domains.of(domainIds)))
-                .filter(notification -> addressee.canSendVia(notification, DeliveryType.UI));
-
-        return notificationStream.map(mapper::toDto);
+        if (queryCommand.type.equals(NotificationHistoryQueryCommandType.TEMPORAL)) {
+            var query = NotificationTemporalQuery.of(queryCommand.start, queryCommand.end, Domains.of(domainIds), configs);
+            return repository.find(query).map(mapper::toDto);
+        } else {
+            var query = NotificationBasicQuery.of(Domains.of(domainIds), configs);
+            return repository.find(query).map(mapper::toDto);
+        }
     }
 }

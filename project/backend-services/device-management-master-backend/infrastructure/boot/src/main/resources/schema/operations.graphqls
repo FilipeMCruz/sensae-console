@@ -5,4 +5,5 @@ type Query {
 type Mutation {
     index(instructions : DeviceInformationInput): DeviceInformation
     delete(device: DeviceInput): Device
+    deviceCommand(instructions: CommandInput): Command
 }

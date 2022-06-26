@@ -341,9 +341,19 @@
             <div mat-line>{{sub.name}}</div>
             <div mat-line><i>{{sub.id}}</i></div>
             <button
+              *ngIf="deviceView !== deviceViewType.Compare && canCommand"
+              [disabled]="!canSendCommand(i)"
+              mat-icon-button
+              (click)="sendCommand($event, i)"
+              matTooltip="Send Downlink"
+            >
+              <mat-icon>send_and_archive</mat-icon>
+            </button>
+            <button
               *ngIf="deviceView !== deviceViewType.Compare && canEdit"
               mat-icon-button
               (click)="removeCommand($event, i)"
+              matTooltip="Delete Command"
             >
               <mat-icon>delete</mat-icon>
             </button>

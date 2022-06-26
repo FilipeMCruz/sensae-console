@@ -1,39 +1,32 @@
-<p>
-  <mat-form-field class="medium-input">
-    <mat-label>Scenario Id</mat-label>
-    <input [disabled]="ruleScenarioView !== scenarioViewType.New"
-           [(ngModel)]="ruleScenario.id.value"
-           matInput/>
-    <mat-hint>Project #003 - Irrigation</mat-hint>
-  </mat-form-field>
-  <ng-container *ngIf="ruleScenarioView === scenarioViewType.Edit && canDelete">
-    <button class="to-right"
-            mat-stroked-button
-            (click)="deleteRuleScenario()">Delete
-    </button>
-  </ng-container>
-  <br/>
-  <ng-container *ngIf="ruleScenarioView === scenarioViewType.New && canEdit">
-    <button [disabled]="!ruleScenario.isValid()"
-            class="to-right"
-            mat-stroked-button
-            (click)="saveRuleScenario()">Save
-    </button>
-  </ng-container>
-  <ng-container *ngIf="ruleScenarioView === scenarioViewType.Edit && canEdit">
-    <button [disabled]="!ruleScenario.isValid()"
-            class="to-right"
-            mat-stroked-button
-            (click)="saveRuleScenario()">Update
-    </button>
-  </ng-container>
-</p>
-
-<mat-form-field class="big-input">
-  <mat-label>Script Content (in Drools)</mat-label>
-  <textarea class="long-input"
-            [disabled]="ruleScenarioView === scenarioViewType.Compare || !canEdit"
-            [(ngModel)]="ruleScenario.content.value"
-            matInput
-  ></textarea>
+<br>
+<mat-form-field class="medium-input">
+  <mat-label>Scenario Id</mat-label>
+  <input [disabled]="ruleScenarioView !== scenarioViewType.New"
+         [(ngModel)]="ruleScenario.id.value"
+         matInput/>
+  <mat-hint *ngIf="ruleScenarioView === scenarioViewType.New">e.g. Project #003 - Irrigation</mat-hint>
 </mat-form-field>
+<ng-container *ngIf="ruleScenarioView === scenarioViewType.Edit && canDelete">
+  <button class="to-right"
+          mat-stroked-button
+          (click)="deleteRuleScenario()">Delete
+  </button>
+</ng-container>
+<br/>
+<ng-container *ngIf="ruleScenarioView === scenarioViewType.New && canEdit">
+  <button [disabled]="!ruleScenario.isValid()"
+          class="to-right"
+          mat-stroked-button
+          (click)="saveRuleScenario()">Save
+  </button>
+</ng-container>
+<ng-container *ngIf="ruleScenarioView === scenarioViewType.Edit && canEdit">
+  <button [disabled]="!ruleScenario.isValid()"
+          class="to-right"
+          mat-stroked-button
+          (click)="saveRuleScenario()">Update
+  </button>
+</ng-container>
+<br>
+<div class="long-input" #editorContainer></div>
+<mat-hint class="hint">this script must be written in Drools</mat-hint>

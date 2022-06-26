@@ -25,7 +25,7 @@ import static pt.sensae.services.identity.management.backend.infrastructure.boot
 @Configuration
 public class AmqpConfiguration {
 
-    private static final String DEVICE_MANAGEMENT_QUEUE = "internal.device.management.device.init.queue";
+    private static final String DEVICE_MANAGEMENT_QUEUE = "device-management-master.internal.device-management.init.queue";
     private final RoutingKeysProvider provider;
 
     public AmqpConfiguration(RoutingKeysProvider provider) {

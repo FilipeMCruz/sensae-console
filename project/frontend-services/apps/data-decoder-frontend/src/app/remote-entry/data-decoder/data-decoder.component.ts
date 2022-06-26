@@ -1,4 +1,14 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild,} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {DataDecoder, DataDecoderViewType} from "@frontend-services/data-decoder/model";
 import {first} from "rxjs/operators";
 import {MonacoEditorService} from "@frontend-services/mutual";
@@ -29,7 +39,7 @@ export class DataDecoderComponent implements OnChanges, OnInit {
   dataDecoderView = DataDecoderViewType.New;
   dataDecoderViewType = DataDecoderViewType;
 
-  constructor(public monacoEditorService: MonacoEditorService) {
+  constructor(public monacoEditorService: MonacoEditorService, public changeDetectorRef: ChangeDetectorRef) {
     this.monacoEditorService.load();
   }
 
@@ -66,7 +76,10 @@ export class DataDecoderComponent implements OnChanges, OnInit {
     if (!this.monacoEditorService.loaded) {
       this.monacoEditorService.loadingFinished.pipe(first()).subscribe(() => {
         this.initMonaco();
-        this._editor.onDidChangeModelContent(() => this.dataDecoder.script.content = this._editor.getValue())
+        this._editor.onDidChangeModelContent(() => {
+          this.dataDecoder.script.content = this._editor.getValue();
+          this.changeDetectorRef.detectChanges();
+        })
       });
       return;
     }

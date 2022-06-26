@@ -16,7 +16,12 @@
         "inlineStyleLanguage": "scss",
         "assets": [
           "apps/data-decoder-frontend/src/favicon.ico",
-          "apps/data-decoder-frontend/src/assets"
+          "apps/data-decoder-frontend/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/monaco-editor",
+            "output": "assets/monaco-editor"
+          }
         ],
         "styles": ["apps/data-decoder-frontend/src/styles.scss"],
         "scripts": [],

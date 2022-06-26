@@ -66,6 +66,7 @@
     "graphql": "^16.4.0",
     "jwt-decode": "^3.1.2",
     "mapbox-gl": "^2.8.2",
+    "monaco-editor": "^0.33.0",
     "ngx-echarts": "^8.0.1",
     "rxjs": "~6.6.7",
     "subscriptions-transport-ws": "^0.11.0",

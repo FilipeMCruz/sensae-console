@@ -7,4 +7,7 @@ public class NotificationHistoryQueryCommand {
     public Instant start;
 
     public Instant end;
+
+    public NotificationHistoryQueryCommandType type;
+
 }

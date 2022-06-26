@@ -63,7 +63,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   fetchLastMonthNotifications() {
     this.loading = true;
     this.collector
-      .getData(NotificationHistoryQuery.lastWeek())
+      .getData(NotificationHistoryQuery.lastMonth())
       .subscribe(
         data => {
           this.sortedData = data

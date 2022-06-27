@@ -1,6 +1,7 @@
 type DataTransformation {
     data : DataType
     entries : [PropertyTransformation]
+    lastTimeSeen: String
 }
 
 type PropertyTransformation {

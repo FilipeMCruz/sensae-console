@@ -1,4 +1,4 @@
-package pt.sensae.services.device.management.master.backend.application.ownership;
+package pt.sensae.services.device.management.master.backend.domain.model.identity;
 
 import java.util.UUID;
 

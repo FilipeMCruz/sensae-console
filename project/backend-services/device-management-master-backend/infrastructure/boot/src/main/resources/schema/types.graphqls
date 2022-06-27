@@ -4,6 +4,7 @@ type DeviceInformation {
     staticData: [StaticDataEntry]
     subDevices : [SubDevice]
     commands : [DeviceCommand]
+    lastTimeSeen: String
 }
 
 type StaticDataEntry {

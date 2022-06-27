@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
-import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
-import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
+import pt.sensae.services.device.management.master.backend.domain.model.LastTimeSeenDeviceRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DeviceIdentityRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DomainId;
 import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationHoarder;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -21,17 +23,22 @@ public class DeviceInformationRegisterService {
 
     private final TokenExtractor authHandler;
 
-    private final DeviceIdentityCache ownerChecker;
+    private final DeviceIdentityRepository ownerChecker;
+
+    private final LastTimeSeenDeviceRepository lastTimeSeenDeviceRepository;
 
     public DeviceInformationRegisterService(DeviceInformationHoarder hoarder,
                                             DeviceInformationMapper mapper,
                                             DeviceInformationEventHandlerService publisher,
-                                            TokenExtractor authHandler, DeviceIdentityCache ownerChecker) {
+                                            TokenExtractor authHandler,
+                                            DeviceIdentityRepository ownerChecker,
+                                            LastTimeSeenDeviceRepository lastTimeSeenDeviceRepository) {
         this.hoarder = hoarder;
         this.mapper = mapper;
         this.publisher = publisher;
         this.authHandler = authHandler;
         this.ownerChecker = ownerChecker;
+        this.lastTimeSeenDeviceRepository = lastTimeSeenDeviceRepository;
     }
 
     public DeviceInformationDTO register(DeviceInformationDTO dto, AccessTokenDTO claims) {
@@ -52,6 +59,11 @@ public class DeviceInformationRegisterService {
 
         var hoard = hoarder.hoard(deviceInformation);
         publisher.publishUpdate(hoard);
-        return dto;
+
+        var lastTimeSeen = lastTimeSeenDeviceRepository.find(hoard.device().id())
+                .map(Instant::getEpochSecond)
+                .orElse(0L);
+
+        return mapper.domainToDto(hoard, lastTimeSeen);
     }
 }

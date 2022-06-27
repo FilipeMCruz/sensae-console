@@ -15,5 +15,7 @@ public class DeviceInformationDTOImpl implements DeviceInformationDTO {
     public Set<SubDeviceDTOImpl> subDevices;
 
     public Set<DeviceCommandDTOImpl> commands;
+    
+    public String lastTimeSeen;
 
 }

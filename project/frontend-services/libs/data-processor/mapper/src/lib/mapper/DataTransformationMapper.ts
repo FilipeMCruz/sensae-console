@@ -2,12 +2,13 @@ import {DataTransformation, PropertyName, PropertyTransformation,} from '@fronte
 import {SensorTypeMapper} from './SensorTypeMapper';
 import {
   DataTransformationDTO,
+  DataTransformationResultDTO,
   PropertyNameDTO,
   PropertyTransformationDTO,
 } from '@frontend-services/data-processor/dto';
 
 export class DataTransformationMapper {
-  static dtoToModel(dto: DataTransformationDTO): DataTransformation {
+  static dtoToModel(dto: DataTransformationResultDTO): DataTransformation {
     const sensorTypeId = SensorTypeMapper.dtoToModel(dto.data);
     const entries = dto.entries.map(
       (e) =>
@@ -17,7 +18,9 @@ export class DataTransformationMapper {
           e.sensorID
         )
     );
-    return new DataTransformation(sensorTypeId, entries);
+    const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+    d.setUTCMilliseconds(dto.lastTimeSeen);
+    return new DataTransformation(sensorTypeId, entries, d);
   }
 
   private static propertyNameDtoToModel(dto: PropertyNameDTO): PropertyName {

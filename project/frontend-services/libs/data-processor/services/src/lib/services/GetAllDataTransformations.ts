@@ -31,6 +31,7 @@ export class GetAllDataTransformations {
             newPath
             sensorID
           }
+          lastTimeSeen
         }
       }
     `;

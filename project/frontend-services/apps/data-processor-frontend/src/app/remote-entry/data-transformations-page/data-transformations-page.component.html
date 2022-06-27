@@ -12,7 +12,14 @@
       *ngFor="let transformation of this.dataTransformations"
       class="item mat-elevation-z2"
     >
-      <mat-card-title>Data Transformation</mat-card-title>
+      <mat-card-title-group>
+        <mat-card-title>Data Transformation</mat-card-title>
+        <mat-chip-list>
+          <mat-chip class="{{getLastTimeSeenColor(transformation)}}" matTooltip="Last time seen">
+            <mat-icon>history</mat-icon>
+            {{getLastTimeSeen(transformation)}}</mat-chip>
+        </mat-chip-list>
+      </mat-card-title-group>
       <mat-card-content>
         <frontend-services-data-transformation
           [entry]="transformation"

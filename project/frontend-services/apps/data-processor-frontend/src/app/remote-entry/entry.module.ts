@@ -22,6 +22,8 @@ import { DataTransformationsPageComponent } from './data-transformations-page/da
 import { DataTransformationComponent } from './data-transformation/data-transformation.component';
 import { DataTransformationDialogComponent } from './data-transformation-dialog/data-transformation-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -29,34 +31,36 @@ import {MatTabsModule} from "@angular/material/tabs";
     DataTransformationComponent,
     DataTransformationDialogComponent,
   ],
-    imports: [
-        MatStepperModule,
-        MatSidenavModule,
-        MatCardModule,
-        MatDialogModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatIconModule,
-        FormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatListModule,
-        MatSnackBarModule,
-        MatExpansionModule,
-        MatRadioModule,
-        MatOptionModule,
-        MatAutocompleteModule,
-        ReactiveFormsModule,
-        CommonModule,
-        HttpClientModule,
-        RouterModule.forChild([
-            {
-                path: '',
-                component: DataTransformationsPageComponent,
-            },
-        ]),
-        MatTabsModule,
-    ],
+  imports: [
+    MatStepperModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatIconModule,
+    FormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatListModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatRadioModule,
+    MatOptionModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    CommonModule,
+    HttpClientModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: DataTransformationsPageComponent,
+      },
+    ]),
+    MatTabsModule,
+    MatChipsModule,
+    MatTooltipModule,
+  ],
   providers: [],
 })
 export class RemoteEntryModule {}

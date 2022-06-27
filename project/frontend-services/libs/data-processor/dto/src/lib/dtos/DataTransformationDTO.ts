@@ -1,5 +1,5 @@
 export interface DataTransformationQuery {
-  transformation: Array<DataTransformationDTO>;
+  transformation: Array<DataTransformationResultDTO>;
 }
 
 export interface DataTransformationInput {
@@ -7,7 +7,7 @@ export interface DataTransformationInput {
 }
 
 export interface DataTransformationResult {
-  index: DataTransformationDTO;
+  index: DataTransformationResultDTO;
 }
 
 export interface DataTransformationDelete {
@@ -17,6 +17,12 @@ export interface DataTransformationDelete {
 export interface DataTransformationDTO {
   data: SensorTypeIdDTO;
   entries: Array<PropertyTransformationDTO>;
+}
+
+export interface DataTransformationResultDTO {
+  data: SensorTypeIdDTO;
+  entries: Array<PropertyTransformationDTO>;
+  lastTimeSeen: number;
 }
 
 export interface SensorTypeIdDTO {

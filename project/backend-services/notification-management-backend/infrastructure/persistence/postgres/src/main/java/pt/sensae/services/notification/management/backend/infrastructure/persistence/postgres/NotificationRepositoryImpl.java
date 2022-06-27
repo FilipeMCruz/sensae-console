@@ -4,16 +4,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.Domains;
+import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeId;
 import pt.sensae.services.notification.management.backend.domain.contentType.ContentType;
-import pt.sensae.services.notification.management.backend.domain.notification.Notification;
-import pt.sensae.services.notification.management.backend.domain.notification.NotificationBasicQuery;
-import pt.sensae.services.notification.management.backend.domain.notification.NotificationTemporalQuery;
-import pt.sensae.services.notification.management.backend.domain.notification.NotificationRepository;
+import pt.sensae.services.notification.management.backend.domain.notification.*;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.mapper.notification.NotificationMapper;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.notification.NotificationPostgres;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.notification.ReadNotificationPostgres;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.repository.NotificationRepositoryPostgres;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.repository.ReadNotificationRepositoryPostgres;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,8 +22,12 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     private final NotificationRepositoryPostgres repositoryPostgres;
 
-    public NotificationRepositoryImpl(NotificationRepositoryPostgres repositoryPostgres) {
+    private final ReadNotificationRepositoryPostgres readNotificationRepositoryPostgres;
+
+    public NotificationRepositoryImpl(NotificationRepositoryPostgres repositoryPostgres,
+                                      ReadNotificationRepositoryPostgres readNotificationRepositoryPostgres) {
         this.repositoryPostgres = repositoryPostgres;
+        this.readNotificationRepositoryPostgres = readNotificationRepositoryPostgres;
     }
 
     @Override
@@ -34,8 +38,9 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         var configs = extractConfigs(query.configs());
 
         var collect = repositoryPostgres.findOldWithDomains(domainIds, query.start(), query.end(), configs, query.limit())
-                .map(NotificationMapper::daoToModel).collect(Collectors.toSet());
-        return collect.stream();
+                .collect(Collectors.toSet());
+
+        return buildNotificationsWithWhoReadThem(collect);
     }
 
     @Override
@@ -46,14 +51,34 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         var configs = extractConfigs(query.configs());
 
         var collect = repositoryPostgres.findOldWithDomainsAndConfigs(domainIds, configs, query.limit())
-                .map(NotificationMapper::daoToModel).collect(Collectors.toSet());
+                .collect(Collectors.toSet());
 
-        return collect.stream();
+        return buildNotificationsWithWhoReadThem(collect);
     }
 
     @Override
+    @Transactional
     public void save(Notification notification) {
         repositoryPostgres.save(NotificationMapper.modelToDao(notification));
+    }
+
+    @Override
+    @Transactional
+    public void registerReadNotification(NotificationId notificationId, AddresseeId id) {
+        readNotificationRepositoryPostgres.save(NotificationMapper.modelToDao(notificationId, id));
+    }
+
+    private Stream<Notification> buildNotificationsWithWhoReadThem(Set<NotificationPostgres> collect) {
+        var notificationIds = collect.stream().map(n -> n.id).collect(Collectors.joining(",", "{", "}"));
+
+        var readNotifications = readNotificationRepositoryPostgres.findReadNotifications(notificationIds)
+                .collect(Collectors.toMap(entry -> entry.id, Set::of, (existingEntry, newEntry) -> {
+                    existingEntry.addAll(newEntry);
+                    return existingEntry;
+                }));
+
+        return collect.stream()
+                .map(postgres -> NotificationMapper.daoToModel(postgres, readNotifications.get(postgres.id)));
     }
 
     private String extractDomains(Domains query) {

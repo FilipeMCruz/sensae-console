@@ -13,7 +13,17 @@
     <packaging>pom</packaging>
     <modules>
         <module>postgres</module>
+        <module>memory</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>pt.sensae.services</groupId>
+            <artifactId>application</artifactId>
+            <version>0.9.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

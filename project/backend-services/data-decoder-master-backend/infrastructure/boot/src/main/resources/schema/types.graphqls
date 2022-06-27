@@ -1,6 +1,7 @@
 type DataDecoder {
     data : DataType
     script : String
+    lastTimeSeen: String
 }
 
 type DataType {

@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
-import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
-import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
+import pt.sensae.services.device.management.master.backend.domain.model.LastTimeSeenDeviceRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DeviceIdentityRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DomainId;
 import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationCollector;
 
+import java.time.Instant;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -20,13 +22,20 @@ public class DeviceInformationCollectorService {
 
     private final TokenExtractor authHandler;
 
-    private final DeviceIdentityCache ownerChecker;
+    private final DeviceIdentityRepository ownerChecker;
 
-    public DeviceInformationCollectorService(DeviceInformationCollector collector, DeviceInformationMapper mapper, TokenExtractor authHandler, DeviceIdentityCache deviceIdentityCache) {
+    private final LastTimeSeenDeviceRepository lastTimeSeenDeviceRepository;
+
+    public DeviceInformationCollectorService(DeviceInformationCollector collector,
+                                             DeviceInformationMapper mapper,
+                                             TokenExtractor authHandler,
+                                             DeviceIdentityRepository deviceIdentityCache,
+                                             LastTimeSeenDeviceRepository lastTimeSeenDeviceRepository) {
         this.collector = collector;
         this.mapper = mapper;
         this.authHandler = authHandler;
         this.ownerChecker = deviceIdentityCache;
+        this.lastTimeSeenDeviceRepository = lastTimeSeenDeviceRepository;
     }
 
     public Stream<DeviceInformationDTO> catalog(AccessTokenDTO claims) {
@@ -36,6 +45,9 @@ public class DeviceInformationCollectorService {
 
         var owns = ownerChecker.owns(extract.domains.stream().map(UUID::fromString).map(DomainId::of));
 
-        return collector.collect(owns).map(mapper::domainToDto);
+        return collector.collect(owns)
+                .map(dev -> mapper.domainToDto(dev, lastTimeSeenDeviceRepository.find(dev.device().id())
+                        .map(Instant::toEpochMilli)
+                        .orElse(0L)));
     }
 }

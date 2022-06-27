@@ -1,60 +1,60 @@
-<p>
-  <mat-form-field class="medium-input">
-    <mat-label>Device Name</mat-label>
-    <input
-      [disabled]="deviceView === deviceViewType.Compare || !canEdit"
-      [(ngModel)]="device.device.name"
-      matInput
-    />
-    <mat-hint>e.g. GPS Sensor A1</mat-hint>
-  </mat-form-field>
-  <ng-container *ngIf="deviceView === deviceViewType.Edit && canDelete">
-    <button class="to-right" mat-stroked-button (click)="deleteDevice()">
-      Delete
-    </button>
-  </ng-container>
-  <br/>
-  <mat-form-field class="medium-input">
-    <mat-label>Device Id</mat-label>
-    <input
-      [disabled]="deviceView !== deviceViewType.New"
-      [(ngModel)]="device.device.id"
-      matInput
-    />
-    <mat-hint>e.g. 8af821e5-3e0b-4469-88b0-fd07bee3b09d</mat-hint>
-  </mat-form-field>
-  <br/>
-  <mat-form-field class="medium-input">
-    <mat-label>Device DownLink</mat-label>
-    <input
-      [disabled]="deviceView === deviceViewType.Compare || !canEdit"
-      [(ngModel)]="device.device.downlink"
-      matInput
-    />
-    <mat-hint>e.g. https://console.helium.com/api/v1/down/../../..</mat-hint>
-  </mat-form-field>
-  <ng-container *ngIf="deviceView === deviceViewType.New && canEdit">
-    <button
-      [disabled]="!device.isValid()"
-      class="to-right"
-      mat-stroked-button
-      (click)="saveDevice()"
-    >
-      Save
-    </button>
-  </ng-container>
-  <ng-container *ngIf="deviceView === deviceViewType.Edit && canEdit">
-    <button
-      [disabled]="!device.isValid()"
-      class="to-right"
-      mat-stroked-button
-      (click)="saveDevice()"
-    >
-      Update
-    </button>
-  </ng-container>
-  <br/>
-</p>
+<br>
+<mat-form-field class="medium-input">
+  <mat-label>Device Name</mat-label>
+  <input
+    [disabled]="deviceView === deviceViewType.Compare || !canEdit"
+    [(ngModel)]="device.device.name"
+    matInput
+  />
+  <mat-hint>e.g. GPS Sensor A1</mat-hint>
+</mat-form-field>
+<ng-container *ngIf="deviceView === deviceViewType.Edit && canDelete">
+  <button class="to-right" mat-stroked-button (click)="deleteDevice()">
+    Delete
+  </button>
+</ng-container>
+<br/>
+<mat-form-field class="medium-input">
+  <mat-label>Device Id</mat-label>
+  <input
+    [disabled]="deviceView !== deviceViewType.New"
+    [(ngModel)]="device.device.id"
+    matInput
+  />
+  <mat-hint>e.g. 8af821e5-3e0b-4469-88b0-fd07bee3b09d</mat-hint>
+</mat-form-field>
+<br/>
+<mat-form-field class="medium-input">
+  <mat-label>Device DownLink</mat-label>
+  <input
+    [disabled]="deviceView === deviceViewType.Compare || !canEdit"
+    [(ngModel)]="device.device.downlink"
+    matInput
+  />
+  <mat-hint>e.g. https://console.helium.com/api/v1/down/../../..</mat-hint>
+</mat-form-field>
+<ng-container *ngIf="deviceView === deviceViewType.New && canEdit">
+  <button
+    [disabled]="!device.isValid()"
+    class="to-right"
+    mat-stroked-button
+    (click)="saveDevice()"
+  >
+    Save
+  </button>
+</ng-container>
+<ng-container *ngIf="deviceView === deviceViewType.Edit && canEdit">
+  <button
+    [disabled]="!device.isValid()"
+    class="to-right"
+    mat-stroked-button
+    (click)="saveDevice()"
+  >
+    Update
+  </button>
+</ng-container>
+<br>
+<br>
 <mat-tab-group>
   <mat-tab label="Records">
     <div class="entries">

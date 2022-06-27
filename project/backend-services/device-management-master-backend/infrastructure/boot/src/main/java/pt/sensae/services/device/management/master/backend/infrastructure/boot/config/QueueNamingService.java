@@ -21,6 +21,10 @@ public class QueueNamingService {
         return "device-management-master.internal.device-management.request.queue";
     }
 
+    public String getDeviceManagementPingQueueName() {
+        return "device-management-master.internal.device-management.ping." + id + ".queue";
+    }
+
     public String getDeviceIdentityInfoQueueName() {
         return "device-management-master.internal.device-identity.info." + id + ".queue";
     }

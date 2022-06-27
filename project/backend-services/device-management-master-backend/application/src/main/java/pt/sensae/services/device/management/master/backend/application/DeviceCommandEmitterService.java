@@ -4,9 +4,8 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.device.management.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.device.management.master.backend.application.auth.UnauthorizedException;
-import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
-import pt.sensae.services.device.management.master.backend.application.ownership.DeviceIdentityCache;
-import pt.sensae.services.device.management.master.backend.application.ownership.DomainId;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DeviceIdentityRepository;
+import pt.sensae.services.device.management.master.backend.domain.model.identity.DomainId;
 import pt.sensae.services.device.management.master.backend.domainservices.DeviceInformationCollector;
 
 import java.util.UUID;
@@ -22,7 +21,7 @@ public class DeviceCommandEmitterService {
 
     private final TokenExtractor authHandler;
 
-    private final DeviceIdentityCache ownerChecker;
+    private final DeviceIdentityRepository ownerChecker;
 
     private final DeviceCommandTestService commandTestService;
 
@@ -30,13 +29,13 @@ public class DeviceCommandEmitterService {
                                        DeviceInformationMapper mapper,
                                        DeviceEventMapper eventMapper,
                                        TokenExtractor authHandler,
-                                       DeviceIdentityCache deviceIdentityCache,
+                                       DeviceIdentityRepository deviceIdentityRepository,
                                        DeviceCommandTestService commandTestService) {
         this.collector = collector;
         this.mapper = mapper;
         this.eventMapper = eventMapper;
         this.authHandler = authHandler;
-        this.ownerChecker = deviceIdentityCache;
+        this.ownerChecker = deviceIdentityRepository;
         this.commandTestService = commandTestService;
     }
 

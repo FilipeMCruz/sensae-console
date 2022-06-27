@@ -12,7 +12,14 @@
       *ngFor="let decoder of this.dataDecoders"
       class="item mat-elevation-z2"
     >
-      <mat-card-title>Data Decoder</mat-card-title>
+      <mat-card-title-group>
+        <mat-card-title>Data Decoder</mat-card-title>
+        <mat-chip-list>
+          <mat-chip class="{{getLastTimeSeenColor(decoder)}}" matTooltip="Last time seen">
+            <mat-icon>history</mat-icon>
+            {{getLastTimeSeen(decoder)}}</mat-chip>
+        </mat-chip-list>
+      </mat-card-title-group>
       <mat-card-content>
         <frontend-services-data-decoder
           [entry]="decoder"

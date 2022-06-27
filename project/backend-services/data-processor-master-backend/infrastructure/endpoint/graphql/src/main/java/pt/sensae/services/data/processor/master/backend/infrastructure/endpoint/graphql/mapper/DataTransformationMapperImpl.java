@@ -97,7 +97,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
     }
 
     @Override
-    public DataTransformationDTO domainToDto(DataTransformation domain) {
+    public DataTransformationDTO domainToDto(DataTransformation domain, Long instant) {
         var dto = new DataTransformationDTOImpl();
         var typeDto = new SensorTypeIdDTOImpl();
         typeDto.type = domain.getId().getValue();
@@ -109,6 +109,7 @@ public class DataTransformationMapperImpl implements DataTransformationMapper {
                 throw new IllegalStateException("Unexpected value: " + e);
             }
         }).collect(Collectors.toSet());
+        dto.lastTimeSeen = instant.toString();
         return dto;
     }
 

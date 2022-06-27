@@ -31,6 +31,7 @@ export class IndexDataTransformation {
             newPath
             sensorID
           }
+          lastTimeSeen
         }
       }
     `;

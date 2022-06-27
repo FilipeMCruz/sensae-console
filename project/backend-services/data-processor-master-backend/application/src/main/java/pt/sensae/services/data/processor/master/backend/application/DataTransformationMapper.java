@@ -7,7 +7,7 @@ public interface DataTransformationMapper {
 
     DataTransformation dtoToDomain(DataTransformationDTO dto);
 
-    DataTransformationDTO domainToDto(DataTransformation domain);
+    DataTransformationDTO domainToDto(DataTransformation domain, Long instant);
 
     SensorTypeId dtoToDomain(SensorTypeIdDTO dto);
 

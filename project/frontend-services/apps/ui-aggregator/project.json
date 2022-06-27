@@ -141,6 +141,15 @@
         ]
       }
     },
+    "serve-processor": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx serve data-processor-frontend",
+          "nx serve ui-aggregator"
+        ]
+      }
+    },
     "serve-device": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {

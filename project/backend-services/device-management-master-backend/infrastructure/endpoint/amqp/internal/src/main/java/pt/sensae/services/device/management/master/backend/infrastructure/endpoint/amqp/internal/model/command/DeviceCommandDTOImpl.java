@@ -1,6 +1,6 @@
 package pt.sensae.services.device.management.master.backend.infrastructure.endpoint.amqp.internal.model.command;
 
-import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
+import pt.sensae.services.device.management.master.backend.application.DeviceCommandDTO;
 
 import java.util.UUID;
 

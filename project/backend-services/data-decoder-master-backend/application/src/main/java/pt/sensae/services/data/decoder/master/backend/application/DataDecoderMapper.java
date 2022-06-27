@@ -7,7 +7,7 @@ public interface DataDecoderMapper {
 
     DataDecoder dtoToDomain(DataDecoderDTO dto);
 
-    DataDecoderDTO domainToDto(DataDecoder domain);
+    DataDecoderDTO domainToDto(DataDecoder domain, Long instant);
 
     SensorTypeId dtoToDomain(SensorTypeIdDTO dto);
 

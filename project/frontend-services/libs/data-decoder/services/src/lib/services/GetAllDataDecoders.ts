@@ -27,6 +27,7 @@ export class GetAllDataDecoders {
             type
           }
           script
+          lastTimeSeen
         }
       }
     `;

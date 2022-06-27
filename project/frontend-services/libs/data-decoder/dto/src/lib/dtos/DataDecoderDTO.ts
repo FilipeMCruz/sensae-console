@@ -1,5 +1,5 @@
 export interface DataDecoderQuery {
-  decoder: Array<DataDecoderDTO>;
+  decoder: Array<DataDecoderResultDTO>;
 }
 
 export interface DataDecoderInput {
@@ -7,7 +7,7 @@ export interface DataDecoderInput {
 }
 
 export interface DataDecoderResult {
-  index: DataDecoderDTO;
+  index: DataDecoderResultDTO;
 }
 
 export interface DataDecoderDelete {
@@ -17,6 +17,12 @@ export interface DataDecoderDelete {
 export interface DataDecoderDTO {
   data: SensorTypeIdDTO;
   script: string;
+}
+
+export interface DataDecoderResultDTO {
+  data: SensorTypeIdDTO;
+  script: string;
+  lastTimeSeen: number;
 }
 
 export interface SensorTypeIdDTO {

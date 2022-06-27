@@ -4,6 +4,13 @@ import {AuthService} from "@frontend-services/simple-auth-lib";
 import {DataDecoderDialogComponent} from "../data-decoder-dialog/data-decoder-dialog.component";
 import {DeleteDataDecoder, GetAllDataDecoders, IndexDataDecoder} from "@frontend-services/data-decoder/services";
 import {DataDecoder, DataDecoderPair, DataDecoderViewType, SensorTypeId} from "@frontend-services/data-decoder/model";
+import {DateFormat} from "@frontend-services/core";
+
+const DAY = 86400;
+
+const HOUR = 3600;
+
+const TEN_MINUTES = 600;
 
 @Component({
   selector: 'frontend-services-data-decoders-page',
@@ -96,5 +103,24 @@ export class DataDecodersPageComponent implements OnInit {
 
   canDelete() {
     return this.authService.isAllowed(Array.of("data_decoders:decoders:delete"));
+  }
+
+  getLastTimeSeen(decoder: DataDecoder) {
+    const seconds = Math.floor((new Date().valueOf() - decoder.lastTimeSeen.valueOf()) / 1000);
+
+    const interval = seconds / 31536000;
+    if (interval > 1) {
+      return "never";
+    }
+
+    return DateFormat.timeAgo(decoder.lastTimeSeen) + " ago";
+  }
+
+  getLastTimeSeenColor(transformation: DataDecoder) {
+    const seconds = Math.floor((new Date().valueOf() - transformation.lastTimeSeen.valueOf()) / 1000);
+    if (seconds >= DAY) return "red-chip";
+    else if (seconds >= HOUR) return "orange-chip";
+    else if (seconds >= TEN_MINUTES) return "yellow-chip";
+    else return "green-chip";
   }
 }

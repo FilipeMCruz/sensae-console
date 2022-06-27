@@ -1,5 +1,5 @@
 import {DeviceInformationMapper} from './DeviceInformationMapper';
-import {DeviceRecordsInput} from '@frontend-services/device-management/dto';
+import {DeviceRecordsInput, DeviceRecordsInputResult} from '@frontend-services/device-management/dto';
 import {DeviceInformation} from '@frontend-services/device-management/model';
 
 export class DeviceRecordRegisterMapper {
@@ -7,7 +7,7 @@ export class DeviceRecordRegisterMapper {
     return {index: DeviceInformationMapper.modelToDto(model)};
   }
 
-  static dtoToModel(dto: DeviceRecordsInput): DeviceInformation {
+  static dtoToModel(dto: DeviceRecordsInputResult): DeviceInformation {
     return DeviceInformationMapper.dtoToModel(dto.index);
   }
 }

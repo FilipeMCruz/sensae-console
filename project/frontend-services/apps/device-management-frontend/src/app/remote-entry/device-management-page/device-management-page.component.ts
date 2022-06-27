@@ -13,6 +13,13 @@ import {
   IndexDeviceInformation,
 } from '@frontend-services/device-management/services';
 import {DeviceDialogComponent} from "../device-dialog/device-dialog.component";
+import {DateFormat} from "@frontend-services/core";
+
+const DAY = 86400;
+
+const HOUR = 3600;
+
+const TEN_MINUTES = 600;
 
 @Component({
   selector: 'frontend-services-device-record-page',
@@ -122,5 +129,24 @@ export class DeviceManagementPageComponent implements OnInit {
 
   canCommand() {
     return this.commander.canDo();
+  }
+
+  getLastTimeSeen(record: DeviceInformation) {
+    const seconds = Math.floor((new Date().valueOf() - record.lastTimeSeen.valueOf()) / 1000);
+
+    const interval = seconds / 31536000;
+    if (interval > 1) {
+      return "never";
+    }
+
+    return DateFormat.timeAgo(record.lastTimeSeen) + " ago";
+  }
+
+  getLastTimeSeenColor(record: DeviceInformation) {
+    const seconds = Math.floor((new Date().valueOf() - record.lastTimeSeen.valueOf()) / 1000);
+    if (seconds >= DAY) return "red-chip";
+    else if (seconds >= HOUR) return "orange-chip";
+    else if (seconds >= TEN_MINUTES) return "yellow-chip";
+    else return "green-chip";
   }
 }

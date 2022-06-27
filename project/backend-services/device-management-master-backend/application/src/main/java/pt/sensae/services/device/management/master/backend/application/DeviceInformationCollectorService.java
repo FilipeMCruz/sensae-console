@@ -47,7 +47,7 @@ public class DeviceInformationCollectorService {
 
         return collector.collect(owns)
                 .map(dev -> mapper.domainToDto(dev, lastTimeSeenDeviceRepository.find(dev.device().id())
-                        .map(Instant::getEpochSecond)
+                        .map(Instant::toEpochMilli)
                         .orElse(0L)));
     }
 }

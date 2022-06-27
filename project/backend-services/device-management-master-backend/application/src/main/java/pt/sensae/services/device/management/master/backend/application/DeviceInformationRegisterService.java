@@ -61,7 +61,7 @@ public class DeviceInformationRegisterService {
         publisher.publishUpdate(hoard);
 
         var lastTimeSeen = lastTimeSeenDeviceRepository.find(hoard.device().id())
-                .map(Instant::getEpochSecond)
+                .map(Instant::toEpochMilli)
                 .orElse(0L);
 
         return mapper.domainToDto(hoard, lastTimeSeen);

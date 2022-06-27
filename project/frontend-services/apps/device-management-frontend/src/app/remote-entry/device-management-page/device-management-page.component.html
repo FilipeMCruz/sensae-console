@@ -28,7 +28,14 @@
     <div class="grouped-list" *ngFor="let group of this.groups">
       <div mat-subheader><b>{{group.entry.label}}</b>: {{group.entry.content}}</div>
       <mat-card *ngFor="let record of group.devices" class="item mat-elevation-z2">
-        <mat-card-title>Device Information</mat-card-title>
+        <mat-card-title-group>
+          <mat-card-title>Device Information</mat-card-title>
+          <mat-chip-list>
+            <mat-chip class="{{getLastTimeSeenColor(record)}}" matTooltip="Last time seen">
+              <mat-icon>history</mat-icon>
+              {{getLastTimeSeen(record)}}</mat-chip>
+          </mat-chip-list>
+        </mat-card-title-group>
         <mat-card-content>
           <frontend-services-device-record
             [devices]="records"
@@ -61,7 +68,16 @@
   </div>
   <div class="list" *ngIf="!this.loading && !this.grouped">
     <mat-card *ngFor="let record of this.records" class="item">
-      <mat-card-title>Device Information</mat-card-title>
+      <mat-card-title-group>
+        <mat-card-title>Device Information</mat-card-title>
+        <mat-chip-list>
+          <mat-chip class="{{getLastTimeSeenColor(record)}}"
+                    matTooltip="Last time seen">
+            <mat-icon>history</mat-icon>
+            {{getLastTimeSeen(record)}}
+          </mat-chip>
+        </mat-chip-list>
+      </mat-card-title-group>
       <mat-card-content>
         <frontend-services-device-record
           [devices]="records"

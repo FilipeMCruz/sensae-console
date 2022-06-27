@@ -51,6 +51,7 @@ export class GetAllDeviceInformation {
             port
             payload
           }
+          lastTimeSeen
         }
       }
     `;

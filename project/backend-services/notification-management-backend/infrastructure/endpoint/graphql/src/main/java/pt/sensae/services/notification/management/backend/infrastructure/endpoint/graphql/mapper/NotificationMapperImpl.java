@@ -13,6 +13,7 @@ import pt.sensae.services.notification.management.backend.infrastructure.endpoin
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.graphql.model.ReadNotificationDTOImpl;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +41,6 @@ public class NotificationMapperImpl implements NotificationMapper {
     @Override
     public NotificationId toModel(ReadNotificationDTO notificationDTO) {
         var dto = (ReadNotificationDTOImpl) notificationDTO;
-        return NotificationId.of(dto.id);
+        return NotificationId.of(UUID.fromString(dto.id));
     }
 }

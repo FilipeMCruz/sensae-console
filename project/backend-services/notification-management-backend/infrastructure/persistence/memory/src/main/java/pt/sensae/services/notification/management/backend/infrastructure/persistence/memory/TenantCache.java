@@ -8,10 +8,7 @@ import pt.sensae.services.notification.management.backend.domain.Domains;
 import pt.sensae.services.notification.management.backend.domain.tenant.Tenant;
 import pt.sensae.services.notification.management.backend.domain.tenant.TenantRepository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
@@ -54,5 +51,10 @@ public class TenantCache implements TenantRepository {
 
         this.cache.invalidateAll();
         this.cache.putAll(map);
+    }
+
+    @Override
+    public Stream<Tenant> findAll() {
+        return this.cache.asMap().values().stream().flatMap(Collection::stream);
     }
 }

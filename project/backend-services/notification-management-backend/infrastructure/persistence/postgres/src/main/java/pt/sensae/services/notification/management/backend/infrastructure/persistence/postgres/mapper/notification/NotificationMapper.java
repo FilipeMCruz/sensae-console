@@ -63,7 +63,7 @@ public class NotificationMapper {
     public static NotificationPostgres modelToDao(Notification model) {
         var dao = new NotificationPostgres();
 
-        dao.id = model.id().toString();
+        dao.id = model.id().value().toString();
         dao.category = model.type().category();
         dao.level = model.type().level().name();
         dao.subCategory = model.type().subCategory();

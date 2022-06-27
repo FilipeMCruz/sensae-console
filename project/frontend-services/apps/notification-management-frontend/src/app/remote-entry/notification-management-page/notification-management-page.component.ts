@@ -1,20 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
-import {
-  FetchConfiguration,
-  FetchNotificationHistory, UpdateAddresseeConfiguration,
-} from "@frontend-services/notification-management/services";
-import {
-  AddresseeConfiguration,
-  Notification,
-  NotificationHistoryQuery
-} from "@frontend-services/notification-management/model";
+import {FetchNotificationHistory, ReadNotification} from "@frontend-services/notification-management/services";
+import {Notification, NotificationHistoryQuery, Reader} from "@frontend-services/notification-management/model";
 import {Sort} from "@angular/material/sort";
 import {Subscription} from "rxjs";
 import {NotificationService} from "@frontend-services/mutual";
 import {filter} from "rxjs/operators";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ConfigurationDialogComponent} from "../configuration-dialog/configuration-dialog.component";
+import {AuthService} from "@frontend-services/simple-auth-lib";
 
 @Component({
   selector: 'frontend-services-notification-management-page',
@@ -35,7 +29,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   sortedData: Array<Notification> = [];
 
-  displayedColumns = ['category', 'subCategory', 'severity', 'reportedAt'];
+  displayedColumns = ['category', 'subCategory', 'severity', 'reportedAt', 'read'];
 
   expandedElement: Notification | undefined;
 
@@ -45,7 +39,9 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   constructor(
     public dialog: MatDialog,
     private collector: FetchNotificationHistory,
+    private readNotificationService: ReadNotification,
     private notificationEmitter: NotificationService,
+    private authService: AuthService
   ) {
   }
 
@@ -120,5 +116,30 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  readNotification(element: Notification) {
+    this.readNotificationService.execute(element)
+      .subscribe(() => element.readers.push(this.buildReader()))
+  }
+
+  buildReader(): Reader {
+    const oid = this.authService.getOid();
+    if (oid === undefined) {
+      return Reader.invalid();
+    }
+    const name = this.authService.getName();
+    if (name === undefined) {
+      return Reader.invalid();
+    }
+    return new Reader(oid, name);
+  }
+
+  notificationIsRead(element: Notification): boolean {
+    const oid = this.authService.getOid();
+    if (oid === undefined) {
+      return false;
+    }
+    return element.wasReadBy(oid);
   }
 }

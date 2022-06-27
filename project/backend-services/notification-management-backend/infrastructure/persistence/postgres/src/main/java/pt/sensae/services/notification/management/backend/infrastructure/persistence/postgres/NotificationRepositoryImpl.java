@@ -64,15 +64,22 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     @Override
     @Transactional
-    public void registerReadNotification(NotificationId notificationId, AddresseeId id) {
-        readNotificationRepositoryPostgres.save(NotificationMapper.modelToDao(notificationId, id));
+    public void registerReadNotification(NotificationId notificationId, AddresseeId addresseeId) {
+        var postgres = NotificationMapper.modelToDao(notificationId, addresseeId);
+
+        if (readNotificationRepositoryPostgres.findByIdAndTenant(postgres.id, postgres.tenant).isEmpty())
+            readNotificationRepositoryPostgres.save(postgres);
     }
 
     private Stream<Notification> buildNotificationsWithWhoReadThem(Set<NotificationPostgres> collect) {
         var notificationIds = collect.stream().map(n -> n.id).collect(Collectors.joining(",", "{", "}"));
 
         var readNotifications = readNotificationRepositoryPostgres.findReadNotifications(notificationIds)
-                .collect(Collectors.toMap(entry -> entry.id, Set::of, (existingEntry, newEntry) -> {
+                .collect(Collectors.toMap(entry -> entry.id, entry -> {
+                    var col = new HashSet<ReadNotificationPostgres>();
+                    col.add(entry);
+                    return col;
+                }, (existingEntry, newEntry) -> {
                     existingEntry.addAll(newEntry);
                     return existingEntry;
                 }));

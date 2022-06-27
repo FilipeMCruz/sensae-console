@@ -35,6 +35,10 @@ export class SubscribeToNotification {
             level
           }
           description
+          readers{
+            oid
+            name
+          }
         }
       }
     `;

@@ -87,17 +87,16 @@ public class NotificationCollector {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
 
-        // Fetch only the tenants that the user knows
-        var tenants = tenantRepository.findTenantsInDomains(domains)
+        // Can't fetch only the tenants that the user knows cus we don't store each tenant parent domains
+        // So everyone is fetched and presented
+        var tenants = tenantRepository.findAll()
                 .filter(t -> addresses.contains(t.id()))
                 .collect(Collectors.toSet());
-
-        var tenantIds = tenants.stream().map(Tenant::id).collect(Collectors.toSet());
 
         // Add known tenants to corresponding notifications that they read
         return notifications.stream()
                 .map(n -> mapper.toDto(n, tenants.stream()
-                        .filter(t -> tenantIds.contains(t.id()))
+                        .filter(t -> n.readers().contains(t.id()))
                         .collect(Collectors.toSet())));
     }
 }

@@ -18,6 +18,14 @@ export interface NotificationHistoryResultDTO {
   history: NotificationDTO[]
 }
 
+export interface ReadNotificationInstructionsDTO {
+  read: NotificationReadDTO
+}
+
+export interface ReadNotificationResultDTO {
+  register: NotificationReadDTO
+}
+
 export interface AddresseeConfigResultDTO {
   config: AddresseeDTO
 }
@@ -27,6 +35,12 @@ export interface NotificationDTO {
   reportedAt: string
   contentType: ContentTypeDTO
   description: string
+  readers: ReaderDTO[]
+}
+
+export interface ReaderDTO {
+  oid: string
+  name: string
 }
 
 export enum NotificationLevelDTO {
@@ -65,3 +79,6 @@ export interface HistoryQueryDTO {
   endTime: string
 }
 
+export interface NotificationReadDTO {
+  id: string
+}

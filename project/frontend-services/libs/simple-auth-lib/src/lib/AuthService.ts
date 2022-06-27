@@ -119,4 +119,12 @@ export class AuthService {
   isProviderGoogle() {
     return this.provider === "Google";
   }
+
+  getOid() {
+    return this.payload?.oid;
+  }
+
+  getName() {
+    return this.payload?.name;
+  }
 }

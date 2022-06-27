@@ -1,15 +1,20 @@
-import {DeviceInformationDTO, SensorDataRecordLabelDTO,} from '@frontend-services/device-management/dto';
 import {
-  Device, DeviceCommand,
+  DeviceInformationDTO,
+  DeviceInformationResultDTO,
+  SensorDataRecordLabelDTO,
+} from '@frontend-services/device-management/dto';
+import {
+  Device,
+  DeviceCommand,
   DeviceInformation,
   RecordEntry,
   SensorDataRecordLabel,
+  StaticDataEntry,
   SubDevice
 } from '@frontend-services/device-management/model';
-import {StaticDataEntry} from "@frontend-services/device-management/model";
 
 export class DeviceInformationMapper {
-  static dtoToModel(dto: DeviceInformationDTO): DeviceInformation {
+  static dtoToModel(dto: DeviceInformationResultDTO): DeviceInformation {
     const records = dto.records.map((e) => new RecordEntry(e.label, e.content));
 
     const staticData = dto.staticData.map((e) => new StaticDataEntry(DeviceInformationMapper.labelDtoToModel(e.label), e.content));
@@ -20,7 +25,9 @@ export class DeviceInformationMapper {
 
     const device = new Device(dto.device.id, dto.device.name, dto.device.downlink);
 
-    return new DeviceInformation(device, records, staticData, subDevices, commands);
+    const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+    d.setUTCMilliseconds(dto.lastTimeSeen);
+    return new DeviceInformation(device, records, staticData, subDevices, commands, d);
   }
 
   static modelToDto(model: DeviceInformation): DeviceInformationDTO {

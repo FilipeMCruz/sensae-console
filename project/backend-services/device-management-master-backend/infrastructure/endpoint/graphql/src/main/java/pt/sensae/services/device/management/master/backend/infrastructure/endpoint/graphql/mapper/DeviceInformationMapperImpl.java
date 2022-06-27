@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.device.management.master.backend.application.DeviceDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationDTO;
 import pt.sensae.services.device.management.master.backend.application.DeviceInformationMapper;
-import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
+import pt.sensae.services.device.management.master.backend.application.DeviceCommandDTO;
 import pt.sensae.services.device.management.master.backend.domain.model.DeviceInformation;
 import pt.sensae.services.device.management.master.backend.domain.model.commands.*;
 import pt.sensae.services.device.management.master.backend.domain.model.device.Device;
@@ -107,7 +107,7 @@ public class DeviceInformationMapperImpl implements DeviceInformationMapper {
     }
 
     @Override
-    public DeviceInformationDTO domainToDto(DeviceInformation domain) {
+    public DeviceInformationDTO domainToDto(DeviceInformation domain, Long instant) {
         var dto = new DeviceInformationDTOImpl();
         var deviceDTO = new DeviceDTOImpl();
         deviceDTO.id = domain.device().id().value().toString();
@@ -144,6 +144,8 @@ public class DeviceInformationMapperImpl implements DeviceInformationMapper {
             entry.ref = e.ref().value();
             return entry;
         }).collect(Collectors.toSet());
+
+        dto.lastTimeSeen = instant.toString();
 
         return dto;
     }

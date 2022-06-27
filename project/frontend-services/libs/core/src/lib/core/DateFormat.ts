@@ -5,24 +5,30 @@ export class DateFormat {
     let interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + " years";
+      const floor = Math.floor(interval);
+      return floor == 1 ? floor + " year" : floor + " years";
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + " months";
+      const floor = Math.floor(interval);
+      return floor == 1 ? floor + " month" : floor + " months";
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + " days";
+      const floor = Math.floor(interval);
+      return floor == 1 ? floor + " day" : floor + " days";
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      return Math.floor(interval) + " hours";
+      const floor = Math.floor(interval);
+      return floor == 1 ? floor + " hour" : floor + " hours";
     }
     interval = seconds / 60;
     if (interval > 1) {
-      return Math.floor(interval) + " minutes";
+      const floor = Math.floor(interval);
+      return floor == 1 ? floor + " minute" : floor + " minutes";
     }
-    return Math.floor(seconds) + " seconds";
+    const floor = Math.floor(seconds);
+    return floor == 1 ? floor + " second" : floor + " seconds";
   }
 }

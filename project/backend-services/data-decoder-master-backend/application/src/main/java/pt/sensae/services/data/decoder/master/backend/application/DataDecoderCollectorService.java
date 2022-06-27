@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.data.decoder.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.data.decoder.master.backend.application.auth.UnauthorizedException;
 import pt.sensae.services.data.decoder.master.backend.application.auth.TokenExtractor;
+import pt.sensae.services.data.decoder.master.backend.domain.LastTimeSeenDecoderRepository;
 import pt.sensae.services.data.decoder.master.backend.domainservices.DataDecoderCollector;
 
+import java.time.Instant;
 import java.util.stream.Stream;
 
 @Service
@@ -17,12 +19,16 @@ public class DataDecoderCollectorService {
 
     private final TokenExtractor authHandler;
 
+    private final LastTimeSeenDecoderRepository lastTimeSeenDecoderRepository;
+
     public DataDecoderCollectorService(DataDecoderCollector collector,
                                        DataDecoderMapper mapper,
-                                       TokenExtractor authHandler) {
+                                       TokenExtractor authHandler,
+                                       LastTimeSeenDecoderRepository lastTimeSeenDecoderRepository) {
         this.collector = collector;
         this.mapper = mapper;
         this.authHandler = authHandler;
+        this.lastTimeSeenDecoderRepository = lastTimeSeenDecoderRepository;
     }
 
     public Stream<DataDecoderDTO> transformations(AccessTokenDTO claims) {
@@ -31,6 +37,8 @@ public class DataDecoderCollectorService {
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect()
-                .map(mapper::domainToDto);
+                .map(dec -> mapper.domainToDto(dec, lastTimeSeenDecoderRepository.find(dec.id())
+                        .map(Instant::toEpochMilli)
+                        .orElse(0L)));
     }
 }

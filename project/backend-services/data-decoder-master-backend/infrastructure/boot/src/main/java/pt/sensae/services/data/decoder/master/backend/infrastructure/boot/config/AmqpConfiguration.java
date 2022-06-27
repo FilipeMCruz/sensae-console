@@ -13,39 +13,63 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.data.decoder.master.backend.application.RoutingKeysProvider;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.controller.DataDecoderNotificationConsumer;
+import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.controller.DataDecoderRequestConsumer;
 
 @Configuration
 public class AmqpConfiguration {
 
     private final RoutingKeysProvider provider;
 
-    public AmqpConfiguration(RoutingKeysProvider provider) {
+    private final QueueNamingService service;
+
+    public AmqpConfiguration(RoutingKeysProvider provider, QueueNamingService service) {
         this.provider = provider;
+        this.service = service;
     }
 
     @Bean
-    public TopicExchange masterExchange() {
+    public TopicExchange internalExchange() {
         return new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE);
     }
 
     @Bean
-    public Queue slaveQueue() {
-        return QueueBuilder.durable(DataDecoderNotificationConsumer.MASTER_QUEUE)
+    public Queue requestQueue() {
+        return QueueBuilder.durable(service.getDecoderRequestQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    Binding bindingMaster(Queue slaveQueue, TopicExchange masterExchange) {
+    Binding bindingRequest() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
                 .withOperationType(OperationTypeOptions.REQUEST)
                 .missingAsAny();
         if (keys.isPresent()) {
-            return BindingBuilder.bind(slaveQueue).to(masterExchange).with(keys.get().toString());
+            return BindingBuilder.bind(requestQueue()).to(internalExchange()).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
+    public Queue pingQueue() {
+        return QueueBuilder.durable(service.getDecoderPingQueueName())
+                .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingPing() {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DATA_DECODER)
+                .withContainerType(ContainerTypeOptions.DATA_DECODER)
+                .withOperationType(OperationTypeOptions.PING)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(pingQueue()).to(internalExchange()).with(keys.get().toString());
         }
         throw new RuntimeException("Error creating Routing Keys");
     }

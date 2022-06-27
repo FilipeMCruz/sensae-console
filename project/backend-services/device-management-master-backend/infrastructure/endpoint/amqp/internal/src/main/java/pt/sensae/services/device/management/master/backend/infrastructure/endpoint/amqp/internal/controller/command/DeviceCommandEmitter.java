@@ -4,7 +4,7 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pt.sensae.services.device.management.master.backend.application.DeviceCommandTestService;
-import pt.sensae.services.device.management.master.backend.application.command.DeviceCommandDTO;
+import pt.sensae.services.device.management.master.backend.application.DeviceCommandDTO;
 import pt.sharespot.iot.core.IoTCoreTopic;
 
 @Component

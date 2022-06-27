@@ -12,9 +12,9 @@ import pt.sensae.services.data.processor.master.backend.application.DataTransfor
 import pt.sensae.services.data.processor.master.backend.application.RoutingKeysProvider;
 
 @Component
-public class DataProcessorNotificationEmitter {
+public class DataProcessorInfoEmitter {
 
-    public DataProcessorNotificationEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, DataTransformationEventHandlerService service, RoutingKeysProvider provider) {
+    public DataProcessorInfoEmitter(@Qualifier("amqpTemplate") AmqpTemplate template, DataTransformationEventHandlerService service, RoutingKeysProvider provider) {
         var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DATA_PROCESSOR)
                 .withContextType(ContextTypeOptions.DATA_PROCESSOR)

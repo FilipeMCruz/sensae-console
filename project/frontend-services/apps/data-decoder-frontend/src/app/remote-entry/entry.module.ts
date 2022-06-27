@@ -21,6 +21,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {DataDecoderDialogComponent} from "./data-decoder-dialog/data-decoder-dialog.component";
 import {DataDecodersPageComponent} from "./data-decoders-page/data-decoders-page.component";
 import {DataDecoderComponent} from "./data-decoder/data-decoder.component";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -54,6 +56,8 @@ import {DataDecoderComponent} from "./data-decoder/data-decoder.component";
         component: DataDecodersPageComponent,
       },
     ]),
+    MatChipsModule,
+    MatTooltipModule,
   ],
   providers: [],
 })

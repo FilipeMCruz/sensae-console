@@ -59,6 +59,26 @@ public class AmqpConfiguration {
     }
 
     @Bean
+    public Queue devicePingQueue() {
+        return QueueBuilder.durable(service.getDeviceManagementPingQueueName())
+                .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
+                .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
+                .build();
+    }
+
+    @Bean
+    Binding bindingDevicePing() {
+        var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
+                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withOperationType(OperationTypeOptions.PING)
+                .missingAsAny();
+        if (keys.isPresent()) {
+            return BindingBuilder.bind(deviceRequestQueue()).to(internalExchange()).with(keys.get().toString());
+        }
+        throw new RuntimeException("Error creating Routing Keys");
+    }
+
+    @Bean
     public Queue initDeviceQueue() {
         return QueueBuilder.durable(service.getDeviceManagementInitQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)

@@ -6,7 +6,7 @@ import {AuthService} from '@frontend-services/simple-auth-lib';
 import {filter, map} from 'rxjs/operators';
 import {extract, isNonNull} from "@frontend-services/core";
 import {DeviceInformation} from "@frontend-services/device-management/model";
-import {DeviceRecordsInput} from "@frontend-services/device-management/dto";
+import {DeviceRecordsInputResult} from "@frontend-services/device-management/dto";
 import {DeviceRecordRegisterMapper} from "@frontend-services/device-management/mapper";
 
 @Injectable({
@@ -51,12 +51,13 @@ export class IndexDeviceInformation {
             port
             payload
           }
+          lastTimeSeen
         }
       }
     `;
     return this.apollo
       .use('deviceInformation')
-      .mutate<DeviceRecordsInput>({
+      .mutate<DeviceRecordsInputResult>({
         mutation,
         context: {
           headers: new HttpHeaders().set(
@@ -71,7 +72,7 @@ export class IndexDeviceInformation {
       .pipe(
         map(extract),
         filter(isNonNull),
-        map((value: DeviceRecordsInput) =>
+        map((value: DeviceRecordsInputResult) =>
           DeviceRecordRegisterMapper.dtoToModel(value)
         )
       );

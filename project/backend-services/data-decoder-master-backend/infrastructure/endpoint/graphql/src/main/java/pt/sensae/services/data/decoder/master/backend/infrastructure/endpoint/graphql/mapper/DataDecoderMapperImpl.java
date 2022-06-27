@@ -20,12 +20,13 @@ public class DataDecoderMapperImpl implements DataDecoderMapper {
     }
 
     @Override
-    public DataDecoderDTO domainToDto(DataDecoder domain) {
+    public DataDecoderDTO domainToDto(DataDecoder domain, Long instant) {
         var dto = new DataDecoderDTOImpl();
         var typeDto = new SensorTypeIdDTOImpl();
         typeDto.type = domain.id().getValue();
         dto.data = typeDto;
         dto.script = domain.script().value();
+        dto.lastTimeSeen = instant.toString();
         return dto;
     }
 

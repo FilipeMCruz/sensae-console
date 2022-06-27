@@ -1,9 +1,13 @@
 export interface DeviceInformationQuery {
-  deviceInformation: Array<DeviceInformationDTO>
+  deviceInformation: Array<DeviceInformationResultDTO>
 }
 
 export interface DeviceRecordsInput {
   index: DeviceInformationDTO
+}
+
+export interface DeviceRecordsInputResult {
+  index: DeviceInformationResultDTO
 }
 
 export interface DeviceRecordDelete {
@@ -16,6 +20,15 @@ export interface DeviceInformationDTO {
   staticData: Array<StaticDataEntryDTO>
   subDevices: Array<SubDevice>
   commands: Array<DeviceCommandDTO>
+}
+
+export interface DeviceInformationResultDTO {
+  device: DeviceDTO
+  records: Array<RecordEntryDTO>
+  staticData: Array<StaticDataEntryDTO>
+  subDevices: Array<SubDevice>
+  commands: Array<DeviceCommandDTO>
+  lastTimeSeen: number
 }
 
 export interface DeviceDTO {
@@ -61,6 +74,7 @@ export interface SubDevice {
 export interface CommandDevice {
   deviceCommand: CommandDTO
 }
+
 export interface CommandDTO {
   deviceId: string
   commandId: string

@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.data.processor.master.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.data.processor.master.backend.application.auth.TokenExtractor;
 import pt.sensae.services.data.processor.master.backend.application.auth.UnauthorizedException;
+import pt.sensae.services.data.processor.master.backend.domain.LastTimeSeenTransformationRepository;
 import pt.sensae.services.data.processor.master.backend.domainservices.DataTransformationCollector;
 
+import java.time.Instant;
 import java.util.stream.Stream;
 
 @Service
@@ -17,12 +19,16 @@ public class DataTransformationCollectorService {
 
     private final TokenExtractor authHandler;
 
+    private final LastTimeSeenTransformationRepository lastTimeSeenRepository;
+
     public DataTransformationCollectorService(DataTransformationCollector collector,
                                               DataTransformationMapper mapper,
-                                              TokenExtractor authHandler) {
+                                              TokenExtractor authHandler,
+                                              LastTimeSeenTransformationRepository lastTimeSeenRepository) {
         this.collector = collector;
         this.mapper = mapper;
         this.authHandler = authHandler;
+        this.lastTimeSeenRepository = lastTimeSeenRepository;
     }
 
     public Stream<DataTransformationDTO> transformations(AccessTokenDTO claims) {
@@ -31,6 +37,8 @@ public class DataTransformationCollectorService {
             throw new UnauthorizedException("No Permissions");
 
         return collector.collect()
-                .map(mapper::domainToDto);
+                .map(dec -> mapper.domainToDto(dec, lastTimeSeenRepository.find(dec.getId())
+                        .map(Instant::toEpochMilli)
+                        .orElse(0L)));
     }
 }

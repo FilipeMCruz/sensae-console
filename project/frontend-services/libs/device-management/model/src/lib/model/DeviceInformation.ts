@@ -5,15 +5,17 @@ import {DeviceCommand} from "./DeviceCommand";
 import {StaticDataEntry} from "./StaticDataEntry";
 
 export class DeviceInformation {
-  constructor(public device: Device, public records: Array<RecordEntry>, public staticData: Array<StaticDataEntry>, public subDevices: Array<SubDevice>, public commands: Array<DeviceCommand>) {
+  constructor(public device: Device, public records: Array<RecordEntry>, public staticData: Array<StaticDataEntry>, public subDevices: Array<SubDevice>, public commands: Array<DeviceCommand>, public lastTimeSeen: Date) {
   }
 
   static empty() {
-    return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<StaticDataEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>());
+    const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+    d.setUTCMilliseconds(0);
+    return new DeviceInformation(Device.empty(), new Array<RecordEntry>(), new Array<StaticDataEntry>(), new Array<SubDevice>(), new Array<DeviceCommand>(), d);
   }
 
   clone() {
-    return new DeviceInformation(this.device.clone(), this.records.map(r => r.clone()), this.staticData.map(s => s.clone()), this.subDevices.map(s => s.clone()), this.commands.map(c => c.clone()));
+    return new DeviceInformation(this.device.clone(), this.records.map(r => r.clone()), this.staticData.map(s => s.clone()), this.subDevices.map(s => s.clone()), this.commands.map(c => c.clone()), this.lastTimeSeen);
   }
 
   isValid() {

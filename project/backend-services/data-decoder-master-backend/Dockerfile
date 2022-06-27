@@ -11,6 +11,7 @@ COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom
 COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
 COPY infrastructure/persistence/pom.xml infrastructure/persistence/pom.xml
 COPY infrastructure/persistence/postgres/pom.xml infrastructure/persistence/postgres/pom.xml
+COPY infrastructure/persistence/memory/pom.xml infrastructure/persistence/memory/pom.xml
 COPY pom.xml pom.xml
 # build all external dependencies
 RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=data-decoder-master-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,persistence,postgres,domain-services

@@ -27,6 +27,7 @@ export class IndexDataDecoder {
             type
           }
           script
+          lastTimeSeen
         }
       }
     `;

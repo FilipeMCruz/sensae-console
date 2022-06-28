@@ -75,14 +75,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         var notificationIds = collect.stream().map(n -> n.id).collect(Collectors.joining(",", "{", "}"));
 
         var readNotifications = readNotificationRepositoryPostgres.findReadNotifications(notificationIds)
-                .collect(Collectors.toMap(entry -> entry.id, entry -> {
-                    var col = new HashSet<ReadNotificationPostgres>();
-                    col.add(entry);
-                    return col;
-                }, (existingEntry, newEntry) -> {
-                    existingEntry.addAll(newEntry);
-                    return existingEntry;
-                }));
+                .collect(Collectors.groupingBy(f -> f.id, Collectors.toSet()));
 
         return collect.stream()
                 .map(postgres -> NotificationMapper.daoToModel(postgres, readNotifications.get(postgres.id)));

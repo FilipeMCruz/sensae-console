@@ -2,20 +2,26 @@ package pt.sensae.services.notification.management.backend.infrastructure.persis
 
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.Domains;
+import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeId;
 import pt.sensae.services.notification.management.backend.domain.contentType.ContentType;
 import pt.sensae.services.notification.management.backend.domain.notification.Notification;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationContext;
+import pt.sensae.services.notification.management.backend.domain.notification.NotificationId;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationLevel;
 import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.notification.NotificationPostgres;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.model.notification.ReadNotificationPostgres;
+import pt.sensae.services.notification.management.backend.infrastructure.persistence.postgres.repository.ReadNotificationRepositoryPostgres;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NotificationMapper {
 
-    public static Notification daoToModel(NotificationPostgres postgres) {
+    public static Notification daoToModel(NotificationPostgres postgres, Set<ReadNotificationPostgres> readPostgres) {
 
         var domains = postgres.domains.length() <= 2 ? new HashSet<DomainId>() : Arrays.stream(postgres.domains.substring(1, postgres.domains.length() - 2)
                         .split(","))
@@ -36,13 +42,28 @@ public class NotificationMapper {
         var context = new NotificationContext(datas, devices, Domains.of(domains), postgres.other);
 
         var type = ContentType.of(postgres.category, postgres.subCategory, NotificationLevel.valueOf(postgres.level));
-        return Notification.of(UUID.fromString(postgres.id), type, postgres.description, postgres.reportedAt, context);
+
+        var read = readPostgres == null ? new HashSet<AddresseeId>() : readPostgres.stream()
+                .map(e -> e.tenant)
+                .map(UUID::fromString)
+                .map(AddresseeId::of)
+                .collect(Collectors.toSet());
+
+        return Notification.of(NotificationId.of(UUID.fromString(postgres.id)), type, postgres.description, postgres.reportedAt, context, read);
+    }
+
+    public static ReadNotificationPostgres modelToDao(NotificationId notification, AddresseeId id) {
+        var readNotificationPostgres = new ReadNotificationPostgres();
+        readNotificationPostgres.tenant = id.value().toString();
+        readNotificationPostgres.reportedAt = Instant.now();
+        readNotificationPostgres.id = notification.value().toString();
+        return readNotificationPostgres;
     }
 
     public static NotificationPostgres modelToDao(Notification model) {
         var dao = new NotificationPostgres();
 
-        dao.id = model.id().toString();
+        dao.id = model.id().value().toString();
         dao.category = model.type().category();
         dao.level = model.type().level().name();
         dao.subCategory = model.type().subCategory();

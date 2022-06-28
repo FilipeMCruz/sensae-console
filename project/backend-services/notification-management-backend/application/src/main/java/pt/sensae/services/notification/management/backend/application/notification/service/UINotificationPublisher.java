@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.function.Predicate;
 
 @Service
@@ -42,7 +43,7 @@ public class UINotificationPublisher {
 
     public Flux<NotificationDTO> getSinglePublisher(AccessTokenDTO claims) {
         return dataPublisher.filter(byTenantId(claims))
-                .map(fullNotification -> mapper.toDto(fullNotification.notification()));
+                .map(fullNotification -> mapper.toDto(fullNotification.notification(), new HashSet<>()));
     }
 
     public void send(FullNotification notification) {

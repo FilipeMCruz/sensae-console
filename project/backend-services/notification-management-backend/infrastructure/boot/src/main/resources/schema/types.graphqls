@@ -3,6 +3,12 @@ type Notification {
     reportedAt : String
     contentType : ContentType
     description : String
+    readers: [Reader]
+}
+
+type Reader {
+    oid: String
+    name: String
 }
 
 enum NotificationLevel {
@@ -55,4 +61,12 @@ input AddresseeConfigInput {
 input HistoryQuery {
     startTime : String
     endTime : String
+}
+
+input ReadNotificationInput {
+    id : String
+}
+
+type ReadNotification {
+    id : String
 }

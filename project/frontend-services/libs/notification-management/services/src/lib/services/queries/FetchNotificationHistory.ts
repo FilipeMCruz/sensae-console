@@ -35,6 +35,10 @@ export class FetchNotificationHistory {
             level
           }
           description
+          readers{
+            oid
+            name
+          }
         }
       }
     `;

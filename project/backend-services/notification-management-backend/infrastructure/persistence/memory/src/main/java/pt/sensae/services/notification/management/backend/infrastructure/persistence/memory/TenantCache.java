@@ -1,4 +1,4 @@
-package pt.sensae.services.notification.management.backend.application.tenant;
+package pt.sensae.services.notification.management.backend.infrastructure.persistence.memory;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -6,17 +6,17 @@ import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.domain.DomainId;
 import pt.sensae.services.notification.management.backend.domain.Domains;
 import pt.sensae.services.notification.management.backend.domain.tenant.Tenant;
-import pt.sensae.services.notification.management.backend.domain.tenant.TenantCache;
+import pt.sensae.services.notification.management.backend.domain.tenant.TenantRepository;
 
 import java.util.*;
 import java.util.stream.Stream;
 
 @Service
-public class TenantCacheImpl implements TenantCache {
+public class TenantCache implements TenantRepository {
 
     private final Cache<DomainId, Set<Tenant>> cache;
 
-    public TenantCacheImpl() {
+    public TenantCache() {
         this.cache = Caffeine.newBuilder().build();
     }
 
@@ -51,5 +51,10 @@ public class TenantCacheImpl implements TenantCache {
 
         this.cache.invalidateAll();
         this.cache.putAll(map);
+    }
+
+    @Override
+    public Stream<Tenant> findAll() {
+        return this.cache.asMap().values().stream().flatMap(Collection::stream);
     }
 }

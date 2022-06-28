@@ -7,10 +7,9 @@ import pt.sensae.services.notification.management.backend.domain.adressee.Addres
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeConfig;
 import pt.sensae.services.notification.management.backend.domain.adressee.AddresseeRepository;
 import pt.sensae.services.notification.management.backend.domain.adressee.DeliveryType;
-import pt.sensae.services.notification.management.backend.domain.tenant.TenantCache;
+import pt.sensae.services.notification.management.backend.domain.tenant.TenantRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,14 +18,14 @@ public class NotificationBroadcasterService {
 
     private final NotificationPublisher publisher;
 
-    private final TenantCache repository;
+    private final TenantRepository repository;
 
     private final AddresseeRepository addresseeRepository;
 
     private final UINotificationPublisher uiNotificationPublisher;
 
     public NotificationBroadcasterService(NotificationPublisher publisher,
-                                          TenantCache repository,
+                                          TenantRepository repository,
                                           AddresseeRepository addresseeRepository,
                                           UINotificationPublisher uiNotificationPublisher) {
         this.publisher = publisher;

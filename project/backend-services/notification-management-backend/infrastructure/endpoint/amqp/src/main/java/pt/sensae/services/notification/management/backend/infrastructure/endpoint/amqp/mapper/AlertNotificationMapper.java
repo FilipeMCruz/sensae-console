@@ -5,6 +5,7 @@ import pt.sensae.services.notification.management.backend.domain.Domains;
 import pt.sensae.services.notification.management.backend.domain.contentType.ContentType;
 import pt.sensae.services.notification.management.backend.domain.notification.Notification;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationContext;
+import pt.sensae.services.notification.management.backend.domain.notification.NotificationId;
 import pt.sensae.services.notification.management.backend.domain.notification.NotificationLevel;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.model.AlertLevel;
@@ -18,7 +19,7 @@ public class AlertNotificationMapper {
         var collect = dto.context.domainIds.stream().map(DomainId::of).collect(Collectors.toSet());
         var context = new NotificationContext(dto.context.dataIds, dto.context.deviceIds, Domains.of(collect), dto.context.other);
         var contentType = new ContentType(dto.category, dto.subCategory, extract(dto.level));
-        return new Notification(dto.id, contentType, dto.description, Instant.ofEpochMilli(dto.reportedAt), context);
+        return Notification.of(NotificationId.of(dto.id), contentType, dto.description, Instant.ofEpochMilli(dto.reportedAt), context);
     }
 
     private static NotificationLevel extract(AlertLevel dto) {

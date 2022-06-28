@@ -36,13 +36,36 @@
           <td mat-cell *matCellDef="let element"> {{element.timeAgo()}} ago</td>
         </ng-container>
 
+        <ng-container matColumnDef="read">
+          <th mat-sort-header="read" mat-header-cell *matHeaderCellDef>Read</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon matTooltip="{{element.getReaders()}}" *ngIf="element.isRead()">done
+            </mat-icon>
+            <mat-icon matTooltip="{{element.getReaders()}}" *ngIf="!element.isRead()">clear
+            </mat-icon>
+          <td>
+        </ng-container>
+
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div class="element-detail"
                  [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
-              <div class="description">
-                <span class="description-title">Description:</span>
-                <span class="description-content"> {{element.description}} </span>
+              <div class="element-description">
+                <div class="description">
+                  <span class="description-title">Description:</span>
+                  <span class="description-content"> {{element.description}} </span>
+                </div>
+                <div class="description">
+                  <button *ngIf="!notificationIsRead(element)" mat-stroked-button (click)="readNotification(element)">
+                    <mat-icon>done</mat-icon>
+                    <span>Mark as read</span>
+                  </button>
+                  <button [disabled]="true" *ngIf="notificationIsRead(element)" mat-stroked-button
+                          (click)="readNotification(element)">
+                    <mat-icon>done</mat-icon>
+                    <span>Read</span>
+                  </button>
+                </div>
               </div>
             </div>
           </td>

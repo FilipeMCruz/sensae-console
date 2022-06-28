@@ -1,7 +1,12 @@
 import {
   AddresseeConfigMutationInstructionsDTO,
-  AddresseeConfigMutationResultDTO, AddresseeConfigResultDTO,
-  NotificationHistoryQueryDTO, NotificationHistoryResultDTO, NotificationSubscriptionResultDTO
+  AddresseeConfigMutationResultDTO,
+  AddresseeConfigResultDTO,
+  NotificationHistoryQueryDTO,
+  NotificationHistoryResultDTO,
+  NotificationReadDTO,
+  NotificationSubscriptionResultDTO,
+  ReadNotificationInstructionsDTO
 } from "@frontend-services/notification-management/dto";
 import {
   AddresseeConfiguration,
@@ -39,5 +44,13 @@ export class OperationsMapper {
         startTime: model.start.getTime().toString()
       }
     }
+  }
+
+  static notificationRead(model: Notification): ReadNotificationInstructionsDTO {
+    return {read: NotificationMapper.modelToDto(model)}
+  }
+
+  static notificationReadResult(dto: NotificationReadDTO): Notification {
+    return Notification.empty();
   }
 }

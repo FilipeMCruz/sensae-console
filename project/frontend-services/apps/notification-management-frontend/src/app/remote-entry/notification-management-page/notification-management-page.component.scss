@@ -34,12 +34,18 @@ tr.element-row:not(.expanded-row):active {
 
 .element-detail {
   overflow: hidden;
+}
+
+.element-description {
   display: flex;
+  flex-direction: column;
+  padding-bottom: 4px;
+  padding-top: 4px;
 }
 
 .description {
-  padding-bottom: 16px;
-  padding-top: 16px;
+  padding-bottom: 8px;
+  padding-top: 8px;
 }
 
 .description-title {
@@ -62,4 +68,9 @@ tr.element-row:not(.expanded-row):active {
   margin-top: 14.5px;
   margin-bottom: 14.5px;
   margin-left: 14.5px;
+}
+
+.to-right {
+  float: right;
+  display: block;
 }

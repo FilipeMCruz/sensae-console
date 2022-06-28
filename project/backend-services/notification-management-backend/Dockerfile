@@ -7,6 +7,7 @@ COPY infrastructure/boot/pom.xml infrastructure/boot/pom.xml
 COPY infrastructure/endpoint/pom.xml infrastructure/endpoint/pom.xml
 COPY infrastructure/persistence/pom.xml infrastructure/persistence/pom.xml
 COPY infrastructure/persistence/postgres/pom.xml infrastructure/persistence/postgres/pom.xml
+COPY infrastructure/persistence/memory/pom.xml infrastructure/persistence/memory/pom.xml
 COPY infrastructure/endpoint/graphql/pom.xml infrastructure/endpoint/graphql/pom.xml
 COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
 COPY infrastructure/pom.xml infrastructure/pom.xml

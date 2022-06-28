@@ -9,4 +9,5 @@ type Query {
 
 type Mutation {
     config(instructions: AddresseeConfigCommandInput): Addressee
+    register(read: ReadNotificationInput): ReadNotification
 }

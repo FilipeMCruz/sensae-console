@@ -2,16 +2,16 @@ package pt.sensae.services.notification.management.backend.infrastructure.endpoi
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.notification.management.backend.domain.tenant.TenantCache;
+import pt.sensae.services.notification.management.backend.domain.tenant.TenantRepository;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.mapper.TenantIdentityMapper;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.amqp.model.TenantIdentityDTO;
 
 @Service
 public class TenantIdentityInfoConsumer {
 
-    private final TenantCache cache;
+    private final TenantRepository cache;
 
-    public TenantIdentityInfoConsumer(TenantCache cache) {
+    public TenantIdentityInfoConsumer(TenantRepository cache) {
         this.cache = cache;
     }
 

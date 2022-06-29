@@ -12,6 +12,7 @@
     mat-stroked-button
     color="primary"
     (click)="search()"
+    [disabled]="!rangeValid()"
   >
     Search Notifications During =>
   </button>

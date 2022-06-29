@@ -34,9 +34,11 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   expandedElement: Notification | undefined;
 
+  query = NotificationHistoryQuery.lastWeek();
+
   range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
+    start: new FormControl(this.query.start),
+    end: new FormControl(this.query.end),
   });
 
   private subscription!: Subscription;
@@ -52,7 +54,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.fetchNotifications(NotificationHistoryQuery.lastWeek());
+    this.fetchNotifications(this.query);
     this.subscription = this.notificationEmitter
       .getCurrentData()
       .pipe(filter(next => !next.isEmpty()))
@@ -118,7 +120,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
           subCategory === e.subCategory) === index)
     }).afterClosed().subscribe(result => {
         if (result && result === true) {
-          this.fetchNotifications(NotificationHistoryQuery.lastWeek());
+          this.fetchNotifications(this.query);
         }
       }
     );
@@ -153,5 +155,9 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
     const result = new Date(this.range.value.end);
     result.setDate(result.getDate() + 1);
     this.fetchNotifications(NotificationHistoryQuery.from(this.range.value.start, result));
+  }
+
+  rangeValid() {
+    return this.range.value.start && this.range.value.end && this.range.value.start <= this.range.value.end
   }
 }

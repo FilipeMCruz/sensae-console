@@ -112,7 +112,8 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   openConfiguration() {
     this.dialog.open(ConfigurationDialogComponent, {
-      width: '70%',
+      width: '80%',
+      maxWidth: '1200px',
       height: '75%',
       data: this.sortedData.map(s => s.contentType).filter(({category, subCategory, severity}, index, a) =>
         a.findIndex(e => category === e.category &&

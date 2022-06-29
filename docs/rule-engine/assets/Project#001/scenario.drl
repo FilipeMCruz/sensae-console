@@ -98,7 +98,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            $data.humidity - humidity >= 9,
+            $data.humidity - humidity >= 13,
             this after[0s,11m] $data
         )
     then
@@ -116,6 +116,8 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
                                 .setOther("Project #001")
                                 .build())
                             .build());
+        delete($data)
+        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
@@ -125,7 +127,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            temperature - $data.temperature >= 1.5,
+            temperature - $data.temperature >= 2.9,
             this after[0s,11m] $data
         )
     then
@@ -143,6 +145,8 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
                                 .setOther("Project #001")
                                 .build())
                             .build());
+        delete($data)
+        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
@@ -152,7 +156,7 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
-            co2 - $data.co2 >= 250,
+            co2 - $data.co2 >= 510,
             this after[0s,11m] $data
         )
     then
@@ -170,6 +174,8 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
                                 .setOther("Project #001")
                                 .build())
                             .build());
+        delete($data)
+        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - Multiple Alarms collected in short amount of time - scenario 1 - Project #001"
@@ -190,4 +196,6 @@ rule "Dispatch Fire Alarm - Multiple Alarms collected in short amount of time - 
                                 .setOther("Project #001")
                                 .build())
                             .build());
+        delete($alarm)
+        delete($secAlarm)
 end

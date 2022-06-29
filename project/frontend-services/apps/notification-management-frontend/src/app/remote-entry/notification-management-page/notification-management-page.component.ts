@@ -9,6 +9,7 @@ import {filter} from "rxjs/operators";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ConfigurationDialogComponent} from "../configuration-dialog/configuration-dialog.component";
 import {AuthService} from "@frontend-services/simple-auth-lib";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'frontend-services-notification-management-page',
@@ -33,6 +34,13 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   expandedElement: Notification | undefined;
 
+  query = NotificationHistoryQuery.lastWeek();
+
+  range = new FormGroup({
+    start: new FormControl(this.query.start),
+    end: new FormControl(this.query.end),
+  });
+
   private subscription!: Subscription;
   private sort: Sort = {active: 'reportedAt', direction: 'desc'};
 
@@ -46,7 +54,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.fetchLastMonthNotifications();
+    this.fetchNotifications(this.query);
     this.subscription = this.notificationEmitter
       .getCurrentData()
       .pipe(filter(next => !next.isEmpty()))
@@ -56,10 +64,10 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchLastMonthNotifications() {
+  fetchNotifications(query: NotificationHistoryQuery) {
     this.loading = true;
     this.collector
-      .getData(NotificationHistoryQuery.lastMonth())
+      .getData(query)
       .subscribe(
         data => {
           this.sortedData = data
@@ -104,7 +112,8 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   openConfiguration() {
     this.dialog.open(ConfigurationDialogComponent, {
-      width: '70%',
+      width: '80%',
+      maxWidth: '1200px',
       height: '75%',
       data: this.sortedData.map(s => s.contentType).filter(({category, subCategory, severity}, index, a) =>
         a.findIndex(e => category === e.category &&
@@ -112,7 +121,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
           subCategory === e.subCategory) === index)
     }).afterClosed().subscribe(result => {
         if (result && result === true) {
-          this.fetchLastMonthNotifications();
+          this.fetchNotifications(this.query);
         }
       }
     );
@@ -141,5 +150,15 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       return false;
     }
     return element.wasReadBy(oid);
+  }
+
+  search() {
+    const result = new Date(this.range.value.end);
+    result.setDate(result.getDate() + 1);
+    this.fetchNotifications(NotificationHistoryQuery.from(this.range.value.start, result));
+  }
+
+  rangeValid() {
+    return this.range.value.start && this.range.value.end && this.range.value.start <= this.range.value.end
   }
 }

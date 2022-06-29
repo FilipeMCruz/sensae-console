@@ -67,12 +67,12 @@ export class DeviceHistoryDialogComponent implements OnInit {
       dataZoom: [
         {
           type: 'inside',
-          start: 0,
-          end: 20
+          start: 80,
+          end: 100
         },
         {
-          start: 0,
-          end: 20
+          start: 80,
+          end: 100
         }
       ], tooltip: {
         trigger: 'axis',

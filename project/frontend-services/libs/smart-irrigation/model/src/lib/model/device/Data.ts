@@ -220,9 +220,9 @@ export class Data {
 
   getFirstDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return this.data.soilMoisture.relativePercentage + "%";
+      return this.data.soilMoisture.relativePercentage.toFixed(1) + "%";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return this.data.temperature.celsius + "ºC";
+      return this.data.temperature.celsius.toFixed(1) + "ºC";
     } else if (this.data instanceof ValveDataDetails) {
       return this.data.valve.status.toString();
     } else {
@@ -232,9 +232,9 @@ export class Data {
 
   getSecondDataDetails(): string {
     if (this.data instanceof ParkSensorDataDetails) {
-      return this.data.illuminance.lux + "";
+      return this.data.illuminance.lux.toFixed(1) + "";
     } else if (this.data instanceof StoveSensorDataDetails) {
-      return this.data.humidity.relativePercentage + "%";
+      return this.data.humidity.relativePercentage.toFixed(1) + "%";
     } else {
       return "";
     }

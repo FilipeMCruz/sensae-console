@@ -15,7 +15,7 @@ import {MatListModule} from "@angular/material/list";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatRadioModule} from "@angular/material/radio";
-import {MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {HttpClientModule} from "@angular/common/http";
 import {MatChipsModule} from "@angular/material/chips";
@@ -28,6 +28,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {ConfigurationDialogComponent} from "./configuration-dialog/configuration-dialog.component";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatIconModule,
     FormsModule,
     MatInputModule,
+    MatNativeDateModule,
     MatButtonModule,
     MatListModule,
     MatSnackBarModule,
@@ -65,6 +67,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     MatTooltipModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatDatepickerModule,
   ],
   providers: [],
 })

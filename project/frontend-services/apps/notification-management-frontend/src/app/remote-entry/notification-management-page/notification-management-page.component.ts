@@ -9,6 +9,7 @@ import {filter} from "rxjs/operators";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {ConfigurationDialogComponent} from "../configuration-dialog/configuration-dialog.component";
 import {AuthService} from "@frontend-services/simple-auth-lib";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'frontend-services-notification-management-page',
@@ -33,6 +34,11 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
 
   expandedElement: Notification | undefined;
 
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
   private subscription!: Subscription;
   private sort: Sort = {active: 'reportedAt', direction: 'desc'};
 
@@ -46,7 +52,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.fetchLastMonthNotifications();
+    this.fetchNotifications(NotificationHistoryQuery.lastWeek());
     this.subscription = this.notificationEmitter
       .getCurrentData()
       .pipe(filter(next => !next.isEmpty()))
@@ -56,10 +62,10 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchLastMonthNotifications() {
+  fetchNotifications(query: NotificationHistoryQuery) {
     this.loading = true;
     this.collector
-      .getData(NotificationHistoryQuery.lastMonth())
+      .getData(query)
       .subscribe(
         data => {
           this.sortedData = data
@@ -112,7 +118,7 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
           subCategory === e.subCategory) === index)
     }).afterClosed().subscribe(result => {
         if (result && result === true) {
-          this.fetchLastMonthNotifications();
+          this.fetchNotifications(NotificationHistoryQuery.lastWeek());
         }
       }
     );
@@ -141,5 +147,11 @@ export class NotificationManagementPageComponent implements OnInit, OnDestroy {
       return false;
     }
     return element.wasReadBy(oid);
+  }
+
+  search() {
+    const result = new Date(this.range.value.end);
+    result.setDate(result.getDate() + 1);
+    this.fetchNotifications(NotificationHistoryQuery.from(this.range.value.start, result));
   }
 }

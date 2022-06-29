@@ -4,22 +4,27 @@
 
 .grass {
   background-color: #656d4a;
+  width: 95px;
 }
 
 .thermostat {
   background-color: #ee9b00;
+  width: 95px;
 }
 
 .warning {
   background-color: #bb3e03;
+  width: 95px;
 }
 
 .wb_sunny {
   background-color: #f9c74f;
+  width: 95px;
 }
 
 .opacity {
   background-color: #34a0a4;
+  width: 95px;
 }
 
 .schedule {
@@ -56,10 +61,12 @@
 
 .sensor {
   grid-area: sensor;
+  min-width: 500px;
 }
 
 .valve {
   grid-area: valve;
+  min-width: 500px;
 }
 
 .map-details {

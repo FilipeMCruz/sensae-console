@@ -15,4 +15,8 @@ export class NotificationHistoryQuery {
     start.setDate(start.getDate() - 7);
     return new NotificationHistoryQuery(start, current);
   }
+
+  static from(start: Date, end: Date) {
+    return new NotificationHistoryQuery(start, end);
+  }
 }

@@ -1,6 +1,5 @@
 @startuml process-view-level2-uc00
 
-skinparam Monochrome true
 skinparam sequenceMessageAlign center
 skinparam style strictuml
 hide unlinked

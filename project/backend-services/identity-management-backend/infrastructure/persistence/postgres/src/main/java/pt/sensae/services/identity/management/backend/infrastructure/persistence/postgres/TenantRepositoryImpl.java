@@ -78,7 +78,7 @@ public class TenantRepositoryImpl implements TenantRepository {
     @Transactional
     public Tenant updateProfile(Tenant updated) {
         var tenantPostgres = repository.findByEmail(updated.email().value())
-                .filter(d -> !d.phoneNumber.isBlank() && !d.email.isBlank() && !d.name.equalsIgnoreCase("Anonymous"));
+                .filter(d -> !d.email.isBlank() && !d.name.equalsIgnoreCase("Anonymous"));
 
         tenantPostgres.ifPresent(tenant -> {
             tenant.phoneNumber = updated.phoneNumber().value();

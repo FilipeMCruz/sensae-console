@@ -32,8 +32,9 @@ end
 declare Alarm
     @role( event )
     @expires ( 20m )
-    type : String
+    description : String
     deviceId : UUID
+    active: Boolean
 end
 
 //to ensure that only one alarm per device is sent
@@ -98,26 +99,26 @@ rule "Dispatch Fire Alarm - High Rate of Change - Humidity - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
+            active == true,
             $data.humidity - humidity >= 13,
             this after[0s,11m] $data
         )
     then
         Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
-        alarm.type = "Humidity";
+        alarm.setActive(true);
+        alarm.description = "Device " + $sensor.name + ": Humidity changed from " + $data.humidity + "% to " + $secData.humidity + "%.";
         insert(alarm);
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("humidityWithHighRateOfChange")
-                            .setDescription("Project #001 - Device " + $sensor.name + "\nHumidity changed from " + $data.humidity + "% to " + $secData.humidity + "%.")
+                            .setDescription("Project #001 - " + alarm.description)
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
                                 .setOther("Project #001")
                                 .build())
                             .build());
-        delete($data)
-        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
@@ -127,26 +128,26 @@ rule "Dispatch Fire Alarm - High Rate of Change - Temperature - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
+            active == true,
             temperature - $data.temperature >= 2.9,
             this after[0s,11m] $data
         )
     then
         Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
-        alarm.type = "Temperature";
+        alarm.setActive(true);
+        alarm.description = "Device " + $sensor.name + ": Temperature changed from " + $data.temperature + "ºC to " + $secData.temperature + "ºC.";
         insert(alarm);
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("temperatureWithHighRateOfChange")
-                            .setDescription("Project #001 - Device " + $sensor.name + "\nTemperature changed from " + $data.temperature + "ºC to " + $secData.temperature + "ºC.")
+                            .setDescription("Project #001 - " + alarm.description)
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
                                 .setOther("Project #001")
                                 .build())
                             .build());
-        delete($data)
-        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
@@ -156,46 +157,47 @@ rule "Dispatch Fire Alarm - High Rate of Change - CO2 - Project #001"
         $secData: SensorData(
             this != $data,
             deviceId == $sensor.deviceId,
+            active == true,
             co2 - $data.co2 >= 510,
             this after[0s,11m] $data
         )
     then
         Alarm alarm = new Alarm();
         alarm.deviceId = $sensor.deviceId;
-        alarm.type = "CO2";
+        alarm.setActive(true);
+        alarm.description = "Device " + $sensor.name + ": CO2 changed from " + $data.co2 + " ppm to " + $secData.co2 + " ppm.";
         insert(alarm);
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("co2WithHighRateOfChange")
-                            .setDescription("Project #001 - Device " + $sensor.name + "\nCO2 changed from " + $data.co2 + " ppm to " + $secData.co2 + " ppm.")
+                            .setDescription("Project #001 - " + alarm.description)
                             .setLevel(AlertLevel.WARNING)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($sensor.deviceId)
                                 .setOther("Project #001")
                                 .build())
                             .build());
-        delete($data)
-        delete($secData)
 end
 
 rule "Dispatch Fire Alarm - Multiple Alarms collected in short amount of time - scenario 1 - Project #001"
     when
-        $alarm : Alarm()
+        $alarm : Alarm(active == true)
         $secAlarm: Alarm(
             this != $alarm,
+            active == true,
             this after[0s,15m] $alarm
         )
     then
+        $alarm.setActive(false);
+        $secAlarm.setActive(false);
         dispatcher.publish(AlertBuilder.create()
                             .setCategory("fireDetention")
                             .setSubCategory("multipleAlarmsCollected")
-                            .setDescription("Project #001 - High Number of alarms detected")
+                            .setDescription("Project #001 - High Number of alarms detected:\n" + $alarm.description + "\n" + $secAlarm.description)
                             .setLevel(AlertLevel.CRITICAL)
                             .setContext(CorrelationDataBuilder.create()
                                 .setDeviceIds($alarm.deviceId)
                                 .setOther("Project #001")
                                 .build())
                             .build());
-        delete($alarm)
-        delete($secAlarm)
 end

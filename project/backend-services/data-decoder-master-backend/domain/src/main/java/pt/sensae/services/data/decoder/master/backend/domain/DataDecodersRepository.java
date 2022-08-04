@@ -3,7 +3,7 @@ package pt.sensae.services.data.decoder.master.backend.domain;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public interface SensorDataDecodersRepository {
+public interface DataDecodersRepository {
 
     DataDecoder save(DataDecoder records);
 

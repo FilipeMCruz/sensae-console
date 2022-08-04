@@ -3,7 +3,7 @@ package pt.sensae.services.data.decoder.master.backend.infrastructure.persistenc
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pt.sensae.services.data.decoder.master.backend.domain.DataDecoder;
-import pt.sensae.services.data.decoder.master.backend.domain.SensorDataDecodersRepository;
+import pt.sensae.services.data.decoder.master.backend.domain.DataDecodersRepository;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeId;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.persistence.postgres.mapper.DataDecoderMapper;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.persistence.postgres.repository.SensorDataTransformationsRepositoryPostgres;
@@ -13,11 +13,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Repository
-public class SensorDataDecodersRepositoryImpl implements SensorDataDecodersRepository {
+public class DataDecodersRepositoryImpl implements DataDecodersRepository {
 
     private final SensorDataTransformationsRepositoryPostgres repositoryPostgres;
 
-    public SensorDataDecodersRepositoryImpl(SensorDataTransformationsRepositoryPostgres repositoryPostgres) {
+    public DataDecodersRepositoryImpl(SensorDataTransformationsRepositoryPostgres repositoryPostgres) {
         this.repositoryPostgres = repositoryPostgres;
     }
 

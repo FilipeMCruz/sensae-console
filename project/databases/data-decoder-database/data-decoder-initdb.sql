@@ -9,9 +9,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS decoder;
+--DROP DATABASE IF EXISTS decoder;
 
-CREATE DATABASE decoder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
+--CREATE DATABASE decoder WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
 
 
 ALTER DATABASE decoder OWNER TO "user";

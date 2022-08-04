@@ -10,14 +10,14 @@ import pt.sensae.services.data.gateway.application.SensorDataPublisherService;
 
 @RestController
 @Api(description = "Data Gateway - REST Endpoint for Sensors data", tags = {"Sensors"})
-public class SensorController {
+public class DataController {
 
     private final SensorDataPublisherService service;
 
     @Value("${sensae.auth.key}")
     private String secret;
 
-    public SensorController(SensorDataPublisherService service) {
+    public DataController(SensorDataPublisherService service) {
         this.service = service;
     }
 

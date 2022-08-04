@@ -43,9 +43,9 @@ public class DataDecodersRepositoryImplTest {
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword()
+                    "spring.datasource.url=" + postgresSQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + postgresSQLContainer.getUsername(),
+                    "spring.datasource.password=" + postgresSQLContainer.getPassword()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
@@ -54,11 +54,11 @@ public class DataDecodersRepositoryImplTest {
     DataDecodersRepositoryImpl repository;
 
     @Container
-    public static PostgreSQLContainer postgreSQLContainer = DatabaseContainerTest.getInstance();
+    public static PostgreSQLContainer<?> postgresSQLContainer = DatabaseContainerTest.getInstance();
 
     @AfterEach
     public void cleanUp() throws SQLException {
-        performQuery(postgreSQLContainer, "TRUNCATE decoder");
+        performQuery(postgresSQLContainer, "TRUNCATE decoder");
     }
 
     @Test
@@ -69,14 +69,15 @@ public class DataDecodersRepositoryImplTest {
         Assertions.assertEquals("lgt92", save.id().getValue());
         Assertions.assertEquals("ascma", save.script().value());
 
-        var resultSet = performQuery(postgreSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'ascma'");
+        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'ascma'");
         Assertions.assertEquals("lgt92", resultSet.getString("device_type"));
         Assertions.assertEquals("ascma", resultSet.getString("script"));
+        resultSet.close();
     }
 
     @Test
     public void ensureSavedDecoderCanBeFound() throws SQLException {
-        performQuery(postgreSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
+        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *").close();
 
         var found = repository.findById(SensorTypeId.of("lgt92")).orElseThrow();
 
@@ -93,24 +94,26 @@ public class DataDecodersRepositoryImplTest {
 
     @Test
     public void ensureADecoderCanBeUpdated() throws SQLException {
-        var resultSetSt = performQuery(postgreSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
+        var resultSetSt = performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
         Assertions.assertEquals("lgt92", resultSetSt.getString("device_type"));
         Assertions.assertEquals("ascma", resultSetSt.getString("script"));
-
+        resultSetSt.close();
+        
         var dataDecoder = new DataDecoder(SensorTypeId.of("lgt92"), SensorTypeScript.of("nonono"));
         var save = repository.save(dataDecoder);
 
         Assertions.assertEquals("lgt92", save.id().getValue());
         Assertions.assertEquals("nonono", save.script().value());
 
-        var resultSet = performQuery(postgreSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'nonono'");
+        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'nonono'");
         Assertions.assertEquals("lgt92", resultSet.getString("device_type"));
         Assertions.assertEquals("nonono", resultSet.getString("script"));
+        resultSet.close();
     }
 
     @Test
     public void ensureSavedDecodersCanBeCollected() throws SQLException {
-        performQuery(postgreSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma'),('emd300th', 'lololol') RETURNING *");
+        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma'),('emd300th', 'lololol') RETURNING *").close();
 
         var found = repository.findAll().toList();
         Assertions.assertEquals(2, found.size());
@@ -134,14 +137,15 @@ public class DataDecodersRepositoryImplTest {
 
     @Test
     public void ensureSavedDecoderCanBeDeleted() throws SQLException {
-        performQuery(postgreSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
+        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
 
         var found = repository.delete(SensorTypeId.of("lgt92"));
 
         Assertions.assertEquals("lgt92", found.getValue());
 
-        var resultSet = performQuery(postgreSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92'");
+        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92'");
         Assertions.assertFalse(resultSet.next());
+        resultSet.close();
     }
 
     protected ResultSet performQuery(JdbcDatabaseContainer<?> container, String sql) throws SQLException {

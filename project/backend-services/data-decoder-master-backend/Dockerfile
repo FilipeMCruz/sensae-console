@@ -17,7 +17,7 @@ COPY pom.xml pom.xml
 RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=data-decoder-master-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,persistence,postgres,domain-services
 
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM openjdk:17
 WORKDIR /app

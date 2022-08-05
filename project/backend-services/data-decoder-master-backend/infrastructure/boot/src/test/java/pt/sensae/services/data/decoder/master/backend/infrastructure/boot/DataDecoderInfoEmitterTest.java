@@ -9,12 +9,17 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import pt.sensae.services.data.decoder.master.backend.application.DataDecoderHandlerService;
+import pt.sensae.services.data.decoder.master.backend.application.RoutingKeysProvider;
 import pt.sensae.services.data.decoder.master.backend.domain.DataDecoder;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeId;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeScript;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderNotificationDTOImpl;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderNotificationTypeDTOImpl;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
+import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
+import pt.sharespot.iot.core.keys.ContainerTypeOptions;
+import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 
 public class DataDecoderInfoEmitterTest extends IntegrationTest {
 
@@ -27,20 +32,28 @@ public class DataDecoderInfoEmitterTest extends IntegrationTest {
     @Autowired
     RabbitTemplate amqpTemplate;
 
+    @Autowired
+    RoutingKeysProvider provider;
+
     @AfterEach
     public void init() {
+        var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+                .withContextType(ContextTypeOptions.DATA_DECODER)
+                .withContainerType(ContainerTypeOptions.DATA_DECODER)
+                .withOperationType(OperationTypeOptions.INFO).build().orElseThrow();
+
         var queue = QueueBuilder.durable("integration-test").build();
         rabbitAdmin.declareQueue(queue);
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue)
                 .to(new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE))
-                .with("#"));
+                .with(routingKeys.toString()));
     }
 
     //Here because spring amqp fails to register queues and binding before the first message is sent
     @Test
-    public void smokeTest() {
+    public void aSmokeTest() {
         publisher.publishDelete(SensorTypeId.of("lgt92"));
-        Assertions.assertThrows(AmqpIOException.class, () -> amqpTemplate.receiveAndConvert("integration-test"));
+        amqpTemplate.receiveAndConvert("integration-test");
     }
 
     @Test

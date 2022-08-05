@@ -9,6 +9,8 @@ import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeId;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @Service
 public class LastTimeSeenDecoderCache implements LastTimeSeenDecoderRepository {

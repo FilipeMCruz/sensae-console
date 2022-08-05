@@ -1,4 +1,4 @@
-package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
+package pt.sensae.services.data.decoder.master.backend.infrastructure;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;

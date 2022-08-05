@@ -3,6 +3,7 @@ package pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.a
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import pt.sensae.services.data.decoder.master.backend.application.DataDecoderNotificationDTO;
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.InternalRoutingKeys;
@@ -18,6 +19,7 @@ import javax.annotation.PostConstruct;
 public class DataDecoderInfoEmitter {
 
     private final AmqpTemplate template;
+
     private final DataDecoderHandlerService service;
 
     private final InternalRoutingKeys info;
@@ -38,7 +40,10 @@ public class DataDecoderInfoEmitter {
 
     @PostConstruct
     private void init() {
-        service.getSinglePublisher()
-                .subscribe(outData -> template.convertAndSend(IoTCoreTopic.INTERNAL_EXCHANGE, info.toString(), outData));
+        service.getSinglePublisher().subscribe(this::emit);
+    }
+
+    protected void emit(DataDecoderNotificationDTO outData) {
+        template.convertAndSend(IoTCoreTopic.INTERNAL_EXCHANGE, info.toString(), outData);
     }
 }

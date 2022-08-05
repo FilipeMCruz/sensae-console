@@ -90,5 +90,11 @@
             <version>1.17.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>rabbitmq</artifactId>
+            <version>1.17.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

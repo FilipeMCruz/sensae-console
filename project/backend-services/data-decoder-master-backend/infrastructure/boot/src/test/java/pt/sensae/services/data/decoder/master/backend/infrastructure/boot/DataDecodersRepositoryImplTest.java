@@ -2,17 +2,15 @@ package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -20,6 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import pt.sensae.services.data.decoder.master.backend.domain.DataDecoder;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeId;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeScript;
+import pt.sensae.services.data.decoder.master.backend.infrastructure.containers.DatabaseContainerTest;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.persistence.postgres.DataDecodersRepositoryImpl;
 
 import javax.sql.DataSource;
@@ -29,32 +28,10 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
-@SpringBootTest
-@Testcontainers
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(initializers = {DataDecodersRepositoryImplTest.Initializer.class})
-public class DataDecodersRepositoryImplTest {
-    static {
-        // Postgres JDBC driver uses JUL; disable it to avoid annoying, irrelevant, stderr logs during connection testing
-        LogManager.getLogManager().getLogger("").setLevel(Level.OFF);
-    }
-
-    static class Initializer
-            implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgresSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + postgresSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgresSQLContainer.getPassword()
-            ).applyTo(configurableApplicationContext.getEnvironment());
-        }
-    }
+public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @Autowired
     DataDecodersRepositoryImpl repository;
-
-    @Container
-    public static PostgreSQLContainer<?> postgresSQLContainer = DatabaseContainerTest.getInstance();
 
     @AfterEach
     public void cleanUp() throws SQLException {
@@ -98,7 +75,7 @@ public class DataDecodersRepositoryImplTest {
         Assertions.assertEquals("lgt92", resultSetSt.getString("device_type"));
         Assertions.assertEquals("ascma", resultSetSt.getString("script"));
         resultSetSt.close();
-        
+
         var dataDecoder = new DataDecoder(SensorTypeId.of("lgt92"), SensorTypeScript.of("nonono"));
         var save = repository.save(dataDecoder);
 
@@ -166,6 +143,7 @@ public class DataDecodersRepositoryImplTest {
         config.setUsername(container.getUsername());
         config.setPassword(container.getPassword());
         config.setDriverClassName(container.getDriverClassName());
+        config.setMaximumPoolSize(1);
         return new HikariDataSource(config);
     }
 }

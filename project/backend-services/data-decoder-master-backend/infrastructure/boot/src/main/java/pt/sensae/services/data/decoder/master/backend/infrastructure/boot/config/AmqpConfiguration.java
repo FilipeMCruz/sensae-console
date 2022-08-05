@@ -13,7 +13,6 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.data.decoder.master.backend.application.RoutingKeysProvider;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.controller.DataDecoderRequestConsumer;
 
 @Configuration
 public class AmqpConfiguration {

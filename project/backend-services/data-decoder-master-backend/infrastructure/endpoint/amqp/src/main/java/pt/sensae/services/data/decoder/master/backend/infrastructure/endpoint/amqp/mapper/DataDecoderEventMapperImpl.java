@@ -6,8 +6,8 @@ import pt.sensae.services.data.decoder.master.backend.application.DataDecoderNot
 import pt.sensae.services.data.decoder.master.backend.application.SensorTypeIdDTO;
 import pt.sensae.services.data.decoder.master.backend.domain.DataDecoder;
 import pt.sensae.services.data.decoder.master.backend.domain.SensorTypeId;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderNotificationTypeDTOImpl;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderDTOImpl;
+import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderNotificationTypeDTOImpl;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.DataDecoderNotificationDTOImpl;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.SensorTypeIdDTOImpl;
 

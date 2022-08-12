@@ -1,20 +1,25 @@
-FROM maven:3.8.5-openjdk-18 AS build
-WORKDIR /app
-# get all pom.xml to pull only external dependencies
-COPY application/pom.xml application/pom.xml
-COPY infrastructure/boot/pom.xml infrastructure/boot/pom.xml
-COPY infrastructure/endpoint/pom.xml infrastructure/endpoint/pom.xml
-COPY infrastructure/endpoint/rest/pom.xml infrastructure/endpoint/rest/pom.xml
-COPY infrastructure/endpoint/amqp/pom.xml infrastructure/endpoint/amqp/pom.xml
-COPY infrastructure/pom.xml infrastructure/pom.xml
-COPY pom.xml pom.xml
-# build all external dependencies
-RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=data-gateway,application,infrastructure,endpoint,rest,boot,amqp
+FROM quay.io/quarkus/ubi-quarkus-native-image:22.1-java11 AS build
+COPY --chown=quarkus:quarkus mvnw /code/mvnw
+COPY --chown=quarkus:quarkus .mvn /code/.mvn
+COPY --chown=quarkus:quarkus pom.xml /code/
+USER quarkus
+WORKDIR /code
+RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline
+COPY src /code/src                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+RUN ./mvnw package -Pnative
 
-COPY . .
-RUN mvn clean package
+## Stage 2 : create the docker final image
+FROM quay.io/quarkus/quarkus-micro-image:1.0
+WORKDIR /work/
+COPY --from=build /code/target/*-runner /work/application
 
-FROM openjdk:17
-WORKDIR /app
-COPY --from=build /app/infrastructure/boot/target/data-gateway.war /app
-CMD ["java", "-jar", "data-gateway.war"]
+# set up permissions for user `1001`
+RUN chmod 775 /work /work/application \
+  && chown -R 1001 /work \
+  && chmod -R "g+rwX" /work \
+  && chown -R 1001:root /work
+
+EXPOSE 8080
+USER 1001
+
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]

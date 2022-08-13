@@ -36,17 +36,13 @@ services:
     volumes:
       - ./databases-data/prod/data-processor-database:/var/lib/postgresql/data/
   # Data Decoder Context
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-decoder-flow:
+    build: backend-services/data-decoder-flow
+    image: sensae/data-decoder-flow
     env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
+      - ./secrets/prod/data-decoder-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8083:8080
   data-decoder-master-backend:
     build: backend-services/data-decoder-master-backend
     image: data-decoder-master-backend

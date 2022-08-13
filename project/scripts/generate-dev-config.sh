@@ -20,7 +20,7 @@ envsubst < $SECRET_BACK/device-management-master-backend.properties > backend-se
 envsubst < $SECRET_BACK/device-management-slave-backend.properties > backend-services/device-management-slave-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/rule-management-backend.properties > backend-services/rule-management-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-decoder-master-backend.properties > backend-services/data-decoder-master-backend/infrastructure/boot/$BACK_SUFFIX
-envsubst < $SECRET_BACK/data-decoder-slave-backend.properties > backend-services/data-decoder-slave-backend/infrastructure/boot/$BACK_SUFFIX
+envsubst < $SECRET_BACK/data-decoder-flow.properties > backend-services/data-decoder-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-gateway.properties > backend-services/data-gateway/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-processor-master-backend.properties > backend-services/data-processor-master-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-processor-slave-backend.properties > backend-services/data-processor-slave-backend/infrastructure/boot/$BACK_SUFFIX

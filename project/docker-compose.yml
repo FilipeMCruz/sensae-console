@@ -115,13 +115,11 @@ services:
       - 443
     depends_on:
       - data-decoder-master-backend
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-decoder-flow:
+    build: backend-services/data-decoder-flow
+    image: sensae/data-decoder-flow
     env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
+      - ./secrets/prod/data-decoder-flow.env
     networks:
       - sensae-network
   data-decoder-master-backend:

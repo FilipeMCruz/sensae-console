@@ -21,7 +21,7 @@ envsubst < $SECRET_BACK/device-management-master-backend.env > $BACK_PREFFIX/dev
 envsubst < $SECRET_BACK/device-management-slave-backend.env > $BACK_PREFFIX/device-management-slave-backend.env
 envsubst < $SECRET_BACK/rule-management-backend.env > $BACK_PREFFIX/rule-management-backend.env
 envsubst < $SECRET_BACK/data-decoder-master-backend.env > $BACK_PREFFIX/data-decoder-master-backend.env
-envsubst < $SECRET_BACK/data-decoder-slave-backend.env > $BACK_PREFFIX/data-decoder-slave-backend.env
+envsubst < $SECRET_BACK/data-decoder-flow.env > $BACK_PREFFIX/data-decoder-flow.env
 envsubst < $SECRET_BACK/data-gateway.env > $BACK_PREFFIX/data-gateway.env
 envsubst < $SECRET_BACK/data-processor-master-backend.env > $BACK_PREFFIX/data-processor-master-backend.env
 envsubst < $SECRET_BACK/data-processor-slave-backend.env > $BACK_PREFFIX/data-processor-slave-backend.env

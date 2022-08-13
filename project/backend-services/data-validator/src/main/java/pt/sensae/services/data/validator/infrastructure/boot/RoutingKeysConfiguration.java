@@ -13,6 +13,6 @@ public class RoutingKeysConfiguration implements RoutingKeysProvider {
 
     @Override
     public SensorRoutingKeys.Builder getBuilder(RoutingKeysBuilderOptions options) {
-        return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_GATEWAY, options);
+        return new SensorRoutingKeysFactory().getBuilder(ContainerTypeOptions.DATA_VALIDATOR, options);
     }
 }

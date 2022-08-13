@@ -12,7 +12,7 @@ kill $(cat ./test-examples/dev-run/pid/device-management-slave-backend) && rm ./
 kill $(cat ./test-examples/dev-run/pid/notification-management-backend) && rm ./test-examples/dev-run/pid/notification-management-backend
 kill $(cat ./test-examples/dev-run/pid/rule-management-backend) && rm ./test-examples/dev-run/pid/rule-management-backend
 kill $(cat ./test-examples/dev-run/pid/data-decoder-master-backend) && rm ./test-examples/dev-run/pid/data-decoder-master-backend
-kill $(cat ./test-examples/dev-run/pid/data-decoder-slave-backend) && rm ./test-examples/dev-run/pid/data-decoder-slave-backend
+kill $(cat ./test-examples/dev-run/pid/data-decoder-flow) && rm ./test-examples/dev-run/pid/data-decoder-flow
 kill $(cat ./test-examples/dev-run/pid/data-gateway) && rm ./test-examples/dev-run/pid/data-gateway
 kill $(cat ./test-examples/dev-run/pid/data-processor-master-backend) && rm ./test-examples/dev-run/pid/data-processor-master-backend
 kill $(cat ./test-examples/dev-run/pid/data-processor-slave-backend) && rm ./test-examples/dev-run/pid/data-processor-slave-backend

@@ -23,7 +23,7 @@ envsubst < $SECRET_BACK/data-decoder-master-backend.properties > backend-service
 envsubst < $SECRET_BACK/data-decoder-flow.properties > backend-services/data-decoder-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-gateway.properties > backend-services/data-gateway/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-processor-master-backend.properties > backend-services/data-processor-master-backend/infrastructure/boot/$BACK_SUFFIX
-envsubst < $SECRET_BACK/data-processor-slave-backend.properties > backend-services/data-processor-slave-backend/infrastructure/boot/$BACK_SUFFIX
+envsubst < $SECRET_BACK/data-processor-flow.properties > backend-services/data-processor-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-store.properties > backend-services/data-store/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/fleet-management-backend.properties > backend-services/fleet-management-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/identity-management-backend.properties > backend-services/identity-management-backend/infrastructure/boot/$BACK_SUFFIX

@@ -72,17 +72,13 @@ services:
     volumes:
       - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
   # Data Validator Context
-  data-validator-backend:
-    build: backend-services/data-validator-backend
-    image: data-validator-backend
-    environment:
-      spring_profiles_active: prod
+  data-validator:
+    build: backend-services/data-validator
+    image: sensae/data-validator
     env_file:
-      - ./secrets/prod/data-validator-backend.env
+      - ./secrets/prod/data-validator.env
     networks:
       - sensae-network
-    ports:
-      - 8089:8080
   # Identity Management Context
   device-ownership-backend:
     build: backend-services/device-ownership-backend

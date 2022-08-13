@@ -7,14 +7,14 @@ cd "$ROOT_DIR"/project || exit
 . ./secrets/dev.conf
 
 envsubst < secrets/templates/dev/backend-services/alert-dispatcher-backend.properties > backend-services/alert-dispatcher-backend/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/backend-services/data-validator-backend.properties > backend-services/data-validator-backend/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/data-validator.properties > backend-services/data-validator/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/device-commander-backend.properties > backend-services/device-commander-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/device-management-master-backend.properties > backend-services/device-management-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/device-management-slave-backend.properties > backend-services/device-management-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/rule-management-backend.properties > backend-services/rule-management-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-decoder-master-backend.properties > backend-services/data-decoder-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-decoder-slave-backend.properties > backend-services/data-decoder-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
-envsubst < secrets/templates/dev/backend-services/data-gateway.properties > backend-services/data-gateway/infrastructure/boot/src/main/resources/application-dev.properties
+envsubst < secrets/templates/dev/backend-services/data-gateway.properties > backend-services/data-gateway/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-processor-master-backend.properties > backend-services/data-processor-master-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-processor-slave-backend.properties > backend-services/data-processor-slave-backend/infrastructure/boot/src/main/resources/application-dev.properties
 envsubst < secrets/templates/dev/backend-services/data-store.properties > backend-services/data-store/infrastructure/boot/src/main/resources/application-dev.properties

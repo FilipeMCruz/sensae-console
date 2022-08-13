@@ -7,7 +7,7 @@ cd "$ROOT_DIR"/project || exit
 . ./secrets/prod.conf
 
 envsubst < secrets/templates/prod/backend-services/alert-dispatcher-backend.env > secrets/prod/alert-dispatcher-backend.env
-envsubst < secrets/templates/prod/backend-services/data-validator-backend.env > secrets/prod/data-validator-backend.env
+envsubst < secrets/templates/prod/backend-services/data-validator.env > secrets/prod/data-validator.env
 envsubst < secrets/templates/prod/backend-services/device-commander-backend.env > secrets/prod/device-commander-backend.env
 envsubst < secrets/templates/prod/backend-services/device-management-master-backend.env > secrets/prod/device-management-master-backend.env
 envsubst < secrets/templates/prod/backend-services/device-management-slave-backend.env > secrets/prod/device-management-slave-backend.env

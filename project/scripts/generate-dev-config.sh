@@ -15,7 +15,7 @@ FRONT_SUFFIX=src/environments/environment.ts
 
 envsubst < $SECRET_BACK/alert-dispatcher-backend.properties > backend-services/alert-dispatcher-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-validator.properties > backend-services/data-validator/$BACK_SUFFIX
-envsubst < $SECRET_BACK/device-commander-backend.properties > backend-services/device-commander-backend/infrastructure/boot/$BACK_SUFFIX
+envsubst < $SECRET_BACK/device-commander.properties > backend-services/device-commander/$BACK_SUFFIX
 envsubst < $SECRET_BACK/device-management-master-backend.properties > backend-services/device-management-master-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/device-management-flow.properties > backend-services/device-management-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/rule-management-backend.properties > backend-services/rule-management-backend/infrastructure/boot/$BACK_SUFFIX

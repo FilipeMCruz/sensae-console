@@ -16,7 +16,7 @@ FRONT_SUFFIX=src/environments/environment.prod.ts
 
 envsubst < $SECRET_BACK/alert-dispatcher-backend.env > $BACK_PREFFIX/alert-dispatcher-backend.env
 envsubst < $SECRET_BACK/data-validator.env > $BACK_PREFFIX/data-validator.env
-envsubst < $SECRET_BACK/device-commander-backend.env > $BACK_PREFFIX/device-commander-backend.env
+envsubst < $SECRET_BACK/device-commander.env > $BACK_PREFFIX/device-commander.env
 envsubst < $SECRET_BACK/device-management-master-backend.env > $BACK_PREFFIX/device-management-master-backend.env
 envsubst < $SECRET_BACK/device-management-flow.env > $BACK_PREFFIX/device-management-flow.env
 envsubst < $SECRET_BACK/rule-management-backend.env > $BACK_PREFFIX/rule-management-backend.env

@@ -6,7 +6,7 @@ cd "$ROOT_DIR"/project || exit
 
 ./scripts/run-backend-silent-dev.sh alert-dispatcher-backend
 ./scripts/run-backend-silent-quarkus-dev.sh data-validator
-./scripts/run-backend-silent-dev.sh device-commander-backend
+./scripts/run-backend-silent-quarkus-dev.sh device-commander
 ./scripts/run-backend-silent-dev.sh device-management-master-backend
 ./scripts/run-backend-silent-quarkus-dev.sh device-management-flow
 ./scripts/run-backend-silent-dev.sh notification-management-backend

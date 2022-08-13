@@ -6,7 +6,7 @@ cd "$ROOT_DIR"/project || exit
 
 kill $(cat ./test-examples/dev-run/pid/alert-dispatcher-backend) && rm ./test-examples/dev-run/pid/alert-dispatcher-backend
 kill $(cat ./test-examples/dev-run/pid/data-validator) && rm ./test-examples/dev-run/pid/data-validator
-kill $(cat ./test-examples/dev-run/pid/device-commander-backend) && rm ./test-examples/dev-run/pid/device-commander-backend
+kill $(cat ./test-examples/dev-run/pid/device-commander) && rm ./test-examples/dev-run/pid/device-commander
 kill $(cat ./test-examples/dev-run/pid/device-management-master-backend) && rm ./test-examples/dev-run/pid/device-management-master-backend
 kill $(cat ./test-examples/dev-run/pid/device-management-slave-backend) && rm ./test-examples/dev-run/pid/device-management-slave-backend
 kill $(cat ./test-examples/dev-run/pid/notification-management-backend) && rm ./test-examples/dev-run/pid/notification-management-backend

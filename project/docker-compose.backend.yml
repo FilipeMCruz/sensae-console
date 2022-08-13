@@ -112,17 +112,13 @@ services:
       - ./secrets/prod/device-management-flow.env
     networks:
       - sensae-network
-  device-commander-backend:
-    build: backend-services/device-commander-backend
-    image: device-commander-backend
-    environment:
-      spring_profiles_active: prod
+  device-commander:
+    build: backend-services/device-commander
+    image: sensae/device-commander
     env_file:
-      - ./secrets/prod/device-commander-backend.env
+      - ./secrets/prod/device-commander.env
     networks:
       - sensae-network
-    ports:
-      - 8090:8080
   device-management-master-backend:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend

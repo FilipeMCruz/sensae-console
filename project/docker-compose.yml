@@ -8,7 +8,7 @@ services:
     networks:
       - sensae-network
     ports:
-      - 5672:5672
+      - 5672
       - 15672
   ui-aggregator:
     build:
@@ -216,13 +216,11 @@ services:
       - 443
     depends_on:
       - device-management-master-backend
-  device-management-slave-backend:
-    build: backend-services/device-management-slave-backend
-    image: device-management-slave-backend
-    environment:
-      spring_profiles_active: prod
+  device-management-flow:
+    build: backend-services/device-management-flow
+    image: sensae/device-management-flow
     env_file:
-      - ./secrets/prod/device-management-slave-backend.env
+      - ./secrets/prod/device-management-flow.env
     networks:
       - sensae-network
   device-commander-backend:

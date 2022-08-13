@@ -109,17 +109,13 @@ services:
     volumes:
       - ./databases-data/prod/identity-management-database:/var/lib/postgresql/data/
   # Device Management Context
-  device-management-slave-backend:
-    build: backend-services/device-management-slave-backend
-    image: device-management-slave-backend
-    environment:
-      spring_profiles_active: prod
+  device-management-flow:
+    build: backend-services/device-management-flow
+    image: sensae/device-management-flow
     env_file:
-      - ./secrets/prod/device-management-slave-backend.env
+      - ./secrets/prod/device-management-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8087:8080
   device-commander-backend:
     build: backend-services/device-commander-backend
     image: device-commander-backend

@@ -17,7 +17,7 @@ envsubst < $SECRET_BACK/alert-dispatcher-backend.properties > backend-services/a
 envsubst < $SECRET_BACK/data-validator.properties > backend-services/data-validator/$BACK_SUFFIX
 envsubst < $SECRET_BACK/device-commander-backend.properties > backend-services/device-commander-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/device-management-master-backend.properties > backend-services/device-management-master-backend/infrastructure/boot/$BACK_SUFFIX
-envsubst < $SECRET_BACK/device-management-slave-backend.properties > backend-services/device-management-slave-backend/infrastructure/boot/$BACK_SUFFIX
+envsubst < $SECRET_BACK/device-management-flow.properties > backend-services/device-management-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/rule-management-backend.properties > backend-services/rule-management-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-decoder-master-backend.properties > backend-services/data-decoder-master-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/data-decoder-flow.properties > backend-services/data-decoder-flow/$BACK_SUFFIX

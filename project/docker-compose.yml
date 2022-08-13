@@ -167,13 +167,11 @@ services:
       - 443
     depends_on:
       - identity-management-backend
-  device-ownership-backend:
-    build: backend-services/device-ownership-backend
-    image: device-ownership-backend
-    environment:
-      spring_profiles_active: prod
+  device-ownership-flow:
+    build: backend-services/device-ownership-flow
+    image: sensae/device-ownership-flow
     env_file:
-      - ./secrets/prod/device-ownership-backend.env
+      - ./secrets/prod/device-ownership-flow.env
     networks:
       - sensae-network
   identity-management-backend:

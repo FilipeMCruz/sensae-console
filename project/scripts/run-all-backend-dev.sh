@@ -19,6 +19,6 @@ cd "$ROOT_DIR"/project || exit
 # ./scripts/run-backend-silent-dev.sh data-store
 ./scripts/run-backend-silent-dev.sh fleet-management-backend
 ./scripts/run-backend-silent-dev.sh identity-management-backend
-./scripts/run-backend-silent-dev.sh device-ownership-backend
+./scripts/run-backend-silent-quarkus-dev.sh device-ownership-flow
 ./scripts/run-backend-silent-dev.sh smart-irrigation-backend
 ./scripts/run-backend-silent-dev.sh notification-dispatcher-backend

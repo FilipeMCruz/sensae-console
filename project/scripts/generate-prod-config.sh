@@ -28,7 +28,7 @@ envsubst < $SECRET_BACK/data-processor-slave-backend.env > $BACK_PREFFIX/data-pr
 envsubst < $SECRET_BACK/data-store-backend.env > $BACK_PREFFIX/data-store-backend.env
 envsubst < $SECRET_BACK/fleet-management-backend.env > $BACK_PREFFIX/fleet-management-backend.env
 envsubst < $SECRET_BACK/identity-management-backend.env > $BACK_PREFFIX/identity-management-backend.env
-envsubst < $SECRET_BACK/device-ownership-backend.env > $BACK_PREFFIX/device-ownership-backend.env
+envsubst < $SECRET_BACK/device-ownership-flow.env > $BACK_PREFFIX/device-ownership-flow.env
 envsubst < $SECRET_BACK/smart-irrigation-backend.env > $BACK_PREFFIX/smart-irrigation-backend.env
 envsubst < $SECRET_BACK/notification-management-backend.env > $BACK_PREFFIX/notification-management-backend.env
 envsubst < $SECRET_BACK/notification-dispatcher-backend.env > $BACK_PREFFIX/notification-dispatcher-backend.env

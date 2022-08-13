@@ -19,6 +19,6 @@ kill $(cat ./test-examples/dev-run/pid/data-processor-slave-backend) && rm ./tes
 # kill $(cat ./test-examples/dev-run/pid/data-store) && rm ./test-examples/dev-run/pid/data-store
 kill $(cat ./test-examples/dev-run/pid/fleet-management-backend) && rm ./test-examples/dev-run/pid/fleet-management-backend
 kill $(cat ./test-examples/dev-run/pid/identity-management-backend) && rm ./test-examples/dev-run/pid/identity-management-backend
-kill $(cat ./test-examples/dev-run/pid/device-ownership-backend) && rm ./test-examples/dev-run/pid/device-ownership-backend
+kill $(cat ./test-examples/dev-run/pid/device-ownership-flow) && rm ./test-examples/dev-run/pid/device-ownership-flow
 kill $(cat ./test-examples/dev-run/pid/smart-irrigation-backend) && rm ./test-examples/dev-run/pid/smart-irrigation-backend
 kill $(cat ./test-examples/dev-run/pid/notification-dispatcher-backend) && rm ./test-examples/dev-run/pid/notification-dispatcher-backend

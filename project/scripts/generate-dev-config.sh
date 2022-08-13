@@ -27,7 +27,7 @@ envsubst < $SECRET_BACK/data-processor-flow.properties > backend-services/data-p
 envsubst < $SECRET_BACK/data-store.properties > backend-services/data-store/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/fleet-management-backend.properties > backend-services/fleet-management-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/identity-management-backend.properties > backend-services/identity-management-backend/infrastructure/boot/$BACK_SUFFIX
-envsubst < $SECRET_BACK/device-ownership-backend.properties > backend-services/device-ownership-backend/infrastructure/boot/$BACK_SUFFIX
+envsubst < $SECRET_BACK/device-ownership-flow.properties > backend-services/device-ownership-flow/$BACK_SUFFIX
 envsubst < $SECRET_BACK/smart-irrigation-backend.properties > backend-services/smart-irrigation-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/notification-management-backend.properties > backend-services/notification-management-backend/infrastructure/boot/$BACK_SUFFIX
 envsubst < $SECRET_BACK/notification-dispatcher-backend.properties > backend-services/notification-dispatcher-backend/infrastructure/boot/$BACK_SUFFIX

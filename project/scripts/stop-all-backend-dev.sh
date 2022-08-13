@@ -5,7 +5,7 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 cd "$ROOT_DIR"/project || exit
 
 kill $(cat ./test-examples/dev-run/pid/alert-dispatcher-backend) && rm ./test-examples/dev-run/pid/alert-dispatcher-backend
-kill $(cat ./test-examples/dev-run/pid/data-validator-backend) && rm ./test-examples/dev-run/pid/data-validator-backend
+kill $(cat ./test-examples/dev-run/pid/data-validator) && rm ./test-examples/dev-run/pid/data-validator
 kill $(cat ./test-examples/dev-run/pid/device-commander-backend) && rm ./test-examples/dev-run/pid/device-commander-backend
 kill $(cat ./test-examples/dev-run/pid/device-management-master-backend) && rm ./test-examples/dev-run/pid/device-management-master-backend
 kill $(cat ./test-examples/dev-run/pid/device-management-slave-backend) && rm ./test-examples/dev-run/pid/device-management-slave-backend

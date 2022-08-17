@@ -8,7 +8,7 @@ public class DatabaseContainerTest extends PostgreSQLContainer<DatabaseContainer
     private static DatabaseContainerTest container;
 
     private DatabaseContainerTest() {
-        super(DockerImageName.parse(IMAGE_VERSION).asCompatibleSubstituteFor("postgres:14.3"));
+        super(DockerImageName.parse(IMAGE_VERSION).asCompatibleSubstituteFor("postgres:14.5"));
     }
 
     public static DatabaseContainerTest getInstance() {

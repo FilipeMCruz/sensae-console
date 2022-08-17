@@ -1,5 +1,7 @@
 package pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb;
 
+import io.questdb.client.Sender;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
@@ -26,6 +28,9 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Value("${sensae.questdb.ilp.address}")
+    private String address;
+
     public SensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository,
                                     ProcessedSensorDataMapperImpl mapper,
                                     JdbcTemplate jdbcTemplate) {
@@ -34,17 +39,21 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //TODO change this to a bulk insert with batchUpdate https://www.baeldung.com/spring-jdbc-jdbctemplate
     @Override
     public void insert(SensorDataDTO dao) {
-        mapper.dtoToDao(dao).forEach(data ->
-                this.repository.insert(data.dataId,
-                        data.deviceName,
-                        data.deviceId,
-                        data.gpsData,
-                        data.motion,
-                        data.reportedAt,
-                        data.domainId));
+        try (Sender sender = Sender.builder().address(address).build()) {
+            mapper.dtoToDao(dao).forEach(data ->
+                    sender.table("data")
+                            .symbol("data_id", data.dataId)
+                            .symbol("device_id", data.deviceId)
+                            .symbol("device_name", data.deviceName)
+                            .symbol("gps_data", data.gpsData)
+                            .symbol("motion", data.motion)
+                            .symbol("domain", data.domainId)
+                            .atNow()
+            );
+            sender.flush();
+        }
     }
 
     //TODO: "in" clause has a bug in Questdb, for now better use this

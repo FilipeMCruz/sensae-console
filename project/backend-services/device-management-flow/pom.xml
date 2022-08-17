@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>pt.sensae.services</groupId>
     <artifactId>device-management-flow</artifactId>
-    <version>0.9.0</version>
+    <version>0.10.0</version>
     <properties>
         <compiler-plugin.version>3.8.1</compiler-plugin.version>
         <maven.compiler.release>17</maven.compiler.release>

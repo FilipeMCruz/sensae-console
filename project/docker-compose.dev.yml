@@ -64,7 +64,7 @@ services:
     volumes:
       - ./databases-data/prod/smart-irrigation-business-database:/var/lib/postgresql/data/
   fleet-management-data-database:
-    image: questdb/questdb:6.4.3
+    image: questdb/questdb:6.5
     ports:
       - 8812:8812
       - 9000:9000
@@ -73,7 +73,7 @@ services:
     volumes:
       - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
   smart-irrigation-data-database:
-    image: questdb/questdb:6.4.3
+    image: questdb/questdb:6.5
     ports:
       - 8898:8812
       - 9098:9000

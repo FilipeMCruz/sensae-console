@@ -1,58 +1,66 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb;
 
+import io.questdb.client.Sender;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import pt.sensae.services.smart.irrigation.backend.domain.exceptions.DatabaseBusyException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.DeviceId;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.Data;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataRepository;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.query.DataQuery;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.mapper.DataMapperImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
-import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.repository.DataRepositoryQuestDB;
 
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository
 public class DataRepositoryImpl implements DataRepository {
 
-    private final DataRepositoryQuestDB repository;
-
     private final JdbcTemplate jdbcTemplate;
 
-    public DataRepositoryImpl(DataRepositoryQuestDB repository, @Qualifier("questdb") JdbcTemplate jdbcTemplate) {
-        this.repository = repository;
+    @Value("${sensae.questdb.ilp.address}")
+    private String address;
+
+    public DataRepositoryImpl(@Qualifier("questdb") JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public void store(Data data) {
         var dataQuestDB = DataMapperImpl.toDao(data);
-        try {
-            this.repository.insert(dataQuestDB.dataId,
-                    dataQuestDB.deviceId,
-                    dataQuestDB.deviceType,
-                    dataQuestDB.reportedAt,
-                    dataQuestDB.temperature,
-                    dataQuestDB.humidity,
-                    dataQuestDB.soilMoisture,
-                    dataQuestDB.illuminance,
-                    dataQuestDB.valveStatus);
-        } catch (DataAccessException ex) {
-            throw new DatabaseBusyException("Table busy");
+        try (Sender sender = Sender.builder().address(address).build()) {
+            sender.table("smart_irrigation_data")
+                    .symbol("data_id", dataQuestDB.dataId)
+                    .symbol("device_id", dataQuestDB.deviceId)
+                    .symbol("device_type", dataQuestDB.deviceType);
+
+            if (dataQuestDB.temperature != null)
+                sender.doubleColumn("payload_temperature", dataQuestDB.temperature);
+
+            if (dataQuestDB.humidity != null)
+                sender.doubleColumn("payload_humidity", dataQuestDB.humidity);
+
+            if (dataQuestDB.soilMoisture != null)
+                sender.doubleColumn("payload_soil_moisture", dataQuestDB.soilMoisture);
+
+            if (dataQuestDB.illuminance != null)
+                sender.doubleColumn("payload_illuminance", dataQuestDB.illuminance);
+
+            if (dataQuestDB.valveStatus != null)
+                sender.boolColumn("payload_valve_status", dataQuestDB.valveStatus);
+
+            sender.atNow();
+            sender.flush();
         }
     }
 
     @Override
     public Stream<Data> fetch(DataQuery query) {
-        if (query.deviceId().isEmpty()) {
-            return Stream.empty();
-        }
+        if (query.deviceId().isEmpty()) return Stream.empty();
+
         var devices = inConcat(query.deviceId().stream().map(d -> d.value().toString()));
         var open = Timestamp.from(query.open().value()).toString();
         var close = Timestamp.from(query.close().value()).toString();
@@ -63,9 +71,8 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Stream<Data> fetchLatest(Stream<DeviceId> deviceIds) {
         var collect = deviceIds.collect(Collectors.toSet());
-        if(collect.isEmpty()) {
-            return Stream.empty();
-        }
+        if (collect.isEmpty()) return Stream.empty();
+
         var devices = inConcat(collect.stream().map(d -> d.value().toString()));
         return fetchLatest(devices).map(DataMapperImpl::toModel);
     }

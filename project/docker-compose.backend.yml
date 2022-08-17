@@ -1,16 +1,12 @@
 services:
   # Data Processor Context
-  data-processor-slave-backend:
-    build: backend-services/data-processor-slave-backend
-    image: data-processor-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-processor-flow:
+    build: backend-services/data-processor-flow
+    image: sensae/data-processor-flow
     env_file:
-      - ./secrets/prod/data-processor-slave-backend.env
+      - ./secrets/prod/data-processor-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8081:8080
   data-processor-master-backend:
     build: backend-services/data-processor-master-backend
     image: data-processor-master-backend
@@ -36,17 +32,13 @@ services:
     volumes:
       - ./databases-data/prod/data-processor-database:/var/lib/postgresql/data/
   # Data Decoder Context
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-decoder-flow:
+    build: backend-services/data-decoder-flow
+    image: sensae/data-decoder-flow
     env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
+      - ./secrets/prod/data-decoder-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8083:8080
   data-decoder-master-backend:
     build: backend-services/data-decoder-master-backend
     image: data-decoder-master-backend
@@ -72,29 +64,21 @@ services:
     volumes:
       - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
   # Data Validator Context
-  data-validator-backend:
-    build: backend-services/data-validator-backend
-    image: data-validator-backend
-    environment:
-      spring_profiles_active: prod
+  data-validator:
+    build: backend-services/data-validator
+    image: sensae/data-validator
     env_file:
-      - ./secrets/prod/data-validator-backend.env
+      - ./secrets/prod/data-validator.env
     networks:
       - sensae-network
-    ports:
-      - 8089:8080
   # Identity Management Context
-  device-ownership-backend:
-    build: backend-services/device-ownership-backend
-    image: device-ownership-backend
-    environment:
-      spring_profiles_active: prod
+  device-ownership-flow:
+    build: backend-services/device-ownership-flow
+    image: sensae/device-ownership-flow
     env_file:
-      - ./secrets/prod/device-ownership-backend.env
+      - ./secrets/prod/device-ownership-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8085:8080
   identity-management-backend:
     build: backend-services/identity-management-backend
     container_name: identity-management-backend
@@ -121,28 +105,20 @@ services:
     volumes:
       - ./databases-data/prod/identity-management-database:/var/lib/postgresql/data/
   # Device Management Context
-  device-management-slave-backend:
-    build: backend-services/device-management-slave-backend
-    image: device-management-slave-backend
-    environment:
-      spring_profiles_active: prod
+  device-management-flow:
+    build: backend-services/device-management-flow
+    image: sensae/device-management-flow
     env_file:
-      - ./secrets/prod/device-management-slave-backend.env
+      - ./secrets/prod/device-management-flow.env
     networks:
       - sensae-network
-    ports:
-      - 8087:8080
-  device-commander-backend:
-    build: backend-services/device-commander-backend
-    image: device-commander-backend
-    environment:
-      spring_profiles_active: prod
+  device-commander:
+    build: backend-services/device-commander
+    image: sensae/device-commander
     env_file:
-      - ./secrets/prod/device-commander-backend.env
+      - ./secrets/prod/device-commander.env
     networks:
       - sensae-network
-    ports:
-      - 8090:8080
   device-management-master-backend:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend
@@ -261,7 +237,7 @@ services:
     ports:
       - 8801:8080
   smart-irrigation-data-database:
-    image: questdb/questdb:6.3.1
+    image: questdb/questdb:6.4.3
     container_name: smart-irrigation-data-database
     networks:
       - sensae-network
@@ -269,6 +245,7 @@ services:
       - 8898:8812
       - 9098:9000
       - 9003
+      - 9099:9009
     volumes:
       - ./databases-data/prod/smart-irrigation-data-database:/root/.questdb/
   smart-irrigation-business-database:
@@ -297,14 +274,15 @@ services:
     ports:
       - 8800:8080
   fleet-management-data-database:
-    image: questdb/questdb:6.3.1
+    image: questdb/questdb:6.4.3
     container_name: fleet-management-data-database
     networks:
       - sensae-network
     ports:
       - 8812:8812
       - 9000:9000
-      - 9003:9003
+      - 9003
+      - 9009:9009
     volumes:
       - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
   # Common Context
@@ -330,9 +308,7 @@ services:
       - 8443:443
   data-gateway:
     build: backend-services/data-gateway
-    image: data-gateway
-    environment:
-      spring_profiles_active: prod
+    image: sensae/data-gateway
     env_file:
       - ./secrets/prod/data-gateway.env
     networks:

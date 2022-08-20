@@ -42,7 +42,7 @@ public class ILPSenderPool {
 
     public synchronized void returnSender(Sender sender) {
         if (!occupiedPool.remove(sender))
-            throw new SenderException("The sender is returned already or it isn't for this pool");
+            throw new SenderException("The sender was returned already or it isn't for this pool");
 
         freePool.push(sender);
         LOGGER.info("SenderPool - Sender returned");

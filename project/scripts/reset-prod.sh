@@ -28,5 +28,6 @@ docker compose build fleet-management-frontend
 docker compose build rule-management-frontend
 docker compose build notification-management-frontend
 docker compose build ui-aggregator
+docker compose build
 
 docker-compose up -d

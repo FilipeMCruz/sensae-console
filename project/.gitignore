@@ -17,3 +17,5 @@ secrets/prod.conf
 databases-data
 
 test-examples
+
+databases/identity-management-database/identity-management-initdb.sql

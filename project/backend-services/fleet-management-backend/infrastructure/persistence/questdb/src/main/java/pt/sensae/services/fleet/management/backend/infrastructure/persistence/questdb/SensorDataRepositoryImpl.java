@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
+import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository.ILPSenderPool;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sensae.services.fleet.management.backend.domain.SensorDataRepository;
@@ -27,33 +28,32 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
     private final ProcessedSensorDataMapperImpl mapper;
 
     private final JdbcTemplate jdbcTemplate;
-
-    @Value("${sensae.questdb.ilp.address}")
-    private String address;
+    private final ILPSenderPool senderPool;
 
     public SensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository,
                                     ProcessedSensorDataMapperImpl mapper,
-                                    JdbcTemplate jdbcTemplate) {
+                                    JdbcTemplate jdbcTemplate,
+                                    ILPSenderPool senderPool) {
         this.repository = repository;
         this.mapper = mapper;
         this.jdbcTemplate = jdbcTemplate;
+        this.senderPool = senderPool;
     }
 
     @Override
     public void insert(SensorDataDTO dao) {
-        try (Sender sender = Sender.builder().address(address).build()) {
-            mapper.dtoToDao(dao).forEach(data ->
-                    sender.table("data")
-                            .symbol("data_id", data.dataId)
-                            .symbol("device_id", data.deviceId)
-                            .symbol("device_name", data.deviceName)
-                            .symbol("gps_data", data.gpsData)
-                            .symbol("motion", data.motion)
-                            .symbol("domain", data.domainId)
-                            .atNow()
-            );
-            sender.flush();
-        }
+        Sender sender = senderPool.getSender();
+        mapper.dtoToDao(dao).forEach(data ->
+                sender.table("data")
+                        .symbol("data_id", data.dataId)
+                        .symbol("device_id", data.deviceId)
+                        .symbol("device_name", data.deviceName)
+                        .symbol("gps_data", data.gpsData)
+                        .symbol("motion", data.motion)
+                        .symbol("domain", data.domainId)
+                        .atNow()
+        );
+        senderPool.returnSender(sender);
     }
 
     //TODO: "in" clause has a bug in Questdb, for now better use this

@@ -4,7 +4,7 @@ This section represents the system architecture from different views and levels 
 
 Current version:
 
-- `system` : `0.9.0`
+- `system` : `0.10.0`
 
 ## Logical View - System Level
 

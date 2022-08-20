@@ -5,7 +5,7 @@ Both of this environments need docker to run and docker-compose to orchestrate t
 
 Current version:
 
-- `system` : `0.9.0`
+- `system` : `0.10.0`
 
 ## DEV Environment
 

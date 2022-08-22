@@ -19,3 +19,5 @@ databases-data
 test-examples
 
 databases/identity-management-database/identity-management-initdb.sql
+
+jmeter-tests/properties.env

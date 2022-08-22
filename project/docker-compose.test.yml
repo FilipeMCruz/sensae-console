@@ -388,7 +388,7 @@ services:
       - sensae-test-network
     ports:
       - 8889:8812
-      - 9000
+      - 9889:9000
       - 9003
       - 9009
     volumes:
@@ -439,7 +439,7 @@ services:
       - sensae-test-network
     ports:
       - 8888:8812
-      - 9000
+      - 9888:9000
       - 9003
       - 9009
     volumes:

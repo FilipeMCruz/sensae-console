@@ -56,3 +56,5 @@ envsubst < $SECRET_DB/rule-management-database.env > $BACK_PREFFIX/rule-manageme
 envsubst < $SECRET_DB/smart-irrigation-business-database.env > $BACK_PREFFIX/smart-irrigation-business-database.env
 
 envsubst < $SECRET_DB/identity-management-initdb.sql > databases/identity-management-database/identity-management-initdb.sql
+
+envsubst < secrets/templates/jmeter/properties.env > jmeter-tests/properties.env 

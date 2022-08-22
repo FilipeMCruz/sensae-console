@@ -106,8 +106,8 @@ create table if not exists public.tenant
 alter table public.tenant
     owner to "user";
 
-CREATE FUNCTION public.init_domains () 
-RETURNS varchar(255) AS $root_oid$
+CREATE FUNCTION public.init_domains () RETURNS varchar(255)
+AS $$
     DECLARE
         root_oid varchar(255) := gen_random_uuid();
         public_oid varchar(255) := gen_random_uuid();
@@ -120,7 +120,7 @@ RETURNS varchar(255) AS $root_oid$
         INSERT INTO public.tenant (name, oid, phone_number, email, domains) VALUES ('Admin', gen_random_uuid(), '', '$SENSAE_ADMIN_EMAIL', ARRAY[root_oid]);
         RETURN root_oid;
     END;
-$root_oid$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 select public.init_domains();
 

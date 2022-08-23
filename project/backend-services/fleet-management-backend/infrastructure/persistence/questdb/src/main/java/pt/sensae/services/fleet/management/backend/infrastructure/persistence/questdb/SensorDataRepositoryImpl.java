@@ -1,12 +1,11 @@
 package pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb;
 
 import io.questdb.client.Sender;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
-import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository.ILPSenderPool;
+import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.utils.ILPSenderPool;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
 import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sensae.services.fleet.management.backend.domain.SensorDataRepository;
@@ -53,7 +52,7 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
                         .symbol("domain", data.domainId)
                         .atNow()
         );
-        senderPool.returnSender(sender);
+        senderPool.returnSenderAndFlush(sender);
     }
 
     //TODO: "in" clause has a bug in Questdb, for now better use this

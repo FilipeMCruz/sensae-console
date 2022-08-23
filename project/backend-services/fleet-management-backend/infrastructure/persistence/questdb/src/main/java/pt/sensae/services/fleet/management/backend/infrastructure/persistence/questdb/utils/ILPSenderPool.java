@@ -1,4 +1,4 @@
-package pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository;
+package pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.utils;
 
 
 import io.questdb.client.Sender;
@@ -44,6 +44,16 @@ public class ILPSenderPool {
         if (!occupiedPool.remove(sender))
             throw new SenderException("The sender was returned already or it isn't for this pool");
 
+        freePool.push(sender);
+        LOGGER.info("SenderPool - Sender returned");
+    }
+
+    public synchronized void returnSenderAndFlush(Sender sender) {
+        if (!occupiedPool.remove(sender))
+            throw new SenderException("The sender was returned already or it isn't for this pool");
+
+        sender.flush();
+        
         freePool.push(sender);
         LOGGER.info("SenderPool - Sender returned");
     }

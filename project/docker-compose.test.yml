@@ -1,7 +1,7 @@
 services:
   # Common Context
   message-broker:
-    image: rabbitmq:3.10
+    image: rabbitmq:3.10.5-management
     container_name: message-broker
     env_file:
       - secrets/prod/message-broker.env
@@ -9,7 +9,7 @@ services:
       - sensae-test-network
     ports:
       - 5672:5672
-      - 15672
+      - 15672:15672
   ui-aggregator:
     build:
       dockerfile: docker/ui-aggregator/Dockerfile

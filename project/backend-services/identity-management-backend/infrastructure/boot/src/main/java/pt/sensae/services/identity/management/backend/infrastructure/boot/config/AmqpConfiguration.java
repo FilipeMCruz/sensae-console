@@ -55,7 +55,7 @@ public class AmqpConfiguration {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DEVICE_IDENTITY)
                 .withContainerType(ContainerTypeOptions.IDENTITY_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(slaveQueue).to(internalExchange).with(keys.get().toString());
@@ -114,7 +114,7 @@ public class AmqpConfiguration {
     @Bean
     Binding syncDeviceInformationBinding(Queue syncDeviceInformationQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.SYNC)
                 .missingAsAny();
         if (keys.isPresent()) {
@@ -134,7 +134,7 @@ public class AmqpConfiguration {
     @Bean
     Binding infoDeviceInformationBinding(Queue infoDeviceInformationQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INFO)
                 .missingAsAny();
         if (keys.isPresent()) {
@@ -154,7 +154,7 @@ public class AmqpConfiguration {
     @Bean
     Binding initDeviceInformationBinding(Queue initDeviceInformationQueue, TopicExchange internalExchange) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {

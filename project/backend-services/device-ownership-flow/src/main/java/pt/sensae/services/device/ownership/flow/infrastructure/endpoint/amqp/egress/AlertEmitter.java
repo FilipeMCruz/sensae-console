@@ -7,13 +7,9 @@ import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
 import org.jboss.logging.Logger;
 import pt.sensae.services.device.ownership.flow.application.AlertPublisher;
-import pt.sensae.services.device.ownership.flow.application.DataUnitPublisher;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
 import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageSupplied;
-import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 

@@ -26,17 +26,17 @@ public class DataUnitNotificationPublisherService {
                 .withOperationType(OperationTypeOptions.PING)
                 .build();
 
-        var request = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+        var unknown = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DATA_PROCESSOR)
                 .withContextType(ContextTypeOptions.DATA_PROCESSOR)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .build();
 
-        if (ping.isEmpty() || request.isEmpty()) {
+        if (ping.isEmpty() || unknown.isEmpty()) {
             throw new RuntimeException("Error creating Routing Keys");
         }
         this.pingKeys = ping.get();
-        this.requestKeys = request.get();
+        this.requestKeys = unknown.get();
         this.publisher = publisher;
     }
 

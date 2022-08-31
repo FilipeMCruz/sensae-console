@@ -10,9 +10,9 @@ import pt.sensae.services.data.processor.flow.domain.SensorTypeId;
 import pt.sensae.services.data.processor.flow.infrastructure.endpoint.amqp.internal.model.DataTransformationNotificationDTOImpl;
 import pt.sensae.services.data.processor.flow.infrastructure.endpoint.amqp.internal.model.DataTransformationNotificationTypeDTOImpl;
 import pt.sensae.services.data.processor.flow.infrastructure.endpoint.amqp.internal.model.SensorTypeIdDTOImpl;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformation;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.properties.PropertyTransformation;
+import pt.sharespot.iot.core.data.model.properties.PropertyTransformations;
 
 import javax.enterprise.context.ApplicationScoped;
 

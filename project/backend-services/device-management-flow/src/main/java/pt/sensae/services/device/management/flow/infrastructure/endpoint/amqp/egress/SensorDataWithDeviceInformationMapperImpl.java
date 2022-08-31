@@ -6,15 +6,15 @@ import pt.sensae.services.device.management.flow.domain.DeviceWithSubDevices;
 import pt.sensae.services.device.management.flow.domain.commands.CommandEntry;
 import pt.sensae.services.device.management.flow.domain.staticData.DeviceStaticData;
 import pt.sensae.services.device.management.flow.domain.staticData.StaticDataLabel;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.BatteryDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.DistanceDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.model.device.controls.DeviceCommandDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.data.types.BatteryDataDTO;
+import pt.sharespot.iot.core.data.model.data.types.DistanceDataDTO;
+import pt.sharespot.iot.core.data.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.data.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.data.model.device.controls.DeviceCommandDTO;
+import pt.sharespot.iot.core.data.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.*;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWithDeviceInformationMapper {
 
     @Override
-    public DeviceWithSubDevices domainToDto(SensorDataDTO domain, DeviceInformation deviceInformation) {
+    public DeviceWithSubDevices domainToDto(DataUnitDTO domain, DeviceInformation deviceInformation) {
         var staticData = deviceInformation.staticData();
 
         addGPSData(domain, staticData);
@@ -74,7 +74,7 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
         return new DeviceWithSubDevices(domain, processSubSensors(domain, deviceInformation));
     }
 
-    private void addGPSData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+    private void addGPSData(DataUnitDTO domain, DeviceStaticData deviceInformation) {
 
         var latitudeOpt = deviceInformation.entries().stream()
                 .filter(e -> e.has(StaticDataLabel.GPS_LATITUDE))
@@ -97,7 +97,7 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
         altitudeOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().gps.altitude = Float.valueOf(deviceStaticDataEntry.content()));
     }
 
-    private void addDistanceData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+    private void addDistanceData(DataUnitDTO domain, DeviceStaticData deviceInformation) {
 
         var maxDistanceOpt = deviceInformation.entries().stream()
                 .filter(e -> e.has(StaticDataLabel.MAX_DISTANCE))
@@ -115,7 +115,7 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
         minDistanceOpt.ifPresent(deviceStaticDataEntry -> domain.getSensorData().distance.minMillimeters = Float.valueOf(deviceStaticDataEntry.content()));
     }
 
-    private void addBatteryData(SensorDataDTO domain, DeviceStaticData deviceInformation) {
+    private void addBatteryData(DataUnitDTO domain, DeviceStaticData deviceInformation) {
 
         var maxBatOpt = deviceInformation.entries().stream()
                 .filter(e -> e.has(StaticDataLabel.BATTERY_MAX_VOLTS))
@@ -142,8 +142,8 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
         return command;
     }
 
-    private List<SensorDataDTO> processSubSensors(SensorDataDTO domain, DeviceInformation records) {
-        var subDevices = new ArrayList<SensorDataDTO>();
+    private List<DataUnitDTO> processSubSensors(DataUnitDTO domain, DeviceInformation records) {
+        var subDevices = new ArrayList<DataUnitDTO>();
 
         records.subDevices().entries().forEach(sub -> {
             var subSensorMeasures = domain.measures.get(sub.ref().value());
@@ -159,12 +159,12 @@ public class SensorDataWithDeviceInformationMapperImpl implements SensorDataWith
             deviceInformationDTO.id = sub.id().value();
             deviceInformationDTO.downlink = domain.device.downlink;
 
-            var sensorDataDTO = new SensorDataDTO();
+            var sensorDataDTO = new DataUnitDTO();
             sensorDataDTO.device = deviceInformationDTO;
             sensorDataDTO.reportedAt = domain.reportedAt;
             sensorDataDTO.dataId = UUID.randomUUID();
 
-            sensorDataDTO.measures = Map.of(0, Objects.requireNonNullElseGet(subSensorMeasures, SensorDataDetailsDTO::new));
+            sensorDataDTO.measures = Map.of(0, Objects.requireNonNullElseGet(subSensorMeasures, DataUnitReadingsDTO::new));
 
             sensorDataDTO.device.commands = Map.of(0, Objects.requireNonNullElseGet(subSensorCommands, ArrayList::new));
 

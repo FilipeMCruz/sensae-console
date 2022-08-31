@@ -47,10 +47,10 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding bindingDeviceRequest() {
+    Binding bindingDeviceUnknown() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(deviceRequestQueue()).to(internalExchange()).with(keys.get().toString());
@@ -69,7 +69,7 @@ public class AmqpConfiguration {
     @Bean
     Binding bindingDevicePing() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.PING)
                 .missingAsAny();
         if (keys.isPresent()) {
@@ -89,7 +89,7 @@ public class AmqpConfiguration {
     @Bean
     Binding bindingInitInformation() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {

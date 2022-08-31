@@ -1,6 +1,5 @@
 package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -85,7 +84,7 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
         var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.REQUEST).build().orElseThrow();
+                .withOperationType(OperationTypeOptions.UNKNOWN).build().orElseThrow();
 
         var request = new SensorTypeIdDTOImpl();
         request.sensorType = "lgt92";
@@ -111,7 +110,7 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
         var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.REQUEST).build().orElseThrow();
+                .withOperationType(OperationTypeOptions.UNKNOWN).build().orElseThrow();
 
         var request = new SensorTypeIdDTOImpl();
         request.sensorType = "lgt92";

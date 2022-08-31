@@ -1,10 +1,10 @@
 package pt.sensae.services.data.validator.application.validators.gps;
 
 import pt.sensae.services.data.validator.application.validators.DataValidator;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class GPSDataValidator implements DataValidator {
     }
 
     @Override
-    public DataLegitimacyOptions validate(SensorDataDTO data) {
+    public DataLegitimacyOptions validate(DataUnitDTO data) {
         var legitimacy = DataLegitimacyOptions.CORRECT;
 
         if (data.hasAllProperties(PropertyName.LATITUDE, PropertyName.LONGITUDE)) {

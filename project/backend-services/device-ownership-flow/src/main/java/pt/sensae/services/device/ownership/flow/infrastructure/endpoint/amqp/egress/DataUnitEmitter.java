@@ -7,10 +7,11 @@ import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.Metadata;
 import org.jboss.logging.Logger;
 import pt.sensae.services.device.ownership.flow.application.DataUnitPublisher;
+import pt.sharespot.iot.core.data.mapper.MessageMapper;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageSupplied;
-import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
+import pt.sharespot.iot.core.keys.RoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 
@@ -23,7 +24,7 @@ public class DataUnitEmitter implements DataUnitPublisher {
     private static final Logger logger = Logger.getLogger(DataUnitEmitter.class);
 
     @Override
-    public void next(MessageSupplied<SensorDataDTO, SensorRoutingKeys> dataUnit) {
+    public void next(MessageSupplied<DataUnitDTO, DataRoutingKeys> dataUnit) {
         logSuppliedMessage(dataUnit);
 
         var metadata = Metadata.of(new OutgoingRabbitMQMetadata.Builder()
@@ -35,7 +36,7 @@ public class DataUnitEmitter implements DataUnitPublisher {
         dataUnitEmitter.send(message);
     }
 
-    private void logSuppliedMessage(MessageSupplied<SensorDataDTO, SensorRoutingKeys> in) {
+    private void logSuppliedMessage(MessageSupplied<DataUnitDTO, DataRoutingKeys> in) {
         logger.info("Data Id Supplied: %s".formatted(in.oid));
         logger.info("RoutingKeys: %s".formatted(in.routingKeys.details()));
         logger.info("Hops: %s".formatted(in.hops));

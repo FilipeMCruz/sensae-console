@@ -1,13 +1,12 @@
 package pt.sensae.services.data.gateway.application;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.keys.MessageSupplied;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

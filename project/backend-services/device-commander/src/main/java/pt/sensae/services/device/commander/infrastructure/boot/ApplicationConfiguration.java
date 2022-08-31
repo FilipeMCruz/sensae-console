@@ -5,11 +5,7 @@ import pt.sensae.services.device.commander.application.RoutingKeysProvider;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
-import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -23,7 +19,7 @@ public class ApplicationConfiguration {
 
     void onStart(@Observes StartupEvent ev) {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
                 .withOperationType(OperationTypeOptions.INFO)
                 .missingAsAny();

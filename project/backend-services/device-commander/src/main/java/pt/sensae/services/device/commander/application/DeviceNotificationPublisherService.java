@@ -22,21 +22,21 @@ public class DeviceNotificationPublisherService {
     public DeviceNotificationPublisherService(RoutingKeysProvider provider, DeviceInformationNotificationPublisher publisher) {
         var ping = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.PING)
                 .build();
 
-        var request = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+        var unknown = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .build();
 
-        if (ping.isEmpty() || request.isEmpty()) {
+        if (ping.isEmpty() || unknown.isEmpty()) {
             throw new RuntimeException("Error creating Routing Keys");
         }
         this.pingKeys = ping.get();
-        this.requestKeys = request.get();
+        this.requestKeys = unknown.get();
         this.publisher = publisher;
     }
 

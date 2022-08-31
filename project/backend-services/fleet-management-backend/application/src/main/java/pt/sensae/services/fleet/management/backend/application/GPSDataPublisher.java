@@ -1,7 +1,7 @@
 package pt.sensae.services.fleet.management.backend.application;
 
 import org.springframework.stereotype.Component;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -18,9 +18,9 @@ import java.util.function.Predicate;
 @Component
 public class GPSDataPublisher {
 
-    private FluxSink<SensorDataDTO> dataStream;
+    private FluxSink<DataUnitDTO> dataStream;
 
-    private ConnectableFlux<SensorDataDTO> dataPublisher;
+    private ConnectableFlux<DataUnitDTO> dataPublisher;
 
     private final TokenExtractor authHandler;
 
@@ -30,7 +30,7 @@ public class GPSDataPublisher {
 
     @PostConstruct
     public void init() {
-        Flux<SensorDataDTO> publisher = Flux.create(emitter -> dataStream = emitter);
+        Flux<DataUnitDTO> publisher = Flux.create(emitter -> dataStream = emitter);
 
         dataPublisher = publisher.publish();
         dataPublisher.connect();
@@ -53,21 +53,21 @@ public class GPSDataPublisher {
                 .map(GPSDataMapper::transform);
     }
 
-    public void publish(SensorDataDTO data) {
+    public void publish(DataUnitDTO data) {
         dataStream.next(data);
     }
 
-    private Predicate<SensorDataDTO> withContent(String content) {
+    private Predicate<DataUnitDTO> withContent(String content) {
         return gpsData -> gpsData.device.records
                 .stream()
                 .anyMatch(e -> e.content.contains(content));
     }
 
-    private Predicate<SensorDataDTO> withDeviceId(List<String> ids) {
+    private Predicate<DataUnitDTO> withDeviceId(List<String> ids) {
         return gpsData -> ids.contains(gpsData.device.id.toString());
     }
 
-    private Predicate<? super SensorDataDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
+    private Predicate<DataUnitDTO> getDeviceDomainFilter(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("fleet_management:live_data:read"))
             throw new UnauthorizedException("No Permissions");
@@ -75,7 +75,7 @@ public class GPSDataPublisher {
         return withDomain(extract.domains.stream().map(UUID::fromString).toList());
     }
 
-    private Predicate<? super SensorDataDTO> withDomain(List<UUID> domainIds) {
+    private Predicate<DataUnitDTO> withDomain(List<UUID> domainIds) {
         return s -> s.device.domains.stream().anyMatch(domainIds::contains);
     }
 }

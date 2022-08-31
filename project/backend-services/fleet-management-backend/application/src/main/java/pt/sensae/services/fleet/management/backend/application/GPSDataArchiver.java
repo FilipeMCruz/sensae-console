@@ -2,10 +2,10 @@ package pt.sensae.services.fleet.management.backend.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.MotionDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 import pt.sensae.services.fleet.management.backend.domain.SensorDataRepository;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.data.types.MotionDataDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 @Service
 public class GPSDataArchiver {
@@ -24,7 +24,7 @@ public class GPSDataArchiver {
         this.publisher = publisher;
     }
 
-    public void publish(SensorDataDTO data) {
+    public void publish(DataUnitDTO data) {
         // if data received has no info about motion try to guess it
         if (!data.getSensorData().hasProperty(PropertyName.MOTION)) {
             var lastTenMinutesData = repository.queryPastData(data, TIME_SPAN_IN_MINUTES).toList();

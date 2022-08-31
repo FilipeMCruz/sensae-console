@@ -8,21 +8,21 @@ import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertRoutingKeys;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSeverityOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSubCategoryOptions;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.data.types.*;
+import pt.sharespot.iot.core.data.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.data.model.device.controls.DeviceCommandDTO;
+import pt.sharespot.iot.core.data.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 import pt.sharespot.iot.core.keys.*;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.*;
-import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.model.device.controls.DeviceCommandDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
 
 @RegisterForReflection(targets = {
-        SensorDataDTO.class,
+        DataUnitDTO.class,
         DeviceInformationDTO.class,
         DeviceRecordEntryDTO.class,
         DeviceCommandDTO.class,
-        SensorDataDetailsDTO.class,
+        DataUnitReadingsDTO.class,
         GPSDataDTO.class,
         TemperatureDataDTO.class,
         MotionDataDTO.class,

@@ -4,7 +4,7 @@ import pt.sensae.services.device.management.flow.application.mapper.SensorDataWi
 import pt.sensae.services.device.management.flow.domain.DeviceInformationRepository;
 import pt.sensae.services.device.management.flow.domain.DeviceWithSubDevices;
 import pt.sensae.services.device.management.flow.domain.device.DeviceId;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,7 +19,7 @@ public class DeviceInformationEnricher {
     @Inject
     SensorDataWithDeviceInformationMapper dataWithRecordMapper;
 
-    public Optional<DeviceWithSubDevices> tryToEnrich(SensorDataDTO dto) {
+    public Optional<DeviceWithSubDevices> tryToEnrich(DataUnitDTO dto) {
         return cache.findById(new DeviceId(dto.device.id))
                 .map(deviceInformation -> dataWithRecordMapper.domainToDto(dto, deviceInformation));
     }

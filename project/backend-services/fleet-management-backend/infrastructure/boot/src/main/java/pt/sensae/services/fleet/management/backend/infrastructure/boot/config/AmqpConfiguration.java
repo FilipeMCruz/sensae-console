@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.data.routing.keys.data.GPSDataOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.data.*;
 import pt.sensae.services.fleet.management.backend.application.RoutingKeysProvider;
 import pt.sensae.services.fleet.management.backend.infrastructure.endpoint.amqp.listener.SensorDataConsumer;
 

@@ -5,15 +5,10 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import pt.sensae.services.device.commander.domain.UnHandledDeviceCommandRepository;
 import pt.sensae.services.device.commander.domain.commands.DeviceCommandReceived;
 import pt.sensae.services.device.commander.domain.device.DeviceId;
-import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ApplicationScoped
 public class UnhandledDeviceCommandCache implements UnHandledDeviceCommandRepository {

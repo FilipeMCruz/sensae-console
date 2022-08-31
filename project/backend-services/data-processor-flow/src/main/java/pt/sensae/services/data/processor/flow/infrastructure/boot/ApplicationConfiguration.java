@@ -2,11 +2,11 @@ package pt.sensae.services.data.processor.flow.infrastructure.boot;
 
 import io.quarkus.runtime.StartupEvent;
 import pt.sensae.services.data.processor.flow.application.RoutingKeysProvider;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

@@ -3,7 +3,6 @@ package pt.sensae.services.fleet.management.backend.application;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.fleet.management.backend.domain.model.pastdata.*;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sensae.services.fleet.management.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.fleet.management.backend.application.auth.TokenExtractor;
 import pt.sensae.services.fleet.management.backend.application.auth.UnauthorizedException;
@@ -12,6 +11,7 @@ import pt.sensae.services.fleet.management.backend.domain.exceptions.NotValidExc
 import pt.sensae.services.fleet.management.backend.domain.model.GPSDataDetails;
 import pt.sensae.services.fleet.management.backend.domain.model.domain.DomainId;
 import pt.sensae.services.fleet.management.backend.domain.model.livedata.StatusDataDetails;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -54,7 +54,7 @@ public class GPSDataCollector {
         return createHistories(filters, data);
     }
 
-    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, Stream<SensorDataDTO> dto) {
+    public List<GPSSensorDataHistory> createHistories(GPSSensorDataFilter filters, Stream<DataUnitDTO> dto) {
         return dto.collect(Collectors.groupingBy(x -> x.device.id))
                 .values()
                 .parallelStream()
@@ -62,7 +62,7 @@ public class GPSDataCollector {
                 .collect(Collectors.toList());
     }
 
-    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<SensorDataDTO> dto) {
+    public GPSSensorDataHistory createHistory(GPSSensorDataFilter filters, List<DataUnitDTO> dto) {
         var history = new GPSSensorDataHistory();
         history.startTime = filters.startTime.getTime();
         history.endTime = filters.endTime.getTime();

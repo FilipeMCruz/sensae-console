@@ -1,14 +1,14 @@
 package pt.sensae.services.fleet.management.backend.application;
 
 import pt.sensae.services.fleet.management.backend.domain.model.livedata.*;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 import pt.sensae.services.fleet.management.backend.domain.model.GPSDataDetails;
 
 import java.util.stream.Collectors;
 
 public class GPSDataMapper {
 
-    public static SensorData transform(SensorDataDTO dto) {
+    public static SensorData transform(DataUnitDTO dto) {
         var details = new GPSDataDetails(dto.getSensorData().gps.latitude, dto.getSensorData().gps.longitude);
         var entries = dto.device.records.stream()
                 .map(e -> new RecordEntry(e.label, e.content))

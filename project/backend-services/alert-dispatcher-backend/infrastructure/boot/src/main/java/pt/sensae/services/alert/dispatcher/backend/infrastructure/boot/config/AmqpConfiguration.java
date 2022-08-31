@@ -7,14 +7,14 @@ import pt.sensae.services.alert.dispatcher.backend.application.RoutingKeysProvid
 import pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 import pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.internal.controller.RuleScenarioNotificationConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;

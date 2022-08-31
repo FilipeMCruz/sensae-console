@@ -6,8 +6,6 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

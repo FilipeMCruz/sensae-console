@@ -1,9 +1,9 @@
 package rules.project.one;
 
-import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 import pt.sharespot.iot.core.alert.model.AlertBuilder;
 import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
 import java.util.List;
@@ -40,7 +40,7 @@ end
 //to ensure that only one alarm per device is sent
 rule "Create new stove sensor devices that belongs to Project #001"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )
@@ -56,7 +56,7 @@ end
 //if the data is from a stove sensor and is not duplicated add it
 rule "Collect sensor data that belongs to Project #001"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE),
             !getSensorData().hasProperty(PropertyName.CO2)
@@ -75,7 +75,7 @@ end
 
 rule "Collect co2 sensor data that belongs to Project #001"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE),
             getSensorData().hasProperty(PropertyName.CO2)

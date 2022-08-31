@@ -38,7 +38,7 @@ Drools allows users to write and submit rules. As an example the following rule 
 ``` drl
 rule "Create new valve device that belongs to Project #003"
     when
-        data : SensorDataDTO(
+        data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
         exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
@@ -77,7 +77,7 @@ In order to create `rules` there are certain rules to follow:
   - `ADVISORY`
   - `WARNING`
   - `CRITICAL`
-- In order for another service act upon a received alarm, that alarm has to be associated with a `DeviceId` (this association helps services like `Smart Irrigation` to know what Valve must be turned on or off), a `DataId` or `Other` (any info deemed important);
+- In order for another service to act upon a received alarm, that alarm has to be associated with a `DeviceId` (this association helps services like `Smart Irrigation` to know what Valve must be turned on or off), a `DataId` or `Other` (any info deemed important);
 - If no `deviceIds` are given only the root tenant will have access to the alarm;
 - A rule can import and create new classes/events when needed;
 - A rule name can't be duplicated;

@@ -78,7 +78,7 @@ services:
     build: backend-services/data-processor-master-backend
     image: data-processor-master-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -124,7 +124,7 @@ services:
     build: backend-services/data-decoder-master-backend
     image: data-decoder-master-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -179,7 +179,7 @@ services:
     container_name: identity-management-backend
     image: identity-management-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -232,7 +232,7 @@ services:
     build: backend-services/device-management-master-backend
     image: device-management-master-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -282,7 +282,7 @@ services:
     container_name: rule-management-backend
     image: rule-management-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -332,7 +332,7 @@ services:
     container_name: notification-management-backend
     image: notification-management-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -372,7 +372,7 @@ services:
     container_name: smart-irrigation-backend
     image: smart-irrigation-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:
@@ -423,7 +423,7 @@ services:
     build: backend-services/fleet-management-backend
     image: fleet-management-backend
     volumes:
-      - ./secrets/keys:/etc/ssh/app
+      - ./secrets/testkeys:/etc/ssh/app
     environment:
       spring_profiles_active: prod
     env_file:

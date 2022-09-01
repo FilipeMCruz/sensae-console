@@ -69,7 +69,7 @@
     "monaco-editor": "^0.33.0",
     "ngx-echarts": "^8.0.1",
     "rxjs": "~6.6.7",
-    "subscriptions-transport-ws": "^0.11.0",
+    "graphql-ws": "5.9.0",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.5"
   }

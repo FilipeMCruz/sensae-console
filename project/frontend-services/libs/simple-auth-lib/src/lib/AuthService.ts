@@ -3,22 +3,22 @@ import {ValidateCredentials} from './services/ValidateCredentials';
 import {ReplaySubject} from 'rxjs';
 import jwt_decode, {JwtPayload} from 'jwt-decode';
 import {TenantIdentity} from './dto/CredentialsDTO';
-import {RefreshAuthToken} from "./services/RefreshAuthToken";
 import {AnonymousCredentials} from "./services/AnonymousCredentials";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private payload?: TenantIdentity;
+  private payload!: TenantIdentity;
 
   private accessToken!: string;
+
+  private idToken!: string;
 
   private provider!: string;
 
   constructor(private validatorService: ValidateCredentials,
-              private anonymousService: AnonymousCredentials,
-              private refresher: RefreshAuthToken) {
+              private anonymousService: AnonymousCredentials) {
   }
 
   private static toDto(payload: JwtPayload): TenantIdentity {
@@ -32,18 +32,21 @@ export class AuthService {
     const domains = payload['domains'];
     // @ts-ignore
     const permissions = payload['permissions'];
-    return {email, domains, name, permissions, oid};
+
+    const exp = payload.exp ? payload.exp : new Date().getTime() + 10 * 60000;
+    return {email, domains, name, permissions, oid, exp};
   }
 
   login(token: string, provider: string) {
+    console.log("login")
     this.provider = provider;
+    this.idToken = token;
     const subject = new ReplaySubject(1);
     this.validatorService.validate(token, provider).subscribe((next) => {
       const token = next.data?.authenticate.token;
       if (token) {
         this.accessToken = token;
         this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
-        this.startAuthTokenPooling();
         subject.next(true);
       } else {
         subject.next(false);
@@ -60,7 +63,6 @@ export class AuthService {
       if (token) {
         this.accessToken = token;
         this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
-        this.startAuthTokenPooling();
         subject.next(true);
       } else {
         subject.next(false);
@@ -75,26 +77,12 @@ export class AuthService {
 
   isAllowed(permissions: string[]) {
     return !permissions.some((p) => {
-      return !this.payload?.permissions.includes(p);
-    });
-  }
-
-  startAuthTokenPooling() {
-    setInterval(() => this.refresh(this.accessToken), 1500000);
-  }
-
-  refresh(token: string) {
-    this.refresher.refresh(token).subscribe((next) => {
-      const token = next.data?.refresh.token;
-      if (token) {
-        this.accessToken = token;
-        this.payload = AuthService.toDto(jwt_decode<JwtPayload>(this.accessToken));
-      }
+      return !this.payload.permissions.includes(p);
     });
   }
 
   logout() {
-    this.accessToken = "";
+    this.accessToken = '';
   }
 
   isAuthenticated(): boolean {
@@ -102,13 +90,13 @@ export class AuthService {
   }
 
   getDomains(): string[] {
-    if (this.payload) {
-      return this.payload.domains;
-    }
-    return [];
+    return this.payload.domains;
   }
 
   getToken(): string {
+    if (this.payload.exp > new Date().getTime())
+      this.login(this.idToken, this.provider);
+
     return this.accessToken ? this.accessToken : '';
   }
 
@@ -121,10 +109,10 @@ export class AuthService {
   }
 
   getOid() {
-    return this.payload?.oid;
+    return this.payload.oid;
   }
 
   getName() {
-    return this.payload?.name;
+    return this.payload.name;
   }
 }

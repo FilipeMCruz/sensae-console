@@ -10,24 +10,6 @@ fi
 
 cd "$ROOT_DIR"/project || exit
 
-# seperate container builds to ensure that the host doesn't OOM
-docker compose build data-gateway
-docker compose build data-validator
-docker compose build data-decoder-flow
-docker compose build data-processor-flow
-docker compose build device-ownership-flow
-docker compose build device-management-flow
-docker compose build device-commander
-
-docker compose build device-management-frontend
-docker compose build data-processor-frontend
-docker compose build data-decoder-frontend
-docker compose build identity-management-frontend
-docker compose build smart-irrigation-frontend
-docker compose build fleet-management-frontend
-docker compose build rule-management-frontend
-docker compose build notification-management-frontend
-docker compose build ui-aggregator
-docker compose build
+"$ROOT_DIR"/project/scripts/build-images.sh
 
 docker-compose up -d

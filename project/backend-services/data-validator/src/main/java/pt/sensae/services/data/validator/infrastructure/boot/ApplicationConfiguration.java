@@ -2,11 +2,11 @@ package pt.sensae.services.data.validator.infrastructure.boot;
 
 import io.quarkus.runtime.StartupEvent;
 import pt.sensae.services.data.validator.application.RoutingKeysProvider;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;

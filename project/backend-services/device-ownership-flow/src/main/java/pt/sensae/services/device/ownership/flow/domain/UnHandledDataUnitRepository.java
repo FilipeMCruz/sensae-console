@@ -1,14 +1,14 @@
 package pt.sensae.services.device.ownership.flow.domain;
 
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import java.util.Set;
 
 public interface UnHandledDataUnitRepository {
 
-    void insert(MessageConsumed<SensorDataDTO, SensorRoutingKeys> data, DeviceId id);
+    void insert(MessageConsumed<DataUnitDTO, DataRoutingKeys> data, DeviceId id);
 
-    Set<MessageConsumed<SensorDataDTO, SensorRoutingKeys>> retrieve(DeviceId id);
+    Set<MessageConsumed<DataUnitDTO, DataRoutingKeys>> retrieve(DeviceId id);
 }

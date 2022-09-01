@@ -5,7 +5,7 @@ import pt.sensae.services.device.ownership.flow.domain.DeviceOwnershipRepository
 import pt.sensae.services.device.ownership.flow.domain.DeviceWithAllPermissions;
 import pt.sensae.services.device.ownership.flow.domain.DomainId;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ public class DataEnricher {
     @Inject
     DeviceOwnershipRepository cache;
 
-    public Optional<SensorDataDTO> tryToAppend(SensorDataDTO dto) {
+    public Optional<DataUnitDTO> tryToAppend(DataUnitDTO dto) {
         return cache.findById(DeviceId.of(dto.device.id)).map(device -> {
             dto.device.domains = device.ownerDomains().stream().map(DomainId::value).collect(Collectors.toSet());
             return dto;

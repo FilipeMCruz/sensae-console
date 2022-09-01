@@ -11,6 +11,7 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.DataReposit
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.query.DataQuery;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.mapper.DataMapperImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.model.DataQuestDB;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.persistence.questdb.utils.ILPSenderPool;
 
 import java.sql.Timestamp;
 import java.util.stream.Collectors;
@@ -21,40 +22,41 @@ public class DataRepositoryImpl implements DataRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    @Value("${sensae.questdb.ilp.address}")
-    private String address;
+    private final ILPSenderPool senderPool;
 
-    public DataRepositoryImpl(@Qualifier("questdb") JdbcTemplate jdbcTemplate) {
+    public DataRepositoryImpl(@Qualifier("questdb") JdbcTemplate jdbcTemplate, ILPSenderPool senderPool) {
         this.jdbcTemplate = jdbcTemplate;
+        this.senderPool = senderPool;
     }
 
     @Override
     public void store(Data data) {
         var dataQuestDB = DataMapperImpl.toDao(data);
-        try (Sender sender = Sender.builder().address(address).build()) {
-            sender.table("smart_irrigation_data")
-                    .symbol("data_id", dataQuestDB.dataId)
-                    .symbol("device_id", dataQuestDB.deviceId)
-                    .symbol("device_type", dataQuestDB.deviceType);
+        Sender sender = senderPool.getSender();
 
-            if (dataQuestDB.temperature != null)
-                sender.doubleColumn("payload_temperature", dataQuestDB.temperature);
+        sender.table("smart_irrigation_data")
+                .symbol("data_id", dataQuestDB.dataId)
+                .symbol("device_id", dataQuestDB.deviceId)
+                .symbol("device_type", dataQuestDB.deviceType);
 
-            if (dataQuestDB.humidity != null)
-                sender.doubleColumn("payload_humidity", dataQuestDB.humidity);
+        if (dataQuestDB.temperature != null)
+            sender.doubleColumn("payload_temperature", dataQuestDB.temperature);
 
-            if (dataQuestDB.soilMoisture != null)
-                sender.doubleColumn("payload_soil_moisture", dataQuestDB.soilMoisture);
+        if (dataQuestDB.humidity != null)
+            sender.doubleColumn("payload_humidity", dataQuestDB.humidity);
 
-            if (dataQuestDB.illuminance != null)
-                sender.doubleColumn("payload_illuminance", dataQuestDB.illuminance);
+        if (dataQuestDB.soilMoisture != null)
+            sender.doubleColumn("payload_soil_moisture", dataQuestDB.soilMoisture);
 
-            if (dataQuestDB.valveStatus != null)
-                sender.boolColumn("payload_valve_status", dataQuestDB.valveStatus);
+        if (dataQuestDB.illuminance != null)
+            sender.doubleColumn("payload_illuminance", dataQuestDB.illuminance);
 
-            sender.atNow();
-            sender.flush();
-        }
+        if (dataQuestDB.valveStatus != null)
+            sender.boolColumn("payload_valve_status", dataQuestDB.valveStatus);
+
+        sender.atNow();
+
+        senderPool.returnSenderAndFlush(sender);
     }
 
     @Override

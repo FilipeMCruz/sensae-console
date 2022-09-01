@@ -382,7 +382,7 @@ services:
     ports:
       - 8080
   smart-irrigation-data-database:
-    image: questdb/questdb:6.4.3
+    image: questdb/questdb:6.5
     container_name: smart-irrigation-data-database
     networks:
       - sensae-network
@@ -433,7 +433,7 @@ services:
     ports:
       - 8080
   fleet-management-data-database:
-    image: questdb/questdb:6.4.3
+    image: questdb/questdb:6.5
     container_name: fleet-management-data-database
     networks:
       - sensae-network

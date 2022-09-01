@@ -24,7 +24,7 @@ envsubst < $SECRET_BACK/data-decoder-master-backend.env > $BACK_PREFFIX/data-dec
 envsubst < $SECRET_BACK/data-decoder-flow.env > $BACK_PREFFIX/data-decoder-flow.env
 envsubst < $SECRET_BACK/data-gateway.env > $BACK_PREFFIX/data-gateway.env
 envsubst < $SECRET_BACK/data-processor-master-backend.env > $BACK_PREFFIX/data-processor-master-backend.env
-envsubst < $SECRET_BACK/data-processor-slave-backend.env > $BACK_PREFFIX/data-processor-slave-backend.env
+envsubst < $SECRET_BACK/data-processor-flow.env > $BACK_PREFFIX/data-processor-flow.env
 envsubst < $SECRET_BACK/data-store-backend.env > $BACK_PREFFIX/data-store-backend.env
 envsubst < $SECRET_BACK/fleet-management-backend.env > $BACK_PREFFIX/fleet-management-backend.env
 envsubst < $SECRET_BACK/identity-management-backend.env > $BACK_PREFFIX/identity-management-backend.env
@@ -54,3 +54,7 @@ envsubst < $SECRET_DB/identity-management-database.env > $BACK_PREFFIX/identity-
 envsubst < $SECRET_DB/notification-management-database.env > $BACK_PREFFIX/notification-management-database.env
 envsubst < $SECRET_DB/rule-management-database.env > $BACK_PREFFIX/rule-management-database.env
 envsubst < $SECRET_DB/smart-irrigation-business-database.env > $BACK_PREFFIX/smart-irrigation-business-database.env
+
+envsubst < $SECRET_DB/identity-management-initdb.sql > databases/identity-management-database/identity-management-initdb.sql
+
+envsubst < secrets/templates/jmeter/properties.env > jmeter-tests/properties.env 

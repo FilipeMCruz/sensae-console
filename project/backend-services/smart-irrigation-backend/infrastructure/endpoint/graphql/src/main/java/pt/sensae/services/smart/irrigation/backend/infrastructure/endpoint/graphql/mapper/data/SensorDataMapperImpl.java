@@ -14,8 +14,8 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graph
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceTypeDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntryDTOImpl;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class SensorDataMapperImpl implements SensorDataMapper {
 
     @Override
-    public SensorReadingDTO toDto(SensorDataDTO dto) {
+    public SensorReadingDTO toDto(DataUnitDTO dto) {
         var entries = dto.device.records.stream()
                 .map(e -> new RecordEntryDTOImpl(e.label, e.content))
                 .collect(Collectors.toSet());

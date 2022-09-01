@@ -18,6 +18,7 @@ export interface TenantIdentity {
   email: string;
   name: string;
   oid: string;
+  exp: number;
   domains: string[];
   permissions: string[];
 }

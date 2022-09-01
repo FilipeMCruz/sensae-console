@@ -2,10 +2,11 @@ package pt.sensae.services.data.decoder.flow.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import pt.sensae.services.data.decoder.flow.domain.SensorTypeId;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
+import pt.sharespot.iot.core.keys.RoutingKeys;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -23,15 +24,15 @@ public class DataUnitProcessor {
     @Inject
     DataUnitPublisher publisher;
 
-    public void publish(MessageConsumed<ObjectNode, SensorRoutingKeys> message) {
+    public void publish(MessageConsumed<ObjectNode, DataRoutingKeys> message) {
         message.toSupplied(this::inToOutData, this::inToOutKeys).ifPresent(publisher::next);
     }
 
-    private Optional<SensorDataDTO> inToOutData(ObjectNode node, SensorRoutingKeys keys) {
+    private Optional<DataUnitDTO> inToOutData(ObjectNode node, DataRoutingKeys keys) {
         return mapper.decodeData(node, SensorTypeId.of(keys.sensorTypeId.details()));
     }
 
-    private Optional<SensorRoutingKeys> inToOutKeys(SensorDataDTO data, SensorRoutingKeys keys) {
+    private Optional<DataRoutingKeys> inToOutKeys(DataUnitDTO data, DataRoutingKeys keys) {
         return provider.getBuilder(RoutingKeysBuilderOptions.SUPPLIER).withUpdated(data).from(keys);
     }
 }

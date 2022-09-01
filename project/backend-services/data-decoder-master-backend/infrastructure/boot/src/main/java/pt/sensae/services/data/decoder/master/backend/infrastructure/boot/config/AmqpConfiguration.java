@@ -40,11 +40,11 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    Binding bindingRequest() {
+    Binding bindingUnknown() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(requestQueue()).to(internalExchange()).with(keys.get().toString());

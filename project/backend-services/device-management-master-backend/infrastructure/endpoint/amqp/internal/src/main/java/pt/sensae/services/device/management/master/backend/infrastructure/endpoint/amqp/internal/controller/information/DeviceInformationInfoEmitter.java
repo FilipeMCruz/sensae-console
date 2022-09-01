@@ -27,7 +27,7 @@ public class DeviceInformationInfoEmitter {
         this.service = service;
         var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INFO)
                 .build();
         if (info.isEmpty()) {

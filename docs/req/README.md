@@ -4,7 +4,7 @@ This section defines the functionalities and operations that the system supports
 
 Current version:
 
-- `system` : `0.9.0`
+- `system` : `0.10.0`
 
 ## Actors
 

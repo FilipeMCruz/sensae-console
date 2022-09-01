@@ -9,7 +9,7 @@ import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.proxy.ProxyObject;
 import pt.sensae.services.data.decoder.flow.domain.DataDecoderRepository;
 import pt.sensae.services.data.decoder.flow.domain.SensorTypeId;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,7 +25,7 @@ public class DataDecoderExecutor {
     @Inject
     DataDecoderRepository repository;
 
-    public Optional<SensorDataDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
+    public Optional<DataUnitDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
         var byDeviceId = repository.findById(scriptId);
         if (byDeviceId.isEmpty()) return Optional.empty();
 
@@ -36,7 +36,7 @@ public class DataDecoderExecutor {
             var object = mapper.convertValue(input, new TypeReference<Map<String, Object>>() {
             });
             return member.map(s -> s.execute(ProxyObject.fromMap(object)).as(Map.class))
-                    .map(r -> mapper.convertValue(r, SensorDataDTO.class));
+                    .map(r -> mapper.convertValue(r, DataUnitDTO.class));
         } catch (IOException e) {
             e.printStackTrace();
         }

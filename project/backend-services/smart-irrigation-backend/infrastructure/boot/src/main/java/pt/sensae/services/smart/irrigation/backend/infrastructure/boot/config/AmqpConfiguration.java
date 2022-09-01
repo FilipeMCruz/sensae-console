@@ -13,12 +13,12 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSubCategoryOptions;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.data.routing.keys.data.*;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.data.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -2,13 +2,13 @@ package pt.sensae.services.fleet.management.backend.infrastructure.persistence.q
 
 import ch.hsr.geohash.GeoHash;
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
-import pt.sharespot.iot.core.sensor.model.data.types.MotionDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.DeviceInformationDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.data.model.data.types.MotionDataDTO;
+import pt.sharespot.iot.core.data.model.device.DeviceInformationDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class ProcessedSensorDataMapperImpl {
 
-    public ProcessedSensorDataDAOImpl dtoToSingleDao(SensorDataDTO in) {
+    public ProcessedSensorDataDAOImpl dtoToSingleDao(DataUnitDTO in) {
         var dao = new ProcessedSensorDataDAOImpl();
 
         dao.dataId = in.dataId.toString();
@@ -32,7 +32,7 @@ public class ProcessedSensorDataMapperImpl {
         return dao;
     }
 
-    public List<ProcessedSensorDataDAOImpl> dtoToDao(SensorDataDTO in) {
+    public List<ProcessedSensorDataDAOImpl> dtoToDao(DataUnitDTO in) {
         var dao = dtoToSingleDao(in);
         return in.device.domains.stream()
                 .map(domain -> dao.cloneWithDomain(domain.toString()))
@@ -40,7 +40,7 @@ public class ProcessedSensorDataMapperImpl {
                 .toList();
     }
 
-    private String toDAO(SensorDataDTO in) {
+    private String toDAO(DataUnitDTO in) {
         if (!in.getSensorData().hasProperty(PropertyName.MOTION)) {
             return "UNKNOWN";
         } else if ("ACTIVE".equalsIgnoreCase(in.getSensorData().motion.value)) {
@@ -52,7 +52,7 @@ public class ProcessedSensorDataMapperImpl {
         }
     }
 
-    public SensorDataDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
+    public DataUnitDTO daoToDto(ProcessedSensorDataDAOImpl dao) {
         var dataId = UUID.fromString(dao.dataId);
         var device = new DeviceInformationDTO();
         device.id = UUID.fromString(dao.deviceId);
@@ -60,10 +60,10 @@ public class ProcessedSensorDataMapperImpl {
         device.records = new HashSet<>();
         device.domains = Set.of(UUID.fromString(dao.domainId));
         var originatingPoint = GeoHash.fromGeohashString(dao.gpsData).getOriginatingPoint();
-        var details = new SensorDataDetailsDTO()
+        var details = new DataUnitReadingsDTO()
                 .withGps(GPSDataDTO.ofLatLong(originatingPoint.getLatitude(), originatingPoint.getLongitude()))
                 .withMotion(MotionDataDTO.of(dao.motion));
-        return new SensorDataDTO(dataId, device, dao.reportedAt.getTime(), Map.of(0, details));
+        return new DataUnitDTO(dataId, device, dao.reportedAt.getTime(), Map.of(0, details));
     }
 
     public ProcessedSensorDataDAOImpl toSensorData(ResultSet resultSet) throws SQLException {

@@ -1,7 +1,8 @@
-import { HttpLink } from 'apollo-angular/http';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { split } from '@apollo/client/core';
-import { getMainDefinition } from '@apollo/client/utilities';
+import {HttpLink} from 'apollo-angular/http';
+import {split} from '@apollo/client/core';
+import {getMainDefinition} from '@apollo/client/utilities';
+import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
+import {createClient} from "graphql-ws";
 
 export interface backendUriDetails {
   domain: string;
@@ -36,22 +37,17 @@ function createLinkWithWebsocket(
     uri: buildHttpBackendUri(details),
   });
 
-  // Create a WebSocket link:
-  const ws = new WebSocketLink({
-    uri: buildWebSocketBackendUri(details),
-    options: {
-      reconnect: true,
-      timeout: 30000,
-    },
-  });
+  const ws = new GraphQLWsLink(createClient({
+    url: buildWebSocketBackendUri(details),
+  }));
 
   // using the ability to split links, you can send data to each link
   // depending on what kind of operation is being sent
   return split(
     // split based on operation type
-    ({ query }) => {
+    ({query}) => {
       // @ts-ignore
-      const { kind, operation } = getMainDefinition(query);
+      const {kind, operation} = getMainDefinition(query);
       return kind === 'OperationDefinition' && operation === 'subscription';
     },
     ws,

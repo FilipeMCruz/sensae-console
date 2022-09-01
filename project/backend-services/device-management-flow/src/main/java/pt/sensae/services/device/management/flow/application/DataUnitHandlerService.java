@@ -6,9 +6,10 @@ import pt.sensae.services.device.management.flow.domain.device.Device;
 import pt.sensae.services.device.management.flow.domain.device.DeviceDownlink;
 import pt.sensae.services.device.management.flow.domain.device.DeviceId;
 import pt.sensae.services.device.management.flow.domain.device.DeviceName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
+import pt.sharespot.iot.core.keys.RoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ public class DataUnitHandlerService {
     @Inject
     DataUnitNotificationPublisherService notificationPublisher;
 
-    public void publish(MessageConsumed<SensorDataDTO, SensorRoutingKeys> message) {
+    public void publish(MessageConsumed<DataUnitDTO, DataRoutingKeys> message) {
         var deviceId = new DeviceId(message.data.device.id);
         var device = new Device(deviceId, new DeviceName(message.data.device.name), new DeviceDownlink(message.data.device.downlink));
         if (cache.findById(deviceId).isPresent()) {

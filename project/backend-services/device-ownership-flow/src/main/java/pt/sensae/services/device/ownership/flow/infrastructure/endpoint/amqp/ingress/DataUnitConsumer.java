@@ -6,10 +6,10 @@ import org.eclipse.microprofile.reactive.messaging.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.sensae.services.device.ownership.flow.application.DataUnitHandlerService;
+import pt.sharespot.iot.core.data.mapper.MessageMapper;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.sensor.mapper.MessageMapper;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,7 +31,7 @@ public class DataUnitConsumer {
         return in.ack();
     }
 
-    private void logConsumedMessage(MessageConsumed<SensorDataDTO, SensorRoutingKeys> in) {
+    private void logConsumedMessage(MessageConsumed<DataUnitDTO, DataRoutingKeys> in) {
         logger.info("Data Id Consumed: {}", in.oid);
         logger.info("RoutingKeys: {}", in.routingKeys.details());
         logger.info("Hops: {}", in.hops);

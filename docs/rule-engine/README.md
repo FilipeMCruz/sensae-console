@@ -2,8 +2,8 @@
 
 Current version:
 
-- `iot-core` : `0.1.18`
-- `system` : `0.9.0`
+- `iot-core` : `0.1.19`
+- `system` : `0.10.0`
 
 ## Introduction
 
@@ -38,7 +38,7 @@ Drools allows users to write and submit rules. As an example the following rule 
 ``` drl
 rule "Create new valve device that belongs to Project #003"
     when
-        data : SensorDataDTO(
+        data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
         exists DeviceRecordEntryDTO(label == "Project" && content == "#003") from data.device.records
@@ -77,7 +77,7 @@ In order to create `rules` there are certain rules to follow:
   - `ADVISORY`
   - `WARNING`
   - `CRITICAL`
-- In order for another service act upon a received alarm, that alarm has to be associated with a `DeviceId` (this association helps services like `Smart Irrigation` to know what Valve must be turned on or off), a `DataId` or `Other` (any info deemed important);
+- In order for another service to act upon a received alarm, that alarm has to be associated with a `DeviceId` (this association helps services like `Smart Irrigation` to know what Valve must be turned on or off), a `DataId` or `Other` (any info deemed important);
 - If no `deviceIds` are given only the root tenant will have access to the alarm;
 - A rule can import and create new classes/events when needed;
 - A rule name can't be duplicated;
@@ -98,7 +98,7 @@ The following diagram represents the idealized architecture:
 - **Rule Management Backend**: this container is responsible for verifying that the submitted rule scenarios can be compiled, if so it notifies that a rule was updated, deleted or added.
 - **Alert Dispatcher**: this container is responsible for executing rules when new sensor data arrives to it from the message broker. When facts match a rule condition alarms are produced. This alarms are send to the message broker so that other containers are notified about them.
 - **Rule Management Database**: this container is responsible for storing all rule scenarios.
-- **Message Broker**: this container is responsible for sending new sensor data to **Alert Dispatcher** trough `sensor.topic`, send updates about rules to **Alert Dispatcher** trough `internal.topic`, let **Rule Management Backend** publish new updates about rules in `internal.topic` and let **Alert Dispatcher** publish new alerts in `alerts.topic`.
+- **Message Broker**: this container is responsible for sending new sensor data to **Alert Dispatcher** trough `data.topic`, send updates about rules to **Alert Dispatcher** trough `internal.topic`, let **Rule Management Backend** publish new updates about rules in `internal.topic` and let **Alert Dispatcher** publish new alerts in `alerts.topic`.
 
 ## Rules examples
 

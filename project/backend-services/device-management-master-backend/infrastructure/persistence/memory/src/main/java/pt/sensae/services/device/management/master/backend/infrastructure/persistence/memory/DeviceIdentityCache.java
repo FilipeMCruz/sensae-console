@@ -37,7 +37,9 @@ public class DeviceIdentityCache implements DeviceIdentityRepository {
         device.ownerDomains().forEach(domain -> {
             var ifPresent = this.cache.getIfPresent(domain);
             if (ifPresent == null) {
-                this.cache.put(domain, Set.of(device.oid()));
+                var deviceId = new HashSet<DeviceId>();
+                deviceId.add(device.oid());
+                this.cache.put(domain, deviceId);
             } else {
                 ifPresent.add(device.oid());
             }

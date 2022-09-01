@@ -1,7 +1,7 @@
 package pt.sensae.services.alert.dispatcher.backend.application;
 
 import org.springframework.stereotype.Service;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 @Service
 public class RuleEvaluatorService {
@@ -12,7 +12,7 @@ public class RuleEvaluatorService {
         this.rulesContainer = rulesContainer;
     }
 
-    public void insertData(SensorDataDTO data) {
+    public void insertData(DataUnitDTO data) {
         rulesContainer.getSession().insert(data);
     }
 }

@@ -10,8 +10,8 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.*;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -29,7 +29,7 @@ public class DeviceCache {
         this.repository = repository;
     }
 
-    public void updateIfNeeded(SensorDataDTO dto) {
+    public void updateIfNeeded(DataUnitDTO dto) {
         var deviceId = DeviceId.of(dto.device.id);
         var newEntry = toLedgerEntry(dto);
         var oldEntry = get(deviceId);
@@ -52,7 +52,7 @@ public class DeviceCache {
     }
 
     @NotNull
-    private DeviceType getDeviceType(SensorDataDTO dto) {
+    private DeviceType getDeviceType(DataUnitDTO dto) {
         DeviceType type;
         if (dto.hasProperty(PropertyName.TRIGGER)) {
             type = DeviceType.VALVE;
@@ -73,7 +73,7 @@ public class DeviceCache {
         cache.put(id, newEntry);
     }
 
-    private LedgerEntry toLedgerEntry(SensorDataDTO data) {
+    private LedgerEntry toLedgerEntry(DataUnitDTO data) {
         var owners = Ownership.of(data.device.domains.stream().map(DomainId::of));
 
         var name = DeviceName.of(data.device.name);

@@ -6,7 +6,7 @@ As explained in identity-management [docs](../identity-management/README.md) all
 
 Current version:
 
-- `system` : `0.9.0`
+- `system` : `0.10.0`
 
 ## Data Gateway API
 
@@ -219,6 +219,7 @@ query transformation{
       oldPath
       newPath
     }
+    lastTimeSeen
   }
 }
 ```
@@ -266,6 +267,7 @@ query decoder {
       type
     }
     script
+    lastTimeSeen
   }
 }
 ```
@@ -402,6 +404,7 @@ query deviceInformation {
       port
       payload
     }
+    lastTimeSeen
   }
 }
 ```

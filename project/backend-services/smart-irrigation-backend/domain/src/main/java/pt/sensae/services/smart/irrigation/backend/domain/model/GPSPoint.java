@@ -1,6 +1,6 @@
 package pt.sensae.services.smart.irrigation.backend.domain.model;
 
-import pt.sharespot.iot.core.sensor.model.data.types.GPSDataDTO;
+import pt.sharespot.iot.core.data.model.data.types.GPSDataDTO;
 
 public record GPSPoint(Double latitude, Double longitude, Float altitude) {
 

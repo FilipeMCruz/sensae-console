@@ -27,7 +27,7 @@ public class DeviceInformationSyncEmitter implements DeviceInformationSyncHandle
         this.template = template;
         var syncKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContainerType(ContainerTypeOptions.DEVICE_MANAGEMENT)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.SYNC)
                 .build();
         if (syncKeys.isEmpty()) {

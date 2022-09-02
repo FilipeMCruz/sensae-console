@@ -4,6 +4,8 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 
 cd "$ROOT_DIR"/project/backend-services || exit
 
+docker-compose -f ../docker-compose.dev.yml build
+
 rm --f -- ../reports/backend-test-pass.log
 rm --f -- ../reports/backend-test-fail.log
 

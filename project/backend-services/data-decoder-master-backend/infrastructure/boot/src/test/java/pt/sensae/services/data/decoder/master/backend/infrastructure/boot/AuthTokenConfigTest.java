@@ -1,4 +1,4 @@
-package pt.sensae.services.data.decoder.master.backend.infrastructure.boot.auth;
+package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;

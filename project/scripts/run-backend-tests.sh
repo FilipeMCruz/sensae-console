@@ -2,12 +2,17 @@
 
 ROOT_DIR=$(git rev-parse --show-toplevel)
 
-cd "$ROOT_DIR"/project/backend-services || exit
+cd "$ROOT_DIR"/project || exit
 
-docker-compose -f ../docker-compose.dev.yml build
+sed  's|$SENSAE_ADMIN_EMAIL|test@sensae.pt|g' secrets/templates/dev/databases/identity-management-initdb.sql > \
+        databases/identity-management-database/identity-management-initdb.sql
 
-rm --f -- ../reports/backend-test-pass.log
-rm --f -- ../reports/backend-test-fail.log
+docker-compose -f docker-compose.build.yml build
+
+rm --f -- reports/backend-test-pass.log
+rm --f -- reports/backend-test-fail.log
+
+cd backend-services || exit
 
 ls -I data-relayer | xargs -I % sh -c 'cd % && mvn test && \
  echo % >> ../../reports/backend-test-pass.log || \

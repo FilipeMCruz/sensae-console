@@ -35,6 +35,7 @@ public abstract class IntegrationTest {
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            postgresSQLContainer.withDatabaseName("decoder");
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgresSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgresSQLContainer.getUsername(),

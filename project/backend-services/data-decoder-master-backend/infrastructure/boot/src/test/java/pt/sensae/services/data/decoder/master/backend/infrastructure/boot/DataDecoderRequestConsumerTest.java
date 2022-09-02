@@ -2,8 +2,8 @@ package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
@@ -27,6 +27,10 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+
+import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 public class DataDecoderRequestConsumerTest extends IntegrationTest {
 
@@ -51,18 +55,19 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
     @Autowired
     DataDecodersRepositoryImpl repository;
 
-    @AfterEach
+    @BeforeEach
     public void init() {
         var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
                 .withOperationType(OperationTypeOptions.INFO).build().orElseThrow();
 
-        var queue = QueueBuilder.durable("integration-test").build();
+        var queue = QueueBuilder.durable("integration-test-unknown").build();
         rabbitAdmin.declareQueue(queue);
         rabbitAdmin.declareBinding(BindingBuilder.bind(queue)
                 .to(new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE))
                 .with(routingKeys.toString()));
+        await().during(Duration.of(1, ChronoUnit.SECONDS));
     }
 
     @AfterEach
@@ -70,21 +75,14 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
         performQuery(postgresSQLContainer, "TRUNCATE decoder");
     }
 
-    //Here because spring amqp fails to register queues and binding before the first message is sent
-    @Test
-    public void aSmokeTest() {
-        publisher.publishDelete(SensorTypeId.of("lgt92"));
-        Assertions.assertThrows(AmqpIOException.class, () -> amqpTemplate.receiveAndConvert("integration-test"));
-    }
-
     @Test
     public void ensureDecoderRequestIsProcessedAsExpectedWhenDecoderCantBeFound() throws Exception {
-        service.getSinglePublisher().subscribe(s -> Assertions.assertEquals(1, 2));
-
         var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.UNKNOWN).build().orElseThrow();
+                .withOperationType(OperationTypeOptions.UNKNOWN)
+                .build()
+                .orElseThrow();
 
         var request = new SensorTypeIdDTOImpl();
         request.sensorType = "lgt92";
@@ -97,20 +95,15 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
     }
 
     @Test
-    public void ensureDecoderRequestIsProcessedAsExpectedWhenDecoderCanBeFound() throws Exception {
+    public void ensureDecoderUnknownIsProcessedAsExpectedWhenDecoderCanBeFound() throws Exception {
         repository.save(new DataDecoder(SensorTypeId.of("lgt92"), SensorTypeScript.of("ascm")));
-
-        service.getSinglePublisher().subscribe(s -> {
-            var dto = (DataDecoderNotificationDTOImpl) s;
-            Assertions.assertEquals(dto.type, DataDecoderNotificationTypeDTOImpl.UPDATE);
-            Assertions.assertEquals(dto.sensorType, "lgt92");
-            Assertions.assertEquals(dto.information.script, "ascm");
-        });
 
         var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.UNKNOWN).build().orElseThrow();
+                .withOperationType(OperationTypeOptions.UNKNOWN)
+                .build()
+                .orElseThrow();
 
         var request = new SensorTypeIdDTOImpl();
         request.sensorType = "lgt92";
@@ -118,7 +111,7 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
 
         Thread.sleep(200);
 
-        var dto = (DataDecoderNotificationDTOImpl) amqpTemplate.receiveAndConvert("integration-test");
+        var dto = (DataDecoderNotificationDTOImpl) amqpTemplate.receiveAndConvert("integration-test-unknown");
         Assertions.assertEquals(DataDecoderNotificationTypeDTOImpl.UPDATE, dto.type);
         Assertions.assertEquals("lgt92", dto.sensorType);
         Assertions.assertEquals("ascm", dto.information.script);

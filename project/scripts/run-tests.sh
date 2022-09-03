@@ -24,4 +24,4 @@ test ! -f ../reports/backend-test-fail.log
 cd ../frontend-services || exit
 
 npm install
-npm test-all
+npm run test-all

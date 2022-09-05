@@ -27,10 +27,6 @@ import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
-import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 public class DataDecoderRequestConsumerTest extends IntegrationTest {
 
@@ -57,22 +53,23 @@ public class DataDecoderRequestConsumerTest extends IntegrationTest {
 
     @BeforeEach
     public void init() {
-        var routingKeys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withContextType(ContextTypeOptions.DATA_DECODER)
-                .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.INFO).build().orElseThrow();
+        if (rabbitAdmin.getQueueInfo("integration-test-unknown") == null) {
+            var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
+                    .withContextType(ContextTypeOptions.DATA_DECODER)
+                    .withContainerType(ContainerTypeOptions.DATA_DECODER)
+                    .withOperationType(OperationTypeOptions.INFO).build().orElseThrow();
 
-        var queue = QueueBuilder.durable("integration-test-unknown").build();
-        rabbitAdmin.declareQueue(queue);
-        rabbitAdmin.declareBinding(BindingBuilder.bind(queue)
-                .to(new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE))
-                .with(routingKeys.toString()));
-        await().during(Duration.of(1, ChronoUnit.SECONDS));
+            var queue = QueueBuilder.durable("integration-test-unknown").build();
+            rabbitAdmin.declareQueue(queue);
+            rabbitAdmin.declareBinding(BindingBuilder.bind(queue)
+                    .to(new TopicExchange(IoTCoreTopic.INTERNAL_EXCHANGE))
+                    .with(keys.toString()));
+        }
     }
 
     @AfterEach
     public void cleanUp() throws SQLException {
-        performQuery(postgresSQLContainer, "TRUNCATE decoder");
+        performQuery("TRUNCATE decoder");
     }
 
     @Test

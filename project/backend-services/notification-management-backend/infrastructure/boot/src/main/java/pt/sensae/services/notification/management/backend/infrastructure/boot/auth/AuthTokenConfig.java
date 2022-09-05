@@ -2,6 +2,7 @@ package pt.sensae.services.notification.management.backend.infrastructure.boot.a
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.notification.management.backend.application.auth.AccessTokenDTO;
 import pt.sensae.services.notification.management.backend.infrastructure.endpoint.graphql.auth.AccessTokenDTOImpl;
@@ -19,6 +20,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
 @Service
+@Profile("!test")
 public class AuthTokenConfig implements AuthTokenHandler {
 
     @Value("${sensae.auth.pub.key.path}")

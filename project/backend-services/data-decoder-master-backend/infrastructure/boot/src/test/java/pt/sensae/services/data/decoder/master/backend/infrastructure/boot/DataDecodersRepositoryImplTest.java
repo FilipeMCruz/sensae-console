@@ -18,7 +18,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @AfterEach
     public void cleanUp() throws SQLException {
-        performQuery(postgresSQLContainer, "TRUNCATE decoder");
+        performQuery("TRUNCATE decoder");
     }
 
     @Test
@@ -29,7 +29,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
         Assertions.assertEquals("lgt92", save.id().getValue());
         Assertions.assertEquals("ascma", save.script().value());
 
-        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'ascma'");
+        var resultSet = performQuery("SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'ascma'");
         Assertions.assertEquals("lgt92", resultSet.getString("device_type"));
         Assertions.assertEquals("ascma", resultSet.getString("script"));
         resultSet.close();
@@ -37,7 +37,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @Test
     public void ensureSavedDecoderCanBeFound() throws SQLException {
-        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *").close();
+        performQuery("INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma')");
 
         var found = repository.findById(SensorTypeId.of("lgt92")).orElseThrow();
 
@@ -54,7 +54,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @Test
     public void ensureADecoderCanBeUpdated() throws SQLException {
-        var resultSetSt = performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
+        var resultSetSt = performQuery("INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
         Assertions.assertEquals("lgt92", resultSetSt.getString("device_type"));
         Assertions.assertEquals("ascma", resultSetSt.getString("script"));
         resultSetSt.close();
@@ -65,7 +65,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
         Assertions.assertEquals("lgt92", save.id().getValue());
         Assertions.assertEquals("nonono", save.script().value());
 
-        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'nonono'");
+        var resultSet = performQuery("SELECT * FROM decoder WHERE device_type LIKE 'lgt92' AND script LIKE 'nonono'");
         Assertions.assertEquals("lgt92", resultSet.getString("device_type"));
         Assertions.assertEquals("nonono", resultSet.getString("script"));
         resultSet.close();
@@ -73,7 +73,7 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @Test
     public void ensureSavedDecodersCanBeCollected() throws SQLException {
-        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma'),('emd300th', 'lololol') RETURNING *").close();
+        performQuery("INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma'),('emd300th', 'lololol')");
 
         var found = repository.findAll().toList();
         Assertions.assertEquals(2, found.size());
@@ -97,13 +97,13 @@ public class DataDecodersRepositoryImplTest extends IntegrationTest {
 
     @Test
     public void ensureSavedDecoderCanBeDeleted() throws SQLException {
-        performQuery(postgresSQLContainer, "INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma') RETURNING *");
+        performQuery("INSERT INTO decoder(device_type, script) VALUES ('lgt92', 'ascma')");
 
         var found = repository.delete(SensorTypeId.of("lgt92"));
 
         Assertions.assertEquals("lgt92", found.getValue());
 
-        var resultSet = performQuery(postgresSQLContainer, "SELECT * FROM decoder WHERE device_type LIKE 'lgt92'");
+        var resultSet = performQuery("SELECT * FROM decoder WHERE device_type LIKE 'lgt92'");
         Assertions.assertFalse(resultSet.next());
         resultSet.close();
     }

@@ -11,7 +11,6 @@ import pt.sensae.services.data.processor.flow.application.DataUnitHandlerService
 import pt.sharespot.iot.core.data.mapper.MessageMapper;
 import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.keys.RoutingKeys;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

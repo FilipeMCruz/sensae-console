@@ -1,4 +1,4 @@
-package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
+package pt.sensae.services.notification.management.backend.infrastructure.boot;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -13,8 +13,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.containers.DatabaseContainerTest;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.containers.MessageBrokerContainerTest;
+import pt.sensae.services.notification.management.backend.infrastructure.containers.DatabaseContainerTest;
+import pt.sensae.services.notification.management.backend.infrastructure.containers.MessageBrokerContainerTest;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -36,7 +36,7 @@ public abstract class IntegrationTest {
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            postgresSQLContainer.withDatabaseName("decoder");
+            postgresSQLContainer.withDatabaseName("notification");
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgresSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgresSQLContainer.getUsername(),
@@ -57,9 +57,11 @@ public abstract class IntegrationTest {
 
     protected ResultSet performQuery(String sql) throws SQLException {
         DataSource ds = getDataSource(postgresSQLContainer);
-        Statement statement = ds.getConnection().createStatement();
-        statement.execute(sql);
-        ResultSet resultSet = statement.getResultSet();
+        ResultSet resultSet;
+        try (Statement statement = ds.getConnection().createStatement()) {
+            statement.execute(sql);
+            resultSet = statement.getResultSet();
+        }
 
         if (resultSet != null) resultSet.next();
 

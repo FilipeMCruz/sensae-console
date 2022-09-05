@@ -1,7 +1,12 @@
 package pt.sensae.services.data.decoder.master.backend.infrastructure.boot;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import pt.sensae.services.data.decoder.master.backend.application.RoutingKeysProvider;

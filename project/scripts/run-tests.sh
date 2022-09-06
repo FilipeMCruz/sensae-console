@@ -5,8 +5,7 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 
 cd "$ROOT_DIR"/project || exit
 
-sed 's|$SENSAE_ADMIN_EMAIL|test@sensae.pt|g' secrets/templates/dev/databases/identity-management-initdb.sql > \
-        databases/identity-management-database/identity-management-initdb.sql
+./scripts/generate-test-config.sh "$@"
 
 docker-compose -f docker-compose.build.yml build
 
@@ -25,3 +24,13 @@ cd ../frontend-services || exit
 
 npm install
 npm run test-all
+
+./../scripts/build-images.sh
+
+docker-compose -f ../docker-compose.test.yml up -d --build
+
+sleep 60
+
+npm run e2e-all
+
+docker-compose -f ../docker-compose.test.yml down

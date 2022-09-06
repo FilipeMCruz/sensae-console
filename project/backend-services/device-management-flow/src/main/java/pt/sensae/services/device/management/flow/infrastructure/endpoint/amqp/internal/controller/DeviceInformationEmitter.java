@@ -1,5 +1,6 @@
 package pt.sensae.services.device.management.flow.infrastructure.endpoint.amqp.internal.controller;
 
+import io.quarkus.logging.Log;
 import io.smallrye.reactive.messaging.rabbitmq.OutgoingRabbitMQMetadata;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;

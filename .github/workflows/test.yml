@@ -22,4 +22,5 @@ jobs:
         with:
           node-version: 16
       - name: Test Suite
-        run: ./project/scripts/run-tests.sh
+        run: |
+          ./project/scripts/run-tests.sh "${{ secrets.mapbox_token }}" "${{ secrets.microsoft_audience }}" "${{ secrets.google_audience }}" "${{ secrets.admin_email }}"

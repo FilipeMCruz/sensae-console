@@ -16,7 +16,7 @@ COPY pom.xml pom.xml
 RUN mvn -B -e -C org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline -DexcludeArtifactIds=notification-management-backend,application,domain,infrastructure,endpoint,graphql,boot,amqp,postgres
 
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM openjdk:17
 WORKDIR /app

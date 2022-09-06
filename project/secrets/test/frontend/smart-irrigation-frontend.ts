@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     smartIrrigation: {
       backend: {
-        domain: "localhost:8801",
+        domain: "127.0.0.1:8801",
         http: {
           scheme: "http://",
           path: "/graphql",

@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     notificationManagement: {
       backend: {
-        domain: "localhost:8096",
+        domain: "127.0.0.1:8096",
         http: {
           scheme: "http://",
           path: "/graphql",

@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     ruleManagement: {
       backend: {
-        domain: "localhost:8094",
+        domain: "127.0.0.1:8094",
         http: {
           scheme: "http://",
           path: "/graphql",

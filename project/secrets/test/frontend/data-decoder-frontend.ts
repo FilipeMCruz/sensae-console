@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     dataDecoder: {
       backend: {
-        domain: "localhost:8184",
+        domain: "127.0.0.1:8184",
         http: {
           scheme: "http://",
           path: "/graphql",

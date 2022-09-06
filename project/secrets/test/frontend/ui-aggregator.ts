@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     deviceInformation: {
       backend: {
-        domain: "localhost:8088",
+        domain: "127.0.0.1:8088",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -12,7 +12,7 @@ export const environment = {
     },
     dataProcessor: {
       backend: {
-        domain: "localhost:8082",
+        domain: "127.0.0.1:8082",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -21,7 +21,7 @@ export const environment = {
     },
     dataDecoder: {
       backend: {
-        domain: "localhost:8084",
+        domain: "127.0.0.1:8084",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -30,7 +30,7 @@ export const environment = {
     },
     fleetManagement: {
       backend: {
-        domain: "localhost:8800",
+        domain: "127.0.0.1:8800",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -43,7 +43,7 @@ export const environment = {
     },
     identity: {
       backend: {
-        domain: "localhost:8086",
+        domain: "127.0.0.1:8086",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -52,7 +52,7 @@ export const environment = {
     },
     smartIrrigation: {
       backend: {
-        domain: "localhost:8801",
+        domain: "127.0.0.1:8801",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -65,7 +65,7 @@ export const environment = {
     },
     ruleManagement: {
       backend: {
-        domain: "localhost:8094",
+        domain: "127.0.0.1:8094",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -74,7 +74,7 @@ export const environment = {
     },
     notificationManagement: {
       backend: {
-        domain: "localhost:8096",
+        domain: "127.0.0.1:8096",
         http: {
           scheme: "http://",
           path: "/graphql",
@@ -94,5 +94,5 @@ export const environment = {
       clientId: '$SENSAE_AUTH_EXTERNAL_GOOGLE_AUDIENCE',
     },
   },
-  domain: "localhost",
+  domain: "127.0.0.1",
 };

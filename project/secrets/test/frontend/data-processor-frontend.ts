@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     dataProcessor: {
       backend: {
-        domain: "localhost:8082",
+        domain: "127.0.0.1:8082",
         http: {
           scheme: "http://",
           path: "/graphql",

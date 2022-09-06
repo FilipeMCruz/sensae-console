@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     deviceInformation: {
       backend: {
-        domain: "localhost:8088",
+        domain: "127.0.0.1:8088",
         http: {
           scheme: "http://",
           path: "/graphql",

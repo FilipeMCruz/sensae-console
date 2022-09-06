@@ -3,7 +3,7 @@ export const environment = {
   endpoints: {
     fleetManagement: {
       backend: {
-        domain: "localhost:8800",
+        domain: "127.0.0.1:8800",
         http: {
           scheme: "http://",
           path: "/graphql",

@@ -49,7 +49,7 @@ services:
     networks:
       - sensae-network
     ports:
-      - 8084:8080
+      - 8184:8080
   data-decoder-database:
     build: databases/data-decoder-database
     container_name: data-decoder-database

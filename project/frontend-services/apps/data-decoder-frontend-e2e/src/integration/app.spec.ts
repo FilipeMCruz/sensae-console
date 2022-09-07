@@ -1,4 +1,4 @@
-describe('ui-aggregator', () => {
+describe('data-decoder-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
   it('is a dummy', () => {

@@ -1,4 +1,4 @@
-describe('ui-aggregator', () => {
+describe('rule-management-frontend', () => {
   beforeEach(() => cy.visit('/'));
 
   it('is a dummy', () => {

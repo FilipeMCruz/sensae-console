@@ -11,7 +11,7 @@ export interface PathSource {
 
 export class DeviceHistorySource {
   public deviceHistories = new Array<DeviceHistory>();
-
+  public inUse = false;
   public startTime = 0;
   public endTime = 1;
 
@@ -25,12 +25,18 @@ export class DeviceHistorySource {
 
   cleanHistories() {
     this.deviceHistories = new Array<DeviceHistory>();
+    this.inUse = false;
   }
 
   setHistories(histories: Array<DeviceHistory>) {
+    if (histories.length === 0) {
+      return;
+    }
+
     this.startTime = histories[0].startTime;
     this.endTime = histories[0].endTime;
     this.deviceHistories.push(...histories);
+    this.inUse = true;
   }
 
   asGeoJSONForTime(time: number): GeoJSONSourceRaw {
@@ -76,13 +82,13 @@ export class DeviceHistorySource {
     return this.deviceHistories.map((d) => d.getLayerId(type)).flat();
   }
 
-  getStepLayer(): SymbolLayer {
+  getStepLayer(style: string): SymbolLayer {
     return {
       id: this.getStepSourceId(),
       type: 'symbol',
       source: this.getStepSourceId(),
       layout: {
-        'icon-image': 'car-15',
+        'icon-image': style === "Light" ? 'car-15' : 'car',
         'icon-size': 1.5,
       },
     };

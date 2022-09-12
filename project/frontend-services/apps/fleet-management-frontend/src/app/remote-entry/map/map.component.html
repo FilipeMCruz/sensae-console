@@ -11,7 +11,7 @@
     [devices]="devices"
   >
   </frontend-services-search-card>
-  <mat-card class="history-card" *ngIf="!history.isEmpty()">
+  <mat-card class="history-card mat-elevation-z2" *ngIf="!history.isEmpty()">
     <mat-card-title>History Details</mat-card-title>
     <mat-card-subtitle>{{ formatLabel() }}</mat-card-subtitle>
     <mat-card-content class="history-card-content">
@@ -25,5 +25,19 @@
       >
       </mat-slider>
     </mat-card-content>
+  </mat-card>
+  <mat-card class="styles-card mat-elevation-z2">
+    <mat-card-title>
+      Change Styles
+    </mat-card-title>
+    <mat-radio-group
+      class="radio-group"
+
+      [value]="style">
+      <mat-radio-button (click)="changeStyle($event, stl)" class="radio-button" *ngFor="let stl of styles"
+                        [value]="stl">
+        {{stl}}
+      </mat-radio-button>
+    </mat-radio-group>
   </mat-card>
 </div>

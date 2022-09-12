@@ -46,6 +46,10 @@ export class MapComponent implements OnInit, OnDestroy {
 
   currentHistoryTime = 0;
 
+  style = 'Light';
+
+  styles: string[] = ['Light', 'Satellite'];
+
   constructor(private authService: AuthService,
               private locationEmitter: SubscribeToAllGPSData,
               private latestSpecificDeviceData: QueryLatestGPSSpecificDeviceData,
@@ -138,15 +142,20 @@ export class MapComponent implements OnInit, OnDestroy {
   addHistory() {
     this.history
       .getPathSources()
+      .filter((history) => this.map.getSource(history.id) === undefined)
       .forEach((history) => this.map.addSource(history.id, history.source));
-    this.history.getPathLayers().forEach((layer) => this.map.addLayer(layer));
+    this.history.getPathLayers()
+      .filter((layer) => this.map.getLayer(layer.id) === undefined)
+      .forEach((layer) => this.map.addLayer(layer));
 
-    this.map.addSource(
-      this.history.getStepSourceId(),
-      this.history.asGeoJSONForTime(this.history.deviceHistories[0].startTime)
-    );
-    this.map.addLayer(this.history.getStepLayer());
-    this.currentHistoryTime = this.history.startTime;
+    if (this.map.getSource(this.history.getStepSourceId()) === undefined)
+      this.map.addSource(
+        this.history.getStepSourceId(),
+        this.history.asGeoJSONForTime(this.history.deviceHistories[0].startTime)
+      );
+    const stepLayer = this.history.getStepLayer(this.style);
+    if (this.map.getLayer(stepLayer.id) === undefined)
+      this.map.addLayer(stepLayer);
   }
 
   cleanHistory() {
@@ -306,5 +315,22 @@ export class MapComponent implements OnInit, OnDestroy {
   canViewLiveOrPastData() {
     return this.authService.isAllowed(["fleet_management:live_data:read"]) ||
       this.authService.isAllowed(["fleet_management:past_data:read"]);
+  }
+
+  changeStyle(event: MouseEvent, value: string) {
+    event.stopPropagation();
+    this.style = value;
+    if (this.style === "Light") {
+      this.map.setStyle(environment.mapbox.simpleStyle);
+    } else {
+      this.map.setStyle(environment.mapbox.satelliteStyle);
+    }
+    this.map.on('style.load', () => {
+      if (this.history.inUse) {
+        this.addHistory();
+        this.setPopups();
+        this.showDevices();
+      }
+    });
   }
 }

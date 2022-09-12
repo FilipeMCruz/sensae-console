@@ -25,12 +25,12 @@ cd ../frontend-services || exit
 npm install
 npm run test-all
 
-./../scripts/build-test-images.sh
+#./../scripts/build-test-images.sh
 
-docker-compose -f ../docker-compose.test.yml up -d --build
+#docker-compose -f ../docker-compose.test.yml up -d --build
 
-sleep 180
+#sleep 180
 
-npm run e2e-all
+#npm run e2e-all
 
-docker-compose -f ../docker-compose.test.yml down
+#docker-compose -f ../docker-compose.test.yml down

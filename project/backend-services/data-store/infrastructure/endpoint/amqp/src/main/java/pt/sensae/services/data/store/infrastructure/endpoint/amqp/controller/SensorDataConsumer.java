@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import pt.sharespot.iot.core.data.mapper.MessageMapper;
 import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
@@ -14,6 +15,7 @@ import pt.sharespot.iot.core.keys.MessageConsumed;
 import pt.sensae.services.data.store.application.SensorDataHandlerService;
 
 @Service
+@Profile("none")
 public class SensorDataConsumer {
 
     Logger logger = LoggerFactory.getLogger(SensorDataConsumer.class);
@@ -30,7 +32,7 @@ public class SensorDataConsumer {
     public void receiveUpdate(Message in) throws InvalidProtocolBufferException, JsonProcessingException {
         var consumed = MessageMapper.toUnprocessedModel(in.getBody());
         logConsumedMessage(consumed);
-        handler.publish(consumed);
+        handler.publishUnprocessed(consumed);
     }
 
     private void logConsumedMessage(MessageConsumed<ObjectNode, DataRoutingKeys> in) {

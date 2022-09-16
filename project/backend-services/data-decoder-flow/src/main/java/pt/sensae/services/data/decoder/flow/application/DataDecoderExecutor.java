@@ -4,8 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.quarkus.logging.Log;
 import org.graalvm.polyglot.Context;
+import org.graalvm.polyglot.Engine;
+import org.graalvm.polyglot.PolyglotException;
 import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.proxy.ProxyHashMap;
 import org.graalvm.polyglot.proxy.ProxyObject;
 import pt.sensae.services.data.decoder.flow.domain.DataDecoderRepository;
 import pt.sensae.services.data.decoder.flow.domain.SensorTypeId;
@@ -14,6 +18,7 @@ import pt.sharespot.iot.core.data.model.DataUnitDTO;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,20 +31,20 @@ public class DataDecoderExecutor {
     DataDecoderRepository repository;
 
     public Optional<DataUnitDTO> decodeData(JsonNode input, SensorTypeId scriptId) {
-        var byDeviceId = repository.findById(scriptId);
-        if (byDeviceId.isEmpty()) return Optional.empty();
+        var scriptSource = repository.findById(scriptId);
+        if (scriptSource.isEmpty()) return Optional.empty();
 
         try (var context = Context.create()) {
-            context.eval(Source.newBuilder("js", byDeviceId.get().script().value(), scriptId.getValue()).build());
-            var member = Optional.of(context.getBindings("js").getMember("convert"));
-
+            context.eval(Source.newBuilder("js", scriptSource.get().script().value(), scriptId.getValue()).build());
             var object = mapper.convertValue(input, new TypeReference<Map<String, Object>>() {
             });
-            return member.map(s -> s.execute(ProxyObject.fromMap(object)).as(Map.class))
+
+            return Optional.of(context.getBindings("js").getMember("convert"))
+                    .map(s -> s.execute(ProxyObject.fromMap(object)).as(Map.class))
                     .map(r -> mapper.convertValue(r, DataUnitDTO.class));
-        } catch (IOException e) {
+        } catch (IOException | PolyglotException e) {
             e.printStackTrace();
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 }

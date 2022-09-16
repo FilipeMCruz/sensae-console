@@ -34,3 +34,13 @@ docker compose build identity-management-backend
 docker compose build data-decoder-master-backend
 docker compose build data-processor-master-backend
 
+docker compose build data-decoder-database
+docker compose build data-store-database
+docker compose build data-processor-database
+docker compose build device-management-database
+docker compose build identity-management-database
+docker compose build rule-management-database
+docker compose build notification-management-database
+docker compose build fleet-management-data-database
+docker compose build smart-irrigation-data-database
+docker compose build smart-irrigation-business-database

@@ -39,7 +39,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue internalQueue() {
-        return QueueBuilder.durable(RuleScenarioNotificationConsumer.QUEUE)
+        return QueueBuilder.nonDurable(RuleScenarioNotificationConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

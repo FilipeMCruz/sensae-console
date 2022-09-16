@@ -30,15 +30,24 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.nonDurable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
+    public static final String UNROUTABLE_EXCHANGE = "unroutable.topic";
+
+    @Bean
+    public TopicExchange altExchange() {
+        return ExchangeBuilder.topicExchange(UNROUTABLE_EXCHANGE).build();
+    }
+
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
+        return ExchangeBuilder.topicExchange(IoTCoreTopic.DATA_EXCHANGE)
+                .alternate(UNROUTABLE_EXCHANGE)
+                .build();
     }
 
     @Bean

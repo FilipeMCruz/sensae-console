@@ -10,6 +10,6 @@ fi
 
 cd "$ROOT_DIR"/project || exit
 
-"$ROOT_DIR"/project/scripts/build-images.sh
+"$ROOT_DIR"/project/scripts/build-test-images.sh
 
 docker-compose -f docker-compose.test.yml up -d

@@ -2,7 +2,7 @@ package pt.sensae.services.data.gateway.application;
 
 public class ExceptionDetail {
 
-    String error;
+    public String error;
 
     private ExceptionDetail(String error) {
         this.error = error;

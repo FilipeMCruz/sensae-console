@@ -296,28 +296,28 @@ services:
       - sensae-network
     ports:
       - 8080:8080
-  # data-store:
-  #   build: backend-services/data-store
-  #   image: data-store
-  #   environment:
-  #     spring_profiles_active: prod
-  #   env_file:
-  #     - ./secrets/test/data-store-backend.env
-  #   networks:
-  #     - sensae-network
-  #   ports:
-  #     - 8091:8080
-  # data-store-database:
-  #   image: mongo:latest
-  #   container_name: data-store-database
-  #   env_file:
-  #     - ./secrets/test/data-store-database.env
-  #   networks:
-  #     - sensae-network
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - ./databases-data/prod/data-store-database:/data/db
-  #     - ./secrets/test/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  data-store:
+    build: backend-services/data-store
+    image: data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/data-store-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8091:8080
+  data-store-database:
+    image: mongo:latest
+    container_name: data-store-database
+    env_file:
+      - ./secrets/test/data-store-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 27017:27017
+    volumes:
+      - ./databases-data/prod/data-store-database:/data/db
+      - ./secrets/test/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 networks:
   sensae-network:

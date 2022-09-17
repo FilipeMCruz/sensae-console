@@ -3,17 +3,26 @@ import { SharedArray } from "k6/data";
 import { check, sleep } from "k6";
 import { Trend } from "k6/metrics";
 import {
-  createLiveDataFilters,
   createDevice,
   randomNumber,
   randomBody,
   initSubscription,
   createSubscription,
   randomId,
+  em300THTempLimit,
 } from "./helpers.js";
-import { subscribeToLiveDataQuery } from "./operations/smart-irrigation.js";
+import { subscribeToLiveNotificationsQuery } from "./operations/notification-management.js";
 import { anonymousLoginQuery } from "./operations/identity-management.js";
 import { insertDevice, clearDevices } from "./database/device-management.js";
+import {
+  clearNotifications,
+  subscribeAnonymous,
+  countNotifications,
+} from "./database/notification-management.js";
+import {
+  clearRules,
+  createDetectHigherTempRule,
+} from "./database/rule-management.js";
 import {
   createEM300THProcessor,
   clearProcessors,
@@ -24,19 +33,22 @@ import {
 } from "./database/data-decoder.js";
 import {
   clearIrrigationData,
-  countSmartIrrigationMeasuresEntries,
   initSmartIrrigationDatabase,
 } from "./database/smart-irrigation.js";
 import {
+  publicDomainOid,
   moveDeviceToPublicDomain,
   givePermissionsToPublicDomain,
   clearDomainsDevicesTenants,
   resetIdentity,
+  anonymousId,
 } from "./database/identity-management.js";
 import ws from "k6/ws";
 import exec from "k6/execution";
 
 export const options = {
+  setupTimeout: "40m",
+  teardownTimeout: "10m",
   scenarios: {
     subscribe: {
       executor: "shared-iterations",
@@ -65,6 +77,7 @@ export const options = {
   },
 };
 
+const timeLapseFullTrend = new Trend("time_lapse_full");
 const timeLapseTrend = new Trend("time_lapse");
 
 const sampleSize = new SharedArray("sampleSize", function () {
@@ -104,7 +117,7 @@ export function subscribe() {
 
   let received = [];
   ws.connect(
-    "ws://localhost:8801/subscriptions",
+    "ws://localhost:8096/subscriptions",
     {
       headers: {
         "Sec-WebSocket-Protocol": "graphql-transport-ws",
@@ -115,17 +128,23 @@ export function subscribe() {
         const message = JSON.parse(msg);
         if (message.type == "next") {
           timeLapseTrend.add(
-            new Date().getTime() - message.payload.data.data.reportedAt
+            new Date().getTime() - message.payload.data.notification.reportedAt
           );
-          received.push(message.payload.data.data.dataId);
-          if (received.length === sampleSize[0]) closeSocket(socket, received);
+          timeLapseFullTrend.add(
+            new Date().getTime() -
+              message.payload.data.notification.description.split(";")[1]
+          );
+          received.push(
+            message.payload.data.notification.description.split(";")[0]
+          );
+          if (Math.abs(received.length - sampleSize[0] * 0.1) < 10)
+            closeSocket(socket, received);
         }
       });
       socket.on("open", () => {
         socket.send(initSubscription());
         socket.send(
-          createSubscription(subscribeToLiveDataQuery, {
-            filters: createLiveDataFilters(data),
+          createSubscription(subscribeToLiveNotificationsQuery, {
             Authorization:
               "Bearer " + JSON.parse(res.body).data.anonymous.token,
           })
@@ -137,13 +156,12 @@ export function subscribe() {
 }
 
 export function closeSocket(socket, received) {
-  console.log("Expected: " + sampleSize[0] + "; Actual: " + received.length);
-  check(received, {
-    "data units were received": (rec) => rec.length === sampleSize[0],
-  });
+  console.log(
+    "Expected: " + sampleSize[0] * 0.1 + "; Actual: " + received.length
+  );
   received.forEach((dataId) => {
     check(dataId, {
-      "data units was sent": (id) => dataIds.includes(id),
+      "notifications were sent": (id) => dataIds.includes(id),
     });
   });
   socket.close();
@@ -170,9 +188,9 @@ export function ingestion() {
 }
 
 export function consumption() {
-  var numberEntries = countSmartIrrigationMeasuresEntries();
-  check(numberEntries, {
-    "data units were all stored": (res) => res === sampleSize[0],
+  check(countNotifications(), {
+    "notifications were all stored": (res) =>
+      Math.abs(res - sampleSize[0] * 0.1) < 100,
   });
 }
 
@@ -183,14 +201,24 @@ export function setup() {
   givePermissionsToPublicDomain();
   createEM300THProcessor();
   createEM300THDecoder();
+  createDetectHigherTempRule(em300THTempLimit(0.9), publicDomainOid());
+  subscribeAnonymous(anonymousId());
+  var then = new Date();
+  then.setMinutes(Math.ceil(then.getMinutes() / 10) * 10);
+  var stopFor = (then.getTime() - new Date().getTime() + 2 * 1000 * 60) / 1000;
+  console.log(
+    "Waiting for " + Math.round(stopFor / 60) + " minutes for rules to apply"
+  );
+  sleep(stopFor);
 }
 
 export function teardown() {
-  sleep(1);
   clearDevices();
   clearProcessors();
   clearDecoders();
   clearDomainsDevicesTenants();
   resetIdentity();
   clearIrrigationData();
+  clearNotifications();
+  clearRules();
 }

@@ -14,6 +14,7 @@ export function createEM300THProcessor() {
 
 export function clearProcessors() {
   processorDB.exec("TRUNCATE public.transformation CASCADE;");
+  processorDB.close();
 }
 
 const processorDB = sql.open(

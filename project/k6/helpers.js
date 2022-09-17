@@ -12,7 +12,19 @@ export function randomBoolean() {
   return Math.random() < 0.5;
 }
 
-export function randomEM300THbody(dataId, device) {
+export function randomBody(dataId, device) {
+  if (device.device_type === "em300th") {
+    return randomEM300THbody(dataId, device);
+  } else {
+    return {};
+  }
+}
+
+export function em300THTempLimit(percentage) {
+  return (50 - 1) * percentage + 1;
+}
+
+function randomEM300THbody(dataId, device) {
   return JSON.stringify({
     downlink_url: `https://console-vip.helium.com/api/v1/down/63f40b83-0d90-4ded-aae1-9feff17bc93f/IlEe7-Wdn_dOgWn3LimmtpEjefLBBNl3/${device.id}`,
     temperature: randomNumber(1, 50),
@@ -32,17 +44,20 @@ export function createLiveDataFilters(data) {
   };
 }
 
-export function createEM300THDevice(id) {
-  return {
-    name: "P" + id.toString().padStart(3, "0"),
+export function createDevice(type, id, fixed) {
+  var device = {
+    name: "P" + id.toString().padStart(4, "0"),
     id: uuidv4(),
-    lat: randomNumber(36, 44),
-    long: -randomNumber(6, 9),
-    data_type: "encoded", //randomBoolean() ? "decoded" : "encoded",
-    device_type: "em300th",
+    data_type: randomBoolean() ? "decoded" : "encoded",
+    device_type: type,
     channel: "irrigation",
-    interval: 2, // randomBoolean() ? 1 : 0.5,
+    interval: randomBoolean() ? 1 : 0.5,
   };
+  if (fixed) {
+    device.lat = randomNumber(36, 44);
+    device.long = -randomNumber(6, 9);
+  }
+  return device;
 }
 
 export function createSubscription(subscription, variables) {

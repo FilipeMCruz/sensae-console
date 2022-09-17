@@ -1,0 +1,34 @@
+package rules.project.test;
+
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
+import pt.sharespot.iot.core.alert.model.AlertBuilder;
+import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
+import java.util.List;
+import java.util.UUID
+import pt.sharespot.iot.core.alert.model.AlertLevel
+
+global pt.sharespot.iot.core.alert.model.AlertDispatcherService dispatcher;
+
+dialect "mvel"
+
+rule "Measure with Temperature above ${upperLimitTemp}"
+    when
+        $data : DataUnitDTO(
+            getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
+            getSensorData().hasProperty(PropertyName.TEMPERATURE) &&
+            getSensorData().temperature.celsius > ${upperLimitTemp}
+        )
+    then
+        dispatcher.publish(AlertBuilder.create()
+                            .setCategory("perfTest")
+                            .setSubCategory("alarmPerformance")
+                            .setDescription($data.dataId + ";" + $data.reportedAt + ";" + $data.deviceId)
+                            .setLevel(AlertLevel.ADVISORY)
+                            .setContext(CorrelationDataBuilder.create()
+                                .setDeviceIds($s.deviceId)
+                                .build())
+                            .build());
+end

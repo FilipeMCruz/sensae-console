@@ -26,6 +26,7 @@ export function createEM300THDecoder() {
 
 export function clearDecoders() {
   decoderDB.exec("TRUNCATE public.decoder CASCADE;");
+  decoderDB.close();
 }
 
 const decoderDB = sql.open(

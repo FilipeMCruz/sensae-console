@@ -1,7 +1,8 @@
 import sql from "k6/x/sql";
 
 export function insertDevice(device) {
-  deviceDB.exec(`DO $$
+  if (device.lat && device.long) {
+    deviceDB.exec(`DO $$
       DECLARE id integer;
       BEGIN
       INSERT INTO public.record (device_id, name, downlink)
@@ -16,10 +17,22 @@ export function insertDevice(device) {
       INSERT INTO public.record_entry (content, label, type, records_persistence_id)
       VALUES ('perf', 'Project', 0, id);
       END $$;`);
+  } else {
+    deviceDB.exec(`DO $$
+      DECLARE id integer;
+      BEGIN
+      INSERT INTO public.record (device_id, name, downlink)
+      VALUES ('${device.id}', '${device.name}', '') RETURNING persistence_id INTO id;
+      
+      INSERT INTO public.record_entry (content, label, type, records_persistence_id)
+      VALUES ('perf', 'Project', 0, id);
+      END $$;`);
+  }
 }
 
 export function clearDevices() {
   deviceDB.exec("TRUNCATE public.record CASCADE;");
+  deviceDB.close();
 }
 
 const deviceDB = sql.open(

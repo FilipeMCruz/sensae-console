@@ -12,6 +12,22 @@ export function moveDeviceToPublicDomain(device) {
       END $$;`);
 }
 
+export function publicDomainOid() {
+  var res = sql.query(
+    identityDB,
+    `SELECT * from public.domain where name = 'public'`
+  );
+  return res[0].oid;
+}
+
+export function anonymousId() {
+  var res = sql.query(
+    identityDB,
+    `SELECT * from public.tenant where name = 'Anonymous'`
+  );
+  return res[0].oid;
+}
+
 export function givePermissionsToPublicDomain() {
   identityDB.exec(`DO $$
     DECLARE id integer;
@@ -19,7 +35,7 @@ export function givePermissionsToPublicDomain() {
     SELECT public.domain.persistence_id into id from public.domain where name = 'public';
 
     INSERT INTO public.domain_permission (type, domain_persistence_id)
-    VALUES (25,id), (26,id), (18,id);
+    VALUES (25,id), (26,id), (18,id), (31,id), (32,id);
     END $$;`);
 }
 
@@ -43,6 +59,7 @@ export function resetIdentity() {
   select public.init_domains();
   
   DROP FUNCTION public.init_domains;`);
+  identityDB.close();
 }
 
 export function clearDomainsDevicesTenants() {

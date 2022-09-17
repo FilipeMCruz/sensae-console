@@ -1,6 +1,5 @@
 package pt.sensae.services.device.management.flow.application;
 
-import io.quarkus.logging.Log;
 import io.quarkus.scheduler.Scheduled;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.management.flow.application.model.DeviceTopicMessage;

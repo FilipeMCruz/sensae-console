@@ -6,5 +6,6 @@ subscription data($filters: LiveDataFilter, $Authorization: String){
       id
       name
     }
+    reportedAt
   }
 }`;

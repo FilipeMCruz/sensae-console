@@ -2,6 +2,7 @@ package pt.sensae.services.device.ownership.flow.infrastructure.persistence.memo
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.ownership.flow.domain.DeviceId;
 import pt.sensae.services.device.ownership.flow.domain.PingRepository;
 
@@ -14,9 +15,9 @@ public class PingCache implements PingRepository {
 
     private final Cache<DeviceId, DeviceId> cache;
 
-    public PingCache() {
+    public PingCache(@ConfigProperty(name = "sensae.cache.devices.ownership.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(20)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

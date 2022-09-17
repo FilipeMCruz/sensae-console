@@ -1,6 +1,7 @@
 import http from "k6/http";
 import { SharedArray } from "k6/data";
 import { check, sleep } from "k6";
+import { Trend } from "k6/metrics"
 import {
   createLiveDataFilters,
   randomEM300THbody,
@@ -47,15 +48,15 @@ export const options = {
     },
     ingestion: {
       executor: "per-vu-iterations",
-      vus: 400,
-      iterations: 50,
+      vus: 100,
+      iterations: 100,
       startTime: "5s",
       exec: "ingestion",
       maxDuration: "5m",
     },
     consumption: {
       executor: "shared-iterations",
-      startTime: "4m",
+      startTime: "5m",
       vus: 1,
       iterations: 1,
       maxDuration: "10s",
@@ -63,6 +64,8 @@ export const options = {
     },
   },
 };
+
+const timeLapseTrend = new Trend('time_lapse');
 
 const sampleSize = new SharedArray("sampleSize", function () {
   const sampleSize = [];
@@ -111,6 +114,7 @@ export function subscribe() {
       socket.on("message", (msg) => {
         const message = JSON.parse(msg);
         if (message.type == "next") {
+          timeLapseTrend.add(new Date().getTime() - message.payload.data.data.reportedAt);
           received.push(message.payload.data.data.dataId);
           if (received.length % 1000 === 0)
             console.log("Received: " + received.length);

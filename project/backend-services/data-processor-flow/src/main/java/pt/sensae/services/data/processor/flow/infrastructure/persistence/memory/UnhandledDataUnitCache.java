@@ -3,6 +3,7 @@ package pt.sensae.services.data.processor.flow.infrastructure.persistence.memory
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.data.processor.flow.domain.SensorTypeId;
 import pt.sensae.services.data.processor.flow.domain.UnHandledDataUnitRepository;
 import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
@@ -16,9 +17,9 @@ import java.util.Set;
 public class UnhandledDataUnitCache implements UnHandledDataUnitRepository {
     private final Cache<SensorTypeId, Set<MessageConsumed<ObjectNode, DataRoutingKeys>>> cache;
 
-    public UnhandledDataUnitCache() {
+    public UnhandledDataUnitCache(@ConfigProperty(name = "sensae.cache.unhandled.data.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(200)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

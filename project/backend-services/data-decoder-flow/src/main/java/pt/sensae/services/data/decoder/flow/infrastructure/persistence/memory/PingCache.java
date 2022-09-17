@@ -2,6 +2,7 @@ package pt.sensae.services.data.decoder.flow.infrastructure.persistence.memory;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.data.decoder.flow.domain.PingRepository;
 import pt.sensae.services.data.decoder.flow.domain.SensorTypeId;
 
@@ -14,9 +15,9 @@ public class PingCache implements PingRepository {
 
     private final Cache<SensorTypeId, SensorTypeId> cache;
 
-    public PingCache() {
+    public PingCache(@ConfigProperty(name = "sensae.cache.data.processor.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(20)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

@@ -26,6 +26,8 @@ The test setup is as follows:
 - 500 devices;
 - Data is sent every second by each device for 60 iterations;
 
+#### Local Test
+
 The results are:
 
 ``` txt
@@ -82,6 +84,12 @@ consumption ✓ [======================================] 1 VUs    00.1s/10s     
 
 Due to the high number of VUs the subscription didn't started.
 
+#### e2-standard-4
+
+
+
+
+
 ### Availability Test
 
 The test setup is as follows:
@@ -90,6 +98,10 @@ The test setup is as follows:
 - 1 processor;
 - 100 devices;
 - Data is sent every second by each device for 100 iterations;
+
+The `time_lapse` metric indicates the time, in milliseconds, that a message takes to be processed by the system and sent via websocket.
+
+#### Local Test
 
 The results are:
 
@@ -149,7 +161,65 @@ consumption ✓ [======================================] 1 VUs    00.0s/10s     
      ws_sessions....................: 1       0.003013/s
 ```
 
-The `time_lapse` metric indicates the time, in milliseconds, that a message takes to be processed by the system and sent via websocket.
+#### e2-standard-4
+
+The results are:
+
+``` txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test-suite-1.js
+     output: -
+
+  scenarios: (100.00%) 3 scenarios, 102 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 100 iterations for each of 100 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+INFO[0162] Expected: 10000; Actual: 10000                source=console
+
+running (5m31.6s), 000/102 VUs, 10001 complete and 1 interrupted iterations
+subscribe   ✗ [--------------------------------------] 1 VUs    5m30.0s/5m0s  0/1 shared iters
+ingestion   ✓ [======================================] 100 VUs  2m35.6s/5m0s  10000/10000 iters, 100 per VU
+consumption ✓ [======================================] 1 VUs    00.0s/10s     1/1 shared iters
+
+     ✓ status was 202
+     ✓ data units were received
+     ✓ data units was sent
+     ✓ data units were all stored
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 100.00% ✓ 13960     ✗ 0    
+     data_received..................: 3.4 MB  10 kB/s
+     data_sent......................: 5.9 MB  18 kB/s
+     http_req_blocked...............: avg=9.32µs   min=2.29µs   med=5.97µs  max=3.23ms   p(90)=7.69µs  p(95)=8.35µs 
+     http_req_connecting............: avg=1.8µs    min=0s       med=0s      max=924.29µs p(90)=0s      p(95)=0s     
+     http_req_duration..............: avg=2.63ms   min=985.85µs med=1.99ms  max=54.41ms  p(90)=4.41ms  p(95)=5.67ms 
+       { expected_response:true }...: avg=2.63ms   min=985.85µs med=1.99ms  max=54.41ms  p(90)=4.41ms  p(95)=5.67ms 
+     http_req_failed................: 0.00%   ✓ 0         ✗ 10004
+     http_req_receiving.............: avg=55.51µs  min=15.32µs  med=49.91µs max=908.79µs p(90)=66.76µs p(95)=75.19µs
+     http_req_sending...............: avg=39.11µs  min=12.21µs  med=31.52µs max=6.39ms   p(90)=47.36µs p(95)=56.24µs
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s      max=0s       p(90)=0s      p(95)=0s     
+     http_req_waiting...............: avg=2.54ms   min=917.08µs med=1.9ms   max=54.22ms  p(90)=4.32ms  p(95)=5.59ms 
+     http_reqs......................: 10004   30.169476/s
+     iteration_duration.............: avg=1.25s    min=8.93ms   med=1.26s   max=2s       p(90)=1.8s    p(95)=1.9s   
+     iterations.....................: 10001   30.160428/s
+     time_lapse.....................: avg=125.4684 min=9        med=29      max=2045     p(90)=120     p(95)=1090   
+     vus............................: 0       min=0       max=101
+     vus_max........................: 102     min=102     max=102
+     ws_connecting..................: avg=5.51ms   min=5.51ms   med=5.51ms  max=5.51ms   p(90)=5.51ms  p(95)=5.51ms 
+     ws_msgs_received...............: 10001   30.160428/s
+     ws_msgs_sent...................: 2       0.006031/s
+     ws_sessions....................: 1       0.003016/s
+```
 
 ## Test Suite 2
 

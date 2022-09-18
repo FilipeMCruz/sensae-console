@@ -9,8 +9,6 @@ ROOT_DIR=$(git rev-parse --show-toplevel)
 
 cd "$ROOT_DIR"/project || exit
 
-. ./secrets/dev.conf
-
 SECRET_FRONT=secrets/test/frontend/
 FRONT_SUFFIX=src/environments/environment.ts
 PROD_FRONT_SUFFIX=src/environments/environment.prod.ts

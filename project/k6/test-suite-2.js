@@ -47,8 +47,7 @@ import ws from "k6/ws";
 import exec from "k6/execution";
 
 export const options = {
-  setupTimeout: "40m",
-  teardownTimeout: "10m",
+  setupTimeout: "11m",
   scenarios: {
     subscribe: {
       executor: "shared-iterations",
@@ -60,7 +59,7 @@ export const options = {
     },
     ingestion: {
       executor: "per-vu-iterations",
-      vus: 50,
+      vus: 100,
       iterations: 100,
       startTime: "5s",
       exec: "ingestion",
@@ -111,9 +110,13 @@ const data = new SharedArray("data", function () {
 });
 
 export function subscribe() {
-  const res = http.post(`http://${__ENV.SENSAE_INSTANCE_IP}:8086/graphql`, anonymousLoginQuery, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const res = http.post(
+    `http://${__ENV.SENSAE_INSTANCE_IP}:8086/graphql`,
+    anonymousLoginQuery,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 
   let received = [];
   ws.connect(
@@ -188,7 +191,9 @@ export function ingestion() {
 }
 
 export function consumption() {
-  check(countNotifications(), {
+  let count = countNotifications();
+  console.log("Notifications stored: " + count);
+  check(count, {
     "notifications were all stored": (res) =>
       Math.abs(res - sampleSize[0] * 0.1) < 100,
   });

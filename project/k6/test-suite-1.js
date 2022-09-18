@@ -37,6 +37,7 @@ import ws from "k6/ws";
 import exec from "k6/execution";
 
 export const options = {
+  setupTimeout: "2m",
   scenarios: {
     subscribe: {
       executor: "shared-iterations",
@@ -48,7 +49,7 @@ export const options = {
     },
     ingestion: {
       executor: "per-vu-iterations",
-      vus: 100,
+      vus: 300,
       iterations: 100,
       startTime: "5s",
       exec: "ingestion",
@@ -171,6 +172,7 @@ export function ingestion() {
 
 export function consumption() {
   var numberEntries = countSmartIrrigationMeasuresEntries();
+  console.log("Data Units stored: " + numberEntries);
   check(numberEntries, {
     "data units were all stored": (res) => res === sampleSize[0],
   });

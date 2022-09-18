@@ -98,13 +98,13 @@ const data = new SharedArray("data", function () {
 });
 
 export function subscribe() {
-  const res = http.post("http://localhost:8086/graphql", anonymousLoginQuery, {
+  const res = http.post(`http://${__ENV.SENSAE_INSTANCE_IP}:8086/graphql`, anonymousLoginQuery, {
     headers: { "Content-Type": "application/json" },
   });
 
   let received = [];
   ws.connect(
-    "ws://localhost:8801/subscriptions",
+    `ws://${__ENV.SENSAE_INSTANCE_IP}:8801/subscriptions`,
     {
       headers: {
         "Sec-WebSocket-Protocol": "graphql-transport-ws",
@@ -156,7 +156,7 @@ export function ingestion() {
   const id = dataIds[vu + (data.length - 2) * exec.vu.iterationInScenario];
 
   const res = http.post(
-    `http://localhost:8080/sensor-data/${device.channel}/${device.data_type}/${device.device_type}`,
+    `http://${__ENV.SENSAE_INSTANCE_IP}:8080/sensor-data/${device.channel}/${device.data_type}/${device.device_type}`,
     randomBody(id, device),
     {
       headers: {

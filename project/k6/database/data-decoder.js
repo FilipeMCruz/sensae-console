@@ -31,5 +31,5 @@ export function clearDecoders() {
 
 const decoderDB = sql.open(
   "postgres",
-  `postgres://user:${__ENV.SENSAE_COMMON_DATABASE_PASSWORD}@localhost:5484/decoder?sslmode=disable`
+  `postgres://user:${__ENV.SENSAE_COMMON_DATABASE_PASSWORD}@${__ENV.SENSAE_INSTANCE_IP}:5484/decoder?sslmode=disable`
 );

@@ -19,5 +19,5 @@ export function clearProcessors() {
 
 const processorDB = sql.open(
   "postgres",
-  `postgres://user:${__ENV.SENSAE_COMMON_DATABASE_PASSWORD}@localhost:5482/processor?sslmode=disable`
+  `postgres://user:${__ENV.SENSAE_COMMON_DATABASE_PASSWORD}@${__ENV.SENSAE_INSTANCE_IP}:5482/processor?sslmode=disable`
 );

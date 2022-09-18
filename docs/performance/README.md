@@ -86,9 +86,63 @@ Due to the high number of VUs the subscription didn't started.
 
 #### e2-standard-4
 
+The results are:
 
+``` txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
 
+  execution: local
+     script: test-suite-1.js
+     output: -
 
+  scenarios: (100.00%) 3 scenarios, 502 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 60 iterations for each of 500 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+WARN[0028] Request Failed                                error="Post \"http://localhost:8080/sensor-data/irrigation/encoded/em300th\": EOF"
+
+running (5m02.5s), 000/502 VUs, 30002 complete and 0 interrupted iterations
+subscribe   ✓ [======================================] 1 VUs    0m00.1s/5m0s  1/1 shared iters
+ingestion   ✓ [======================================] 500 VUs  1m44.6s/5m0s  30000/30000 iters, 60 per VU
+consumption ✓ [======================================] 1 VUs    00.0s/10s     1/1 shared iters
+
+     ✗ status was 202
+      ↳  61% — ✓ 18328 / ✗ 11672
+     ✗ data units were all stored
+      ↳  0% — ✓ 0 / ✗ 1
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 61.09% ✓ 18328     ✗ 11673
+     data_received..................: 3.8 MB 12 kB/s
+     data_sent......................: 18 MB  58 kB/s
+     http_req_blocked...............: avg=191.64µs min=2.88µs   med=6.31µs  max=117.06ms p(90)=271.56µs p(95)=474.78µs
+     http_req_connecting............: avg=125.31µs min=0s       med=0s      max=116.52ms p(90)=163.03µs p(95)=276.29µs
+     http_req_duration..............: avg=156.28ms min=822.61µs med=42.2ms  max=2.53s    p(90)=453.66ms p(95)=699.01ms
+       { expected_response:true }...: avg=76.7ms   min=822.61µs med=9.75ms  max=2.23s    p(90)=231.13ms p(95)=398.54ms
+     http_req_failed................: 38.90% ✓ 11673     ✗ 18331
+     http_req_receiving.............: avg=82.99µs  min=0s       med=49.92µs max=11.78ms  p(90)=122.21µs p(95)=231.74µs
+     http_req_sending...............: avg=83µs     min=13.09µs  med=38.06µs max=56.39ms  p(90)=79.68µs  p(95)=111.46µs
+     http_req_tls_handshaking.......: avg=0s       min=0s       med=0s      max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=156.12ms min=729.91µs med=42.03ms max=2.53s    p(90)=453.11ms p(95)=698.9ms 
+     http_reqs......................: 30004  99.173187/s
+     iteration_duration.............: avg=1.42s    min=6.16ms   med=1.39s   max=4.21s    p(90)=1.98s    p(95)=2.17s   
+     iterations.....................: 30002  99.166577/s
+     vus............................: 0      min=0       max=500
+     vus_max........................: 502    min=502     max=502
+     ws_connecting..................: avg=5.55ms   min=5.55ms   med=5.55ms  max=5.55ms   p(90)=5.55ms   p(95)=5.55ms  
+     ws_msgs_received...............: 1      0.003305/s
+     ws_msgs_sent...................: 2      0.006611/s
+     ws_session_duration............: avg=42.28ms  min=42.28ms  med=42.28ms max=42.28ms  p(90)=42.28ms  p(95)=42.28ms 
+     ws_sessions....................: 1      0.003305/s
+```
 
 ### Availability Test
 
@@ -225,7 +279,7 @@ consumption ✓ [======================================] 1 VUs    00.0s/10s     
 
 This suite is responsible for testing the time it takes for alarms to be dispatched by the system.
 
-### Availability Test
+### Throughput Test
 
 The test setup is as follows:
 
@@ -234,6 +288,11 @@ The test setup is as follows:
 - 100 devices;
 - 1 rule that matches around 10% of the data units sent;
 - Data is sent every second by each device for 100 iterations;
+
+The `time_lapse` metric indicates the time, in milliseconds, that a notification takes to be processed by the system and sent via websocket.
+The `time_lapse_full` metric indicates the time, in milliseconds, between the arrival of a data unit and the dispatch of a notification via websocket by the system.
+
+#### Local Test
 
 The results are:
 
@@ -296,5 +355,62 @@ consumption ✓ [======================================] 1 VUs    00.1s/10s     
      ws_sessions....................: 1       0.001513/s
 ```
 
-The `time_lapse` metric indicates the time, in milliseconds, that a notification takes to be processed by the system and sent via websocket.
-The `time_lapse_full` metric indicates the time, in milliseconds, between the arrival of a data unit and the dispatch of a notification via websocket by the system.
+#### e2-standard-4
+
+The results are:
+
+``` txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test-suite-2.js
+     output: -
+
+  scenarios: (100.00%) 3 scenarios, 102 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 100 iterations for each of 100 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+INFO[0002] Waiting for 2 minutes for rules to apply      source=console
+INFO[0422] Expected: 1000; Actual: 0                     source=console
+
+running (7m00.6s), 000/102 VUs, 10002 complete and 0 interrupted iterations
+subscribe   ✓ [======================================] 1 VUs    5m00.0s/5m0s  1/1 shared iters
+ingestion   ✓ [======================================] 100 VUs  2m37.1s/5m0s  10000/10000 iters, 100 per VU
+consumption ✓ [======================================] 1 VUs    00.0s/10s     1/1 shared iters
+
+     ✓ status was 202
+     ✗ notifications were all stored
+      ↳  0% — ✓ 0 / ✗ 1
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 99.99% ✓ 10000     ✗ 1    
+     data_received..................: 902 kB 2.1 kB/s
+     data_sent......................: 5.9 MB 14 kB/s
+     http_req_blocked...............: avg=9.12µs  min=2.64µs   med=5.64µs  max=1.07ms   p(90)=6.99µs  p(95)=7.91µs
+     http_req_connecting............: avg=1.95µs  min=0s       med=0s      max=976.44µs p(90)=0s      p(95)=0s    
+     http_req_duration..............: avg=1.62ms  min=908.46µs med=1.43ms  max=65.8ms   p(90)=2.05ms  p(95)=2.56ms
+       { expected_response:true }...: avg=1.62ms  min=908.46µs med=1.43ms  max=65.8ms   p(90)=2.05ms  p(95)=2.56ms
+     http_req_failed................: 0.00%  ✓ 0         ✗ 10003
+     http_req_receiving.............: avg=59.62µs min=15.73µs  med=56µs    max=1.9ms    p(90)=74.46µs p(95)=82.4µs
+     http_req_sending...............: avg=38.01µs min=10.95µs  med=34.11µs max=6.04ms   p(90)=48.06µs p(95)=55.2µs
+     http_req_tls_handshaking.......: avg=0s      min=0s       med=0s      max=0s       p(90)=0s      p(95)=0s    
+     http_req_waiting...............: avg=1.52ms  min=830.51µs med=1.33ms  max=65.56ms  p(90)=1.96ms  p(95)=2.47ms
+     http_reqs......................: 10003  23.783075/s
+     iteration_duration.............: avg=1.33s   min=9.1ms    med=1.29s   max=5m0s     p(90)=1.83s   p(95)=1.91s 
+     iterations.....................: 10002  23.780697/s
+     vus............................: 1      min=0       max=101
+     vus_max........................: 102    min=102     max=102
+     ws_connecting..................: avg=5.77ms  min=5.77ms   med=5.77ms  max=5.77ms   p(90)=5.77ms  p(95)=5.77ms
+     ws_msgs_received...............: 1      0.002378/s
+     ws_msgs_sent...................: 2      0.004755/s
+     ws_session_duration............: avg=5m0s    min=5m0s     med=5m0s    max=5m0s     p(90)=5m0s    p(95)=5m0s  
+     ws_sessions....................: 1      0.002378/s
+```

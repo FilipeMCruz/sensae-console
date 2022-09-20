@@ -282,6 +282,7 @@ services:
     build: backend-services/data-relayer
     image: data-relayer
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
       - ./secrets/test/certs:/etc/nginx/ssl/
     networks:
       - sensae-network
@@ -295,7 +296,7 @@ services:
     networks:
       - sensae-network
     ports:
-      - 8080:8080
+      - 8080
   data-store:
     build: backend-services/data-store
     image: data-store

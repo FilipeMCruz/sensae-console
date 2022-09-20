@@ -392,6 +392,66 @@ consumption ✓ [======================================] 1 VUs    00.0s/10s     
      ws_sessions....................: 1       0.003016/s
 ```
 
+With faster ingestion:
+
+``` txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test-suite-1.js
+     output: -
+
+  scenarios: (100.00%) 3 scenarios, 102 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 100 iterations for each of 100 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+INFO[0167] Expected: 10000; Actual: 10000                source=console
+INFO[0342] Data Units stored: 20000                      source=console
+
+running (6m16.3s), 000/102 VUs, 10001 complete and 1 interrupted iterations
+subscribe   ✗ [--------------------------------------] 1 VUs    5m30.0s/5m0s  0/1 shared iters
+ingestion   ✓ [======================================] 100 VUs  1m59.7s/5m0s  10000/10000 iters, 100 per VU
+consumption ✓ [======================================] 1 VUs    00.4s/10s     1/1 shared iters
+
+     ✓ status was 202
+     ✓ data units were received
+     ✓ data units was sent
+     ✗ data units were all stored
+      ↳  0% — ✓ 0 / ✗ 1
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 99.99% ✓ 15536     ✗ 1    
+     data_received..................: 4.6 MB 12 kB/s
+     data_sent......................: 6.2 MB 16 kB/s
+     http_req_blocked...............: avg=5.47ms    min=1.31µs   med=14.19µs  max=603.11ms p(90)=19.04µs  p(95)=21.85µs 
+     http_req_connecting............: avg=1.84ms    min=0s       med=0s       max=206.93ms p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=183.77ms  min=169.58ms med=179.75ms max=472.72ms p(90)=191.04ms p(95)=202.48ms
+       { expected_response:true }...: avg=183.77ms  min=169.58ms med=179.75ms max=472.72ms p(90)=191.04ms p(95)=202.48ms
+     http_req_failed................: 0.00%  ✓ 0         ✗ 10003
+     http_req_receiving.............: avg=109.74µs  min=11.41µs  med=126.95µs max=1.71ms   p(90)=170.88µs p(95)=187.06µs
+     http_req_sending...............: avg=74.01µs   min=7.3µs    med=88.42µs  max=3.45ms   p(90)=118.63µs p(95)=131.36µs
+     http_req_tls_handshaking.......: avg=3.61ms    min=0s       med=0s       max=424.56ms p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=183.59ms  min=169.25ms med=179.58ms max=472.51ms p(90)=190.86ms p(95)=202.28ms
+     http_reqs......................: 10003  26.58428/s
+     iteration_duration.............: avg=940.28ms  min=362.89ms med=737.88ms max=40.9s    p(90)=1.18s    p(95)=1.19s   
+     iterations.....................: 10001  26.578964/s
+     time_lapse.....................: avg=2046.1171 min=186      med=2175.5   max=4577     p(90)=4033     p(95)=4160    
+     vus............................: 0      min=0       max=101
+     vus_max........................: 102    min=102     max=102
+     ws_connecting..................: avg=360.36ms  min=360.36ms med=360.36ms max=360.36ms p(90)=360.36ms p(95)=360.36ms
+     ws_msgs_received...............: 10001  26.578964/s
+     ws_msgs_sent...................: 2      0.005315/s
+     ws_sessions....................: 1      0.002658/s
+```
+
 ## Test Suite 2
 
 This suite is responsible for testing the time it takes for alarms to be dispatched by the system.

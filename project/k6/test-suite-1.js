@@ -37,27 +37,27 @@ import ws from "k6/ws";
 import exec from "k6/execution";
 
 export const options = {
-  setupTimeout: "2m",
+  setupTimeout: "20m",
   scenarios: {
     subscribe: {
       executor: "shared-iterations",
       startTime: "0s",
       vus: 1,
       iterations: 1,
-      maxDuration: "5m",
+      maxDuration: "3m",
       exec: "subscribe",
     },
     ingestion: {
       executor: "per-vu-iterations",
-      vus: 300,
-      iterations: 100,
+      vus: 500,
+      iterations: 10,
       startTime: "5s",
       exec: "ingestion",
-      maxDuration: "5m",
+      maxDuration: "3m",
     },
     consumption: {
       executor: "shared-iterations",
-      startTime: "5m",
+      startTime: "3m",
       vus: 1,
       iterations: 1,
       maxDuration: "10s",
@@ -93,15 +93,19 @@ const data = new SharedArray("data", function () {
   // +2 since we don't know what vus will be assigned to ingestion and it can't fail
   const total = options.scenarios.ingestion.vus + 2;
   for (let index = 0; index < total; index++) {
-    data.push(createDevice("em300th", index, true));
+    data.push(createDevice("irrigation", "em300th", index, true));
   }
   return data;
 });
 
 export function subscribe() {
-  const res = http.post(`http://${__ENV.SENSAE_INSTANCE_IP}:8086/graphql`, anonymousLoginQuery, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const res = http.post(
+    `http://${__ENV.SENSAE_INSTANCE_IP}:8086/graphql`,
+    anonymousLoginQuery,
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 
   let received = [];
   ws.connect(
@@ -151,13 +155,13 @@ export function closeSocket(socket, received) {
 }
 
 export function ingestion() {
-  sleep(randomNumber(0, 1));
   const vu = exec.vu.idInTest - 1; //vus start at 1, arrays at 0;
   const device = data[vu];
   const id = dataIds[vu + (data.length - 2) * exec.vu.iterationInScenario];
 
+  sleep(device.interval + randomNumber(0, 1));
   const res = http.post(
-    `http://${__ENV.SENSAE_INSTANCE_IP}:8080/sensor-data/${device.channel}/${device.data_type}/${device.device_type}`,
+    `https://${__ENV.SENSAE_INSTANCE_IP}:8443/sensor-data/${device.channel}/${device.data_type}/${device.device_type}`,
     randomBody(id, device),
     {
       headers: {
@@ -167,7 +171,6 @@ export function ingestion() {
     }
   );
   check(res, { "status was 202": (r) => r.status === 202 });
-  sleep(device.interval);
 }
 
 export function consumption() {
@@ -188,7 +191,6 @@ export function setup() {
 }
 
 export function teardown() {
-  sleep(1);
   clearDevices();
   clearProcessors();
   clearDecoders();

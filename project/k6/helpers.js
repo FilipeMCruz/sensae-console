@@ -44,14 +44,14 @@ export function createLiveDataFilters(data) {
   };
 }
 
-export function createDevice(type, id, fixed) {
+export function createDevice(channel, type, id, fixed) {
   var device = {
     name: "P" + id.toString().padStart(4, "0"),
     id: uuidv4(),
     data_type: randomBoolean() ? "decoded" : "encoded",
     device_type: type,
-    channel: "irrigation",
-    interval: randomBoolean() ? 1 : 0.5,
+    channel: channel,
+    interval: 10,
   };
   if (fixed) {
     device.lat = randomNumber(36, 44);

@@ -35,7 +35,7 @@ export function givePermissionsToPublicDomain() {
     SELECT public.domain.persistence_id into id from public.domain where name = 'public';
 
     INSERT INTO public.domain_permission (type, domain_persistence_id)
-    VALUES (25,id), (26,id), (18,id), (31,id), (32,id);
+    VALUES (25,id), (26,id), (18,id), (31,id), (32,id), (5,id), (16,id), (20,id);
     END $$;`);
 }
 

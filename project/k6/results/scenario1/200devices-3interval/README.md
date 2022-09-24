@@ -22,8 +22,8 @@ INFO[0125] Expected: 2000; Actual: 2000                  source=console
 INFO[0321] Data Units stored: 2000                       source=console
 
 running (5m24.6s), 00/42 VUs, 402 complete and 0 interrupted iterations
-subscribe   ✓ [======================================] 1 VUs   0m45.0s/4m0s  1/1 shared iters
-ingestion   ✓ [======================================] 40 VUs  0m39.5s/4m0s  400/400 iters, 10 per VU
+subscribe   ✓ [======================================] 1 VUs   0m44.9s/4m0s  1/1 shared iters
+ingestion   ✓ [======================================] 40 VUs  0m39.8s/4m0s  400/400 iters, 10 per VU
 consumption ✓ [======================================] 1 VUs   00.4s/10s     1/1 shared iters
 
      ✓ status was 202
@@ -38,24 +38,24 @@ consumption ✓ [======================================] 1 VUs   00.4s/10s     1
      checks.........................: 100.00% ✓ 4002     ✗ 0   
      data_received..................: 946 kB  2.9 kB/s
      data_sent......................: 1.2 MB  3.8 kB/s
-     http_req_blocked...............: avg=10.99ms  min=1.37µs   med=5.67µs   max=552.91ms p(90)=16.22µs  p(95)=19.26µs 
-     http_req_connecting............: avg=3.89ms   min=0s       med=0s       max=184.87ms p(90)=0s       p(95)=0s      
-     http_req_duration..............: avg=180.8ms  min=170.09ms med=179.28ms max=370.71ms p(90)=185.81ms p(95)=189.25ms
-       { expected_response:true }...: avg=180.8ms  min=170.09ms med=179.28ms max=370.71ms p(90)=185.81ms p(95)=189.25ms
+     http_req_blocked...............: avg=11.12ms  min=1.32µs   med=8.65µs   max=553.17ms p(90)=17.41µs  p(95)=20.93µs 
+     http_req_connecting............: avg=3.94ms   min=0s       med=0s       max=192.82ms p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=183.64ms min=171.5ms  med=179.92ms max=2.77s    p(90)=189.57ms p(95)=192.35ms
+       { expected_response:true }...: avg=183.64ms min=171.5ms  med=179.92ms max=2.77s    p(90)=189.57ms p(95)=192.35ms
      http_req_failed................: 0.00%   ✓ 0        ✗ 2004
-     http_req_receiving.............: avg=96.58µs  min=12.67µs  med=76.81µs  max=1.82ms   p(90)=174.79µs p(95)=195.04µs
-     http_req_sending...............: avg=58.98µs  min=9.12µs   med=39.4µs   max=691.03µs p(90)=111.59µs p(95)=125.41µs
-     http_req_tls_handshaking.......: avg=7.08ms   min=0s       med=0s       max=372.36ms p(90)=0s       p(95)=0s      
-     http_req_waiting...............: avg=180.65ms min=169.91ms med=179.15ms max=370.46ms p(90)=185.69ms p(95)=189.05ms
-     http_reqs......................: 2004    6.173321/s
-     iteration_duration.............: avg=4.1s     min=376.1ms  med=3.9s     max=1m19s    p(90)=4.51s    p(95)=6.12s   
-     iterations.....................: 402     1.238361/s
-     time_lapse.....................: avg=700.2375 min=186      med=714.5    max=1497     p(90)=1144.1   p(95)=1284    
+     http_req_receiving.............: avg=120.59µs min=14.64µs  med=121µs    max=10.11ms  p(90)=196.2µs  p(95)=220.21µs
+     http_req_sending...............: avg=69.61µs  min=8.39µs   med=59.59µs  max=464.19µs p(90)=124.18µs p(95)=144.95µs
+     http_req_tls_handshaking.......: avg=7.15ms   min=0s       med=0s       max=370.03ms p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=183.45ms min=171.36ms med=179.79ms max=2.76s    p(90)=189.37ms p(95)=192.23ms
+     http_reqs......................: 2004    6.169005/s
+     iteration_duration.............: avg=4.1s     min=414.72ms med=3.91s    max=1m19s    p(90)=4.54s    p(95)=6.07s   
+     iterations.....................: 402     1.237495/s
+     time_lapse.....................: avg=4357.996 min=187      med=2925.5   max=15695    p(90)=10457.9  p(95)=13100.75
      vus............................: 0       min=0      max=41
      vus_max........................: 42      min=42     max=42
-     ws_connecting..................: avg=367.43ms min=367.43ms med=367.43ms max=367.43ms p(90)=367.43ms p(95)=367.43ms
-     ws_msgs_received...............: 2001    6.16408/s
-     ws_msgs_sent...................: 2       0.006161/s
-     ws_session_duration............: avg=44.66s   min=44.66s   med=44.66s   max=44.66s   p(90)=44.66s   p(95)=44.66s  
-     ws_sessions....................: 1       0.00308/s
+     ws_connecting..................: avg=2.25s    min=2.25s    med=2.25s    max=2.25s    p(90)=2.25s    p(95)=2.25s   
+     ws_msgs_received...............: 2001    6.15977/s
+     ws_msgs_sent...................: 2       0.006157/s
+     ws_session_duration............: avg=41.95s   min=41.95s   med=41.95s   max=41.95s   p(90)=41.95s   p(95)=41.95s  
+     ws_sessions....................: 1       0.003078/s
 ```

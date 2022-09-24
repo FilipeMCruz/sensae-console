@@ -36,8 +36,8 @@ import {
 import ws from "k6/ws";
 import exec from "k6/execution";
 
-const n_devices = 500; // 50, 100, 200, 500, 1000
-const interval = 3;
+const n_devices = 200; // 50, 100, 200, 500, 1000
+const interval = 10;
 const group_by = 5;
 
 export const options = {

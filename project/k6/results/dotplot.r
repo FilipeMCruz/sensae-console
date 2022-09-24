@@ -1,42 +1,61 @@
-# Libraries
 library(tidyverse)
 library(hrbrthemes)
 library(viridis)
+library(tikzDevice)
 
 prepare <- function(path) {
   data <- read.csv(path)
   data <- data[data$metric_name == 'time_lapse',]
   data <- data[c('timestamp', 'metric_value', 'extra_tags')]
-  data$start <- data$timestamp - min(data$timestamp)
+  data$received <- data$timestamp - min(data$timestamp)
   data$metric_value <- data$metric_value / 1000
+  data$sent_timestamp <- data$timestamp - data$metric_value
+  data$sent <- data$sent_timestamp - min(data$sent_timestamp)
   data$iteration <- str_replace(data$extra_tags,'iteration=' ,'')
   return(data)
 }
 
-output <- function(dataframe, path) {
-  pdot <- ggplot(data=dataframe, mapping=aes(x=start, y=metric_value, col=iteration, label="")) + 
-    geom_point() +
-    geom_text(nudge_x=0.2) +
-    xlab("time data unit was sent (seconds)") +
+create <- function(dataframe, xParam) {
+  ggplot(data=dataframe, mapping=aes(x=.data[[xParam]], y=metric_value, col=iteration, label="")) + 
+    geom_point(alpha = 1, stat = "unique") +
+    theme(legend.position = c(.9, .45)) +
+    xlab(paste("time data unit was", xParam, "(seconds)")) +
     ylab("time taken to process data unit (seconds)") +
     scale_color_manual(values = c("#b30000", "#7c1158", "#4421af", "#1a53ff", "#0d88e6", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78", "#ffb55a"))
-  #scale_color_brewer(palette = "Spectral")
-  
-  pdot
+}
+
+outputTex <- function(pdot, path, xParam) {
+  tikz(file = path, width = 5, height = 3.3)
+  print(pdot)
+  dev.off()
+}
+
+outputPDF <- function(pdot, path, xParam) {
   ggsave(plot = pdot, file = path)
 }
 
 process <- function(path) {
   data <- prepare(paste(path,'data.csv', sep = "/"))
-  output(data, paste(path, 'data.pdf', sep="/"))
+  pdot_sent <- create(data, "sent")
+  pdot_received <- create(data, "received")
+  outputTex(pdot_sent, paste(path, 'data_sent.tex', sep="/"))
+  outputPDF(pdot_sent, paste(path, 'data_sent.pdf', sep="/"))
+  outputTex(pdot_received, paste(path, 'data_received.tex', sep="/"))
+  outputPDF(pdot_received, paste(path, 'data_received.pdf', sep="/"))
+}
+
+processScenario <- function(path) {
+  scenario <- list.dirs(path)
+  scenario <- scenario[-1]
+  for (i in scenario) {
+    process(i)
+  }
 }
 
 processAll <- function() {
-  folder <- list.dirs('scenario1')
-  folder <- folder[-1]
-  for (i in folder) {
-    process(i)
-  }
+  processScenario('scenario1')
+  processScenario('scenario2')
+  processScenario('scenario3')
 }
 
 setwd("/home/fmcruz/Documents/work/iot-project/project/k6/results")

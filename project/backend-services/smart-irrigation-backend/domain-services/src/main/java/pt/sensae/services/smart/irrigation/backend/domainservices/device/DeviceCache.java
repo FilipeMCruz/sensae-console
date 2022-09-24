@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.device;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
@@ -24,8 +25,8 @@ public class DeviceCache {
 
     private final DeviceRepository repository;
 
-    public DeviceCache(DeviceRepository repository) {
-        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(50).build();
+    public DeviceCache(@Value("${sensae.cache.devices.information.maxsize}") int cacheSize, DeviceRepository repository) {
+        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(cacheSize).build();
         this.repository = repository;
     }
 
@@ -91,9 +92,7 @@ public class DeviceCache {
                 .toList()
                 .size();
 
-        var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ?
-                RemoteControl.of(true) :
-                RemoteControl.of(false);
+        var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ? RemoteControl.of(true) : RemoteControl.of(false);
 
         var records = new DeviceRecords(data.device.records.stream()
                 .map(e -> RecordEntry.of(e.label, e.content))

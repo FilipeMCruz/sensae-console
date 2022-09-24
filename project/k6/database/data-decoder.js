@@ -23,6 +23,30 @@ export function createEM300THDecoder() {
       };
     }');`);
 }
+export function createLGT92Decoder() {
+  decoderDB.exec(`INSERT INTO public.decoder (device_type, script)
+    VALUES ('lgt92', 'function convert(object) {
+      return {
+        dataId: object.uuid,
+        reportedAt: object.reported_at,
+        device: {
+          id: object.id,
+          name: object.name,
+        },
+        measures: {
+          0: {
+            gps: {
+              latitude: object.lat,
+              longitude: object.long
+            },
+            motion: {
+              value: object.status
+            }
+          },
+        },
+      };
+    }');`);
+}
 
 export function clearDecoders() {
   decoderDB.exec("TRUNCATE public.decoder CASCADE;");

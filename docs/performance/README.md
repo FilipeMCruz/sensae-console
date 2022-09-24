@@ -411,7 +411,6 @@ With faster ingestion:
            * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
 
 INFO[0167] Expected: 10000; Actual: 10000                source=console
-INFO[0342] Data Units stored: 20000                      source=console
 
 running (6m16.3s), 000/102 VUs, 10001 complete and 1 interrupted iterations
 subscribe   ✗ [--------------------------------------] 1 VUs    5m30.0s/5m0s  0/1 shared iters
@@ -420,15 +419,14 @@ consumption ✓ [======================================] 1 VUs    00.4s/10s     
 
      ✓ status was 202
      ✓ data units were received
-     ✓ data units was sent
-     ✗ data units were all stored
-      ↳  0% — ✓ 0 / ✗ 1
+     ✓ data units were sent
+     ✓ data units were all stored
 
      █ setup
 
      █ teardown
 
-     checks.........................: 99.99% ✓ 15536     ✗ 1    
+     checks.........................: 100% ✓ 15537    
      data_received..................: 4.6 MB 12 kB/s
      data_sent......................: 6.2 MB 16 kB/s
      http_req_blocked...............: avg=5.47ms    min=1.31µs   med=14.19µs  max=603.11ms p(90)=19.04µs  p(95)=21.85µs 
@@ -651,4 +649,122 @@ consumption ✓ [======================================] 1 VUs   00.9s/10s     1
      ws_msgs_sent...................: 2       0.002143/s
      ws_session_duration............: avg=2m39s      min=2m39s    med=2m39s    max=2m39s    p(90)=2m39s    p(95)=2m39s   
      ws_sessions....................: 1       0.001071/s
+```
+
+## Notes
+
+```txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test-suite-1.js
+     output: -
+
+  scenarios: (100.00%) 3 scenarios, 12 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 100 iterations for each of 10 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+INFO[0106] Expected: 1000; Actual: 1000                  source=console
+INFO[0310] Data Units stored: 1000                       source=console
+
+running (5m14.7s), 00/12 VUs, 1002 complete and 0 interrupted iterations
+subscribe   ✓ [======================================] 1 VUs   1m44.4s/5m0s  1/1 shared iters
+ingestion   ✓ [======================================] 10 VUs  1m31.9s/5m0s  1000/1000 iters, 100 per VU
+consumption ✓ [======================================] 1 VUs   00.7s/10s     1/1 shared iters
+
+     ✓ status was 202
+     ✓ all data units were received
+     ✓ correct data units were received
+     ✓ data units were all stored
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 100.00% ✓ 2002     ✗ 0   
+     data_received..................: 461 kB  1.5 kB/s
+     data_sent......................: 620 kB  2.0 kB/s
+     http_req_blocked...............: avg=6.36ms   min=1.43µs   med=15.19µs  max=565.94ms p(90)=20.85µs  p(95)=22.64µs 
+     http_req_connecting............: avg=2.74ms   min=0s       med=0s       max=376.34ms p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=194.59ms min=172.72ms med=185.27ms max=409.6ms  p(90)=218.36ms p(95)=276.48ms
+       { expected_response:true }...: avg=194.59ms min=172.72ms med=185.27ms max=409.6ms  p(90)=218.36ms p(95)=276.48ms
+     http_req_failed................: 0.00%   ✓ 0        ✗ 1004
+     http_req_receiving.............: avg=127.18µs min=16.91µs  med=149.45µs max=381.25µs p(90)=198.5µs  p(95)=217.04µs
+     http_req_sending...............: avg=83.48µs  min=9.57µs   med=97.52µs  max=373.71µs p(90)=141.03µs p(95)=158.89µs
+     http_req_tls_handshaking.......: avg=3.6ms    min=0s       med=0s       max=377.77ms p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=194.38ms min=172.55ms med=185.02ms max=409.46ms p(90)=218.13ms p(95)=276.24ms
+     http_reqs......................: 1004    3.190271/s
+     iteration_duration.............: avg=751.52ms min=473.49ms med=490.78ms max=1m44s    p(90)=891.61ms p(95)=912.08ms
+     iterations.....................: 1002    3.183915/s
+     time_lapse.....................: avg=217.596  min=184      med=199      max=838      p(90)=244.2    p(95)=313     
+     vus............................: 0       min=0      max=11
+     vus_max........................: 12      min=12     max=12
+     ws_connecting..................: avg=366.4ms  min=366.4ms  med=366.4ms  max=366.4ms  p(90)=366.4ms  p(95)=366.4ms 
+     ws_msgs_received...............: 1001    3.180738/s
+     ws_msgs_sent...................: 2       0.006355/s
+     ws_session_duration............: avg=1m43s    min=1m43s    med=1m43s    max=1m43s    p(90)=1m43s    p(95)=1m43s   
+     ws_sessions....................: 1       0.003178/s
+```
+
+```txt
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: test-suite-1.js
+     output: -
+
+  scenarios: (100.00%) 3 scenarios, 52 max VUs, 5m40s max duration (incl. graceful stop):
+           * subscribe: 1 iterations shared among 1 VUs (maxDuration: 5m0s, exec: subscribe, gracefulStop: 30s)
+           * ingestion: 100 iterations for each of 50 VUs (maxDuration: 5m0s, exec: ingestion, startTime: 5s, gracefulStop: 30s)
+           * consumption: 1 iterations shared among 1 VUs (maxDuration: 10s, exec: consumption, startTime: 5m0s, gracefulStop: 30s)
+
+INFO[0121] Expected: 5000; Actual: 5000                  source=console
+INFO[0325] Data Units stored: 5000                       source=console
+
+running (5m28.6s), 00/52 VUs, 5002 complete and 0 interrupted iterations
+subscribe   ✓ [======================================] 1 VUs   4m42.0s/5m0s  1/1 shared iters
+ingestion   ✓ [======================================] 50 VUs  1m31.7s/5m0s  5000/5000 iters, 100 per VU
+consumption ✓ [======================================] 1 VUs   00.4s/10s     1/1 shared iters
+
+     ✓ status was 202
+     ✓ all data units were received
+     ✓ correct data units were received
+     ✓ data units were all stored
+
+     █ setup
+
+     █ teardown
+
+     checks.........................: 100.00% ✓ 10002     ✗ 0   
+     data_received..................: 2.3 MB  7.0 kB/s
+     data_sent......................: 3.1 MB  9.4 kB/s
+     http_req_blocked...............: avg=5.55ms   min=1.58µs   med=15.44µs  max=613.46ms p(90)=20.54µs  p(95)=25.6µs  
+     http_req_connecting............: avg=1.93ms   min=0s       med=0s       max=202.04ms p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=188.82ms min=170.08ms med=181.21ms max=375.78ms p(90)=212.02ms p(95)=234.7ms 
+       { expected_response:true }...: avg=188.82ms min=170.08ms med=181.21ms max=375.78ms p(90)=212.02ms p(95)=234.7ms 
+     http_req_failed................: 0.00%   ✓ 0         ✗ 5004
+     http_req_receiving.............: avg=135.82µs min=15.8µs   med=145.22µs max=1.66ms   p(90)=196.74µs p(95)=220.07µs
+     http_req_sending...............: avg=93.87µs  min=8.16µs   med=101.05µs max=924.27µs p(90)=136.96µs p(95)=155.77µs
+     http_req_tls_handshaking.......: avg=3.6ms    min=0s       med=0s       max=430.45ms p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=188.59ms min=169.85ms med=180.99ms max=375.52ms p(90)=211.79ms p(95)=234.41ms
+     http_reqs......................: 5004    15.226082/s
+     iteration_duration.............: avg=736.53ms min=364.33ms med=503.88ms max=4m42s    p(90)=892.31ms p(95)=920.42ms
+     iterations.....................: 5002    15.219997/s
+     time_lapse.....................: avg=326.0384 min=185      med=220      max=2215     p(90)=378      p(95)=1345    
+     vus............................: 0       min=0       max=51
+     vus_max........................: 52      min=52      max=52
+     ws_connecting..................: avg=363.05ms min=363.05ms med=363.05ms max=363.05ms p(90)=363.05ms p(95)=363.05ms
+     ws_msgs_received...............: 5001    15.216954/s
+     ws_msgs_sent...................: 2       0.006086/s
+     ws_session_duration............: avg=4m41s    min=4m41s    med=4m41s    max=4m41s    p(90)=4m41s    p(95)=4m41s   
+     ws_sessions....................: 1       0.003043/s
 ```

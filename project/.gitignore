@@ -25,3 +25,5 @@ jmeter-tests/properties.env
 
 reports/*
 !reports/.gitkeep
+
+k6/results/*

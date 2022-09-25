@@ -1,3 +1,4 @@
+# Libraries
 library(tidyverse)
 library(hrbrthemes)
 library(viridis)
@@ -22,6 +23,7 @@ create <- function(dataframe, xParam) {
     xlab(paste("time data unit was", xParam, "(seconds)")) +
     ylab("time taken to process data unit (seconds)") +
     scale_color_manual(values = c("#b30000", "#7c1158", "#4421af", "#1a53ff", "#0d88e6", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78", "#ffb55a"))
+  #scale_color_brewer(palette = "Spectral")
 }
 
 outputTex <- function(pdot, path, xParam) {
@@ -34,8 +36,16 @@ outputPDF <- function(pdot, path, xParam) {
   ggsave(plot = pdot, file = path)
 }
 
+metrics <- function(path, dataframe) {
+  d <- dataframe$metric_value
+  output <- c(path, mean(d), min(d), median(d), max(d), unname(quantile(d, probs = c(.90, .95))))
+  cat(output, sep="','")
+  cat("'\n'")
+}
+
 process <- function(path) {
   data <- prepare(paste(path,'data.csv', sep = "/"))
+  #metrics(path, data)
   pdot_sent <- create(data, "sent")
   pdot_received <- create(data, "received")
   outputTex(pdot_sent, paste(path, 'data_sent.tex', sep="/"))

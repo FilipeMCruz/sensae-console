@@ -229,6 +229,9 @@ services:
     container_name: smart-irrigation-data-database
     networks:
       - sensae-network
+    environment:
+      - QDB_LINE_TCP_MAINTENANCE_JOB_INTERVAL=1000
+      - QDB_LINE_TCP_MIN_IDLE_MS_BEFORE_WRITER_REALEASE=500
     ports:
       - 8898:8812
       - 9098:9000
@@ -262,6 +265,9 @@ services:
     container_name: fleet-management-data-database
     networks:
       - sensae-network
+    environment:
+      - QDB_LINE_TCP_MAINTENANCE_JOB_INTERVAL=1000
+      - QDB_LINE_TCP_MIN_IDLE_MS_BEFORE_WRITER_REALEASE=500
     ports:
       - 8812:8812
       - 9000:9000

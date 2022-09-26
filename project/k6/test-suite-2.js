@@ -42,8 +42,8 @@ import {
 import ws from "k6/ws";
 import exec from "k6/execution";
 
-const n_devices = 1000; // 50, 100, 200, 500, 1000
-const interval = 3;
+const n_devices = 500; // 50, 100, 200, 500, 1000
+const interval = 10;
 const group_by = 5;
 
 export const options = {
@@ -146,14 +146,20 @@ export function subscribe() {
           let iter = pickIteration(
             message.payload.data.notification.description.split(";")[0]
           );
+          let process = pickDevice(
+            message.payload.data.notification.description.split(";")[2]
+          ).data_type;
           timeLapseAlertTrend.add(
             new Date().getTime() - message.payload.data.notification.reportedAt,
-            { iteration: iter }
+            {
+              iteration: iter,
+              process: process,
+            }
           );
           timeLapseFullTrend.add(
             new Date().getTime() -
               message.payload.data.notification.description.split(";")[1],
-            { iteration: iter }
+            { iteration: iter, process: process }
           );
           received.push(
             message.payload.data.notification.description.split(";")[0]
@@ -178,6 +184,10 @@ export function subscribe() {
 
 function pickIteration(dataId) {
   return dataIds.findIndex((ids) => ids.some((idss) => idss.includes(dataId)));
+}
+
+function pickDevice(deviceId) {
+  return data.flat(2).find((device) => deviceId === device.id);
 }
 
 function closeSocket(socket, received) {

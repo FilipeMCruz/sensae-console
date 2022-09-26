@@ -1,7 +1,7 @@
 import http from "k6/http";
 import { SharedArray } from "k6/data";
 import { check, sleep } from "k6";
-import { Trend } from "k6/metrics";
+import { Counter, Trend } from "k6/metrics";
 import {
   createDevice,
   createRoute,
@@ -32,7 +32,7 @@ import {
 import ws from "k6/ws";
 import exec from "k6/execution";
 
-const n_devices = 1000; // 50, 100, 200, 500, 1000
+const n_devices = 1500; // 50, 100, 200, 500, 1000
 const interval = 10;
 const group_by = 5;
 
@@ -44,30 +44,32 @@ export const options = {
       startTime: "0s",
       vus: 1,
       iterations: 1,
-      maxDuration: "10m",
+      maxDuration: "4m",
       exec: "subscribe",
     },
     ingestion: {
       executor: "per-vu-iterations",
       vus: n_devices / group_by,
-      iterations: 31,
+      iterations: 15,
       startTime: "5s",
       exec: "ingestion",
-      maxDuration: "10m",
+      maxDuration: "4m",
     },
     consumption: {
       executor: "shared-iterations",
       startTime: "0s",
       vus: 1,
-      iterations: 600,
-      maxDuration: "10m",
+      iterations: 1,
+      maxDuration: "4m",
       exec: "consumption",
     },
   },
 };
 
 const timeLapseTrend = new Trend("time_lapse");
-const storedNumberTrend = new Trend("stored_measures");
+const ingestionCounter = new Counter("ingestion");
+const consumptionCounter = new Counter("consumption");
+const storageCounter = new Counter("storage");
 
 const sampleSize = new SharedArray("sampleSize", function () {
   const sampleSize = [];
@@ -81,9 +83,11 @@ const sampleSize = new SharedArray("sampleSize", function () {
 
 const dataIds = new SharedArray("dataIds", function () {
   const dataIds = [];
+  // +2 since we don't know what vus will be assigned to ingestion and it can't fail
+
   for (let inter = 0; inter < options.scenarios.ingestion.iterations; inter++) {
     let interArr = [];
-    for (let index = 0; index < options.scenarios.ingestion.vus + 3; index++) {
+    for (let index = 0; index < options.scenarios.ingestion.vus + 2; index++) {
       let arr = [];
       for (var i = 0; i < group_by; i++) {
         arr.push(randomId());
@@ -92,13 +96,14 @@ const dataIds = new SharedArray("dataIds", function () {
     }
     dataIds.push(interArr);
   }
+
   return dataIds;
 });
 
 const data = new SharedArray("data", function () {
   const data = [];
   // +2 since we don't know what vus will be assigned to ingestion and it can't fail
-  const total = options.scenarios.ingestion.vus + 3;
+  const total = options.scenarios.ingestion.vus + 2;
   for (let index = 0; index < total; index++) {
     let arr = [];
     for (var i = 0; i < group_by; i++) {
@@ -134,6 +139,7 @@ export function subscribe() {
             new Date().getTime() - message.payload.data.locations.reportedAt,
             { iteration: pickIteration(message.payload.data.locations.dataId) }
           );
+          consumptionCounter.add(1);
           received.push(message.payload.data.locations.dataId);
           if (received.length % 1000 === 0)
             console.log("Received " + received.length + " messages");
@@ -179,10 +185,7 @@ export function ingestion() {
   const devices = data[vu];
   const ids = dataIds[exec.vu.iterationInScenario][vu];
 
-  if (exec.vu.iterationInScenario === 1 || exec.vu.iterationInScenario === 0)
-    sleep(randomNumber(0, interval));
-
-  if (devices === undefined) console.log(vu);
+  if (exec.vu.iterationInScenario === 0) sleep(randomNumber(0, interval));
 
   for (let index = 0; index < devices.length; index++) {
     const device = devices[index];
@@ -198,22 +201,25 @@ export function ingestion() {
       }
     );
     check(res, { "status was 202": (r) => r.status === 202 });
+    ingestionCounter.add(1);
   }
-
-  if (exec.vu.iterationInScenario === 0) sleep(60);
-
-  if (exec.vu.iterationInScenario !== 30)
-    sleep(interval - Math.floor(exec.vu.iterationInScenario / 3));
+  if (exec.vu.iterationInScenario !== 19) sleep(interval);
 }
 
 export function consumption() {
-  var numberEntries = countFleetMeasuresEntries() / 2;
-  console.log("Data Units stored: " + numberEntries);
-  // check(numberEntries, {
-  //   "data units were all stored": (res) => res === sampleSize[0] * 2,
-  // });
-  storedNumberTrend.add(numberEntries);
-  sleep(10)
+  let current = 0;
+  while (current !== sampleSize[0]) {
+    var numberEntries = countFleetMeasuresEntries() / 2;
+
+    if (current !== numberEntries) {
+      storageCounter.add(numberEntries - current);
+      current = numberEntries;
+    } else {
+      storageCounter.add(0);
+    }
+
+    sleep(1);
+  }
 }
 
 export function setup() {

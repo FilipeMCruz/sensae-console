@@ -4,7 +4,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 public class DatabaseContainerTest extends PostgreSQLContainer<DatabaseContainerTest> {
-    private static final String IMAGE_VERSION = "project_data-decoder-database";
+    private static final String IMAGE_VERSION = "data-decoder-database";
     private static DatabaseContainerTest container;
 
     private DatabaseContainerTest() {
@@ -14,10 +14,8 @@ public class DatabaseContainerTest extends PostgreSQLContainer<DatabaseContainer
     public static DatabaseContainerTest getInstance() {
         if (container == null) {
             container = new DatabaseContainerTest()
-                    .withDatabaseName("decoder")
                     .withUsername("user")
                     .withPassword("sa")
-                    .withEnv("POSTGRESQL_DATABASE", "decoder")
                     .withEnv("POSTGRESQL_USER", "user")
                     .withEnv("POSTGRESQL_PASSWORD", "sa")
                     .withExposedPorts(PostgreSQLContainer.POSTGRESQL_PORT);

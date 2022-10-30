@@ -7,6 +7,8 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
+    "test-all": "nx run-many --all --target=test",
+    "e2e-all": "nx run-many --all --target=e2e --parallel=1",
     "postinstall": "ngcc --properties es2015 browser module main"
   },
   "private": true,
@@ -24,7 +26,6 @@
     "@nrwl/jest": "13.9.4",
     "@nrwl/linter": "13.9.4",
     "@nrwl/workspace": "13.9.4",
-    "@types/jest": "27.5.0",
     "@types/mapbox__mapbox-gl-draw": "^1.2.3",
     "@types/mapbox-gl": "^2.7.1",
     "@types/node": "17.0.31",
@@ -34,11 +35,13 @@
     "eslint": "8.14.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "jest": "28.0.3",
+    "jest": "27.5.1",
+    "jest-environment-jsdom": "^27.5.1",
     "jest-preset-angular": "11.1.2",
     "nx": "13.9.4",
     "prettier": "^2.3.1",
-    "ts-jest": "28.0.1",
+    "ts-jest": "27.1.5",
+    "jest-cli": "27.5.1",
     "typescript": "~4.5.5"
   },
   "dependencies": {
@@ -64,12 +67,12 @@
     "core-js": "^3.22.4",
     "echarts": "^5.3.2",
     "graphql": "^16.4.0",
+    "graphql-ws": "5.9.0",
     "jwt-decode": "^3.1.2",
     "mapbox-gl": "^2.8.2",
     "monaco-editor": "^0.33.0",
     "ngx-echarts": "^8.0.1",
     "rxjs": "~6.6.7",
-    "graphql-ws": "5.9.0",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.5"
   }

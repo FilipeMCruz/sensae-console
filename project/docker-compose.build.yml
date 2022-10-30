@@ -1,0 +1,30 @@
+services:
+  message-broker:
+    image: rabbitmq:3.10.5-management
+  data-processor-database:
+    build: databases/data-processor-database
+    image: data-processor-database
+  data-decoder-database:
+    build: databases/data-decoder-database
+    image: data-decoder-database
+  identity-management-database:
+    build: databases/identity-management-database
+    image: identity-management-database
+  device-management-database:
+    build: databases/device-management-database
+    image: device-management-database
+  rule-management-database:
+    build: databases/rule-management-database
+    image: rule-management-database
+  notification-management-database:
+    build: databases/notification-management-database
+    image: notification-management-database
+  smart-irrigation-business-database:
+    build: databases/smart-irrigation-business-database
+    image: smart-irrigation-business-database
+  fleet-management-data-database:
+    image: questdb/questdb:6.5
+  smart-irrigation-data-database:
+    image: questdb/questdb:6.5
+  # data-store-database:
+  #   image: mongo:latest

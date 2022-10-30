@@ -1,6 +1,8 @@
 package pt.sensae.services.data.store.infrastructure.persistence.mongodb;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.bson.Document;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,17 +13,24 @@ public class SensorDataRepository implements DataRepository {
 
     private final MongoTemplate template;
 
-    public SensorDataRepository(MongoTemplate template) {
+    private final ObjectMapper mapper;
+
+    public SensorDataRepository(MongoTemplate template, ObjectMapper mapper) {
         this.template = template;
+        this.mapper = mapper;
     }
 
-    public void insert(String collection, ObjectNode data) {
+    public void insert(String collection, Object data) {
         if (!template.collectionExists(collection))
             template.createCollection(collection);
-        template.getCollection(collection).insertOne(Document.parse(data.toString()));
+        try {
+            template.getCollection(collection).insertOne(Document.parse(mapper.writeValueAsString(data)));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void insert(ObjectNode data) {
+    public void insert(Object data) {
         if (!template.collectionExists("SensorData"))
             template.createCollection("SensorData");
 

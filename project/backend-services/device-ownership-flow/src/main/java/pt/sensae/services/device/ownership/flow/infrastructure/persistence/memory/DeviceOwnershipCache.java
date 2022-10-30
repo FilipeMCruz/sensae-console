@@ -2,6 +2,7 @@ package pt.sensae.services.device.ownership.flow.infrastructure.persistence.memo
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.ownership.flow.domain.DeviceId;
 import pt.sensae.services.device.ownership.flow.domain.DeviceOwnershipRepository;
 import pt.sensae.services.device.ownership.flow.domain.DeviceWithAllPermissions;
@@ -17,9 +18,9 @@ public class DeviceOwnershipCache implements DeviceOwnershipRepository {
 
     private final Cache<DeviceId, DeviceWithAllPermissions> cache;
 
-    public DeviceOwnershipCache() {
+    public DeviceOwnershipCache(@ConfigProperty(name = "sensae.cache.devices.ownership.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(100)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

@@ -33,7 +33,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue requestQueue() {
-        return QueueBuilder.durable(service.getDecoderRequestQueueName())
+        return QueueBuilder.nonDurable(service.getDecoderRequestQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();
@@ -54,7 +54,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue pingQueue() {
-        return QueueBuilder.durable(service.getDecoderPingQueueName())
+        return QueueBuilder.nonDurable(service.getDecoderPingQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();

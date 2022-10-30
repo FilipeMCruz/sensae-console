@@ -2,6 +2,7 @@ package pt.sensae.services.device.management.flow.infrastructure.persistence.mem
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.management.flow.domain.UnHandledDataUnitRepository;
 import pt.sensae.services.device.management.flow.domain.device.DeviceId;
 import pt.sharespot.iot.core.data.model.DataUnitDTO;
@@ -16,9 +17,9 @@ import java.util.Set;
 public class UnhandledDataUnitCache implements UnHandledDataUnitRepository {
     private final Cache<DeviceId, Set<MessageConsumed<DataUnitDTO, DataRoutingKeys>>> cache;
 
-    public UnhandledDataUnitCache() {
+    public UnhandledDataUnitCache(@ConfigProperty(name = "sensae.cache.unhandled.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(200)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

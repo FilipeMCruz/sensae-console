@@ -2,6 +2,7 @@ package pt.sensae.services.device.management.flow.infrastructure.persistence.mem
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.management.flow.domain.DeviceInformation;
 import pt.sensae.services.device.management.flow.domain.DeviceInformationRepository;
 import pt.sensae.services.device.management.flow.domain.device.DeviceId;
@@ -15,10 +16,10 @@ public class DeviceInformationCache implements DeviceInformationRepository {
 
     private final Cache<DeviceId, DeviceInformation> cache;
 
-    public DeviceInformationCache() {
+    public DeviceInformationCache(@ConfigProperty(name = "sensae.cache.devices.information.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(10)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

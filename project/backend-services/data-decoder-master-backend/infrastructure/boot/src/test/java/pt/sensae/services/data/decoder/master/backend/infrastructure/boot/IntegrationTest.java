@@ -32,9 +32,11 @@ public abstract class IntegrationTest {
         // Postgres JDBC driver uses JUL; disable it to avoid annoying, irrelevant, stderr logs during connection testing
         LogManager.getLogManager().getLogger("").setLevel(Level.OFF);
     }
+
     static class Initializer
             implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
+            postgresSQLContainer.withDatabaseName("decoder");
             TestPropertyValues.of(
                     "spring.datasource.url=" + postgresSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgresSQLContainer.getUsername(),
@@ -53,14 +55,13 @@ public abstract class IntegrationTest {
     @Container
     public static RabbitMQContainer rabbitMQContainer = MessageBrokerContainerTest.getInstance();
 
-    protected ResultSet performQuery(JdbcDatabaseContainer<?> container, String sql) throws SQLException {
-        DataSource ds = getDataSource(container);
+    protected ResultSet performQuery(String sql) throws SQLException {
+        DataSource ds = getDataSource(postgresSQLContainer);
         Statement statement = ds.getConnection().createStatement();
         statement.execute(sql);
         ResultSet resultSet = statement.getResultSet();
 
-        if (resultSet != null)
-            resultSet.next();
+        if (resultSet != null) resultSet.next();
 
         return resultSet;
     }

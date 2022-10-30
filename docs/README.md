@@ -16,3 +16,4 @@ It's intended mostly for developers and stakeholders.
 - [Know Problems](problems/README.md)
 - [Service - Fleet Management](services/fleet-management/README.md)
 - [Service - Smart Irrigation](services/smart-irrigation/README.md)
+- [System Performance](performance/README.md)

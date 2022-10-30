@@ -2,6 +2,7 @@ package pt.sensae.services.device.ownership.flow.infrastructure.persistence.memo
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.device.ownership.flow.domain.DeviceId;
 import pt.sensae.services.device.ownership.flow.domain.UnhandledAlertRepository;
 import pt.sharespot.iot.core.alert.model.AlertDTO;
@@ -17,9 +18,9 @@ import java.util.stream.Collectors;
 public class UnhandledAlertCache implements UnhandledAlertRepository {
     private final Cache<DeviceId, Set<MessageConsumed<AlertDTO, AlertRoutingKeys>>> cache;
 
-    public UnhandledAlertCache() {
+    public UnhandledAlertCache(@ConfigProperty(name = "sensae.cache.unhandled.alerts.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
-                .maximumSize(200)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

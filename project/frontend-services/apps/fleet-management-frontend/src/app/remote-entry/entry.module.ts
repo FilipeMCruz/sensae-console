@@ -24,40 +24,42 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSliderModule } from '@angular/material/slider';
+import {MatRadioModule} from "@angular/material/radio";
 
 (mapbox as any).accessToken = environment.mapbox.accessToken;
 
 @NgModule({
   declarations: [MapComponent, SearchCardComponent],
-  imports: [
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatDividerModule,
-    MatTooltipModule,
-    MatSelectModule,
-    MatSidenavModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatIconModule,
-    FormsModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatButtonModule,
-    HttpClientModule,
-    CommonModule,
-    MatTabsModule,
-    MatButtonToggleModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: MapComponent,
-      },
-    ]),
-  ],
+    imports: [
+        MatSliderModule,
+        MatSlideToggleModule,
+        MatDividerModule,
+        MatTooltipModule,
+        MatSelectModule,
+        MatSidenavModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatCheckboxModule,
+        MatCardModule,
+        MatFormFieldModule,
+        MatIconModule,
+        FormsModule,
+        MatExpansionModule,
+        MatInputModule,
+        MatButtonModule,
+        HttpClientModule,
+        CommonModule,
+        MatTabsModule,
+        MatButtonToggleModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: MapComponent,
+            },
+        ]),
+        MatRadioModule,
+    ],
   providers: [],
 })
 export class RemoteEntryModule {}

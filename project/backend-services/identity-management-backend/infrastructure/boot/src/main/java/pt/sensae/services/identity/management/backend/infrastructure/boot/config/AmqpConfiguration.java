@@ -44,7 +44,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue slaveQueue() {
-        return QueueBuilder.durable(DeviceIdentityRequestConsumer.MASTER_QUEUE)
+        return QueueBuilder.nonDurable(DeviceIdentityRequestConsumer.MASTER_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -65,7 +65,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initTenantQueue() {
-        return QueueBuilder.durable(TenantIdentityInitConsumer.QUEUE)
+        return QueueBuilder.nonDurable(TenantIdentityInitConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -85,7 +85,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initDeviceIdentityQueue() {
-        return QueueBuilder.durable(DeviceIdentityInitConsumer.QUEUE)
+        return QueueBuilder.nonDurable(DeviceIdentityInitConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -105,7 +105,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue syncDeviceInformationQueue() {
-        return QueueBuilder.durable(DeviceInformationSyncConsumer.QUEUE)
+        return QueueBuilder.nonDurable(DeviceInformationSyncConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -125,7 +125,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue infoDeviceInformationQueue() {
-        return QueueBuilder.durable(DeviceInformationInfoConsumer.QUEUE)
+        return QueueBuilder.nonDurable(DeviceInformationInfoConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -145,7 +145,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initDeviceInformationQueue() {
-        return QueueBuilder.durable(DEVICE_MANAGEMENT_QUEUE)
+        return QueueBuilder.nonDurable(DEVICE_MANAGEMENT_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

@@ -5,6 +5,8 @@ on:
     branches:
       - master
       - dev
+      - "*"
+      - "**"
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -15,5 +17,10 @@ jobs:
         with:
           java-version: "17"
           distribution: "adopt"
-      - name: Test with Maven
-        run: ./project/scripts/run-backend-tests.sh
+      - name: Set up Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Test Suite
+        run: |
+          ./project/scripts/run-tests.sh "${{ secrets.mapbox_token }}" "${{ secrets.microsoft_audience }}" "${{ secrets.google_audience }}" "${{ secrets.admin_email }}"

@@ -11,4 +11,10 @@ public record Domains(Set<DomainId> value) {
     public static Domains empty() {
         return new Domains(new HashSet<>());
     }
+
+    public static Domains single(DomainId id) {
+        var ids = new HashSet<DomainId>();
+        ids.add(id);
+        return new Domains(ids);
+    }
 }

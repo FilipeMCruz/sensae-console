@@ -13,6 +13,7 @@ secrets/keys/*
 
 secrets/dev.conf
 secrets/prod.conf
+secrets/act-secrets.env
 
 databases-data
 
@@ -24,3 +25,5 @@ jmeter-tests/properties.env
 
 reports/*
 !reports/.gitkeep
+
+k6/results/*

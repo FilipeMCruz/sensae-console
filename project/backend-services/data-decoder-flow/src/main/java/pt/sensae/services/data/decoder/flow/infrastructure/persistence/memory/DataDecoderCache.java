@@ -2,6 +2,7 @@ package pt.sensae.services.data.decoder.flow.infrastructure.persistence.memory;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import pt.sensae.services.data.decoder.flow.domain.DataDecoder;
 import pt.sensae.services.data.decoder.flow.domain.DataDecoderRepository;
 import pt.sensae.services.data.decoder.flow.domain.SensorTypeId;
@@ -15,10 +16,10 @@ public class DataDecoderCache implements DataDecoderRepository {
 
     private final Cache<SensorTypeId, DataDecoder> cache;
 
-    public DataDecoderCache() {
+    public DataDecoderCache(@ConfigProperty(name = "sensae.cache.data.processor.maxsize") int maxSizeCache) {
         this.cache = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofHours(12))
-                .maximumSize(10)
+                .maximumSize(maxSizeCache)
                 .build();
     }
 

@@ -5,11 +5,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.data.routing.keys.data.GPSDataOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.data.*;
 import pt.sensae.services.fleet.management.backend.application.RoutingKeysProvider;
 import pt.sensae.services.fleet.management.backend.infrastructure.endpoint.amqp.listener.SensorDataConsumer;
 
@@ -30,15 +30,24 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.nonDurable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
+    public static final String UNROUTABLE_EXCHANGE = "unroutable.topic";
+
+    @Bean
+    public TopicExchange altExchange() {
+        return ExchangeBuilder.topicExchange(UNROUTABLE_EXCHANGE).build();
+    }
+
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
+        return ExchangeBuilder.topicExchange(IoTCoreTopic.DATA_EXCHANGE)
+                .alternate(UNROUTABLE_EXCHANGE)
+                .build();
     }
 
     @Bean

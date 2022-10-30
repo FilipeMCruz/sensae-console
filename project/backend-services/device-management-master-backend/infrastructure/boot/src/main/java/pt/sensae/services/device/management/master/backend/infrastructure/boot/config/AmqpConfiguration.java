@@ -40,17 +40,17 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue deviceRequestQueue() {
-        return QueueBuilder.durable(service.getDeviceManagementRequestQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceManagementRequestQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    Binding bindingDeviceRequest() {
+    Binding bindingDeviceUnknown() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(deviceRequestQueue()).to(internalExchange()).with(keys.get().toString());
@@ -60,7 +60,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue devicePingQueue() {
-        return QueueBuilder.durable(service.getDeviceManagementPingQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceManagementPingQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -69,7 +69,7 @@ public class AmqpConfiguration {
     @Bean
     Binding bindingDevicePing() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.PING)
                 .missingAsAny();
         if (keys.isPresent()) {
@@ -80,7 +80,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initDeviceQueue() {
-        return QueueBuilder.durable(service.getDeviceManagementInitQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceManagementInitQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -89,7 +89,7 @@ public class AmqpConfiguration {
     @Bean
     Binding bindingInitInformation() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INIT)
                 .missingAsAny();
         if (keys.isPresent()) {
@@ -100,7 +100,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue identityInitQueue() {
-        return QueueBuilder.durable(service.getDeviceIdentityInitQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceIdentityInitQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -120,7 +120,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue identitySyncQueue() {
-        return QueueBuilder.durable(service.getDeviceIdentitySyncQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceIdentitySyncQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -140,7 +140,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue identityInfoQueue() {
-        return QueueBuilder.durable(service.getDeviceIdentityInfoQueueName())
+        return QueueBuilder.nonDurable(service.getDeviceIdentityInfoQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

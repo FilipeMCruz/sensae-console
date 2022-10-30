@@ -41,7 +41,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue internalInfoQueue() {
-        return QueueBuilder.durable(service.getTenantIdentityInfoQueueName())
+        return QueueBuilder.nonDurable(service.getTenantIdentityInfoQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -62,7 +62,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue internalSyncQueue() {
-        return QueueBuilder.durable(service.getTenantIdentitySyncQueueName())
+        return QueueBuilder.nonDurable(service.getTenantIdentitySyncQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -88,7 +88,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue alertQueue() {
-        return QueueBuilder.durable(service.getNotificationQueueName())
+        return QueueBuilder.nonDurable(service.getNotificationQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -107,7 +107,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initQueue() {
-        return QueueBuilder.durable(service.getTenantIdentityInitQueueName())
+        return QueueBuilder.nonDurable(service.getTenantIdentityInitQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -127,7 +127,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue initAddresseeQueue() {
-        return QueueBuilder.durable(service.getAttendeesConfigurationInitQueueName())
+        return QueueBuilder.nonDurable(service.getAttendeesConfigurationInitQueueName())
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

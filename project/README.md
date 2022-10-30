@@ -5,7 +5,7 @@ Both of this environments need docker to run and docker-compose to orchestrate t
 
 Current version:
 
-- `system` : `0.9.0`
+- `system` : `0.10.0`
 
 ## DEV Environment
 
@@ -81,6 +81,7 @@ export SENSAE_EMAIL_SENDER_PASSWORD=
 export SENSAE_EMAIL_SMTP_HOST=
 export SENSAE_EMAIL_SMTP_PORT=
 export SENSAE_EMAIL_ACTIVATE=
+export SENSAE_ADMIN_EMAIL=
 ```
 
 And run:
@@ -147,6 +148,8 @@ export SENSAE_EMAIL_SMTP_PORT=
 export SENSAE_EMAIL_ACTIVATE=
 
 export SENSAE_PROD_PUBLIC_DOMAIN=
+
+export SENSAE_ADMIN_EMAIL=
 ```
 
 And run:

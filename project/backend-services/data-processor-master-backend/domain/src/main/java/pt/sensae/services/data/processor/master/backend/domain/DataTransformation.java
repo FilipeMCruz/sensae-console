@@ -1,7 +1,7 @@
 package pt.sensae.services.data.processor.master.backend.domain;
 
 
-import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
+import pt.sharespot.iot.core.data.model.properties.PropertyTransformations;
 
 public class DataTransformation {
 

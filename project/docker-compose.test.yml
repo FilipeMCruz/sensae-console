@@ -1,0 +1,330 @@
+services:
+  # Data Processor Context
+  data-processor-flow:
+    build: backend-services/data-processor-flow
+    image: sensae/data-processor-flow
+    env_file:
+      - ./secrets/test/data-processor-flow.env
+    networks:
+      - sensae-network
+  data-processor-master-backend:
+    build: backend-services/data-processor-master-backend
+    image: data-processor-master-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/data-processor-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8082:8080
+  data-processor-database:
+    build: databases/data-processor-database
+    container_name: data-processor-database
+    env_file:
+      - ./secrets/test/data-processor-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5482:5432
+  # Data Decoder Context
+  data-decoder-flow:
+    build: backend-services/data-decoder-flow
+    image: sensae/data-decoder-flow
+    env_file:
+      - ./secrets/test/data-decoder-flow.env
+    networks:
+      - sensae-network
+  data-decoder-master-backend:
+    build: backend-services/data-decoder-master-backend
+    image: data-decoder-master-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/data-decoder-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8184:8080
+  data-decoder-database:
+    build: databases/data-decoder-database
+    container_name: data-decoder-database
+    env_file:
+      - ./secrets/test/data-decoder-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5484:5432
+  # Data Validator Context
+  data-validator:
+    build: backend-services/data-validator
+    image: sensae/data-validator
+    env_file:
+      - ./secrets/test/data-validator.env
+    networks:
+      - sensae-network
+  # Identity Management Context
+  device-ownership-flow:
+    build: backend-services/device-ownership-flow
+    image: sensae/device-ownership-flow
+    env_file:
+      - ./secrets/test/device-ownership-flow.env
+    networks:
+      - sensae-network
+  identity-management-backend:
+    build: backend-services/identity-management-backend
+    container_name: identity-management-backend
+    image: identity-management-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/identity-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8086:8080
+  identity-management-database:
+    build: databases/identity-management-database
+    container_name: identity-management-database
+    env_file:
+      - ./secrets/test/identity-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5486:5432
+  # Device Management Context
+  device-management-flow:
+    build: backend-services/device-management-flow
+    image: sensae/device-management-flow
+    env_file:
+      - ./secrets/test/device-management-flow.env
+    networks:
+      - sensae-network
+  device-commander:
+    build: backend-services/device-commander
+    image: sensae/device-commander
+    env_file:
+      - ./secrets/test/device-commander.env
+    networks:
+      - sensae-network
+  device-management-master-backend:
+    build: backend-services/device-management-master-backend
+    image: device-management-master-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/device-management-master-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8088:8080
+  device-management-database:
+    build: databases/device-management-database
+    container_name: device-management-database
+    env_file:
+      - ./secrets/test/device-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5488:5432
+  # Rule Management Context
+  alert-dispatcher-backend:
+    build: backend-services/alert-dispatcher-backend
+    container_name: alert-dispatcher-backend
+    image: alert-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/alert-dispatcher-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8093:8080
+    depends_on:
+      - rule-management-backend
+  rule-management-backend:
+    build: backend-services/rule-management-backend
+    container_name: rule-management-backend
+    image: rule-management-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/rule-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8094:8080
+  rule-management-database:
+    build: databases/rule-management-database
+    container_name: rule-management-database
+    env_file:
+      - ./secrets/test/rule-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5494:5432
+  # Notification Management Context
+  notification-dispatcher-backend:
+    build: backend-services/notification-dispatcher-backend
+    container_name: notification-dispatcher-backend
+    image: notification-dispatcher-backend
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/notification-dispatcher-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8095:8080
+  notification-management-backend:
+    build: backend-services/notification-management-backend
+    container_name: notification-management-backend
+    image: notification-management-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/notification-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8096:8080
+  notification-management-database:
+    build: databases/notification-management-database
+    container_name: notification-management-database
+    env_file:
+      - ./secrets/test/notification-management-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5496:5432
+  # Smart Irrigation Context
+  smart-irrigation-backend:
+    build: backend-services/smart-irrigation-backend
+    container_name: smart-irrigation-backend
+    image: smart-irrigation-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/smart-irrigation-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8801:8080
+  smart-irrigation-data-database:
+    image: questdb/questdb:6.5.3
+    container_name: smart-irrigation-data-database
+    networks:
+      - sensae-network
+    environment:
+      - QDB_LINE_TCP_MAINTENANCE_JOB_INTERVAL=1000
+      - QDB_LINE_TCP_MIN_IDLE_MS_BEFORE_WRITER_REALEASE=500
+    ports:
+      - 8898:8812
+      - 9098:9000
+      - 9003
+      - 9099:9009
+  smart-irrigation-business-database:
+    build: databases/smart-irrigation-business-database
+    container_name: smart-irrigation-business-database
+    env_file:
+      - ./secrets/test/smart-irrigation-business-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 5401:5432
+  # Fleet Management Context
+  fleet-management-backend:
+    build: backend-services/fleet-management-backend
+    image: fleet-management-backend
+    volumes:
+      - ./secrets/test/keys:/etc/ssh/app
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/fleet-management-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8800:8080
+  fleet-management-data-database:
+    image: questdb/questdb:6.5.3
+    container_name: fleet-management-data-database
+    networks:
+      - sensae-network
+    environment:
+      - QDB_LINE_TCP_MAINTENANCE_JOB_INTERVAL=1000
+      - QDB_LINE_TCP_MIN_IDLE_MS_BEFORE_WRITER_REALEASE=500
+    ports:
+      - 8812:8812
+      - 9000:9000
+      - 9003
+      - 9009:9009
+  # Common Context
+  message-broker:
+    image: rabbitmq:3.10.5-management
+    container_name: message-broker
+    env_file:
+      - ./secrets/test/message-broker.env
+    networks:
+      - sensae-network
+    ports:
+      - 5672:5672
+      - 15672:15672
+  data-relayer:
+    build: backend-services/data-relayer
+    image: data-relayer
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt/
+      - ./secrets/test/certs:/etc/nginx/ssl/
+    networks:
+      - sensae-network
+    ports:
+      - 8443:443
+  data-gateway:
+    build: backend-services/data-gateway
+    image: sensae/data-gateway
+    env_file:
+      - ./secrets/test/data-gateway.env
+    networks:
+      - sensae-network
+    ports:
+      - 8080
+  data-store:
+    build: backend-services/data-store
+    image: data-store
+    environment:
+      spring_profiles_active: prod
+    env_file:
+      - ./secrets/test/data-store-backend.env
+    networks:
+      - sensae-network
+    ports:
+      - 8091:8080
+  data-store-database:
+    image: mongo:latest
+    container_name: data-store-database
+    env_file:
+      - ./secrets/test/data-store-database.env
+    networks:
+      - sensae-network
+    ports:
+      - 27017:27017
+    volumes:
+      - ./databases-data/prod/data-store-database:/data/db
+      - ./secrets/test/init-data-store-database.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+networks:
+  sensae-network:

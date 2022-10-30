@@ -10,4 +10,6 @@ fi
 
 cd "$ROOT_DIR"/project || exit
 
-docker-compose up -d --build
+"$ROOT_DIR"/project/scripts/build-images.sh
+
+docker-compose up -d

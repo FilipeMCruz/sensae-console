@@ -7,14 +7,14 @@ import pt.sensae.services.alert.dispatcher.backend.application.RoutingKeysProvid
 import pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.ingress.controller.SensorDataConsumer;
 import pt.sensae.services.alert.dispatcher.backend.infrastructure.endpoint.amqp.internal.controller.RuleScenarioNotificationConsumer;
 import pt.sharespot.iot.core.IoTCoreTopic;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
 import pt.sharespot.iot.core.internal.routing.keys.ContextTypeOptions;
 import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
 
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE;
 import static pt.sensae.services.alert.dispatcher.backend.infrastructure.boot.config.AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE;
@@ -30,9 +30,18 @@ public class AmqpConfiguration {
         this.provider = provider;
     }
 
+    public static final String UNROUTABLE_EXCHANGE = "unroutable.topic";
+
+    @Bean
+    public TopicExchange altExchange() {
+        return ExchangeBuilder.topicExchange(UNROUTABLE_EXCHANGE).build();
+    }
+
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
+        return ExchangeBuilder.topicExchange(IoTCoreTopic.DATA_EXCHANGE)
+                .alternate(UNROUTABLE_EXCHANGE)
+                .build();
     }
 
     @Bean
@@ -42,7 +51,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue queue() {
-        return QueueBuilder.durable(SensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.nonDurable(SensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -50,7 +59,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue internalQueue() {
-        return QueueBuilder.durable(RuleScenarioNotificationConsumer.QUEUE)
+        return QueueBuilder.nonDurable(RuleScenarioNotificationConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -98,7 +107,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue ruleQueue() {
-        return QueueBuilder.durable(RULE_MANAGEMENT_QUEUE)
+        return QueueBuilder.nonDurable(RULE_MANAGEMENT_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

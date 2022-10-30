@@ -2,7 +2,6 @@ package pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.a
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import pt.sensae.services.data.decoder.master.backend.application.DataDecoderNotifierService;
 import pt.sensae.services.data.decoder.master.backend.application.DecoderLastTimeSeenRegisterService;
 import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.model.SensorTypeIdDTOImpl;
 

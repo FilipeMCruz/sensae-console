@@ -34,7 +34,7 @@ public class DeviceInformationInitSupplier {
     public void onApplicationEvent(ContextRefreshedEvent event) {
         LOGGER.info("Sent DEVICE_MANAGEMENT init request");
         var info = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.SUPPLIER)
-                .withContextType(ContextTypeOptions.DEVICE_MANAGEMENT)
+                .withContextType(ContextTypeOptions.DEVICE_INFORMATION)
                 .withOperationType(OperationTypeOptions.INIT)
                 .build();
         if (info.isEmpty()) {

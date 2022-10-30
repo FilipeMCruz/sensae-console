@@ -26,13 +26,13 @@ component "Device Management Master Backend" {
     interface "Domain Services API" as DOM_SERV_API
 
     GRAPH_API -- GRAPH
-    DOM_API -- DOM
-    DOM_SERV_API -- DOM_SERV
+    DOM_API - DOM
+    DOM_SERV_API - DOM_SERV
 
     POSTG_API -- POSTG
     AMQP_API -- AMQP
-    APP_API -- APP
-    BOOT_API -- BOOT
+    APP_API - APP
+    BOOT_API - BOOT
 
     AMQP --( APP_API
     POSTG --( DOM_API

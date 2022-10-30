@@ -1,9 +1,9 @@
 package rules.project.two;
 
-import pt.sharespot.iot.core.sensor.model.data.SensorDataDetailsDTO;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.device.records.DeviceRecordEntryDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.data.DataUnitReadingsDTO;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.device.records.DeviceRecordEntryDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 import pt.sharespot.iot.core.alert.model.AlertBuilder;
 import pt.sharespot.iot.core.alert.model.CorrelationDataBuilder;
 import java.util.List;
@@ -50,7 +50,7 @@ end
 
 rule "Create new zone that belongs to Project #002"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER) || (
                 getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE)
                                && getSensorData().hasProperty(PropertyName.TEMPERATURE)
@@ -68,7 +68,7 @@ end
 
 rule "Create new valve device that belongs to Project #002"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
         exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
@@ -85,7 +85,7 @@ end
 //if the data is from a valve device and is not duplicated add it
 rule "Collect valve device data that belongs to Project #002"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.TRIGGER)
         )
         exists DeviceRecordEntryDTO(label == "Project" && content == "#002") from $data.device.records
@@ -104,7 +104,7 @@ end
 //to ensure that only one alarm per device is sent
 rule "Create new stove sensor devices that belongs to Project #002"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )
@@ -122,7 +122,7 @@ end
 //if the data is from a stove sensor and is not duplicated add it
 rule "Collect stove sensor data that belongs to Project #002"
     when
-        $data : SensorDataDTO(
+        $data : DataUnitDTO(
             getSensorData().hasProperty(PropertyName.AIR_HUMIDITY_RELATIVE_PERCENTAGE),
             getSensorData().hasProperty(PropertyName.TEMPERATURE)
         )

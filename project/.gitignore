@@ -13,7 +13,17 @@ secrets/keys/*
 
 secrets/dev.conf
 secrets/prod.conf
+secrets/act-secrets.env
 
 databases-data
 
 test-examples
+
+databases/identity-management-database/identity-management-initdb.sql
+
+jmeter-tests/properties.env
+
+reports/*
+!reports/.gitkeep
+
+k6/results/*

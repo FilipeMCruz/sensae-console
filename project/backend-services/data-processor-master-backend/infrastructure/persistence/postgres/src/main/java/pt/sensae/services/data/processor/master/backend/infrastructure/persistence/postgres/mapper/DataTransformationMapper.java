@@ -1,14 +1,14 @@
 package pt.sensae.services.data.processor.master.backend.infrastructure.persistence.postgres.mapper;
 
-import pt.sharespot.iot.core.sensor.model.properties.KnownPropertyTransformation;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformation;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyTransformations;
 import pt.sensae.services.data.processor.master.backend.domain.DataTransformation;
 import pt.sensae.services.data.processor.master.backend.domain.SensorTypeId;
 import pt.sensae.services.data.processor.master.backend.infrastructure.persistence.postgres.model.DataTransformationPostgres;
 import pt.sensae.services.data.processor.master.backend.infrastructure.persistence.postgres.model.PropertyNamePostgres;
 import pt.sensae.services.data.processor.master.backend.infrastructure.persistence.postgres.model.PropertyTransformationPostgres;
+import pt.sharespot.iot.core.data.model.properties.KnownPropertyTransformation;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.properties.PropertyTransformation;
+import pt.sharespot.iot.core.data.model.properties.PropertyTransformations;
 
 import java.util.stream.Collectors;
 

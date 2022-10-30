@@ -21,7 +21,7 @@ public class DataDecoderCollectorController {
 
     @DgsQuery(field = "decoder")
     public Set<DataDecoderDTO> collect(@RequestHeader("Authorization") String auth) {
-        return service.transformations(AuthMiddleware.buildAccessToken(auth))
+        return service.collectAll(AuthMiddleware.buildAccessToken(auth))
                 .collect(Collectors.toSet());
     }
 }

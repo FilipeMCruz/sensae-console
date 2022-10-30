@@ -13,12 +13,12 @@ import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.amqp.
 import pt.sharespot.iot.core.IoTCoreTopic;
 import pt.sharespot.iot.core.alert.routing.keys.AlertCategoryOptions;
 import pt.sharespot.iot.core.alert.routing.keys.AlertSubCategoryOptions;
+import pt.sharespot.iot.core.data.routing.keys.DataLegitimacyOptions;
+import pt.sharespot.iot.core.data.routing.keys.InfoTypeOptions;
+import pt.sharespot.iot.core.data.routing.keys.RecordsOptions;
+import pt.sharespot.iot.core.data.routing.keys.data.*;
 import pt.sharespot.iot.core.keys.OwnershipOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.DataLegitimacyOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.InfoTypeOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.RecordsOptions;
-import pt.sharespot.iot.core.sensor.routing.keys.data.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +46,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue parkQueue() {
-        return QueueBuilder.durable(ParkSensorDataConsumer.QUEUE)
+        return QueueBuilder.nonDurable(ParkSensorDataConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -54,7 +54,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue stoveQueue() {
-        return QueueBuilder.durable(StoveSensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.nonDurable(StoveSensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -62,15 +62,24 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue valveQueue() {
-        return QueueBuilder.durable(ValveSensorDataConsumer.INGRESS_QUEUE)
+        return QueueBuilder.nonDurable(ValveSensorDataConsumer.INGRESS_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
     }
 
+    public static final String UNROUTABLE_EXCHANGE = "unroutable.topic";
+
+    @Bean
+    public TopicExchange altExchange() {
+        return ExchangeBuilder.topicExchange(UNROUTABLE_EXCHANGE).build();
+    }
+
     @Bean
     public TopicExchange topic() {
-        return new TopicExchange(IoTCoreTopic.DATA_EXCHANGE);
+        return ExchangeBuilder.topicExchange(IoTCoreTopic.DATA_EXCHANGE)
+                .alternate(UNROUTABLE_EXCHANGE)
+                .build();
     }
 
     @Bean
@@ -141,7 +150,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue openValveQueue() {
-        return QueueBuilder.durable(OpenValveAlertConsumer.QUEUE)
+        return QueueBuilder.nonDurable(OpenValveAlertConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();
@@ -149,7 +158,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue closeValveQueue() {
-        return QueueBuilder.durable(CloseValveAlertConsumer.QUEUE)
+        return QueueBuilder.nonDurable(CloseValveAlertConsumer.QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_QUEUE)
                 .build();

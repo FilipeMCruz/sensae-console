@@ -46,7 +46,7 @@
     </button>
   </mat-menu>
 
-  <button mat-icon-button *ngIf="loginDisplay" [matMenuTriggerFor]="account">
+  <button id="account" mat-icon-button *ngIf="loginDisplay" [matMenuTriggerFor]="account">
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #account="matMenu">

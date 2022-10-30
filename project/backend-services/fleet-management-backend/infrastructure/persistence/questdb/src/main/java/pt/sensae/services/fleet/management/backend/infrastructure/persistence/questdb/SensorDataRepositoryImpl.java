@@ -1,14 +1,16 @@
 package pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb;
 
+import io.questdb.client.Sender;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.mapper.ProcessedSensorDataMapperImpl;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.model.ProcessedSensorDataDAOImpl;
+import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.utils.ILPSenderPool;
 import pt.sensae.services.fleet.management.backend.infrastructure.persistence.questdb.repository.ProcessedSensorDataRepositoryJDBC;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
 import pt.sensae.services.fleet.management.backend.domain.SensorDataRepository;
 import pt.sensae.services.fleet.management.backend.domain.model.domain.DomainId;
 import pt.sensae.services.fleet.management.backend.domain.model.pastdata.GPSSensorDataFilter;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -25,32 +27,38 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
     private final ProcessedSensorDataMapperImpl mapper;
 
     private final JdbcTemplate jdbcTemplate;
+    private final ILPSenderPool senderPool;
 
     public SensorDataRepositoryImpl(ProcessedSensorDataRepositoryJDBC repository,
                                     ProcessedSensorDataMapperImpl mapper,
-                                    JdbcTemplate jdbcTemplate) {
+                                    JdbcTemplate jdbcTemplate,
+                                    ILPSenderPool senderPool) {
         this.repository = repository;
         this.mapper = mapper;
         this.jdbcTemplate = jdbcTemplate;
+        this.senderPool = senderPool;
     }
 
-    //TODO change this to a bulk insert with batchUpdate https://www.baeldung.com/spring-jdbc-jdbctemplate
     @Override
-    public void insert(SensorDataDTO dao) {
+    public void insert(DataUnitDTO dao) {
+        Sender sender = senderPool.getSender();
         mapper.dtoToDao(dao).forEach(data ->
-                this.repository.insert(data.dataId,
-                        data.deviceName,
-                        data.deviceId,
-                        data.gpsData,
-                        data.motion,
-                        data.reportedAt,
-                        data.domainId));
+                sender.table("data")
+                        .symbol("data_id", data.dataId)
+                        .symbol("device_id", data.deviceId)
+                        .symbol("device_name", data.deviceName)
+                        .symbol("gps_data", data.gpsData)
+                        .symbol("motion", data.motion)
+                        .symbol("domain", data.domainId)
+                        .atNow()
+        );
+        senderPool.returnSenderAndFlush(sender);
     }
 
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public Stream<SensorDataDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
+    public Stream<DataUnitDTO> queryMultipleDevices(GPSSensorDataFilter filters, Stream<DomainId> domains) {
         var domainValues = inConcat(domains.map(d -> d.value().toString()));
         var deviceValues = inConcat(filters.devices.stream().map(UUID::toString));
         var query = String.format("SELECT * FROM data WHERE device_id IN %s AND domain IN %s AND ts BETWEEN '%s' AND '%s';", deviceValues, domainValues, filters.startTime.toString(), filters.endTime.toString());
@@ -64,7 +72,7 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
     //TODO: "in" clause has a bug in Questdb, for now better use this
     // Values are sanitized so it is not a security issue
     @Override
-    public Stream<SensorDataDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
+    public Stream<DataUnitDTO> lastDataOfEachDevice(Stream<DomainId> domains) {
         var values = inConcat(domains.map(d -> d.value().toString()));
         var query = String.format("SELECT * FROM data LATEST BY device_id WHERE domain IN %s;", values);
 
@@ -75,7 +83,7 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
     }
 
     @Override
-    public Stream<SensorDataDTO> queryPastData(SensorDataDTO dao, Integer timeSpanMinutes) {
+    public Stream<DataUnitDTO> queryPastData(DataUnitDTO dao, Integer timeSpanMinutes) {
         var data = mapper.dtoToSingleDao(dao);
 
         return repository.latestDeviceDataInTime(data.deviceId, data.reportedAt.toString(), timeSpanMinutes)

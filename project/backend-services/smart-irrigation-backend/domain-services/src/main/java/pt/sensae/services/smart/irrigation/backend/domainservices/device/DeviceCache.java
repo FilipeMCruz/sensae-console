@@ -3,6 +3,7 @@ package pt.sensae.services.smart.irrigation.backend.domainservices.device;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.domain.exceptions.NotValidException;
 import pt.sensae.services.smart.irrigation.backend.domain.model.DomainId;
@@ -10,8 +11,8 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.GPSPoint;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.*;
 import pt.sensae.services.smart.irrigation.backend.domain.model.business.device.ledger.content.*;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -24,12 +25,12 @@ public class DeviceCache {
 
     private final DeviceRepository repository;
 
-    public DeviceCache(DeviceRepository repository) {
-        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(50).build();
+    public DeviceCache(@Value("${sensae.cache.devices.information.maxsize}") int cacheSize, DeviceRepository repository) {
+        this.cache = Caffeine.newBuilder().expireAfterAccess(Duration.ofHours(12)).maximumSize(cacheSize).build();
         this.repository = repository;
     }
 
-    public void updateIfNeeded(SensorDataDTO dto) {
+    public void updateIfNeeded(DataUnitDTO dto) {
         var deviceId = DeviceId.of(dto.device.id);
         var newEntry = toLedgerEntry(dto);
         var oldEntry = get(deviceId);
@@ -52,7 +53,7 @@ public class DeviceCache {
     }
 
     @NotNull
-    private DeviceType getDeviceType(SensorDataDTO dto) {
+    private DeviceType getDeviceType(DataUnitDTO dto) {
         DeviceType type;
         if (dto.hasProperty(PropertyName.TRIGGER)) {
             type = DeviceType.VALVE;
@@ -73,7 +74,7 @@ public class DeviceCache {
         cache.put(id, newEntry);
     }
 
-    private LedgerEntry toLedgerEntry(SensorDataDTO data) {
+    private LedgerEntry toLedgerEntry(DataUnitDTO data) {
         var owners = Ownership.of(data.device.domains.stream().map(DomainId::of));
 
         var name = DeviceName.of(data.device.name);
@@ -91,9 +92,7 @@ public class DeviceCache {
                 .toList()
                 .size();
 
-        var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ?
-                RemoteControl.of(true) :
-                RemoteControl.of(false);
+        var control = validCommandsNumber == 2 && DeviceType.VALVE.equals(getDeviceType(data)) ? RemoteControl.of(true) : RemoteControl.of(false);
 
         var records = new DeviceRecords(data.device.records.stream()
                 .map(e -> RecordEntry.of(e.label, e.content))

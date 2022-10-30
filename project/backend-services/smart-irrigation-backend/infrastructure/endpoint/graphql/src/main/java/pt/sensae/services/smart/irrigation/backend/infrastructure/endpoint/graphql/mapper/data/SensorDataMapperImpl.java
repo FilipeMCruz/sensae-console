@@ -1,5 +1,7 @@
 package pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.mapper.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pt.sensae.services.smart.irrigation.backend.application.mapper.data.SensorDataMapper;
 import pt.sensae.services.smart.irrigation.backend.application.model.data.SensorReadingDTO;
@@ -10,21 +12,24 @@ import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.Par
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.StovePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValvePayload;
 import pt.sensae.services.smart.irrigation.backend.domain.model.data.payload.ValveStatusType;
+import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.handlers.subscriptions.SensorDataSubscription;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.data.*;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.DeviceTypeDTOImpl;
 import pt.sensae.services.smart.irrigation.backend.infrastructure.endpoint.graphql.model.device.RecordEntryDTOImpl;
-import pt.sharespot.iot.core.sensor.model.SensorDataDTO;
-import pt.sharespot.iot.core.sensor.model.properties.PropertyName;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.model.properties.PropertyName;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class SensorDataMapperImpl implements SensorDataMapper {
+    Logger log = LoggerFactory.getLogger(SensorDataMapperImpl.class);
 
     @Override
-    public SensorReadingDTO toDto(SensorDataDTO dto) {
+    public SensorReadingDTO toDto(DataUnitDTO dto) {
+        log.info("here");
         var entries = dto.device.records.stream()
                 .map(e -> new RecordEntryDTOImpl(e.label, e.content))
                 .collect(Collectors.toSet());

@@ -31,7 +31,7 @@ public class DataDecoderCollectorService {
         this.lastTimeSeenDecoderRepository = lastTimeSeenDecoderRepository;
     }
 
-    public Stream<DataDecoderDTO> transformations(AccessTokenDTO claims) {
+    public Stream<DataDecoderDTO> collectAll(AccessTokenDTO claims) {
         var extract = authHandler.extract(claims);
         if (!extract.permissions.contains("data_decoders:decoders:read"))
             throw new UnauthorizedException("No Permissions");

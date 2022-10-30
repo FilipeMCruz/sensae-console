@@ -70,7 +70,6 @@ public class TenantRepositoryImpl implements TenantRepository {
     public Stream<Tenant> findAll() {
         return StreamSupport.stream(this.repository.findAll().spliterator(), false)
                 .map(TenantMapper::postgresToDomain)
-                .filter(Tenant::isNotAnonymous)
                 .toList().stream();
     }
 

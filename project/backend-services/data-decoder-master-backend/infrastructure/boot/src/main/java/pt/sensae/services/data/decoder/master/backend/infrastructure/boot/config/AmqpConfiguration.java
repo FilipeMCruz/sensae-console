@@ -13,7 +13,6 @@ import pt.sharespot.iot.core.internal.routing.keys.OperationTypeOptions;
 import pt.sharespot.iot.core.keys.ContainerTypeOptions;
 import pt.sharespot.iot.core.keys.RoutingKeysBuilderOptions;
 import pt.sensae.services.data.decoder.master.backend.application.RoutingKeysProvider;
-import pt.sensae.services.data.decoder.master.backend.infrastructure.endpoint.amqp.controller.DataDecoderRequestConsumer;
 
 @Configuration
 public class AmqpConfiguration {
@@ -34,18 +33,18 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue requestQueue() {
-        return QueueBuilder.durable(service.getDecoderRequestQueueName())
+        return QueueBuilder.nonDurable(service.getDecoderRequestQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();
     }
 
     @Bean
-    Binding bindingRequest() {
+    Binding bindingUnknown() {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DATA_DECODER)
                 .withContainerType(ContainerTypeOptions.DATA_DECODER)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(requestQueue()).to(internalExchange()).with(keys.get().toString());
@@ -55,7 +54,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue pingQueue() {
-        return QueueBuilder.durable(service.getDecoderPingQueueName())
+        return QueueBuilder.nonDurable(service.getDecoderPingQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();

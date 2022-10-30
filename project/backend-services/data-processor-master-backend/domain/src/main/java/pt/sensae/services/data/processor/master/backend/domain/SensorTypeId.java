@@ -9,14 +9,10 @@ public class SensorTypeId {
     private final String value;
 
     private SensorTypeId(String value) {
-        if (!value.matches("[a-zA-Z\\d]+")) {
-            throw new InvalidTransformationException("Invalid Id: value must have numbers and letters only");
+        if (!value.matches("[a-zA-Z\\d]{2,15}")) {
+            throw new InvalidTransformationException("Invalid Id: can only have a max of 15 letters or numbers");
         }
         this.value = value;
-    }
-
-    public boolean same(SensorTypeId id) {
-        return id.value.equals(value);
     }
 
     public static SensorTypeId of(String value) {

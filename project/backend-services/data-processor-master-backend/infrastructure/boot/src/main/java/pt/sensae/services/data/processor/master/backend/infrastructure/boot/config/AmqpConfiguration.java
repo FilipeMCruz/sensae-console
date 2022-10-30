@@ -34,7 +34,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue requestQueue() {
-        return QueueBuilder.durable(service.getTransformationRequestQueueName())
+        return QueueBuilder.nonDurable(service.getTransformationRequestQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();
@@ -45,7 +45,7 @@ public class AmqpConfiguration {
         var keys = provider.getInternalTopicBuilder(RoutingKeysBuilderOptions.CONSUMER)
                 .withContextType(ContextTypeOptions.DATA_PROCESSOR)
                 .withContainerType(ContainerTypeOptions.DATA_PROCESSOR)
-                .withOperationType(OperationTypeOptions.REQUEST)
+                .withOperationType(OperationTypeOptions.UNKNOWN)
                 .missingAsAny();
         if (keys.isPresent()) {
             return BindingBuilder.bind(requestQueue()).to(internalExchange()).with(keys.get().toString());
@@ -55,7 +55,7 @@ public class AmqpConfiguration {
 
     @Bean
     public Queue pingQueue() {
-        return QueueBuilder.durable(service.getTransformationPingQueueName())
+        return QueueBuilder.nonDurable(service.getTransformationPingQueueName())
                 .withArgument("x-dead-letter-exchange", AmqpDeadLetterConfiguration.DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", AmqpDeadLetterConfiguration.DEAD_LETTER_QUEUE)
                 .build();

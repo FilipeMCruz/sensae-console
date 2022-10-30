@@ -2,8 +2,9 @@ package pt.sensae.services.data.store.application;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.stereotype.Service;
+import pt.sharespot.iot.core.data.model.DataUnitDTO;
+import pt.sharespot.iot.core.data.routing.keys.DataRoutingKeys;
 import pt.sharespot.iot.core.keys.MessageConsumed;
-import pt.sharespot.iot.core.sensor.routing.keys.SensorRoutingKeys;
 
 @Service
 public class SensorDataHandlerService {
@@ -14,7 +15,11 @@ public class SensorDataHandlerService {
         this.repository = repository;
     }
 
-    public void publish(MessageConsumed<ObjectNode, SensorRoutingKeys> in) {
-        repository.insert(in.data);
+    public void publish(MessageConsumed<DataUnitDTO, DataRoutingKeys> in) {
+        repository.insert("unrouted", in);
+    }
+
+    public void publishUnprocessed(MessageConsumed<ObjectNode, DataRoutingKeys> in) {
+        repository.insert(in);
     }
 }

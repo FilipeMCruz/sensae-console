@@ -5,10 +5,11 @@ services:
     container_name: message-broker
     env_file:
       - secrets/prod/message-broker.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
-      - 5672
+      - 5672:5672
       - 15672
   ui-aggregator:
     build:
@@ -18,6 +19,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -37,6 +39,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -45,15 +48,14 @@ services:
       - data-gateway
   data-gateway:
     build: backend-services/data-gateway
-    image: data-gateway
-    environment:
-      spring_profiles_active: prod
+    image: sensae/data-gateway
     env_file:
       - ./secrets/prod/data-gateway.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
-      - 8080
+      - 8080:8080
   # Data Processor Context
   data-processor-frontend:
     build:
@@ -63,19 +65,19 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 443
     depends_on:
       - data-processor-master-backend
-  data-processor-slave-backend:
-    build: backend-services/data-processor-slave-backend
-    image: data-processor-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-processor-flow:
+    build: backend-services/data-processor-flow
+    image: sensae/data-processor-flow
     env_file:
-      - ./secrets/prod/data-processor-slave-backend.env
+      - ./secrets/prod/data-processor-flow.env
+    restart: on-failure
     networks:
       - sensae-network
   data-processor-master-backend:
@@ -87,6 +89,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/data-processor-master-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -96,6 +99,7 @@ services:
     container_name: data-processor-database
     env_file:
       - ./secrets/prod/data-processor-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -111,19 +115,19 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 443
     depends_on:
       - data-decoder-master-backend
-  data-decoder-slave-backend:
-    build: backend-services/data-decoder-slave-backend
-    image: data-decoder-slave-backend
-    environment:
-      spring_profiles_active: prod
+  data-decoder-flow:
+    build: backend-services/data-decoder-flow
+    image: sensae/data-decoder-flow
     env_file:
-      - ./secrets/prod/data-decoder-slave-backend.env
+      - ./secrets/prod/data-decoder-flow.env
+    restart: on-failure
     networks:
       - sensae-network
   data-decoder-master-backend:
@@ -135,6 +139,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/data-decoder-master-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -144,6 +149,7 @@ services:
     container_name: data-decoder-database
     env_file:
       - ./secrets/prod/data-decoder-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -151,13 +157,12 @@ services:
     volumes:
       - ./databases-data/prod/data-decoder-database:/var/lib/postgresql/data/
   # Data Validator Context
-  data-validator-backend:
-    build: backend-services/data-validator-backend
-    image: data-validator-backend
-    environment:
-      spring_profiles_active: prod
+  data-validator:
+    build: backend-services/data-validator
+    image: sensae/data-validator
     env_file:
-      - ./secrets/prod/data-validator-backend.env
+      - ./secrets/prod/data-validator.env
+    restart: on-failure
     networks:
       - sensae-network
   # Identity Management Context
@@ -169,19 +174,19 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 443
     depends_on:
       - identity-management-backend
-  device-ownership-backend:
-    build: backend-services/device-ownership-backend
-    image: device-ownership-backend
-    environment:
-      spring_profiles_active: prod
+  device-ownership-flow:
+    build: backend-services/device-ownership-flow
+    image: sensae/device-ownership-flow
     env_file:
-      - ./secrets/prod/device-ownership-backend.env
+      - ./secrets/prod/device-ownership-flow.env
+    restart: on-failure
     networks:
       - sensae-network
   identity-management-backend:
@@ -194,6 +199,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/identity-management-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -203,6 +209,7 @@ services:
     container_name: identity-management-database
     env_file:
       - ./secrets/prod/identity-management-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -218,28 +225,27 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 443
     depends_on:
       - device-management-master-backend
-  device-management-slave-backend:
-    build: backend-services/device-management-slave-backend
-    image: device-management-slave-backend
-    environment:
-      spring_profiles_active: prod
+  device-management-flow:
+    build: backend-services/device-management-flow
+    image: sensae/device-management-flow
     env_file:
-      - ./secrets/prod/device-management-slave-backend.env
+      - ./secrets/prod/device-management-flow.env
+    restart: on-failure
     networks:
       - sensae-network
-  device-commander-backend:
-    build: backend-services/device-commander-backend
-    image: device-commander-backend
-    environment:
-      spring_profiles_active: prod
+  device-commander:
+    build: backend-services/device-commander
+    image: sensae/device-commander
     env_file:
-      - ./secrets/prod/device-commander-backend.env
+      - ./secrets/prod/device-commander.env
+    restart: on-failure
     networks:
       - sensae-network
   device-management-master-backend:
@@ -251,6 +257,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/device-management-master-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -260,6 +267,7 @@ services:
     container_name: device-management-database
     env_file:
       - ./secrets/prod/device-management-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -275,6 +283,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -289,6 +298,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/alert-dispatcher-backend.env
+    restart: on-failure
     networks:
       - sensae-network
   rule-management-backend:
@@ -301,6 +311,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/rule-management-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -310,6 +321,7 @@ services:
     container_name: rule-management-database
     env_file:
       - ./secrets/prod/rule-management-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -325,6 +337,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -339,6 +352,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/notification-dispatcher-backend.env
+    restart: on-failure
     networks:
       - sensae-network
   notification-management-backend:
@@ -351,6 +365,7 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/notification-management-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -360,6 +375,7 @@ services:
     container_name: notification-management-database
     env_file:
       - ./secrets/prod/notification-management-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -375,6 +391,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -391,19 +408,22 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/smart-irrigation-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 8080
   smart-irrigation-data-database:
-    image: questdb/questdb:6.3.1
+    image: questdb/questdb:6.5
     container_name: smart-irrigation-data-database
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 8812
       - 9000
       - 9003
+      - 9009
     volumes:
       - ./databases-data/prod/smart-irrigation-data-database:/root/.questdb/
   smart-irrigation-business-database:
@@ -411,6 +431,7 @@ services:
     container_name: smart-irrigation-business-database
     env_file:
       - ./secrets/prod/smart-irrigation-business-database.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -426,6 +447,7 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt/
       - /etc/nginx/ssl:/etc/nginx/ssl/
+    restart: on-failure
     networks:
       - sensae-network
     ports:
@@ -441,19 +463,22 @@ services:
       spring_profiles_active: prod
     env_file:
       - ./secrets/prod/fleet-management-backend.env
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 8080
   fleet-management-data-database:
-    image: questdb/questdb:6.3.1
+    image: questdb/questdb:6.5
     container_name: fleet-management-data-database
+    restart: on-failure
     networks:
       - sensae-network
     ports:
       - 8812
       - 9000
       - 9003
+      - 9009
     volumes:
       - ./databases-data/prod/fleet-management-data-database:/root/.questdb/
   # data-store:

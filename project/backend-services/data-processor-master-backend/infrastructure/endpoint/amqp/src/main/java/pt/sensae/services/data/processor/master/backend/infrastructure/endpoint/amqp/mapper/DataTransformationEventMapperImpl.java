@@ -2,12 +2,12 @@ package pt.sensae.services.data.processor.master.backend.infrastructure.endpoint
 
 import org.springframework.stereotype.Component;
 import pt.sensae.services.data.processor.master.backend.infrastructure.endpoint.amqp.model.*;
-import pt.sharespot.iot.core.sensor.model.properties.KnownPropertyTransformation;
 import pt.sensae.services.data.processor.master.backend.application.DataTransformationEventMapper;
 import pt.sensae.services.data.processor.master.backend.application.DataTransformationNotificationDTO;
 import pt.sensae.services.data.processor.master.backend.application.SensorTypeIdDTO;
 import pt.sensae.services.data.processor.master.backend.domain.DataTransformation;
 import pt.sensae.services.data.processor.master.backend.domain.SensorTypeId;
+import pt.sharespot.iot.core.data.model.properties.KnownPropertyTransformation;
 
 import java.util.stream.Collectors;
 
